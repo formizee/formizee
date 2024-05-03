@@ -1,13 +1,14 @@
 {
   "name": "formizee",
-  "author": "Pau García Chiner",
+  "author": "Formizee",
+  "license": "Apache-2.0",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "lint": "next lint",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
     "format": "prettier -w ."
   },
   "dependencies": {
