@@ -1,4 +1,5 @@
 # Landing Page
+
 - [ ] Install Supabase
 - [ ] Create the UI Library
 - [ ] Create the landing
