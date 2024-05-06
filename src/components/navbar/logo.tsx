@@ -1,7 +1,19 @@
-export const Logo = () => (
-  <span className="text-transparent select-none bg-clip-text text-2xl bg-gradient-to-b from-white to-slate-400 font-semibold">
-    Formizee.
-  </span>
-);
+'use client';
 
-export default Logo;
+import {Logo} from '@/components';
+import {usePathname} from 'next/navigation';
+import Link from 'next/link';
+
+export const NavbarLogo = () => {
+  const pathname = usePathname();
+
+  if (pathname === '/') return <Logo />;
+
+  return (
+    <Link href="/">
+      <Logo />
+    </Link>
+  );
+};
+
+export default NavbarLogo;
