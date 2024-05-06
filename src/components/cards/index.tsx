@@ -1,30 +1,23 @@
 import {Card} from '@/components/ui';
-export const CodeCard = () => {
-  return <Card className="relative z-30 shadow-card">Code</Card>;
-};
+import {EmailCard} from './email';
+import {CodeCard} from './code';
 
 export const FormCard = () => {
   return (
-    <Card className="relative translate-y-[-170px] translate-x-[20px] z-20">
+    <Card className="relative translate-y-[-170px] translate-x-[100px] z-20">
       Form
-    </Card>
-  );
-};
-
-export const EmailCard = () => {
-  return (
-    <Card className="relative translate-y-[-340px] translate-x-[40px] z-10">
-      Email
     </Card>
   );
 };
 
 export const Cards = () => {
   return (
-    <div className="overflow-clip absolute mt-5 right-0 w-[45%] h-[256px]">
-      <CodeCard />
-      <FormCard />
-      <EmailCard />
+    <div className="overflow-x-clip relative mt-20 sm:h-80 md:h-96 w-full h-72 lg:w-1/2 xl:w-[55%] 2xl:w-[55%]">
+      <div className="absolute scale-90 sm:scale-100 mt-5 sm:mt-10 md:mt-16 lg:mt-10 h-[256px]">
+        <CodeCard />
+        <FormCard />
+        <EmailCard />
+      </div>
     </div>
   );
 };
