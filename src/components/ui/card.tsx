@@ -9,11 +9,12 @@ const Card = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      'relative overflow-clip flex flex-col p-4 w-[675px] h-48 rounded-xl bg-neutral-900/65 border-neutral-700 border-2 backdrop-blur-md',
+      'relative overflow-clip flex flex-col p-4 w-[700px] h-48 rounded-xl bg-neutral-900/65 border-neutral-700 border-2 backdrop-blur-md',
       className
     )}
     {...props}>
-    <svg className="absolute w-full h-full rounded-xl top-0 left-0">
+    {props.children}
+    <svg className="pointer-events-none absolute w-full h-full rounded-xl top-0 left-0">
       <rect
         className="w-full h-full fill-red-400 opacity-15"
         filter="url(#grainy)"
@@ -22,7 +23,6 @@ const Card = React.forwardRef<
         <feTurbulence type="turbulence" baseFrequency="0.65" />
       </filter>
     </svg>
-    {props.children}
   </div>
 ));
 Card.displayName = 'Card';
