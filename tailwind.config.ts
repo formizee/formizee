@@ -20,6 +20,9 @@ const config = {
       fontFamily: {
         sans: ['var(--font-sans)', ...fontFamily.sans]
       },
+      boxShadow: {
+        card: '0 4px 40px 13px rgba(120, 118, 118, 0.15)'
+      },
       keyframes: {
         'accordion-down': {
           from: {height: '0'},
