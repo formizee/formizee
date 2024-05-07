@@ -109,7 +109,10 @@ export const CodeBlock = (props: Props) => {
       {({tokens, getLineProps, getTokenProps}) => (
         <pre style={{}} className="flex flex-col md:text-lg">
           {tokens.map((line, i) => (
-            <div key={i} style={getLineProps({line}).style} className="my-1">
+            <div
+              key={i}
+              style={getLineProps({line}).style}
+              className="my-1 md:my-0.5">
               <span className="mr-3 select-none text-sm text-neutral-400">
                 {i + 1}
               </span>
