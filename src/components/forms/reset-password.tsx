@@ -35,7 +35,7 @@ export const ResetPasswordForm = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-4 w-96 mt-4">
+        className="mt-4 flex w-96 flex-col gap-4">
         <FormField
           control={form.control}
           name="email"

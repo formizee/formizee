@@ -9,14 +9,14 @@ const Card = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      'relative overflow-clip flex flex-col p-4 w-[700px] h-48 rounded-xl bg-neutral-900/65 border-neutral-700 border-2 backdrop-blur-md',
+      'relative flex h-48 w-[700px] flex-col overflow-clip rounded-xl border-2 border-neutral-700 bg-neutral-900/65 p-4 backdrop-blur-md',
       className
     )}
     {...props}>
     {props.children}
-    <svg className="pointer-events-none absolute w-full h-full rounded-xl top-0 left-0">
+    <svg className="pointer-events-none absolute left-0 top-0 h-full w-full rounded-xl">
       <rect
-        className="w-full h-full fill-red-400 opacity-15"
+        className="h-full w-full fill-red-400 opacity-15"
         filter="url(#grainy)"
       />
       <filter id="grainy">
@@ -57,7 +57,7 @@ const CardDescription = React.forwardRef<
 >(({className, ...props}, ref) => (
   <p
     ref={ref}
-    className={cn('text-sm text-muted-foreground', className)}
+    className={cn('text-muted-foreground text-sm', className)}
     {...props}
   />
 ));

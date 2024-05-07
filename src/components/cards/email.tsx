@@ -59,7 +59,7 @@ export const EmailCard = () => {
     return (
       <button
         onClick={() => setCurrentSelected(props.id)}
-        className={`flex w-[318px] flex-col justify-start m-2 p-2 rounded-md ${props.selected ? 'bg-neutral-700' : 'bg-neutral-800'}`}>
+        className={`m-2 flex w-[318px] flex-col justify-start rounded-md p-2 ${props.selected ? 'bg-neutral-700' : 'bg-neutral-800'}`}>
         <span className="text-md font-semibold">{props.title}</span>
         <span className="text-sm">{props.subject}</span>
         <span className="text-ellipsis text-sm text-neutral-400">
@@ -70,13 +70,13 @@ export const EmailCard = () => {
   };
 
   const Body = (props: BodyProps) => {
-    return <p className="text-sm p-2">{props.children}</p>;
+    return <p className="p-2 text-sm">{props.children}</p>;
   };
 
   const Header = (props: HeaderProps) => {
     return (
-      <header className="flex flex-row items-center gap-2 p-2 border-b-neutral-700 border-b-2">
-        <div className="flex items-center justify-center rounded-full size-12 bg-neutral-700 font-bold">
+      <header className="flex flex-row items-center gap-2 border-b-2 border-b-neutral-700 p-2">
+        <div className="flex size-12 items-center justify-center rounded-full bg-neutral-700 font-bold">
           {props.title.substring(0, 1)}
         </div>
         <div className="flex flex-col">
@@ -91,8 +91,8 @@ export const EmailCard = () => {
   };
 
   return (
-    <Card className="flex flex-row p-0 relative translate-y-[-340px] translate-x-[130px] z-10 items-center justify-center">
-      <div className="overflow-y-auto overflow-x-hidden h-full w-full">
+    <Card className="relative z-10 flex translate-x-[130px] translate-y-[-340px] flex-row items-center justify-center p-0">
+      <div className="h-full w-full overflow-y-auto overflow-x-hidden">
         {EMAILS.map(item => (
           <Item
             id={item.id}
@@ -104,7 +104,7 @@ export const EmailCard = () => {
           />
         ))}
       </div>
-      <div className="border-l-neutral-700 border-l-2 h-full w-full">
+      <div className="h-full w-full border-l-2 border-l-neutral-700">
         <Header
           title={currentEmail.title}
           subject={currentEmail.subject}
