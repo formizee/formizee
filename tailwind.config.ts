@@ -1,6 +1,5 @@
 import {fontFamily} from 'tailwindcss/defaultTheme';
 import type {Config} from 'tailwindcss';
-import {transform} from 'next/dist/build/swc';
 
 const config = {
   darkMode: ['class'],
@@ -20,9 +19,6 @@ const config = {
     extend: {
       fontFamily: {
         sans: ['var(--font-sans)', ...fontFamily.sans]
-      },
-      boxShadow: {
-        card: '0 4px 40px 13px rgba(120, 118, 118, 0.15)'
       },
       keyframes: {
         'accordion-down': {
