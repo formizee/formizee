@@ -1,6 +1,6 @@
-import { Navbar, Spotlight } from '@/components';
+import {Navbar, Spotlight} from '@/components';
 import Cards from '@/components/cards';
-import { WaitlistForm } from '@/components/forms';
+import {WaitlistForm} from '@/components/forms';
 
 const Home = () => {
   return (
