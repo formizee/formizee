@@ -1,6 +1,16 @@
-# Landing Page
+# Formizee To-Do List
 
-- [ ] Install Supabase
-- [ ] Create the UI Library
-- [ ] Create the landing
-- [ ] Create the login page
+## Dependencies
+- [ ] Install Supabase.
+- [X] Install Shadcn-ui components.
+- [ ] Install wrangle for the database.
+
+## Pages
+- [~] Landing.
+- [ ] Login.
+- [ ] Password Reset.
+- [ ] Dashboard MVP.
+
+## Login
+- [ ] Waitlist form.
+- [ ] Authentication.
