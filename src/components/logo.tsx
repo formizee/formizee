@@ -5,7 +5,7 @@ import {cva, type VariantProps} from 'class-variance-authority';
 import {cn} from '@/lib/ui';
 
 const logoVariants = cva(
-  'no-underline text-transparent select-none bg-clip-text text-2xl bg-gradient-to-b from-white to-slate-400 font-semibold',
+  'select-none bg-gradient-to-b from-white to-slate-400 bg-clip-text text-2xl font-semibold text-transparent no-underline',
   {
     variants: {
       size: {
