@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 @layer base {
-  ::selection {
-    @apply bg-amber-600/20;
+  :root {
+    @apply selection:bg-amber-600/20;
   }
 
   div,
