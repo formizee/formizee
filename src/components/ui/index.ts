@@ -1,3 +1,4 @@
+export * from './dropdown-menu';
 export * from './code-block';
 export * from './button';
 export * from './input';
