@@ -10,8 +10,9 @@
 
 - [~] Landing.
 - [ ] Login.
-- [ ] Password Reset.
 - [ ] Dashboard MVP.
+- [ ] Password Reset.
+- [ ] Waitlist Redirect.
 
 ## Logic & Behaviours
 
