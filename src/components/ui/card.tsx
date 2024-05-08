@@ -1,30 +1,51 @@
 import * as React from 'react';
 
+import {VariantProps, cva} from 'class-variance-authority';
 import {cn} from '@/lib/ui';
 
-const Card = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({className, ...props}, ref) => (
-  <div
-    ref={ref}
-    className={cn(
-      'relative flex h-48 w-[700px] flex-col overflow-clip rounded-xl border-2 border-neutral-700 bg-neutral-900/65 p-4 shadow-md backdrop-blur-md',
-      className
-    )}
-    {...props}>
-    {props.children}
-    <svg className="pointer-events-none absolute left-0 top-0 h-full w-full rounded-xl">
-      <rect
-        className="h-full w-full fill-red-400 opacity-15"
-        filter="url(#grainy)"
-      />
-      <filter id="grainy">
-        <feTurbulence type="turbulence" baseFrequency="0.65" />
-      </filter>
-    </svg>
-  </div>
-));
+const cardVariants = cva(
+  'relative flex flex-col border-neutral-700 bg-neutral-900/65 backdrop-blur-md',
+  {
+    variants: {
+      variant: {
+        default: 'rounded-lg border-2 shadow-md',
+        landing: 'overflow-clip rounded-xl border-2 shadow-md'
+      },
+      size: {
+        default: 'min-h-48 min-w-[200px] p-4',
+        landing: 'h-48 w-[700px] p-4'
+      }
+    },
+    defaultVariants: {
+      variant: 'default',
+      size: 'default'
+    }
+  }
+);
+
+interface CardProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof cardVariants> {}
+
+const Card = React.forwardRef<HTMLDivElement, CardProps>(
+  ({className, variant, size, ...props}, ref) => (
+    <div
+      ref={ref}
+      className={cn(cardVariants({variant, size, className}))}
+      {...props}>
+      {props.children}
+      <svg className="pointer-events-none absolute left-0 top-0 h-full w-full rounded-xl">
+        <rect
+          className="h-full w-full fill-red-400 opacity-15"
+          filter="url(#grainy)"
+        />
+        <filter id="grainy">
+          <feTurbulence type="turbulence" baseFrequency="0.65" />
+        </filter>
+      </svg>
+    </div>
+  )
+);
 Card.displayName = 'Card';
 
 const CardHeader = React.forwardRef<
