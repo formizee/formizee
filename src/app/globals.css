@@ -6,6 +6,12 @@
   ::selection {
     @apply bg-amber-600/20;
   }
+
+  div,
+  body {
+    scrollbar-color: #525252 black;
+    scrollbar-width: thin;
+  }
 }
 
 @layer utilities {
