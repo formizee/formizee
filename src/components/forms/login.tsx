@@ -15,7 +15,6 @@ import {
   Input
 } from '@/components/ui';
 import Link from 'next/link';
-import {ArrowRightIcon} from '../ui/icons';
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -39,44 +38,54 @@ export const LoginForm = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex w-96 flex-col gap-y-4">
+        className="flex flex-col gap-y-4">
         <FormField
-          control={form.control}
           name="email"
+          control={form.control}
+          rules={{required: true}}
           render={({field}) => (
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="you@mail.com" {...field} />
+                <Input
+                  required
+                  type="email"
+                  autoComplete="off"
+                  placeholder="you@mail.com"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
         <FormField
+          rules={{required: true}}
           control={form.control}
           name="password"
           render={({field}) => (
             <FormItem>
               <div className="flex items-center justify-between">
                 <FormLabel>Password</FormLabel>
-                <Button variant="link" asChild className="p-0">
+                <Button variant="link" asChild className="h-6 px-0">
                   <Link tabIndex={-1} href="/auth/reset-password">
                     Forgot your password?
                   </Link>
                 </Button>
               </div>
               <FormControl>
-                <Input placeholder="********" {...field} />
+                <Input
+                  required
+                  type="password"
+                  placeholder="********"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button className="my-4 items-center gap-x-2">
-          <span>Login</span>
-          <ArrowRightIcon />
-        </Button>
+        <Button className="my-4">Continue</Button>
       </form>
     </Form>
   );

@@ -37,12 +37,18 @@ export const WaitlistForm = () => {
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col gap-4 sm:flex-row">
         <FormField
-          control={form.control}
           name="email"
+          rules={{required: true}}
+          control={form.control}
           render={({field}) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="you@mail.com" {...field} />
+                <Input
+                  required
+                  type="email"
+                  placeholder="you@mail.com"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

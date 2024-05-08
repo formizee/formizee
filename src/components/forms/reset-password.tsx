@@ -10,10 +10,10 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
   Input
 } from '@/components/ui';
+import Link from 'next/link';
 
 const formSchema = z.object({
   email: z.string().email()
@@ -35,22 +35,30 @@ export const ResetPasswordForm = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="mt-4 flex w-96 flex-col gap-4">
+        className="flex flex-col gap-y-4">
         <FormField
-          control={form.control}
           name="email"
+          rules={{required: true}}
+          control={form.control}
           render={({field}) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="Enter your email" {...field} />
+                <Input
+                  required
+                  type="email"
+                  placeholder="Enter your email"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button className="gap-x-2">
-          <span>Send Reset Instructions</span>
+        <Button className="mt-4">
+          <span>Send Reset Email</span>
+        </Button>
+        <Button variant="outline" asChild>
+          <Link href="/login">Go Back</Link>
         </Button>
       </form>
     </Form>
