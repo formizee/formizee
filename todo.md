@@ -8,11 +8,13 @@
 
 ## Routes
 
-- [~] Landing.
-- [ ] Login.
-- [ ] Dashboard MVP.
-- [ ] Password Reset.
+- [x] Landing.
+- [x] Login.
+- [x] Dashboard MVP.
+- [x] Password Reset.
+- [ ] Privacy Policy.
 - [ ] Waitlist Redirect.
+- [ ] Terms And Conditions.
 
 ## Logic & Behaviours
 
@@ -20,5 +22,6 @@
 - [ ] Authentication.
 
 ## Performance and others
-- [ ] Remove tailwindcss-animate plugin.
+
+- [x] Remove tailwindcss-animate plugin.
 - [ ] Use a global intersection observer.
