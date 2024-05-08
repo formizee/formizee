@@ -6,14 +6,18 @@
 - [x] Install Shadcn-ui components.
 - [ ] Install wrangle for the database.
 
-## Pages
+## Routes
 
 - [~] Landing.
 - [ ] Login.
 - [ ] Password Reset.
 - [ ] Dashboard MVP.
 
-## Login
+## Logic & Behaviours
 
 - [ ] Waitlist form.
 - [ ] Authentication.
+
+## Performance and others
+- [ ] Remove tailwindcss-animate plugin.
+- [ ] Use a global intersection observer.
