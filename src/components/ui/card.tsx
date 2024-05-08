@@ -4,13 +4,13 @@ import {VariantProps, cva} from 'class-variance-authority';
 import {cn} from '@/lib/ui';
 
 const cardVariants = cva(
-  'relative flex flex-col border-2 border-neutral-700 bg-neutral-900/65 backdrop-blur-md',
+  'relative flex flex-col border-2 border-neutral-700 bg-neutral-900/65',
   {
     variants: {
       variant: {
-        default: 'rounded-lg shadow-md',
-        landing: 'overflow-clip rounded-xl shadow-md',
-        auth: 'z-10 flex items-center justify-center rounded-xl bg-neutral-400/10 shadow-lg'
+        default: 'rounded-lg shadow-md backdrop-blur-md',
+        landing: 'overflow-clip rounded-xl shadow-md backdrop-blur-md',
+        auth: 'z-10 flex items-center justify-center rounded-xl bg-transparent shadow-lg backdrop-blur-sm'
       },
       size: {
         default: 'min-h-48 min-w-[200px] p-4',
