@@ -58,6 +58,7 @@ export const EmailCard = () => {
   const Item = (props: ItemProps) => {
     return (
       <button
+        tabIndex={-1}
         onClick={() => setCurrentSelected(props.id)}
         className={`m-2 flex w-[318px] flex-col justify-start rounded-md p-2 ${props.selected ? 'bg-neutral-700' : 'bg-neutral-800'}`}>
         <span className="text-md font-semibold">{props.title}</span>
@@ -91,8 +92,11 @@ export const EmailCard = () => {
   };
 
   return (
-    <Card className="relative z-10 flex translate-x-[130px] translate-y-[-340px] flex-row items-center justify-center p-0">
-      <div className="h-full w-full overflow-y-auto overflow-x-hidden">
+    <Card
+      variant="landing"
+      size="landing"
+      className="relative z-10 flex translate-x-[120px] translate-y-[-340px] flex-row items-center justify-center p-0">
+      <div className="h-full w-[48%] overflow-y-auto overflow-x-hidden">
         {EMAILS.map(item => (
           <Item
             id={item.id}
@@ -104,7 +108,7 @@ export const EmailCard = () => {
           />
         ))}
       </div>
-      <div className="h-full w-full border-l-2 border-l-neutral-700">
+      <div className="h-full w-[52%] border-l-2 border-l-neutral-700">
         <Header
           title={currentEmail.title}
           subject={currentEmail.subject}

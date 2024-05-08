@@ -10,7 +10,10 @@ export const CodeCard = () => {
 </form>`;
 
   return (
-    <Card className="relative z-30 flex translate-x-[80px] justify-center">
+    <Card
+      variant="landing"
+      size="landing"
+      className="relative z-30 flex translate-x-[80px] justify-center">
       <CodeBlock language="html">{code}</CodeBlock>
     </Card>
   );
