@@ -1,5 +1,6 @@
 export {ChevronRightIcon} from './chevron-right';
 export {DocumentAddIcon} from './document-add';
+export {ArrowRightIcon} from './arrow-right';
 export {DocumentIcon} from './document';
 export {CheckIcon} from './check';
 export {ChatIcon} from './chat';
