@@ -15,7 +15,7 @@ const SidebarFormsItem = (props: SidebarFormsItemProps) => {
     <Button
       className="mx-0.5 my-1.5 w-48 items-center justify-start"
       variant={props.selected ? 'outline' : 'ghost'}>
-      <DocumentIcon />
+      <DocumentIcon className="max-h-4 min-h-4 min-w-4 max-w-4" />
       <span className="truncate">{props.children}</span>
     </Button>
   );
