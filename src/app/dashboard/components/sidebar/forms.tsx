@@ -26,8 +26,8 @@ export const SidebarForms = (props: SidebarForms) => {
 
   return (
     <div className="flex h-full flex-col items-start overflow-y-auto">
-      {props.forms.map(item => (
-        <SidebarFormsItem selected={item.selected}>
+      {props.forms.map((item, index) => (
+        <SidebarFormsItem key={index} selected={item.selected}>
           {item.title}
         </SidebarFormsItem>
       ))}
