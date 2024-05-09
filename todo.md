@@ -13,9 +13,9 @@
 - [x] Landing.
 - [x] Dashboard MVP.
 - [x] Password Reset.
-- [ ] Privacy Policy.
+- [x] Privacy Policy.
 - [ ] Waitlist Redirect.
-- [ ] Terms And Conditions.
+- [x] Terms And Conditions.
 
 ## Logic & Behaviours
 
@@ -25,4 +25,9 @@
 ## Performance and others
 
 - [x] Remove tailwindcss-animate plugin.
-- [ ] Use a global intersection observer.
+- [ ] Use a global intersection observer for the navbar.
+- [ ] Finish the landing page animations.
+
+## Pre-Deploy Stuff
+- [ ] Add all the metadata content.
+- [ ] Generate a sitemap of the webpage.
