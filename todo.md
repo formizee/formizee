@@ -8,8 +8,9 @@
 
 ## Routes
 
-- [x] Landing.
+- [x] 404.
 - [x] Login.
+- [x] Landing.
 - [x] Dashboard MVP.
 - [x] Password Reset.
 - [ ] Privacy Policy.
