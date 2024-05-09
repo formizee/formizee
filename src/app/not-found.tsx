@@ -23,7 +23,7 @@ const NotFound = () => {
             Page Not Found
           </h1>
           <h2 className="text-semibold max-w-96 gap-y-2 text-center text-xl">
-            The page you're seeking seems to have taken a coffee break.
+            The page you&apos;re seeking seems to have taken a coffee break.
           </h2>
         </header>
         <div className="flex flex-col items-center">

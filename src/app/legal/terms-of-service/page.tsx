@@ -12,11 +12,14 @@ const TermsOfService = () => {
       <p>
         We are{' '}
         <strong className="font-medium text-neutral-50">Formizee, inc.</strong>,
-        doing business as Formizee. ("
-        <strong className="font-medium text-neutral-50">Company</strong>," "
-        <strong className="font-medium text-neutral-50">we</strong>," "
+        doing business as Formizee. (&quot;
+        <strong className="font-medium text-neutral-50">Company</strong>,&quot;
+        &quot;
+        <strong className="font-medium text-neutral-50">we</strong>,&quot;
+        &quot;
         <strong className="font-medium text-neutral-50">us</strong>
-        ," "<strong className="font-medium text-neutral-50">our</strong>"), a
+        ,&quot; &quot;
+        <strong className="font-medium text-neutral-50">our</strong>&quot;), a
         company registered in Spain at Sant Pasqual 27, Valencia (46210).
       </p>
       <p>
@@ -26,18 +29,20 @@ const TermsOfService = () => {
           href="http://www.formizee.com">
           http://www.formizee.com
         </Link>{' '}
-        (the "<strong className="font-medium text-neutral-50">Site</strong>"),
-        as well as any other related products and services that refer or link to
-        these legal terms (the "
-        <strong className="font-medium text-neutral-50">Legal Terms</strong>")
-        (collectively, the "
-        <strong className="font-medium text-neutral-50">Services</strong>").
+        (the &quot;<strong className="font-medium text-neutral-50">Site</strong>
+        &quot;), as well as any other related products and services that refer
+        or link to these legal terms (the &quot;
+        <strong className="font-medium text-neutral-50">Legal Terms</strong>
+        &quot;) (collectively, the &quot;
+        <strong className="font-medium text-neutral-50">Services</strong>
+        &quot;).
       </p>
       <p>
-        Your agreement with us includes these Terms and our Privacy Policy (“
+        Your agreement with us includes these Terms and our Privacy Policy
+        (&quot;
         <strong className="font-medium text-neutral-50">Agreements</strong>
-        ”). You acknowledge that you have read and understood Agreements, and
-        agree to be bound of them.
+        &quot;). You acknowledge that you have read and understood Agreements,
+        and agree to be bound of them.
       </p>
       <p>
         If you do not agree with (or cannot comply with) Agreements, then you
@@ -244,9 +249,10 @@ const TermsOfService = () => {
           Upload or transmit (or attempt to upload or to transmit) any material
           that acts as a passive or active information collection or
           transmission mechanism, including without limitation, clear graphics
-          interchange formats ("gifs"), 1&times;1 pixels, web bugs, cookies, or
-          other similar devices (sometimes referred to as "spyware" or "passive
-          collection mechanisms" or "pcms").
+          interchange formats (&quot;gifs&quot;), 1&times;1 pixels, web bugs,
+          cookies, or other similar devices (sometimes referred to as
+          &quot;spyware&quot; or &quot;passive collection mechanisms&quot; or
+          &quot;pcms&quot;).
         </li>
         <li>
           Interfere with, disrupt, or create an undue burden on the Services or
@@ -261,8 +267,8 @@ const TermsOfService = () => {
           restrict access to the Services, or any portion of the Services.
         </li>
         <li>
-          Copy or adapt the Services' software, including but not limited to
-          Flash, PHP, HTML, JavaScript, or other code.
+          Copy or adapt the Services&apost; software, including but not limited
+          to Flash, PHP, HTML, JavaScript, or other code.
         </li>
         <li>
           Except as permitted by applicable law, decipher, decompile,
@@ -302,11 +308,12 @@ const TermsOfService = () => {
         transmit, perform, publish, distribute, or broadcast content and
         materials to us or on the Services, including but not limited to text,
         writings, video, audio, photographs, graphics, comments, suggestions, or
-        personal information or other material (collectively, "Contributions").
-        Contributions may be viewable by other users of the Services and through
-        third-party websites. As such, any Contributions you transmit may be
-        treated as non-confidential and non-proprietary. When you create or make
-        available any Contributions, you thereby represent and warrant that:
+        personal information or other material (collectively,
+        &quot;Contributions&quot;). Contributions may be viewable by other users
+        of the Services and through third-party websites. As such, any
+        Contributions you transmit may be treated as non-confidential and
+        non-proprietary. When you create or make available any Contributions,
+        you thereby represent and warrant that:
       </p>
       <ul className="flex list-inside list-disc flex-col gap-y-4">
         <li>
@@ -498,8 +505,8 @@ const TermsOfService = () => {
         We respect the intellectual property rights of others. If you believe
         that any material available on or through the Services infringes upon
         any copyright you own or control, please immediately notify us using the
-        contact information provided below (a "Notification"). A copy of your
-        Notification will be sent to the person who posted or stored the
+        contact information provided below (a &quot;Notification&quot;). A copy
+        of your Notification will be sent to the person who posted or stored the
         material addressed in the Notification. Please be advised that pursuant
         to applicable law you may be held liable for damages if you make
         material misrepresentations in a Notification. Thus, if you are not sure
@@ -577,13 +584,14 @@ const TermsOfService = () => {
       </strong>
       <p>
         To expedite resolution and control the cost of any dispute, controversy,
-        or claim related to these Legal Terms (each a "Dispute" and
-        collectively, the "Disputes") brought by either you or us (individually,
-        a "Party" and collectively, the "Parties"), the Parties agree to first
-        attempt to negotiate any Dispute (except those Disputes expressly
-        provided below) informally for at least thirty (30) days before
-        initiating arbitration. Such informal negotiations commence upon written
-        notice from one Party to the other Party.
+        or claim related to these Legal Terms (each a &quot;Dispute&quot; and
+        collectively, the &quot;Disputes&quot;) brought by either you or us
+        (individually, a &quot;Party&quot; and collectively, the
+        &quot;Parties&quot;), the Parties agree to first attempt to negotiate
+        any Dispute (except those Disputes expressly provided below) informally
+        for at least thirty (30) days before initiating arbitration. Such
+        informal negotiations commence upon written notice from one Party to the
+        other Party.
       </p>
       <strong className="font-medium text-neutral-50">
         Binding Arbitration
@@ -647,7 +655,7 @@ const TermsOfService = () => {
         IN CONNECTION WITH THE SERVICES AND YOUR USE THEREOF, INCLUDING, WITHOUT
         LIMITATION, THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
         PARTICULAR PURPOSE, AND NON-INFRINGEMENT. WE MAKE NO WARRANTIES OR
-        REPRESENTATIONS ABOUT THE ACCURACY OR COMPLETENESS OF THE SERVICES'
+        REPRESENTATIONS ABOUT THE ACCURACY OR COMPLETENESS OF THE SERVICES&apos;
         CONTENT OR THE CONTENT OF ANY WEBSITES OR MOBILE APPLICATIONS LINKED TO
         THE SERVICES AND WE WILL ASSUME NO LIABILITY OR RESPONSIBILITY FOR ANY
         (1) ERRORS, MISTAKES, OR INACCURACIES OF CONTENT AND MATERIALS, (2)

@@ -14,7 +14,7 @@ const WaitlistPage = () => {
           alt="Formizee Logo."
         />
         <h1 className="bg-gradient-to-b from-white to-neutral-400 bg-clip-text text-xl font-bold text-transparent">
-          You're In Waitlist
+          You&apos;re In Waitlist
         </h1>
         <p className="max-w-96 text-balance text-center sm:text-wrap sm:text-start">
           You will have been granteed access to the closed beta when it
@@ -22,7 +22,7 @@ const WaitlistPage = () => {
         </p>
       </header>
       <Button asChild>
-        <Link href="/">Let's Reimagine The Future</Link>
+        <Link href="/">Let&apos;s Reimagine The Future</Link>
       </Button>
     </>
   );

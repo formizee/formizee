@@ -12,11 +12,14 @@ const PrivacyPolicy = () => {
       <p>
         We are{' '}
         <strong className="font-medium text-neutral-50">Formizee, inc.</strong>,
-        doing business as Formizee. ("
-        <strong className="font-medium text-neutral-50">Company</strong>," "
-        <strong className="font-medium text-neutral-50">we</strong>," "
+        doing business as Formizee. (&quot;
+        <strong className="font-medium text-neutral-50">Company</strong>,&quot;
+        &quot;
+        <strong className="font-medium text-neutral-50">we</strong>,&quot;
+        &quot;
         <strong className="font-medium text-neutral-50">us</strong>
-        ," "<strong className="font-medium text-neutral-50">our</strong>"), a
+        ,&quot; &quot;
+        <strong className="font-medium text-neutral-50">our</strong>&quot;), a
         company registered in Spain at Sant Pasqual 27, Valencia (46210).
       </p>
       <p>
@@ -26,12 +29,13 @@ const PrivacyPolicy = () => {
           href="http://www.formizee.com">
           http://www.formizee.com
         </Link>{' '}
-        (the "<strong className="font-medium text-neutral-50">Site</strong>"),
-        as well as any other related products and services that refer or link to
-        these legal terms (the "
-        <strong className="font-medium text-neutral-50">Legal Terms</strong>")
-        (collectively, the "
-        <strong className="font-medium text-neutral-50">Services</strong>").
+        (the &quot;<strong className="font-medium text-neutral-50">Site</strong>
+        &quot;), as well as any other related products and services that refer
+        or link to these legal terms (the &quot;
+        <strong className="font-medium text-neutral-50">Legal Terms</strong>
+        &quot;) (collectively, the &quot;
+        <strong className="font-medium text-neutral-50">Services</strong>
+        &quot;).
       </p>
       <p>
         Your agreement with us includes these Terms and our Privacy Policy (“
@@ -150,7 +154,7 @@ const PrivacyPolicy = () => {
           date/time stamps associated with your usage, pages and files viewed,
           searches, and other actions you take such as which features you use),
           device event information (such as system activity, error reports
-          (sometimes called "crash dumps"), and hardware settings).
+          (sometimes called &quot;crash dumps&quot;), and hardware settings).
         </p>
       </ul>
       <h2 className="mt-8 text-2xl font-semibold text-neutral-50">
@@ -178,7 +182,7 @@ const PrivacyPolicy = () => {
         </li>
         <li>
           <strong className="font-medium text-neutral-50">
-            To save or protect an individual's vital interest.
+            To save or protect an individual&apos;s vital interest.
           </strong>{' '}
           We may process your information when necessary to save or protect an
           individual&rsquo;s vital interest, such as to prevent harm.
@@ -355,11 +359,11 @@ const PrivacyPolicy = () => {
         and applicable law.
       </p>
       <strong className="font-medium text-neutral-50">
-        European Commission's Standard Contractual Clauses
+        European Commission&apos;s Standard Contractual Clauses
       </strong>
       <p>
         We have implemented measures to protect your personal information,
-        including by using the European Commission's Standard Contractual
+        including by using the European Commission&apos;s Standard Contractual
         Clauses for transfers of personal information between our group
         companies and between us and our third-party providers.
       </p>
@@ -511,9 +515,9 @@ const PrivacyPolicy = () => {
       </h2>
       <p>
         Most web browsers and some mobile operating systems and mobile
-        applications include a Do-Not-Track ("DNT") feature or setting you can
-        activate to signal your privacy preference not to have data about your
-        online browsing activities monitored and collected.
+        applications include a Do-Not-Track (&quot;DNT&quot;) feature or setting
+        you can activate to signal your privacy preference not to have data
+        about your online browsing activities monitored and collected.
       </p>
       <p>
         At this stage no uniform technology standard for recognizing and
@@ -562,8 +566,8 @@ const PrivacyPolicy = () => {
       <p>
         We may use your personal information for our own business purposes, such
         as for undertaking internal research for technological development and
-        demonstration. This is not considered to be "selling" of your personal
-        information.
+        demonstration. This is not considered to be &quot;selling&quot; of your
+        personal information.
       </p>
       <p>
         We have not disclosed, sold, or shared any personal information to third
@@ -575,10 +579,10 @@ const PrivacyPolicy = () => {
         California Residents
       </strong>
       <p>
-        California Civil Code Section 1798.83, also known as the "Shine The
-        Light" law permits our users who are California residents to request and
-        obtain from us, once a year and free of charge, information about
-        categories of personal information (if any) we disclosed to third
+        California Civil Code Section 1798.83, also known as the &quot;Shine The
+        Light&quot; law permits our users who are California residents to
+        request and obtain from us, once a year and free of charge, information
+        about categories of personal information (if any) we disclosed to third
         parties for direct marketing purposes and the names and addresses of all
         third parties with which we shared personal information in the
         immediately preceding calendar year. If you are a California resident
@@ -603,7 +607,9 @@ const PrivacyPolicy = () => {
         This section applies only to California residents. Under the California
         Consumer Privacy Act (CCPA), you have the rights listed below.
       </p>
-      <p>The California Code of Regulations defines a "residents" as:</p>
+      <p>
+        The California Code of Regulations defines a &quot;residents&quot; as:
+      </p>
       <p>
         (1) every individual who is in the State of California for other than a
         temporary or transitory purpose and
@@ -612,10 +618,11 @@ const PrivacyPolicy = () => {
         (2) every individual who is domiciled in the State of California who is
         outside the State of California for a temporary or transitory purpose
       </p>
-      <p>All other individuals are defined as "non-residents."</p>
+      <p>All other individuals are defined as &quot;non-residents.&quot;</p>
       <p>
-        If this definition of "resident" applies to you, we must adhere to
-        certain rights and obligations regarding your personal information.
+        If this definition of &quot;resident&quot; applies to you, we must
+        adhere to certain rights and obligations regarding your personal
+        information.
       </p>
       <strong className="font-medium text-neutral-50">
         Your rights with respect to your personal data
@@ -670,7 +677,7 @@ const PrivacyPolicy = () => {
         rights.
       </p>
       <u>Right to Limit Use and Disclosure of Sensitive Personal Information</u>
-      <p>We do not process consumer's sensitive personal information.</p>
+      <p>We do not process consumer&apos;s sensitive personal information.</p>
       <u>Verification process</u>
       <p>
         Upon receiving your request, we will need to verify your identity to
@@ -751,7 +758,7 @@ const PrivacyPolicy = () => {
           Right to opt out of the processing of your personal data if it is used
           for targeted advertising, the sale of personal data, or profiling in
           furtherance of decisions that produce legal or similarly significant
-          effects ("profiling")
+          effects (&quot;profiling&quot;)
         </li>
       </ul>
       <strong className="font-medium text-neutral-50">
@@ -779,7 +786,7 @@ const PrivacyPolicy = () => {
           Right to opt out of the processing of your personal data if it is used
           for targeted advertising, the sale of personal data, or profiling in
           furtherance of decisions that produce legal or similarly significant
-          effects ("profiling")
+          effects (&quot;profiling&quot;)
         </li>
       </ul>
       <strong className="font-medium text-neutral-50">Utah Residents</strong>
@@ -810,23 +817,24 @@ const PrivacyPolicy = () => {
       </strong>
       <p>Under the Virginia Consumer Data Protection Act (VCDPA):</p>
       <p>
-        "Consumer" means a natural person who is a resident of the Commonwealth
-        acting only in an individual or household context. It does not include a
-        natural person acting in a commercial or employment context.
+        &quot;Consumer&quot; means a natural person who is a resident of the
+        Commonwealth acting only in an individual or household context. It does
+        not include a natural person acting in a commercial or employment
+        context.
       </p>
       <p>
-        "Personal data" means any information that is linked or reasonably
-        linkable to an identified or identifiable natural person. "Personal
-        data" does not include de-identified data or publicly available
-        information.
+        &quot;Personal data&quot; means any information that is linked or
+        reasonably linkable to an identified or identifiable natural person.
+        &quot;Personal data&quot; does not include de-identified data or
+        publicly available information.
       </p>
       <p>
-        "Sale of personal data" means the exchange of personal data for monetary
-        consideration.
+        &quot;Sale of personal data&quot; means the exchange of personal data
+        for monetary consideration.
       </p>
       <p>
-        If this definition of "consumer" applies to you, we must adhere to
-        certain rights and obligations regarding your personal data.
+        If this definition of &quot;consumer&quot; applies to you, we must
+        adhere to certain rights and obligations regarding your personal data.
       </p>
       <u>Your rights with respect to your personal data</u>
       <ul className="flex list-inside list-disc flex-col gap-y-4">
@@ -845,15 +853,16 @@ const PrivacyPolicy = () => {
           Right to opt out of the processing of your personal data if it is used
           for targeted advertising, the sale of personal data, or profiling in
           furtherance of decisions that produce legal or similarly significant
-          effects ("profiling")
+          effects (&quot;profiling&quot;)
         </li>
       </ul>
       <u>Verification process</u>
       <p>
         We may request that you provide additional information reasonably
-        necessary to verify you and your consumer's request. If you submit the
-        request through an authorized agent, we may need to collect additional
-        information to verify your identity before processing your request.
+        necessary to verify you and your consumer&apos;s request. If you submit
+        the request through an authorized agent, we may need to collect
+        additional information to verify your identity before processing your
+        request.
       </p>
       <p>
         Upon receiving your request, we will respond without undue delay, but in
@@ -886,8 +895,8 @@ const PrivacyPolicy = () => {
       </strong>
       <p>
         We collect and process your personal information under the obligations
-        and conditions set by Australia's Privacy Act 1988 and New Zealand's
-        Privacy Act 2020 (Privacy Act).
+        and conditions set by Australia&apos;s Privacy Act 1988 and New
+        Zealand&apos;s Privacy Act 2020 (Privacy Act).
       </p>
       <p>
         This privacy notice satisfies the notice requirements defined in both
@@ -918,7 +927,7 @@ const PrivacyPolicy = () => {
         .
       </p>
       <p>
-        And a breach of New Zealand's Privacy Principles to the{' '}
+        And a breach of New Zealand&apos;s Privacy Principles to the{' '}
         <Link
           className="underline underline-offset-2"
           href="https://www.privacy.org.nz/your-rights/making-a-complaint/">
@@ -960,12 +969,12 @@ const PrivacyPolicy = () => {
       </h2>
       <p>
         We may update this privacy notice from time to time. The updated version
-        will be indicated by an updated "Revised" date and the updated version
-        will be effective as soon as it is accessible. If we make material
-        changes to this privacy notice, we may notify you either by prominently
-        posting a notice of such changes or by directly sending you a
-        notification. We encourage you to review this privacy notice frequently
-        to be informed of how we are protecting your information.
+        will be indicated by an updated &apos;Revised&apos; date and the updated
+        version will be effective as soon as it is accessible. If we make
+        material changes to this privacy notice, we may notify you either by
+        prominently posting a notice of such changes or by directly sending you
+        a notification. We encourage you to review this privacy notice
+        frequently to be informed of how we are protecting your information.
       </p>
       <h2 className="mt-8 text-2xl font-semibold text-neutral-50">
         16. How Can You Contact Us?
