@@ -52,7 +52,8 @@ const config = {
         spotlight: 'spotlight 1.5s ease-out forwards'
       }
     }
-  }
+  },
+  plugins: [require('tailwindcss-animate')]
 } satisfies Config;
 
 export default config;
