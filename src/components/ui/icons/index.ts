@@ -5,6 +5,7 @@ export {DocumentIcon} from './document';
 export {SettingsIcon} from './settings';
 export {LogoutIcon} from './logout';
 export {CheckIcon} from './check';
+export {CloseIcon} from './close';
 export {ChatIcon} from './chat';
 export {LinkIcon} from './link';
 export {UserIcon} from './user';
