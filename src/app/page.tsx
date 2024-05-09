@@ -1,5 +1,4 @@
-import {Navbar, Spotlight} from '@/components';
-import Cards from '@/components/cards';
+import {Navbar, Spotlight, Cards} from '@/components';
 import {WaitlistForm} from '@/components/forms';
 
 const Home = () => {
