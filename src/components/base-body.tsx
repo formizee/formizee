@@ -1,4 +1,5 @@
-import {ThemeProvider} from './theme-provider';
+import {ThemeProvider} from '@/components/theme-provider';
+import {Toaster} from '@/components/ui';
 import {Inter} from 'next/font/google';
 import {cn} from '@/lib/ui';
 
@@ -17,6 +18,7 @@ export const BaseBody = ({children}: Readonly<{children: React.ReactNode}>) => (
     <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
       {children}
     </ThemeProvider>
+    <Toaster />
   </body>
 );
 
