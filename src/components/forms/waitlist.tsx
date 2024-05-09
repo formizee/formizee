@@ -1,11 +1,11 @@
 'use client';
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
+import {zodResolver} from '@hookform/resolvers/zod';
+import {useForm} from 'react-hook-form';
 import Link from 'next/link';
-import { z } from 'zod';
+import {z} from 'zod';
 
-import { MailIcon } from '../ui/icons';
+import {MailIcon} from '../ui/icons';
 import {
   Button,
   Form,
@@ -38,9 +38,9 @@ export const WaitlistForm = () => {
         <div className="flex flex-col gap-4 sm:flex-row">
           <FormField
             name="email"
-            rules={{ required: true }}
+            rules={{required: true}}
             control={form.control}
-            render={({ field }) => (
+            render={({field}) => (
               <FormItem>
                 <FormControl>
                   <Input
@@ -59,7 +59,7 @@ export const WaitlistForm = () => {
             <span>Join The Waitlist</span>
           </Button>
         </div>
-        <p className="mt-3 text-balance text-center text-xs text-neutral-400">
+        <p className="mb-6 mt-3 text-balance text-start text-xs text-neutral-400">
           {'By joining, you agree to our '}
           <Link
             className="underline underline-offset-2 transition-colors hover:text-neutral-50"
