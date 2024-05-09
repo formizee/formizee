@@ -2,7 +2,7 @@
 
 ## Dependencies
 
-- [ ] Install Supabase.
+- [~] Install Supabase.
 - [x] Install Shadcn-ui components.
 - [ ] Install wrangle for the database.
 
@@ -14,20 +14,27 @@
 - [x] Dashboard MVP.
 - [x] Password Reset.
 - [x] Privacy Policy.
-- [ ] Waitlist Redirect.
+- [x] Waitlist Redirect.
 - [x] Terms And Conditions.
 
 ## Logic & Behaviours
 
 - [ ] Waitlist form.
-- [ ] Authentication.
+- [~] Authentication.
 
-## Performance and fixes
+## Performance
 
-- [x] Remove tailwindcss-animate plugin.
 - [ ] Use a global intersection observer for the navbar.
-- [ ] Finish the landing page animations.
-- [ ] Ensure browser compatibility
+
+## Fixes
+
+- [ ] Do something with the landing page cards animation.
+- [ ] Review the content of the title and description of the landing.
+
+## Browser compatibility
+
+- [ ] Fix safari spotlight: When the breakpoint size of the screen is more than md it's just brokes all
+- [ ] Fix firefox spotlight: Very bad performance, also doens't apply mask filter exactly as the other devices, looks worse.
 
 ## Pre-Deploy Stuff
 
