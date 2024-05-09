@@ -85,7 +85,10 @@ export const LoginForm = () => {
             </FormItem>
           )}
         />
-        <Button className="my-4">Continue</Button>
+        <Button className="mt-4">Continue</Button>
+        <Button className="mb-4" variant="outline" asChild>
+          <Link href="/">Go Back</Link>
+        </Button>
       </form>
     </Form>
   );
