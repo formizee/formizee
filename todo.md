@@ -22,12 +22,14 @@
 - [ ] Waitlist form.
 - [ ] Authentication.
 
-## Performance and others
+## Performance and fixes
 
 - [x] Remove tailwindcss-animate plugin.
 - [ ] Use a global intersection observer for the navbar.
 - [ ] Finish the landing page animations.
+- [ ] Ensure browser compatibility
 
 ## Pre-Deploy Stuff
+
 - [ ] Add all the metadata content.
 - [ ] Generate a sitemap of the webpage.
