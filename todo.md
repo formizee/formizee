@@ -28,6 +28,7 @@
 
 ## Fixes
 
+- [ ] Add a footer.
 - [ ] Do something with the landing page cards animation.
 - [ ] Review the content of the title and description of the landing.
 
@@ -38,5 +39,6 @@
 
 ## Pre-Deploy Stuff
 
+- [ ] Update the status page.
 - [ ] Add all the metadata content.
 - [ ] Generate a sitemap of the webpage.
