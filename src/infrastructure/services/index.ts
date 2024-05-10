@@ -1,0 +1,1 @@
+export {SupabaseAuthService} from './auth';
