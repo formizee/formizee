@@ -2,7 +2,7 @@ export class Name {
   private readonly MIN_LENGTH = 4;
   private readonly MAX_LENGTH = 20;
 
-  private readonly validName = new RegExp(/^[a-zA-Z\s]+$/);
+  private readonly validName = new RegExp(/^[a-z0-9.-]+$/);
 
   constructor(readonly value: string) {
     this.value = value;
