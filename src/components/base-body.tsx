@@ -1,3 +1,4 @@
+import {ThemeProvider} from '@/components';
 import {Toaster} from '@/components/ui';
 import {Inter} from 'next/font/google';
 import Loading from '@/app/loading';
@@ -16,7 +17,9 @@ const className = cn(
 
 export const BaseBody = ({children}: Readonly<{children: React.ReactNode}>) => (
   <body className={className}>
-    <Suspense fallback={<Loading />}>{children}</Suspense>
+    <ThemeProvider>
+      <Suspense fallback={<Loading />}>{children}</Suspense>
+    </ThemeProvider>
     <Toaster />
   </body>
 );
