@@ -3,6 +3,7 @@ export {DocumentAddIcon} from './document-add';
 export {ArrowRightIcon} from './arrow-right';
 export {DocumentIcon} from './document';
 export {SettingsIcon} from './settings';
+export {LoadingIcon} from './loading';
 export {LogoutIcon} from './logout';
 export {CheckIcon} from './check';
 export {CloseIcon} from './close';
