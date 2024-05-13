@@ -1,6 +1,5 @@
 import {fontFamily} from 'tailwindcss/defaultTheme';
 import type {Config} from 'tailwindcss';
-import {transform} from 'next/dist/build/swc';
 
 const config = {
   darkMode: ['class'],
