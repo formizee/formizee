@@ -1,6 +1,6 @@
 export class Password {
   private readonly MIN_LENGTH = 8;
-  private readonly MAX_LENGTH = 20;
+  private readonly MAX_LENGTH = 32;
 
   constructor(readonly value: string) {
     this.value = value;
@@ -21,7 +21,7 @@ export class Password {
 
   ensureIsValidLength(value: string): void {
     if (value.length < this.MIN_LENGTH || value.length > this.MAX_LENGTH) {
-      throw new Error('Password must be between 8 and 20 characters long');
+      throw new Error('Password must be between 8 and 32 characters long');
     }
   }
 
