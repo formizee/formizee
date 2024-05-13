@@ -2,6 +2,8 @@ import {ThemeProvider} from '@/components/theme-provider';
 import {Toaster} from '@/components/ui';
 import {Inter} from 'next/font/google';
 import {cn} from '@/lib/ui';
+import {Suspense} from 'react';
+import Loading from '@/app/loading';
 
 const font = Inter({
   subsets: ['latin'],
@@ -16,7 +18,7 @@ const className = cn(
 export const BaseBody = ({children}: Readonly<{children: React.ReactNode}>) => (
   <body className={className}>
     <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-      {children}
+      <Suspense fallback={<Loading />}>{children}</Suspense>
     </ThemeProvider>
     <Toaster />
   </body>
