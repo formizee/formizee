@@ -7,7 +7,7 @@ import {redirect} from 'next/navigation';
 export const logout = async (): Promise<ActionState | void> => {
   await authServiceLogout().catch(error => {
     return {
-      code: 'EXISTS_ERROR',
+      code: 'COMMON_ERROR',
       key: 'logout',
       message: error.message
     };

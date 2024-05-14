@@ -48,7 +48,7 @@ export const register = async (
 
   await authServiceRegister(name, email, password).catch(error => {
     return {
-      code: 'EXISTS_ERROR',
+      code: 'COMMON_ERROR',
       key: 'password',
       message: error.message
     };

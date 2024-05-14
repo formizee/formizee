@@ -22,4 +22,4 @@ export type AuthServiceRegister = (
   password: Password
 ) => Promise<AuthResponse>;
 
-export type AuthServiceLogout = () => Promise<void>;
+export type AuthServiceLogout = () => Promise<{error: Error | null}>;
