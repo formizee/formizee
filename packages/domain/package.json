@@ -13,6 +13,7 @@
     "format": "prettier -w ."
   },
   "devDependencies": {
+    "@formizee/typescript-config": "workspace:*",
     "typescript": "5.4.5"
   }
 }
