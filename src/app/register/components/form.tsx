@@ -105,7 +105,7 @@ const FormFields = () => {
         )}
       />
       <Button disabled={pending} className="mt-4">
-        {pending ? <LoadingIcon /> : 'Create Account'}
+        {pending ? <LoadingIcon className="h-10 w-10" /> : 'Create Account'}
       </Button>
       <Button disabled={pending} className="mb-4" variant="outline" asChild>
         <Link href="/">Go Back</Link>
