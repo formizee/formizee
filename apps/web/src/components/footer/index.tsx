@@ -16,7 +16,7 @@ export const Footer = () => {
           © 2024
         </span>
       </div>
-      <div className="flex flex-col items-end gap-y-4 p-2 text-sm text-neutral-400 sm:flex-row sm:gap-x-4">
+      <div className="flex flex-col items-end gap-y-4 p-2 text-sm text-neutral-400 sm:flex-row sm:gap-x-6">
         <Link
           className="transition-colors hover:text-neutral-50"
           href="https://status.formizee.com">
