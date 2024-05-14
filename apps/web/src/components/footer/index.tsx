@@ -3,8 +3,8 @@ import {Button} from '../ui';
 
 export const Footer = () => {
   return (
-    <footer className="z-50 flex w-full flex-row items-center justify-between gap-x-2 border-t border-t-neutral-800 bg-black p-2">
-      <div className="flex flex-row">
+    <footer className="z-50 flex w-full flex-row justify-between gap-x-2 border-t border-t-neutral-800 bg-black/15 px-2 py-2 backdrop-blur-sm sm:items-center sm:py-0">
+      <div className="flex flex-col justify-between gap-y-4 p-2 sm:flex-row sm:gap-x-4">
         <Button variant="ghost" size="icon" className="fill-neutral-50" asChild>
           <Link href="https://github.com/formizee">
             <svg className="h-4 w-4" viewBox="0 0 256 250" fill="currentColor">
@@ -12,17 +12,26 @@ export const Footer = () => {
             </svg>
           </Link>
         </Button>
+        <span className="ml-2 text-sm font-medium text-neutral-500 sm:hidden">
+          © 2024
+        </span>
       </div>
-      <div className="flex flex-col sm:flex-row">
-        <Button className="text-sm text-neutral-500" variant="ghost" asChild>
-          <Link href="https://status.formizee.com">Status</Link>
-        </Button>
-        <Button className="text-sm text-neutral-500" variant="ghost" asChild>
-          <Link href="/legal/privacy-policy">Privacy Policy</Link>
-        </Button>
-        <Button className="text-sm text-neutral-500" variant="ghost" asChild>
-          <Link href="/legal/terms-of-service">Terms Of Service</Link>
-        </Button>
+      <div className="flex flex-col items-end gap-y-4 p-2 text-sm text-neutral-400 sm:flex-row sm:gap-x-4">
+        <Link
+          className="transition-colors hover:text-neutral-50"
+          href="https://status.formizee.com">
+          Status
+        </Link>
+        <Link
+          className="transition-colors hover:text-neutral-50"
+          href="/legal/privacy-policy">
+          Privacy Policy
+        </Link>
+        <Link
+          className="transition-colors hover:text-neutral-50"
+          href="/legal/terms-of-service">
+          Terms Of Service
+        </Link>
       </div>
     </footer>
   );
