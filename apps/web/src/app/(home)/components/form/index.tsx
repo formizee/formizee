@@ -14,7 +14,7 @@ import {
   Input
 } from '@/components/ui';
 import Link from 'next/link';
-import {LoadingIcon, MailIcon} from '../ui/icons';
+import {LoadingIcon, MailIcon} from '@/components/ui/icons';
 import {useFormContext} from 'react-hook-form';
 
 export const WaitlistForm = () => {

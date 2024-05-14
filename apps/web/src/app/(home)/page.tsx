@@ -1,5 +1,5 @@
-import {Navbar, Spotlight, Cards, Footer} from '@/components';
-import {WaitlistForm} from '@/components/forms';
+import {Form, Cards, Spotlight} from './components';
+import {Navbar, Footer} from '@/components';
 
 const Home = () => {
   return (
@@ -21,7 +21,7 @@ const Home = () => {
             <span className="text-white">Effortless</span> and{' '}
             <span className="text-white">Open Source</span>.
           </p>
-          <WaitlistForm />
+          <Form />
         </div>
         <Cards />
       </header>

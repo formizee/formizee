@@ -48,3 +48,5 @@ export const Spotlight = ({className, fill}: SpotlightProps) => {
     </svg>
   );
 };
+
+export default Spotlight;
