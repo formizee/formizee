@@ -27,7 +27,7 @@
 
 ## Fixes
 
-- [~] Add a footer.
+- [x] Add a footer.
 - [ ] Do something with the landing page cards animation.
 - [ ] Review the content of the title and description of the landing.
 
