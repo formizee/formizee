@@ -8,9 +8,7 @@ export const authServiceLogout: AuthServiceLogout = async () => {
 
   const {error} = await supabase.auth.signOut();
 
-  if (error) {
-    return Promise.reject(error);
-  }
+  return Promise.resolve({error});
 };
 
 export default authServiceLogout;

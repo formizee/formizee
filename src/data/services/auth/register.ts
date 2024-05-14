@@ -20,7 +20,7 @@ export const authServiceRegister: AuthServiceRegister = async (
   });
 
   if (error) {
-    return Promise.reject(error);
+    return Promise.reject({data: null, error});
   }
 
   const user = new User(
@@ -29,7 +29,7 @@ export const authServiceRegister: AuthServiceRegister = async (
     data.user?.email as string
   );
 
-  return Promise.resolve(user);
+  return Promise.resolve({data: {user}, error});
 };
 
 export default authServiceRegister;

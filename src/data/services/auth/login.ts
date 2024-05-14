@@ -13,7 +13,7 @@ export const authServiceLogin: AuthServiceLogin = async (email, password) => {
   });
 
   if (error) {
-    return Promise.reject(error);
+    return Promise.resolve({data: null, error});
   }
 
   const user = new User(
@@ -22,7 +22,7 @@ export const authServiceLogin: AuthServiceLogin = async (email, password) => {
     data.user.email as string
   );
 
-  return Promise.resolve(user);
+  return Promise.resolve({data: {user}, error: null});
 };
 
 export default authServiceLogin;
