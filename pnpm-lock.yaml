@@ -7,6 +7,10 @@ settings:
 importers:
 
   .:
+    dependencies:
+      typescript:
+        specifier: 5.4.5
+        version: 5.4.5
     devDependencies:
       prettier:
         specifier: 3.2.5
@@ -75,6 +79,9 @@ importers:
         specifier: 3.23.6
         version: 3.23.6
     devDependencies:
+      '@formizee/typescript-config':
+        specifier: workspace:*
+        version: link:../../packages/config-typescript
       '@types/node':
         specifier: ^20
         version: 20.12.8
@@ -106,8 +113,13 @@ importers:
         specifier: 5.4.5
         version: 5.4.5
 
+  packages/config-typescript: {}
+
   packages/domain:
     devDependencies:
+      '@formizee/typescript-config':
+        specifier: workspace:*
+        version: link:../config-typescript
       typescript:
         specifier: 5.4.5
         version: 5.4.5
