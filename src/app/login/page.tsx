@@ -1,4 +1,4 @@
-import {LoginForm} from '@/components/forms';
+import Form from './components/form';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -17,7 +17,7 @@ const Login = () => {
           Login To Formizee.
         </h1>
       </header>
-      <LoginForm />
+      <Form />
       <p className="text-balance text-center text-xs text-neutral-400">
         {'By signing in, you agree to our '}
         <Link
