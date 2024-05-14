@@ -1,4 +1,4 @@
-import {ResetPasswordForm} from '@/components/forms';
+import Form from './components/form';
 import Image from 'next/image';
 
 const ResetPassword = () => {
@@ -20,7 +20,7 @@ const ResetPassword = () => {
           you an email with instructions to reset your password.
         </p>
       </header>
-      <ResetPasswordForm />
+      <Form />
     </>
   );
 };
