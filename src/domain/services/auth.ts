@@ -1,10 +1,15 @@
 import {Name, Email, Password} from '../models/values';
-import {User} from '../models/user';
+import {User} from '../models';
 
-export interface AuthService {
-  login(email: Email, password: string): Promise<User>;
-  register(name: Name, email: Email, password: Password): Promise<User>;
-  logout(): Promise<void>;
-}
+export type AuthServiceLogin = (
+  email: Email,
+  password: string
+) => Promise<User>;
 
-export default AuthService;
+export type AuthServiceRegister = (
+  name: Name,
+  email: Email,
+  password: Password
+) => Promise<User>;
+
+export type AuthServiceLogout = () => Promise<void>;
