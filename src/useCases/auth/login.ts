@@ -1,6 +1,6 @@
 'use server';
 
-import {authServiceLogin} from '@/infrastructure/services/auth';
+import {authServiceLogin} from '@/data/services/auth';
 import {Email} from '@/domain/models/values';
 import {revalidatePath} from 'next/cache';
 import {redirect} from 'next/navigation';

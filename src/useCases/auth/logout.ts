@@ -1,6 +1,6 @@
 'use server';
 
-import {authServiceLogout} from '@/infrastructure/services/auth';
+import {authServiceLogout} from '@/data/services/auth';
 import {revalidatePath} from 'next/cache';
 import {redirect} from 'next/navigation';
 
