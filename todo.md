@@ -2,9 +2,8 @@
 
 ## Dependencies
 
-- [~] Install Supabase.
+- [x] Install Supabase.
 - [x] Install Shadcn-ui components.
-- [ ] Install wrangle for the database.
 
 ## Routes
 
@@ -20,7 +19,7 @@
 ## Logic & Behaviours
 
 - [ ] Waitlist form.
-- [~] Authentication.
+- [x] Authentication.
 
 ## Performance
 
@@ -28,7 +27,7 @@
 
 ## Fixes
 
-- [ ] Add a footer.
+- [~] Add a footer.
 - [ ] Do something with the landing page cards animation.
 - [ ] Review the content of the title and description of the landing.
 
