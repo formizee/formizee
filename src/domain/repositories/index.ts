@@ -1,2 +1,2 @@
-export {EndpointsRepository} from './endpoints';
-export {UsersRepository} from './users';
+export type {EndpointsRepository} from './endpoints';
+export type {UsersRepository} from './users';
