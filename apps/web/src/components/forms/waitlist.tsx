@@ -1,11 +1,9 @@
 'use client';
 
-import {zodResolver} from '@hookform/resolvers/zod';
-import {useForm} from 'react-hook-form';
-import Link from 'next/link';
-import {z} from 'zod';
+import {JoinWaitlistFormValues, joinWaitlist} from '@/useCases/waitlist';
+import {useFormAction} from '@/hooks/useFormAction';
+import {useFormState, useFormStatus} from 'react-dom';
 
-import {MailIcon} from '../ui/icons';
 import {
   Button,
   Form,
@@ -15,67 +13,75 @@ import {
   FormMessage,
   Input
 } from '@/components/ui';
-
-const formSchema = z.object({
-  email: z.string().email()
-});
+import Link from 'next/link';
+import {LoadingIcon, MailIcon} from '../ui/icons';
+import {useFormContext} from 'react-hook-form';
 
 export const WaitlistForm = () => {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const [state, formAction] = useFormState(joinWaitlist, null);
+
+  const form = useFormAction<JoinWaitlistFormValues>({
+    state,
     defaultValues: {
       email: ''
     }
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values.email);
-  };
-
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col">
-        <div className="flex flex-col gap-4 sm:flex-row">
-          <FormField
-            name="email"
-            rules={{required: true}}
-            control={form.control}
-            render={({field}) => (
-              <FormItem>
-                <FormControl>
-                  <Input
-                    required
-                    type="email"
-                    placeholder="you@mail.com"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button className="gap-x-2">
-            <MailIcon />
-            <span>Join The Waitlist</span>
-          </Button>
-        </div>
-        <p className="mb-6 mt-3 text-balance text-start text-xs text-neutral-400">
-          {'By joining, you agree to our '}
-          <Link
-            className="underline underline-offset-2 transition-colors hover:text-neutral-50"
-            href="/legal/terms-of-service">
-            Terms of Service
-          </Link>
-          {' and '}{' '}
-          <Link
-            className="underline underline-offset-2 transition-colors hover:text-neutral-50"
-            href="/legal/privacy-policy">
-            Privacy Policy
-          </Link>
-          .
-        </p>
+      <form action={formAction} className="flex flex-col gap-y-4">
+        <FormFields />
       </form>
     </Form>
+  );
+};
+
+const FormFields = () => {
+  const form = useFormContext();
+  const {pending} = useFormStatus();
+
+  return (
+    <>
+      <div className="flex flex-col gap-4 sm:flex-row">
+        <FormField
+          name="email"
+          rules={{required: true}}
+          control={form.control}
+          render={({field}) => (
+            <FormItem>
+              <FormControl>
+                <Input
+                  required
+                  type="email"
+                  placeholder="you@mail.com"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button disabled={pending} className="gap-x-2">
+          {pending ? <LoadingIcon className="-mr-2 h-6 w-6" /> : <MailIcon />}
+          <span>Join The Waitlist</span>
+        </Button>
+      </div>
+      <p className="mb-6 mt-3 text-balance text-start text-xs text-neutral-400">
+        {'By joining, you agree to our '}
+        <Link
+          className="underline underline-offset-2 transition-colors hover:text-neutral-50"
+          href="/legal/terms-of-service">
+          Terms of Service
+        </Link>
+        {' and '}{' '}
+        <Link
+          className="underline underline-offset-2 transition-colors hover:text-neutral-50"
+          href="/legal/privacy-policy">
+          Privacy Policy
+        </Link>
+        .
+      </p>
+    </>
   );
 };
 
