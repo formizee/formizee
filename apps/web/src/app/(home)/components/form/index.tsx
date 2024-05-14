@@ -1,8 +1,9 @@
 'use client';
 
 import {JoinWaitlistFormValues, joinWaitlist} from '@/useCases/waitlist';
-import {useFormAction} from '@/hooks/useFormAction';
 import {useFormState, useFormStatus} from 'react-dom';
+import {useFormAction} from '@/hooks/useFormAction';
+import {useFormContext} from 'react-hook-form';
 
 import {
   Button,
@@ -15,7 +16,6 @@ import {
 } from '@/components/ui';
 import Link from 'next/link';
 import {LoadingIcon, MailIcon} from '@/components/ui/icons';
-import {useFormContext} from 'react-hook-form';
 
 export const WaitlistForm = () => {
   const [state, formAction] = useFormState(joinWaitlist, null);
