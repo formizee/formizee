@@ -1,5 +1,5 @@
-import {Name, Email, Password} from '../models/values';
-import {User} from '../models/user';
+import {Name, Email, Password} from '@/models/values';
+import {User} from '@/models/user';
 
 export type AuthResponse =
   | {

@@ -1,5 +1,5 @@
-import {Endpoint, Submission} from '../models';
-import {Uid, Email} from '../models/values';
+import {Endpoint, Submission} from '@/models';
+import {Uid, Email} from '@/models/values';
 
 export interface EndpointsRepository {
   delete(uid: Uid): Promise<void>;

@@ -1,5 +1,5 @@
-import {Uid, Name, Email, Password} from '../models/values';
-import {User} from '../models';
+import {Uid, Name, Email, Password} from '@/models/values';
+import {User} from '@/models';
 
 export interface UsersRepository {
   get(uid: Uid): Promise<User>;
