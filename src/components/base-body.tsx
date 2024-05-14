@@ -17,7 +17,7 @@ const className = cn(
 
 export const BaseBody = ({children}: Readonly<{children: React.ReactNode}>) => (
   <body className={className}>
-    <ThemeProvider>
+    <ThemeProvider attribute="class" enableSystem={false} defaultTheme="dark">
       <Suspense fallback={<Loading />}>{children}</Suspense>
     </ThemeProvider>
     <Toaster />
