@@ -15,7 +15,7 @@ const className = cn(
   font.variable
 );
 
-export const BaseBody = ({children}: Readonly<{children: React.ReactNode}>) => (
+export const Body = ({children}: Readonly<{children: React.ReactNode}>) => (
   <body className={className}>
     <ThemeProvider attribute="class" enableSystem={false} defaultTheme="dark">
       <Suspense fallback={<Loading />}>{children}</Suspense>
@@ -24,4 +24,4 @@ export const BaseBody = ({children}: Readonly<{children: React.ReactNode}>) => (
   </body>
 );
 
-export default BaseBody;
+export default Body;
