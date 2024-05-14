@@ -1,2 +1,7 @@
-pnpm-lock.yaml
+pnpm-workspace.yaml
 .github/workflows/
+pnpm-lock.yaml
+.vercel
+.turbo
+.next/
+out/
