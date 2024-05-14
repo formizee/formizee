@@ -1,12 +1,47 @@
-import {Email, Password} from '@/domain/models/values';
-import {resolve} from '@/lib/di';
+'use server';
 
-export class LoginUseCase {
-  private readonly service = resolve('authService');
+import {authServiceLogin} from '@/infrastructure/services/auth';
+import {Email} from '@/domain/models/values';
+import {revalidatePath} from 'next/cache';
+import {redirect} from 'next/navigation';
+import {z} from 'zod';
 
-  async run(email: string, password: string) {
-    const _email = new Email(email);
+const formSchema = z.object({
+  email: z.string().email(),
+  password: z.string()
+});
 
-    await this.service.login(_email, password);
+export type LoginFormValues = z.infer<typeof formSchema>;
+
+export const login = async (
+  _prevState: any,
+  formData: FormData
+): Promise<ActionState | void> => {
+  const input = formSchema.safeParse({
+    email: formData.get('email'),
+    password: formData.get('password')
+  });
+
+  if (!input.success) {
+    const {fieldErrors} = input.error.flatten();
+
+    return {
+      code: 'VALIDATION_ERROR',
+      fieldErrors
+    };
   }
-}
+
+  const email = new Email(input.data.email);
+  const password = input.data.password;
+
+  await authServiceLogin(email, password).catch(error => {
+    return {
+      code: 'EXISTS_ERROR',
+      key: 'password',
+      message: error.message
+    };
+  });
+
+  revalidatePath('/', 'layout');
+  redirect('/dashboard');
+};

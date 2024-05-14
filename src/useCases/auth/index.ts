@@ -1,3 +1,3 @@
-export {RegisterUseCase} from './register';
-export {LogoutUseCase} from './logout';
-export {LoginUseCase} from './login';
+export * from './register';
+export * from './logout';
+export * from './login';
