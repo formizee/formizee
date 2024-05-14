@@ -1,7 +1,4 @@
-pnpm-workspace.yaml
-.github/workflows/
 pnpm-lock.yaml
-.vercel
-.turbo
+node_modules/
+.turbo/
 .next/
-out/

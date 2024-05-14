@@ -10,7 +10,7 @@ export const Spotlight = ({className, fill}: SpotlightProps) => {
   return (
     <svg
       className={cn(
-        'pointer-events-none absolute z-40 h-[169%] w-[208%] animate-spotlight overflow-clip  opacity-0 lg:fixed lg:h-[269%] lg:w-[284%]',
+        'animate-spotlight pointer-events-none absolute z-40 h-[169%] w-[208%] overflow-clip  opacity-0 lg:fixed lg:h-[269%] lg:w-[284%]',
         className
       )}
       viewBox="0 0 3787 2842"

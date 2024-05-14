@@ -39,8 +39,6 @@
     "eslint": "^8",
     "eslint-config-next": "14.2.3",
     "postcss": "^8",
-    "prettier": "3.2.5",
-    "prettier-plugin-tailwindcss": "0.5.14",
     "tailwindcss": "3.4.3",
     "tailwindcss-animate": "1.0.7",
     "typescript": "5.4.5"
