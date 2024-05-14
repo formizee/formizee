@@ -1,7 +1,7 @@
 'use server';
 
+import {Name, Email, Password} from 'domain/models/values';
 import {authServiceRegister} from '@/data/services/auth';
-import {Name, Email, Password} from '@/domain/models/values';
 import {revalidatePath} from 'next/cache';
 import {redirect} from 'next/navigation';
 import {z} from 'zod';

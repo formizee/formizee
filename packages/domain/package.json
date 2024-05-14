@@ -1,0 +1,18 @@
+{
+  "name": "domain",
+  "version": "1.0.0",
+  "license": "Apache-2.0",
+  "exports": {
+    "./models": "./models/index.ts",
+    "./services/auth": "./services/auth.ts",
+    "./repositories": "./repositories/index.ts",
+    "./models/values": "./models/values/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "format": "prettier -w ."
+  },
+  "devDependencies": {
+    "typescript": "5.4.5"
+  }
+}

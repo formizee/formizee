@@ -1,6 +1,6 @@
 'use server';
 
-import {AuthServiceLogout} from '@/domain/services/auth';
+import {AuthServiceLogout} from 'domain/services/auth';
 import {createServerClient} from '@/lib/supabase/server';
 
 export const authServiceLogout: AuthServiceLogout = async () => {
