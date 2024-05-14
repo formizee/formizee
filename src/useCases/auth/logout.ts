@@ -5,13 +5,15 @@ import {revalidatePath} from 'next/cache';
 import {redirect} from 'next/navigation';
 
 export const logout = async (): Promise<ActionState | void> => {
-  await authServiceLogout().catch(error => {
+  const {error} = await authServiceLogout();
+
+  if (error) {
     return {
       code: 'COMMON_ERROR',
-      key: 'logout',
+      title: error.name,
       message: error.message
     };
-  });
+  }
 
   revalidatePath('/', 'layout');
   redirect('/login');

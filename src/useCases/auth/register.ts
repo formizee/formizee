@@ -46,13 +46,15 @@ export const register = async (
   const email = new Email(input.data.email);
   const password = new Password(input.data.password);
 
-  await authServiceRegister(name, email, password).catch(error => {
+  const {error} = await authServiceRegister(name, email, password);
+
+  if (error) {
     return {
       code: 'COMMON_ERROR',
-      key: 'password',
+      title: error.name,
       message: error.message
     };
-  });
+  }
 
   revalidatePath('/', 'layout');
   redirect('/dashboard');

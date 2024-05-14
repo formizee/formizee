@@ -34,13 +34,15 @@ export const login = async (
   const email = new Email(input.data.email);
   const password = input.data.password;
 
-  await authServiceLogin(email, password).catch(error => {
+  const {error} = await authServiceLogin(email, password);
+
+  if (error) {
     return {
-      code: 'EXISTS_ERROR',
-      key: 'password',
+      code: 'COMMON_ERROR',
+      title: error.name,
       message: error.message
     };
-  });
+  }
 
   revalidatePath('/', 'layout');
   redirect('/dashboard');

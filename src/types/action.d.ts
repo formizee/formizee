@@ -4,8 +4,8 @@ type ActionState =
       message: string;
     }
   | {
-      code: 'EXISTS_ERROR';
-      key: string;
+      code: 'COMMON_ERROR';
+      title: string;
       message: string;
     }
   | {

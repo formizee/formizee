@@ -46,8 +46,13 @@ export function useFormAction<
           });
         });
         break;
-      case 'EXISTS_ERROR':
-        form.setError(state.key as any, {message: state.message});
+      case 'COMMON_ERROR':
+        toast({
+          title: state.title,
+          description: state.message,
+          variant: 'destructive',
+          duration: 5000
+        });
         break;
       case 'SUCCESS':
         toast({
