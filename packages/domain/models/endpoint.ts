@@ -1,8 +1,9 @@
-import { Uid, Email } from './values';
+import { Uid, Email, Name } from './values';
 import type { Submission } from '.';
 
 export class Endpoint {
   private readonly _uid: Uid;
+  private readonly _name: Name;
   private readonly _owner: Uid;
   private readonly _submissions: Submission[];
 
@@ -14,12 +15,14 @@ export class Endpoint {
 
   constructor(
     uid: string,
+    name: string,
     owner: string,
     targetEmail: string,
     redirectUrl: string,
     submissions?: Submission[]
   ) {
     this._uid = new Uid(uid);
+    this._name = new Name(name);
     this._owner = new Uid(owner);
     this._submissions = submissions ?? [];
 
@@ -32,6 +35,10 @@ export class Endpoint {
 
   get uid(): string {
     return this._uid.value;
+  }
+
+  get name(): string {
+    return this._name.value;
   }
 
   get owner(): string {
