@@ -2,7 +2,7 @@
   "$schema": "https://turbo.build/schema.json",
   "globalEnv": ["NEXT_PUBLIC_SUPABASE_URL", "NEXT_PUBLIC_SUPABASE_ANON_KEY"],
   "pipeline": {
-    "lint": {},
+    "lint": {"cache": false},
     "format": {},
     "dev": {"cache": false, "persistent": true},
     "build": {"outputs": ["dist/**", ".next/**", "!.next/cache/**"]}
