@@ -13,7 +13,7 @@ export class Name {
   }
 
   ensureValueIsDefined(value: string): void {
-    if (value === null || value === undefined || value === '') {
+    if (value === '') {
       throw new Error('Value must be defined');
     }
   }

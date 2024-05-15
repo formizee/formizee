@@ -1,10 +1,10 @@
-import {Uid, Email} from './values';
-import {Submission} from '.';
+import { Uid, Email } from './values';
+import type { Submission } from '.';
 
 export class Endpoint {
   private readonly _uid: Uid;
   private readonly _owner: Uid;
-  private readonly _submissions: Array<Submission>;
+  private readonly _submissions: Submission[];
 
   private readonly _isEnabled: boolean;
   private readonly _emailNotifications: boolean;
@@ -17,7 +17,7 @@ export class Endpoint {
     owner: string,
     targetEmail: string,
     redirectUrl: string,
-    submissions?: Array<Submission>
+    submissions?: Submission[]
   ) {
     this._uid = new Uid(uid);
     this._owner = new Uid(owner);
@@ -30,31 +30,31 @@ export class Endpoint {
     this._targetEmail = new Email(targetEmail);
   }
 
-  get uid() {
+  get uid(): string {
     return this._uid.value;
   }
 
-  get owner() {
+  get owner(): string {
     return this._owner.value;
   }
 
-  get isEnabled() {
+  get isEnabled(): boolean {
     return this._isEnabled;
   }
 
-  get submissions() {
+  get submissions(): Submission[] {
     return this._submissions;
   }
 
-  get targetEmail() {
+  get targetEmail(): string {
     return this._targetEmail.value;
   }
 
-  get redirectUrl() {
+  get redirectUrl(): string {
     return this._redirectUrl.href;
   }
 
-  get emailNotifications() {
+  get emailNotifications(): boolean {
     return this._emailNotifications;
   }
 }

@@ -5,7 +5,7 @@ export class Uid {
     this.ensureValueIsDefined(this.value);
   }
 
-  async ensureValueIsDefined(value: string): Promise<void> {
+  ensureValueIsDefined(value: string): void {
     if (!value || value.trim() === '') {
       throw new Error('ID token must be defined');
     }

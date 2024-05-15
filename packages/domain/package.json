@@ -9,7 +9,7 @@
     "./models/values": "./models/values/index.ts"
   },
   "scripts": {
-    "lint": "eslint .",
+    "lint": "eslint \"**/*.{ts,tsx}\"",
     "format": "prettier -w ."
   },
   "devDependencies": {

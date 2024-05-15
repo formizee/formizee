@@ -1,4 +1,4 @@
-import {Uid} from './values';
+import { Uid } from './values';
 
 export class Submission {
   private readonly _uid: Uid;
@@ -11,15 +11,15 @@ export class Submission {
     this._form = form;
   }
 
-  get uid() {
+  get uid(): string {
     return this._uid.value;
   }
 
-  get date() {
+  get date(): Date {
     return this._date;
   }
 
-  get form() {
+  get form(): FormData {
     return this._form;
   }
 }
