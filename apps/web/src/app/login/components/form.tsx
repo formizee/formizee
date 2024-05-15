@@ -4,7 +4,8 @@
 import { useFormState, useFormStatus } from 'react-dom';
 import { useFormContext } from 'react-hook-form';
 import Link from 'next/link';
-import { LoginFormValues, login } from '@/useCases/auth';
+import type { LoginFormValues } from '@/useCases/auth';
+import { login } from '@/useCases/auth';
 import { useFormAction } from '@/hooks';
 import {
   Button,
@@ -18,7 +19,7 @@ import {
 } from '@/components/ui';
 import { LoadingIcon } from '@/components/ui/icons';
 
-export function LoginForm() {
+export function LoginForm(): JSX.Element {
   const [state, formAction] = useFormState(login, null);
 
   const form = useFormAction<LoginFormValues>({
@@ -38,7 +39,7 @@ export function LoginForm() {
   );
 }
 
-function FormFields() {
+function FormFields(): JSX.Element {
   const form = useFormContext();
   const { pending } = useFormStatus();
 

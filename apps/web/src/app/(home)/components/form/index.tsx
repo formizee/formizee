@@ -4,7 +4,8 @@
 import { useFormState, useFormStatus } from 'react-dom';
 import { useFormContext } from 'react-hook-form';
 import Link from 'next/link';
-import { JoinWaitlistFormValues, joinWaitlist } from '@/useCases/waitlist';
+import type { JoinWaitlistFormValues } from '@/useCases/waitlist';
+import { joinWaitlist } from '@/useCases/waitlist';
 import { useFormAction } from '@/hooks';
 import {
   Button,
@@ -17,7 +18,7 @@ import {
 } from '@/components/ui';
 import { LoadingIcon, MailIcon } from '@/components/ui/icons';
 
-export function WaitlistForm() {
+export function WaitlistForm(): JSX.Element {
   const [state, formAction] = useFormState(joinWaitlist, null);
 
   const form = useFormAction<JoinWaitlistFormValues>({
@@ -36,7 +37,7 @@ export function WaitlistForm() {
   );
 }
 
-function FormFields() {
+function FormFields(): JSX.Element {
   const form = useFormContext();
   const { pending } = useFormStatus();
 

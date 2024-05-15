@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { ChatIcon, LinkIcon } from '@/components/ui/icons';
 import { Button, Logo } from '@/components/ui';
 
-export function DashboardNavbar() {
+export function DashboardNavbar(): JSX.Element {
   return (
     <nav className="top-0 flex h-14 w-full items-center justify-between border-b border-b-neutral-800 px-4 py-6">
       <Logo />

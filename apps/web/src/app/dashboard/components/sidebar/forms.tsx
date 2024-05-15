@@ -1,4 +1,4 @@
-import { Endpoint } from 'domain/models';
+import type { Endpoint } from 'domain/models';
 import { Button } from '@/components/ui';
 import { DocumentIcon } from '@/components/ui/icons';
 
@@ -7,10 +7,10 @@ interface SidebarFormsItemProps {
 }
 
 interface SidebarFormsProps {
-  forms: Array<Endpoint>;
+  forms: Endpoint[];
 }
 
-function SidebarFormsItem(props: SidebarFormsItemProps) {
+function SidebarFormsItem(props: SidebarFormsItemProps): JSX.Element {
   return (
     <Button
       className="mx-0.5 my-1.5 w-48 items-center justify-start"
@@ -21,8 +21,8 @@ function SidebarFormsItem(props: SidebarFormsItemProps) {
   );
 }
 
-export function SidebarForms(props: SidebarFormsProps) {
-  if (props.forms.length === 0) return;
+export function SidebarForms(props: SidebarFormsProps): JSX.Element {
+  if (props.forms.length === 0) return <div />;
 
   return (
     <div className="flex h-full flex-col items-start overflow-y-auto">

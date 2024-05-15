@@ -1,7 +1,7 @@
-import {Navbar, Footer} from '@/components';
-import {Form, Cards, Spotlight} from './components';
+import { Navbar, Footer } from '@/components';
+import { Form, Cards, Spotlight } from './components';
 
-function Home() {
+function Home(): JSX.Element {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between overflow-x-clip bg-black lg:h-screen lg:justify-center">
       <Spotlight className="absolute -left-10 -top-40 lg:-left-0" />

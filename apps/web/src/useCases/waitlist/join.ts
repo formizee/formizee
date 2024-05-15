@@ -4,7 +4,7 @@ import { Email } from 'domain/models/values';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
-import { ActionState } from '@/types';
+import type { ActionState } from '@/types';
 
 const formSchema = z.object({
   email: z.string().email()
@@ -13,9 +13,10 @@ const formSchema = z.object({
 export type JoinWaitlistFormValues = z.infer<typeof formSchema>;
 
 export const joinWaitlist = async (
-  _prevState: any,
+  _prevState: unknown,
   formData: FormData
-): Promise<ActionState | void> => {
+  /* eslint-disable-next-line -- Not implemented yet */
+): Promise<ActionState | undefined> => {
   const input = formSchema.safeParse({
     email: formData.get('email')
   });

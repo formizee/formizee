@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import { Card } from '@/components/ui';
 
-const EMAILS: Array<Email> = [
+const EMAILS: Email[] = [
   {
     id: 0,
     title: 'Formizee.',
@@ -50,11 +50,13 @@ interface BodyProps {
   children: React.ReactNode;
 }
 
-function Item(props: ItemProps) {
+function Item(props: ItemProps): JSX.Element {
   return (
     <button
       className={`m-2 flex w-[318px] flex-col justify-start rounded-md p-2 ${props.selected ? 'bg-neutral-700' : 'bg-neutral-800'}`}
-      onClick={() => props.setCurrentSelected(props.id)}
+      onClick={() => {
+        props.setCurrentSelected(props.id);
+      }}
       tabIndex={-1}
       type="button">
       <span className="text-md font-semibold">{props.title}</span>
@@ -66,11 +68,11 @@ function Item(props: ItemProps) {
   );
 }
 
-function Body(props: BodyProps) {
+function Body(props: BodyProps): JSX.Element {
   return <p className="p-2 text-sm">{props.children}</p>;
 }
 
-function Header(props: HeaderProps) {
+function Header(props: HeaderProps): JSX.Element {
   return (
     <header className="flex flex-row items-center gap-2 border-b-2 border-b-neutral-700 p-2">
       <div className="flex size-12 items-center justify-center rounded-full bg-neutral-700 font-bold">
@@ -87,7 +89,7 @@ function Header(props: HeaderProps) {
   );
 }
 
-export function EmailCard() {
+export function EmailCard(): JSX.Element {
   const [currentSelected, setCurrentSelected] = useState(0);
   const currentEmail = useMemo(() => {
     return EMAILS[currentSelected];

@@ -1,14 +1,14 @@
-import {redirect} from 'next/navigation';
-import {createServerClient} from '@/lib/supabase/server';
-import {Navbar, Sidebar, Content} from './components';
+import { redirect } from 'next/navigation';
+import { createServerClient } from '@/lib/supabase/server';
+import { Navbar, Sidebar, Content } from './components';
 
-function DashboardLayout({
+async function DashboardLayout({
   children
-}: Readonly<{children: React.ReactNode}>) {
+}: Readonly<{ children: React.ReactNode }>): Promise<JSX.Element> {
   const supabase = createServerClient();
 
-  const {data, error} = await supabase.auth.getUser();
-  if (error || !data?.user) {
+  const { data, error } = await supabase.auth.getUser();
+  if (error || !data.user.id) {
     redirect('/login');
   }
 

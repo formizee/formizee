@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Form from './components/form';
 
-function ResetPassword() {
+function ResetPassword(): JSX.Element {
   return (
     <>
       <header className="mb-11 flex w-full flex-col items-center gap-10 sm:mb-8 sm:items-start sm:gap-6">

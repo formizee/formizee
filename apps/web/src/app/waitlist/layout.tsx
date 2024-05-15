@@ -1,10 +1,10 @@
-import {Transition} from '@/components';
+import { Transition } from '@/components';
 
 function WaitlistLayout({
   children
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>): JSX.Element {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-black">
       <div className="pointer-events-none absolute inset-0 z-50 flex items-center justify-center bg-white opacity-5 [mask-image:radial-gradient(ellipse_at_center,white_10%,transparent_60%)]" />

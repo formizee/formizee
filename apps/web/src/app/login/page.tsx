@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Form from './components/form';
 
-function Login() {
+function Login(): JSX.Element {
   return (
     <>
       <header className="mb-11 flex w-full flex-col items-center gap-10 sm:mb-8 sm:items-start sm:gap-6">

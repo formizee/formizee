@@ -1,12 +1,12 @@
 import React from 'react';
-import {cn} from '@/lib/ui';
+import { cn } from '@/lib/ui';
 
-type SpotlightProps = {
+interface SpotlightProps {
   className?: string;
   fill?: string;
-};
+}
 
-export function Spotlight({className, fill}: SpotlightProps) {
+export function Spotlight({ className, fill }: SpotlightProps): JSX.Element {
   return (
     <svg
       className={cn(
@@ -23,7 +23,8 @@ export function Spotlight({className, fill}: SpotlightProps) {
           fillOpacity="0.15"
           rx="1924.71"
           ry="273.501"
-          transform="matrix(-0.822377 -0.568943 -0.568943 0.822377 3631.88 2291.09)" />
+          transform="matrix(-0.822377 -0.568943 -0.568943 0.822377 3631.88 2291.09)"
+        />
       </g>
       <defs>
         <filter
@@ -39,10 +40,12 @@ export function Spotlight({className, fill}: SpotlightProps) {
             in="SourceGraphic"
             in2="BackgroundImageFix"
             mode="normal"
-            result="shape" />
+            result="shape"
+          />
           <feGaussianBlur
             result="effect1_foregroundBlur_1065_8"
-            stdDeviation="151" />
+            stdDeviation="151"
+          />
         </filter>
       </defs>
     </svg>

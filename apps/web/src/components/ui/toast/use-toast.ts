@@ -1,6 +1,7 @@
 'use client';
 
 // Inspired by react-hot-toast library
+/* eslint-disable -- External library */
 import * as React from 'react';
 import type { ToastActionElement, ToastProps } from './toast';
 
@@ -23,7 +24,7 @@ const actionTypes = {
 
 let count = 0;
 
-function genId() {
+function genId(): string {
   count = (count + 1) % Number.MAX_SAFE_INTEGER;
   return count.toString();
 }
@@ -48,7 +49,7 @@ type Action =
     toastId?: ToasterToast['id'];
   };
 
-interface State {
+interface ToasterState {
   toasts: ToasterToast[];
 }
 
@@ -70,7 +71,7 @@ const addToRemoveQueue = (toastId: string) => {
   toastTimeouts.set(toastId, timeout);
 };
 
-export const reducer = (state: State, action: Action): State => {
+export const reducer = (state: ToasterState, action: Action): ToasterState => {
   switch (action.type) {
     case 'ADD_TOAST':
       return {
@@ -94,8 +95,8 @@ export const reducer = (state: State, action: Action): State => {
       if (toastId) {
         addToRemoveQueue(toastId);
       } else {
-        state.toasts.forEach(toast => {
-          addToRemoveQueue(toast.id);
+        state.toasts.forEach(t => {
+          addToRemoveQueue(t.id);
         });
       }
 
@@ -125,9 +126,9 @@ export const reducer = (state: State, action: Action): State => {
   }
 };
 
-const listeners: Array<(_state: State) => void> = [];
+const listeners: ((_state: ToasterState) => void)[] = [];
 
-let memoryState: State = { toasts: [] };
+let memoryState: ToasterState = { toasts: [] };
 
 function dispatch(action: Action) {
   memoryState = reducer(memoryState, action);
@@ -141,12 +142,15 @@ type Toast = Omit<ToasterToast, 'id'>;
 function toast({ ...props }: Toast) {
   const id = genId();
 
-  const update = (props: ToasterToast) =>
+  const update = (updateProps: ToasterToast): void => {
     dispatch({
       type: 'UPDATE_TOAST',
-      toast: { ...props, id }
+      toast: { ...updateProps, id }
     });
-  const dismiss = () => dispatch({ type: 'DISMISS_TOAST', toastId: id });
+  };
+  const dismiss = (): void => {
+    dispatch({ type: 'DISMISS_TOAST', toastId: id });
+  };
 
   dispatch({
     type: 'ADD_TOAST',
@@ -168,7 +172,7 @@ function toast({ ...props }: Toast) {
 }
 
 function useToast() {
-  const [state, setState] = React.useState<State>(memoryState);
+  const [state, setState] = React.useState<ToasterState>(memoryState);
 
   React.useEffect(() => {
     listeners.push(setState);
@@ -183,7 +187,9 @@ function useToast() {
   return {
     ...state,
     toast,
-    dismiss: (toastId?: string) => dispatch({ type: 'DISMISS_TOAST', toastId })
+    dismiss: (toastId?: string) => {
+      dispatch({ type: 'DISMISS_TOAST', toastId });
+    }
   };
 }
 

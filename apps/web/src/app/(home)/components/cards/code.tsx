@@ -1,8 +1,8 @@
 'use client';
 
-import {Card, CodeBlock} from '@/components/ui';
+import { Card, CodeBlock } from '@/components/ui';
 
-export function CodeCard() {
+export function CodeCard(): JSX.Element {
   const code = `<form action="https://formizee.com/f/zksmfkx" method="post">
   <input type="text" name="name"/>
   <input type="email" name="email"/>

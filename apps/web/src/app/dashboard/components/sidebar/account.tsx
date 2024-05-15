@@ -22,7 +22,7 @@ interface SidebarAccountProps {
   username: string;
 }
 
-export function SidebarAccount(props: SidebarAccountProps) {
+export function SidebarAccount(props: SidebarAccountProps): JSX.Element {
   return (
     <div className="flex flex-col items-center justify-center">
       <DropdownMenu>
@@ -52,7 +52,7 @@ export function SidebarAccount(props: SidebarAccountProps) {
           <DropdownMenuSeparator />
           <DropdownMenuItem
             className="text-red-300 hover:text-red-500"
-            onSelect={logout}>
+            onSelect={async () => logout()}>
             <LogoutIcon />
             <span>Logout</span>
           </DropdownMenuItem>

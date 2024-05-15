@@ -1,7 +1,7 @@
-import {Button} from '@/components/ui';
-import {DocumentAddIcon} from '@/components/ui/icons';
+import { Button } from '@/components/ui';
+import { DocumentAddIcon } from '@/components/ui/icons';
 
-export function SidebarCreateForm() {
+export function SidebarCreateForm(): JSX.Element {
   return (
     <div className="flex flex-col">
       <Button className="my-1 mt-3 items-center justify-start">

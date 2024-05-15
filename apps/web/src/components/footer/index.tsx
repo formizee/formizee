@@ -1,7 +1,7 @@
 import Link from 'next/link';
-import {Button} from '../ui';
+import { Button } from '../ui';
 
-export function Footer() {
+export function Footer(): JSX.Element {
   return (
     <footer className="z-50 mt-10 flex w-full flex-row justify-between gap-x-2 border-t border-t-neutral-800 bg-black/15 px-2 py-2 backdrop-blur-sm sm:mt-0 sm:items-center sm:py-0">
       <div className="flex flex-col justify-between gap-y-4 p-2 sm:flex-row sm:gap-x-4">

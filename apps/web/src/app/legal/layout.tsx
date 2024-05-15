@@ -1,10 +1,10 @@
-import {Navbar, Transition} from '@/components';
+import { Navbar, Transition } from '@/components';
 
 function LegalLayout({
   children
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>): JSX.Element {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center overflow-x-clip bg-black">
       <Navbar />

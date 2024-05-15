@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { cn } from '@/lib/ui';
 import { Button, Logo } from '../ui';
 
-function NavbarLogo() {
+function NavbarLogo(): JSX.Element {
   const pathname = usePathname();
 
   if (pathname === '/') return <Logo />;
@@ -18,10 +18,10 @@ function NavbarLogo() {
   );
 }
 
-export function Navbar() {
+export function Navbar(): JSX.Element {
   const [scrollPosition, setScrollPosition] = useState(0);
 
-  const handleScroll = () => {
+  const handleScroll = (): void => {
     const position = window.scrollY;
     setScrollPosition(position);
   };

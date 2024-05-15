@@ -1,6 +1,6 @@
-import {Card} from '@/components/ui';
+import { Card } from '@/components/ui';
 
-export function ProcessCard() {
+export function ProcessCard(): JSX.Element {
   return (
     <Card
       className="relative z-20 flex translate-x-[100px] translate-y-[-170px] items-center justify-center"

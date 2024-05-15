@@ -5,7 +5,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
 import { authServiceRegister } from '@/data/services/auth';
-import { ActionState } from '@/types';
+import type { ActionState } from '@/types';
 
 const formSchema = z.object({
   name: z
@@ -25,9 +25,9 @@ const formSchema = z.object({
 export type RegisterFormValues = z.infer<typeof formSchema>;
 
 export const register = async (
-  _prevState: any,
+  _prevState: unknown,
   formData: FormData
-): Promise<ActionState | void> => {
+): Promise<ActionState | undefined> => {
   const input = formSchema.safeParse({
     name: formData.get('name'),
     email: formData.get('email'),

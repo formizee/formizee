@@ -1,9 +1,11 @@
 'use client';
 
-import { FieldValues, useForm, UseFormProps } from 'react-hook-form';
+/* eslint-disable -- External Library */
+import type { FieldValues, UseFormProps } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useCallback, useEffect } from 'react';
 import { toast } from '@/components/ui';
-import { ActionState } from '@/types';
+import type { ActionState } from '@/types';
 
 type UseFormActionProps<
   TFieldValues extends FieldValues = FieldValues,
@@ -23,7 +25,6 @@ export function useFormAction<
 
   const handleSuccess = useCallback(() => {
     onSuccess?.();
-    // eslint-disable-next-line -- It's called one time
   }, []);
 
   useEffect(() => {

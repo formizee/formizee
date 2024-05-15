@@ -4,44 +4,44 @@ import Forms from './forms';
 
 const FORMS = [
   {
-    title: 'My homepage',
-    selected: false
+    uid: '1',
+    name: 'My homepage'
   },
   {
-    title: 'Another Project',
-    selected: false
+    uid: '2',
+    name: 'Another Project'
   },
   {
-    title: 'My Bussiness Saas',
-    selected: false
+    uid: '13',
+    name: 'My Bussiness Saas'
   },
   {
-    title: 'My homepage askljfaklsdjflkasjdklfj',
-    selected: false
+    uid: '14',
+    name: 'My homepage askljfaklsdjflkasjdklfj'
   },
   {
-    title: 'Another Project',
-    selected: false
+    uid: '15',
+    name: 'Another Project'
   },
   {
-    title: 'My Bussiness Saas',
-    selected: false
+    uid: '16',
+    name: 'My Bussiness Saas'
   },
   {
-    title: 'My homepage',
-    selected: false
+    uid: '17',
+    name: 'My homepage'
   },
   {
-    title: 'Another Project',
-    selected: false
+    uid: '18',
+    name: 'Another Project'
   },
   {
-    title: 'My Bussiness Saas',
-    selected: false
+    uid: '19',
+    name: 'My Bussiness Saas'
   }
 ];
 
-export function DashboardSidebar() {
+export function DashboardSidebar(): JSX.Element {
   return (
     <div className="flex w-60 flex-col justify-between border-r border-r-neutral-800 px-2">
       <CreateFormButton />

@@ -1,11 +1,11 @@
-import {cn} from '@/lib/ui';
+import { cn } from '@/lib/ui';
 
-interface Props {
+interface TransitionProps {
   className?: string;
   children: React.ReactNode;
 }
 
-export function Transition(props: Props) {
+export function Transition(props: TransitionProps): JSX.Element {
   return (
     <div className={cn('animate-fade-in', props.className)}>
       {props.children}

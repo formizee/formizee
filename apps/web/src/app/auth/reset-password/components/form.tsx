@@ -4,7 +4,8 @@
 import { useFormState, useFormStatus } from 'react-dom';
 import { useFormContext } from 'react-hook-form';
 import Link from 'next/link';
-import { ResetPasswordFormValues, resetPassword } from '@/useCases/auth';
+import type { ResetPasswordFormValues } from '@/useCases/auth';
+import { resetPassword } from '@/useCases/auth';
 import { useFormAction } from '@/hooks';
 import {
   Button,
@@ -17,7 +18,7 @@ import {
 } from '@/components/ui';
 import { LoadingIcon } from '@/components/ui/icons';
 
-export function ResetPasswordForm() {
+export function ResetPasswordForm(): JSX.Element {
   const [state, formAction] = useFormState(resetPassword, null);
 
   const form = useFormAction<ResetPasswordFormValues>({
@@ -36,7 +37,7 @@ export function ResetPasswordForm() {
   );
 }
 
-function FormFields() {
+function FormFields(): JSX.Element {
   const form = useFormContext();
   const { pending } = useFormStatus();
 

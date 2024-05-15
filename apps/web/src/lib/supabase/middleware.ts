@@ -1,5 +1,6 @@
-import {createServerClient, type CookieOptions} from '@supabase/ssr';
-import {NextResponse, type NextRequest} from 'next/server';
+/* eslint-disable -- External Library */
+import { createServerClient, type CookieOptions } from '@supabase/ssr';
+import { NextResponse, type NextRequest } from 'next/server';
 
 export const updateSession = async (request: NextRequest) => {
   let response = NextResponse.next({
@@ -9,8 +10,8 @@ export const updateSession = async (request: NextRequest) => {
   });
 
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    process.env.NEXT_PUBLIC_SUPABASE_URL ?? 'null',
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? 'null',
     {
       cookies: {
         get(name: string) {

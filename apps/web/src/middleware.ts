@@ -1,7 +1,9 @@
-import { type NextRequest } from 'next/server';
+import type { NextRequest, NextResponse } from 'next/server';
 import { updateSession } from '@/lib/supabase/middleware';
 
-export const middleware = async (request: NextRequest) => {
+export const middleware = async (
+  request: NextRequest
+): Promise<NextResponse> => {
   return updateSession(request);
 };
 

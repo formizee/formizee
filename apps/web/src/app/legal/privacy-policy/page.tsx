@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-function PrivacyPolicy() {
+function PrivacyPolicy(): JSX.Element {
   return (
     <div className="flex flex-col gap-y-4 text-neutral-400">
       <h1 className="h-16 bg-gradient-to-b from-white to-neutral-400 bg-clip-text text-5xl font-medium text-transparent">

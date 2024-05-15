@@ -14,8 +14,8 @@ const project = resolve(process.cwd(), 'tsconfig.json');
 module.exports = {
   extends: [
     '@vercel/style-guide/eslint/node',
-    //'@vercel/style-guide/eslint/typescript',
-    //'@vercel/style-guide/eslint/browser',
+    '@vercel/style-guide/eslint/typescript',
+    '@vercel/style-guide/eslint/browser',
     '@vercel/style-guide/eslint/react',
     '@vercel/style-guide/eslint/next',
     'eslint-config-turbo'
@@ -40,6 +40,8 @@ module.exports = {
   ignorePatterns: ['node_modules/', 'dist/'],
   // add rules configurations here
   rules: {
+    '@typescript-eslint/prefer-promise-reject-errors': 'off',
+    '@typescript-eslint/no-misused-promises': 'off',
     'prefer-promise-reject-errors': 'off',
     'unicorn/prefer-node-protocol': 'off',
     'import/no-default-export': 'off'

@@ -10,11 +10,9 @@ export type ActionState =
   }
   | {
     code: 'INTERNAL_ERROR';
-    err: any;
+    err: Error;
   }
   | {
     code: 'VALIDATION_ERROR';
-    fieldErrors: {
-      [field: string]: string[];
-    };
+    fieldErrors: Record<string, string[]>;
   };

@@ -1,9 +1,10 @@
 /* eslint-disable react/no-array-index-key -- There's is not going to be any sorting / addition / removal */
-import { Highlight, PrismTheme } from 'prism-react-renderer';
+import type { PrismTheme } from 'prism-react-renderer';
+import { Highlight } from 'prism-react-renderer';
 
 export type LanguageType = 'html' | 'js' | 'jsx' | 'ts' | 'tsx';
 
-interface Props {
+interface CodeBlockProps {
   children: string;
   language: LanguageType;
 }
@@ -104,7 +105,7 @@ const theme: PrismTheme = {
   ]
 };
 
-export function CodeBlock(props: Props) {
+export function CodeBlock(props: CodeBlockProps): JSX.Element {
   return (
     <Highlight code={props.children} language={props.language} theme={theme}>
       {({ tokens, getLineProps, getTokenProps }) => (

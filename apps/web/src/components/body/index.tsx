@@ -17,7 +17,10 @@ const className = cn(
 export function Body({
   children,
   fallback
-}: Readonly<{ children: React.ReactNode; fallback: React.ReactNode }>) {
+}: Readonly<{
+  children: React.ReactNode;
+  fallback: React.ReactNode;
+}>): JSX.Element {
   return (
     <body className={className}>
       <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
