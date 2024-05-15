@@ -8,6 +8,7 @@
     "format": "turbo format"
   },
   "devDependencies": {
+    "eslint": "^8",
     "prettier": "3.2.5",
     "prettier-plugin-tailwindcss": "0.5.14",
     "turbo": "1.13.3"

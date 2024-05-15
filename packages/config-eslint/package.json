@@ -1,0 +1,10 @@
+{
+  "name": "@formizee/eslint-config",
+  "version": "1.0.0",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "@vercel/style-guide": "5.2.0",
+    "eslint-config-turbo": "1.12.4"
+  }
+}

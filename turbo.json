@@ -3,7 +3,7 @@
   "pipeline": {
     "lint": {},
     "format": {},
-    "dev": { "cache": false, "persistent": true },
-    "build": { "outputs": [".next/**", "!.next/cache/**"] }
+    "dev": {"cache": false, "persistent": true},
+    "build": {"outputs": ["dist/**", ".next/**", "!.next/cache/**"]}
   }
 }
