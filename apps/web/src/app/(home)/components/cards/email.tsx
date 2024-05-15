@@ -1,7 +1,7 @@
 'use client';
 
-import { Card } from '@/components/ui';
 import { useMemo, useState } from 'react';
+import { Card } from '@/components/ui';
 
 const EMAILS: Array<Email> = [
   {
@@ -36,7 +36,7 @@ interface Email {
 }
 
 interface ItemProps extends Omit<Email, 'replyTo'> {
-  setCurrentSelected: (id: number) => void;
+  setCurrentSelected: (_id: number) => void;
   selected: boolean;
 }
 

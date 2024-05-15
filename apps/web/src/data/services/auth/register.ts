@@ -1,8 +1,8 @@
 'use server';
 
-import {createServerClient} from '@/lib/supabase/server';
 import {AuthServiceRegister} from 'domain/services/auth';
 import {User} from 'domain/models';
+import {createServerClient} from '@/lib/supabase/server';
 
 export const authServiceRegister: AuthServiceRegister = async (
   name,

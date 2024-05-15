@@ -6,3 +6,4 @@ export * from './label';
 export * from './card';
 export * from './form';
 export * from './toast';
+export * from './logo';

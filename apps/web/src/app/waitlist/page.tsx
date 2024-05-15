@@ -1,6 +1,6 @@
-import {Button} from '@/components/ui';
 import Image from 'next/image';
 import Link from 'next/link';
+import {Button} from '@/components/ui';
 
 function WaitlistPage() {
   return (

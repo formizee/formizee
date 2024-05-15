@@ -1,9 +1,10 @@
 'use server';
 
-import {Email} from 'domain/models/values';
-import {revalidatePath} from 'next/cache';
-import {redirect} from 'next/navigation';
-import {z} from 'zod';
+import { Email } from 'domain/models/values';
+import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
+import { z } from 'zod';
+import { ActionState } from '@/types';
 
 const formSchema = z.object({
   email: z.string().email()
@@ -20,7 +21,7 @@ export const joinWaitlist = async (
   });
 
   if (!input.success) {
-    const {fieldErrors} = input.error.flatten();
+    const { fieldErrors } = input.error.flatten();
 
     return {
       code: 'VALIDATION_ERROR',
@@ -30,6 +31,7 @@ export const joinWaitlist = async (
 
   const email = new Email(input.data.email);
 
+  /* eslint-disable-next-line -- Not implemented yet */
   console.log(email);
   /*const {error} = await authServiceLogin(email, password);
 

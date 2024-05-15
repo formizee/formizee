@@ -1,5 +1,5 @@
-import {IconProps} from './types';
 import {cn} from '@/lib/ui';
+import {IconProps} from './types';
 
 export function HomeIcon(props: IconProps) {
   return <svg

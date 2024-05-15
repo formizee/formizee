@@ -1,5 +1,5 @@
-import Form from './components/form';
 import Image from 'next/image';
+import Form from './components/form';
 
 function ResetPassword() {
   return (

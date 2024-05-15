@@ -1,10 +1,11 @@
 'use client';
 
-import {JoinWaitlistFormValues, joinWaitlist} from '@/useCases/waitlist';
-import {useFormState, useFormStatus} from 'react-dom';
-import {useFormAction} from '@/hooks/useFormAction';
-import {useFormContext} from 'react-hook-form';
-
+/* eslint-disable-next-line import/named -- Currently useFormState and useFormStatus are experimental */
+import { useFormState, useFormStatus } from 'react-dom';
+import { useFormContext } from 'react-hook-form';
+import Link from 'next/link';
+import { JoinWaitlistFormValues, joinWaitlist } from '@/useCases/waitlist';
+import { useFormAction } from '@/hooks';
 import {
   Button,
   Form,
@@ -14,8 +15,7 @@ import {
   FormMessage,
   Input
 } from '@/components/ui';
-import Link from 'next/link';
-import {LoadingIcon, MailIcon} from '@/components/ui/icons';
+import { LoadingIcon, MailIcon } from '@/components/ui/icons';
 
 export function WaitlistForm() {
   const [state, formAction] = useFormState(joinWaitlist, null);
@@ -38,7 +38,7 @@ export function WaitlistForm() {
 
 function FormFields() {
   const form = useFormContext();
-  const {pending} = useFormStatus();
+  const { pending } = useFormStatus();
 
   return (
     <>
@@ -46,7 +46,7 @@ function FormFields() {
         <FormField
           control={form.control}
           name="email"
-          render={({field}) => (
+          render={({ field }) => (
             <FormItem>
               <FormControl>
                 <Input
@@ -59,7 +59,7 @@ function FormFields() {
               <FormMessage />
             </FormItem>
           )}
-          rules={{required: true}}
+          rules={{ required: true }}
         />
         <Button className="gap-x-2" disabled={pending}>
           {pending ? <LoadingIcon className="-mr-2 h-6 w-6" /> : <MailIcon />}

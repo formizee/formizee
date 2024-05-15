@@ -1,7 +1,6 @@
-import {ChatIcon, LinkIcon} from '@/components/ui/icons';
-import {Button} from '@/components/ui';
-import {Logo} from '@/components';
 import Link from 'next/link';
+import { ChatIcon, LinkIcon } from '@/components/ui/icons';
+import { Button, Logo } from '@/components/ui';
 
 export function DashboardNavbar() {
   return (

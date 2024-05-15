@@ -1,7 +1,7 @@
 'use client';
 
-import {logout} from '@/useCases/auth';
-
+import Link from 'next/link';
+import { logout } from '@/useCases/auth';
 import {
   ChatIcon,
   HomeIcon,
@@ -17,7 +17,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui';
-import Link from 'next/link';
 
 interface SidebarAccountProps {
   username: string;
@@ -53,7 +52,7 @@ export function SidebarAccount(props: SidebarAccountProps) {
           <DropdownMenuSeparator />
           <DropdownMenuItem
             className="text-red-300 hover:text-red-500"
-            onSelect={async () => await logout()}>
+            onSelect={logout}>
             <LogoutIcon />
             <span>Logout</span>
           </DropdownMenuItem>

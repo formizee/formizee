@@ -1,15 +1,15 @@
 'use server';
 
-import {createServerClient} from '@/lib/supabase/server';
 import {AuthServiceLogin} from 'domain/services/auth';
 import {User} from 'domain/models';
+import {createServerClient} from '@/lib/supabase/server';
 
 export const authServiceLogin: AuthServiceLogin = async (email, password) => {
   const supabase = createServerClient();
 
   const {data, error} = await supabase.auth.signInWithPassword({
     email: email.value,
-    password: password
+    password
   });
 
   if (error) {

@@ -1,10 +1,11 @@
 'use client';
 
-import {ResetPasswordFormValues, resetPassword} from '@/useCases/auth';
-import {useFormState, useFormStatus} from 'react-dom';
-import {useFormAction} from '@/hooks/useFormAction';
-import {useFormContext} from 'react-hook-form';
-
+/* eslint-disable-next-line import/named -- Currently useFormState and useFormStatus are experimental */
+import { useFormState, useFormStatus } from 'react-dom';
+import { useFormContext } from 'react-hook-form';
+import Link from 'next/link';
+import { ResetPasswordFormValues, resetPassword } from '@/useCases/auth';
+import { useFormAction } from '@/hooks';
 import {
   Button,
   Form,
@@ -14,8 +15,7 @@ import {
   FormMessage,
   Input
 } from '@/components/ui';
-import Link from 'next/link';
-import {LoadingIcon} from '@/components/ui/icons';
+import { LoadingIcon } from '@/components/ui/icons';
 
 export function ResetPasswordForm() {
   const [state, formAction] = useFormState(resetPassword, null);
@@ -38,14 +38,14 @@ export function ResetPasswordForm() {
 
 function FormFields() {
   const form = useFormContext();
-  const {pending} = useFormStatus();
+  const { pending } = useFormStatus();
 
   return (
     <div className="flex flex-col gap-y-4">
       <FormField
         control={form.control}
         name="email"
-        render={({field}) => (
+        render={({ field }) => (
           <FormItem>
             <FormControl>
               <Input
@@ -59,7 +59,7 @@ function FormFields() {
             <FormMessage />
           </FormItem>
         )}
-        rules={{required: true}}
+        rules={{ required: true }}
       />
       <Button className="mt-4" disabled={pending}>
         {pending ? <LoadingIcon className="h-10 w-10" /> : 'Send Reset Email'}

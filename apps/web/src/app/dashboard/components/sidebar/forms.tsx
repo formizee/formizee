@@ -1,12 +1,12 @@
+import { Endpoint } from 'domain/models';
 import { Button } from '@/components/ui';
 import { DocumentIcon } from '@/components/ui/icons';
-import { Endpoint } from 'domain/models';
 
 interface SidebarFormsItemProps {
   children: string;
 }
 
-interface SidebarForms {
+interface SidebarFormsProps {
   forms: Array<Endpoint>;
 }
 
@@ -21,7 +21,7 @@ function SidebarFormsItem(props: SidebarFormsItemProps) {
   );
 }
 
-export function SidebarForms(props: SidebarForms) {
+export function SidebarForms(props: SidebarFormsProps) {
   if (props.forms.length === 0) return;
 
   return (

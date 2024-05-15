@@ -1,9 +1,8 @@
-import {ThemeProvider} from '@/components';
-import {Toaster} from '@/components/ui';
-import {Inter} from 'next/font/google';
-import Loading from '@/app/loading';
-import {Suspense} from 'react';
-import {cn} from '@/lib/ui';
+import { Inter } from 'next/font/google';
+import { Suspense } from 'react';
+import { Toaster } from '@/components/ui';
+import { cn } from '@/lib/ui';
+import { ThemeProvider } from '../theme';
 
 const font = Inter({
   subsets: ['latin'],
@@ -15,13 +14,18 @@ const className = cn(
   font.variable
 );
 
-export function Body({children}: Readonly<{children: React.ReactNode}>) {
-  return <body className={className}>
-    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
-      <Suspense fallback={<Loading />}>{children}</Suspense>
-    </ThemeProvider>
-    <Toaster />
-  </body>
+export function Body({
+  children,
+  fallback
+}: Readonly<{ children: React.ReactNode; fallback: React.ReactNode }>) {
+  return (
+    <body className={className}>
+      <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+        <Suspense fallback={fallback}>{children}</Suspense>
+      </ThemeProvider>
+      <Toaster />
+    </body>
+  );
 }
 
 export default Body;

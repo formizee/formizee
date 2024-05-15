@@ -1,8 +1,9 @@
 'use client';
 
-import {FieldValues, useForm, UseFormProps} from 'react-hook-form';
-import {useCallback, useEffect} from 'react';
-import {toast} from '@/components/ui';
+import { FieldValues, useForm, UseFormProps } from 'react-hook-form';
+import { useCallback, useEffect } from 'react';
+import { toast } from '@/components/ui';
+import { ActionState } from '@/types';
 
 type UseFormActionProps<
   TFieldValues extends FieldValues = FieldValues,
@@ -15,14 +16,14 @@ type UseFormActionProps<
 export function useFormAction<
   TFieldValues extends FieldValues = FieldValues,
   TContext = any
->({state, onSuccess, ...props}: UseFormActionProps<TFieldValues, TContext>) {
+>({ state, onSuccess, ...props }: UseFormActionProps<TFieldValues, TContext>) {
   const form = useForm({
     ...props
   });
 
   const handleSuccess = useCallback(() => {
     onSuccess?.();
-    // eslint-disable-next-line
+    // eslint-disable-next-line -- It's called one time
   }, []);
 
   useEffect(() => {
@@ -30,7 +31,7 @@ export function useFormAction<
     form.clearErrors();
 
     switch (state.code) {
-      case 'INTERNAL_ERROR':
+      case 'INTERNAL_ERROR': {
         toast({
           title: 'Something went wrong.',
           description: 'Please try again later.',
@@ -38,15 +39,17 @@ export function useFormAction<
           duration: 5000
         });
         break;
-      case 'VALIDATION_ERROR':
-        const {fieldErrors} = state;
+      }
+      case 'VALIDATION_ERROR': {
+        const { fieldErrors } = state;
         Object.keys(fieldErrors).forEach(key => {
           form.setError(key as any, {
-            message: fieldErrors[key].flat().join(' ')
+            message: fieldErrors[key]?.flat().join(' ')
           });
         });
         break;
-      case 'COMMON_ERROR':
+      }
+      case 'COMMON_ERROR': {
         toast({
           title: state.title,
           description: state.message,
@@ -54,7 +57,8 @@ export function useFormAction<
           duration: 5000
         });
         break;
-      case 'SUCCESS':
+      }
+      case 'SUCCESS': {
         toast({
           title: state.message,
           duration: 5000
@@ -62,6 +66,7 @@ export function useFormAction<
         handleSuccess();
         form.reset();
         break;
+      }
     }
   }, [state, form, handleSuccess]);
 

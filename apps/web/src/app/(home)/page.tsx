@@ -1,5 +1,5 @@
-import {Form, Cards, Spotlight} from './components';
 import {Navbar, Footer} from '@/components';
+import {Form, Cards, Spotlight} from './components';
 
 function Home() {
   return (

@@ -1,6 +1,6 @@
+import {redirect} from 'next/navigation';
 import {createServerClient} from '@/lib/supabase/server';
 import {Transition} from '@/components';
-import {redirect} from 'next/navigation';
 
 function RegisterLayout({
   children

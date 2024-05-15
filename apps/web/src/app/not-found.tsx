@@ -1,8 +1,8 @@
+import Image from 'next/image';
+import Link from 'next/link';
 import {ArrowRightIcon} from '@/components/ui/icons';
 import {Transition} from '@/components';
 import {Button} from '@/components/ui';
-import Image from 'next/image';
-import Link from 'next/link';
 
 function NotFound() {
   return (

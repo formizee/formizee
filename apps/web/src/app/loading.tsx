@@ -1,5 +1,5 @@
-import {LoadingIcon} from '@/components/ui/icons';
-import {Transition} from '@/components';
+import { LoadingIcon } from '@/components/ui/icons';
+import { Transition } from '../components';
 
 function Loading() {
   return (

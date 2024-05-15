@@ -1,11 +1,22 @@
 'use client';
 
-import {useEffect, useState} from 'react';
-import {cn} from '@/lib/ui';
-
-import {Button} from '../ui';
+import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import Logo from './logo';
+import { cn } from '@/lib/ui';
+import { Button, Logo } from '../ui';
+
+function NavbarLogo() {
+  const pathname = usePathname();
+
+  if (pathname === '/') return <Logo />;
+
+  return (
+    <Link href="/">
+      <Logo />
+    </Link>
+  );
+}
 
 export function Navbar() {
   const [scrollPosition, setScrollPosition] = useState(0);
@@ -16,7 +27,7 @@ export function Navbar() {
   };
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll, {passive: true});
+    window.addEventListener('scroll', handleScroll, { passive: true });
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -34,7 +45,7 @@ export function Navbar() {
         'fixed top-0 z-50 flex h-14 w-full items-center justify-between border-b px-4 transition-all duration-500',
         background
       )}>
-      <Logo />
+      <NavbarLogo />
       <Button asChild variant="outline">
         <Link href="/login">Login</Link>
       </Button>

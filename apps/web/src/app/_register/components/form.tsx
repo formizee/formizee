@@ -1,10 +1,11 @@
 'use client';
 
-import {RegisterFormValues, register} from '@/useCases/auth';
-import {useFormState, useFormStatus} from 'react-dom';
-import {useFormAction} from '@/hooks/useFormAction';
-import {useFormContext} from 'react-hook-form';
-
+/* eslint-disable-next-line import/named -- Currently useFormState and useFormStatus are experimental */
+import { useFormState, useFormStatus } from 'react-dom';
+import { useFormContext } from 'react-hook-form';
+import Link from 'next/link';
+import { RegisterFormValues, register } from '@/useCases/auth';
+import { useFormAction } from '@/hooks';
 import {
   Button,
   Form,
@@ -15,8 +16,7 @@ import {
   FormMessage,
   Input
 } from '@/components/ui';
-import Link from 'next/link';
-import {LoadingIcon} from '@/components/ui/icons';
+import { LoadingIcon } from '@/components/ui/icons';
 
 export function LoginForm() {
   const [state, formAction] = useFormState(register, null);
@@ -41,14 +41,14 @@ export function LoginForm() {
 
 function FormFields() {
   const form = useFormContext();
-  const {pending} = useFormStatus();
+  const { pending } = useFormStatus();
 
   return (
     <div className="flex flex-col gap-y-4">
       <FormField
         control={form.control}
         name="name"
-        render={({field}) => (
+        render={({ field }) => (
           <FormItem>
             <FormLabel>Name</FormLabel>
             <FormControl>
@@ -63,12 +63,12 @@ function FormFields() {
             <FormMessage />
           </FormItem>
         )}
-        rules={{required: true}}
+        rules={{ required: true }}
       />
       <FormField
         control={form.control}
         name="email"
-        render={({field}) => (
+        render={({ field }) => (
           <FormItem>
             <FormLabel>Email</FormLabel>
             <FormControl>
@@ -83,12 +83,12 @@ function FormFields() {
             <FormMessage />
           </FormItem>
         )}
-        rules={{required: true}}
+        rules={{ required: true }}
       />
       <FormField
         control={form.control}
         name="password"
-        render={({field}) => (
+        render={({ field }) => (
           <FormItem>
             <FormLabel>Password</FormLabel>
             <FormControl>
@@ -102,7 +102,7 @@ function FormFields() {
             <FormMessage />
           </FormItem>
         )}
-        rules={{required: true}}
+        rules={{ required: true }}
       />
       <Button className="mt-4" disabled={pending}>
         {pending ? <LoadingIcon className="h-10 w-10" /> : 'Create Account'}

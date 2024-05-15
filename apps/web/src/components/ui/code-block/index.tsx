@@ -1,4 +1,4 @@
-/* eslint-disable react/no-array-index-key */
+/* eslint-disable react/no-array-index-key -- There's is not going to be any sorting / addition / removal */
 import { Highlight, PrismTheme } from 'prism-react-renderer';
 
 export type LanguageType = 'html' | 'js' | 'jsx' | 'ts' | 'tsx';

@@ -1,6 +1,6 @@
+import {redirect} from 'next/navigation';
 import {createServerClient} from '@/lib/supabase/server';
 import {Navbar, Sidebar, Content} from './components';
-import {redirect} from 'next/navigation';
 
 function DashboardLayout({
   children
