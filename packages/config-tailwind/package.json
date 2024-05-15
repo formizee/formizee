@@ -1,0 +1,12 @@
+{
+  "name": "@formizee/tailwind-config",
+  "version": "1.0.0",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "tailwindcss-animate": "1.0.7"
+  },
+  "devDependencies": {
+    "tailwindcss": "3.4.3"
+  }
+}
