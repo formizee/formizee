@@ -26,9 +26,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({className, variant, type, ...props}, ref) => {
     return (
       <input
-        type={type}
         className={cn(inputVariants({variant, className}))}
         ref={ref}
+        type={type}
         {...props}
       />
     );

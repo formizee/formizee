@@ -2,7 +2,7 @@
 
 import {Card, CodeBlock} from '@/components/ui';
 
-export const CodeCard = () => {
+export function CodeCard() {
   const code = `<form action="https://formizee.com/f/zksmfkx" method="post">
   <input type="text" name="name"/>
   <input type="email" name="email"/>
@@ -11,10 +11,10 @@ export const CodeCard = () => {
 
   return (
     <Card
-      variant="landing"
+      className="relative z-30 flex translate-x-[80px] justify-center"
       size="landing"
-      className="relative z-30 flex translate-x-[80px] justify-center">
+      variant="landing">
       <CodeBlock language="html">{code}</CodeBlock>
     </Card>
   );
-};
+}

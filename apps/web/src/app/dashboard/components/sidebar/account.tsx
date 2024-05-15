@@ -23,12 +23,12 @@ interface SidebarAccountProps {
   username: string;
 }
 
-export const SidebarAccount = (props: SidebarAccountProps) => {
+export function SidebarAccount(props: SidebarAccountProps) {
   return (
     <div className="flex flex-col items-center justify-center">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" className="m-3 w-full">
+          <Button className="m-3 w-full" variant="outline">
             <UserIcon />
             <span>{props.username}</span>
           </Button>
@@ -52,8 +52,8 @@ export const SidebarAccount = (props: SidebarAccountProps) => {
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
-            onSelect={async () => await logout()}
-            className="text-red-300 hover:text-red-500">
+            className="text-red-300 hover:text-red-500"
+            onSelect={async () => await logout()}>
             <LogoutIcon />
             <span>Logout</span>
           </DropdownMenuItem>
@@ -61,6 +61,6 @@ export const SidebarAccount = (props: SidebarAccountProps) => {
       </DropdownMenu>
     </div>
   );
-};
+}
 
 export default SidebarAccount;

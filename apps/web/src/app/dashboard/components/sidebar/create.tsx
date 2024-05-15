@@ -1,7 +1,7 @@
 import {Button} from '@/components/ui';
 import {DocumentAddIcon} from '@/components/ui/icons';
 
-export const SidebarCreateForm = () => {
+export function SidebarCreateForm() {
   return (
     <div className="flex flex-col">
       <Button className="my-1 mt-3 items-center justify-start">
@@ -10,6 +10,6 @@ export const SidebarCreateForm = () => {
       </Button>
     </div>
   );
-};
+}
 
 export default SidebarCreateForm;

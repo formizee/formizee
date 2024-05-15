@@ -41,7 +41,7 @@ const FORMS = [
   }
 ];
 
-export const DashboardSidebar = () => {
+export function DashboardSidebar() {
   return (
     <div className="flex w-60 flex-col justify-between border-r border-r-neutral-800 px-2">
       <CreateFormButton />
@@ -49,6 +49,6 @@ export const DashboardSidebar = () => {
       <Account username="@pauchiner" />
     </div>
   );
-};
+}
 
 export default DashboardSidebar;

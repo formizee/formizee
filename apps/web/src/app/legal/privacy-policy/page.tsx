@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-const PrivacyPolicy = () => {
+function PrivacyPolicy() {
   return (
     <div className="flex flex-col gap-y-4 text-neutral-400">
       <h1 className="h-16 bg-gradient-to-b from-white to-neutral-400 bg-clip-text text-5xl font-medium text-transparent">
@@ -316,8 +316,8 @@ const PrivacyPolicy = () => {
         </li>
       </ul>
       <h2
-        id="sociallogins"
-        className="mt-8 text-2xl font-semibold text-neutral-50">
+        className="mt-8 text-2xl font-semibold text-neutral-50"
+        id="sociallogins">
         6. How Do We Handle Your Social Logins?
       </h2>
       <p>
@@ -989,6 +989,6 @@ const PrivacyPolicy = () => {
       </p>
     </div>
   );
-};
+}
 
 export default PrivacyPolicy;

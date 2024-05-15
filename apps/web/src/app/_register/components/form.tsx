@@ -18,7 +18,7 @@ import {
 import Link from 'next/link';
 import {LoadingIcon} from '@/components/ui/icons';
 
-export const LoginForm = () => {
+export function LoginForm() {
   const [state, formAction] = useFormState(register, null);
 
   const form = useFormAction<RegisterFormValues>({
@@ -37,56 +37,55 @@ export const LoginForm = () => {
       </form>
     </Form>
   );
-};
+}
 
-const FormFields = () => {
+function FormFields() {
   const form = useFormContext();
   const {pending} = useFormStatus();
 
   return (
     <div className="flex flex-col gap-y-4">
       <FormField
-        name="name"
         control={form.control}
-        rules={{required: true}}
+        name="name"
         render={({field}) => (
           <FormItem>
             <FormLabel>Name</FormLabel>
             <FormControl>
               <Input
-                required
-                type="text"
                 autoComplete="off"
                 placeholder="username"
+                required
+                type="text"
                 {...field}
               />
             </FormControl>
             <FormMessage />
           </FormItem>
         )}
+        rules={{required: true}}
       />
       <FormField
-        name="email"
         control={form.control}
-        rules={{required: true}}
+        name="email"
         render={({field}) => (
           <FormItem>
             <FormLabel>Email</FormLabel>
             <FormControl>
               <Input
-                required
-                type="email"
                 autoComplete="off"
                 placeholder="you@mail.com"
+                required
+                type="email"
                 {...field}
               />
             </FormControl>
             <FormMessage />
           </FormItem>
         )}
+        rules={{required: true}}
       />
       <FormField
-        rules={{required: true}}
         control={form.control}
         name="password"
         render={({field}) => (
@@ -94,24 +93,25 @@ const FormFields = () => {
             <FormLabel>Password</FormLabel>
             <FormControl>
               <Input
+                placeholder="********"
                 required
                 type="password"
-                placeholder="********"
                 {...field}
               />
             </FormControl>
             <FormMessage />
           </FormItem>
         )}
+        rules={{required: true}}
       />
-      <Button disabled={pending} className="mt-4">
+      <Button className="mt-4" disabled={pending}>
         {pending ? <LoadingIcon className="h-10 w-10" /> : 'Create Account'}
       </Button>
-      <Button disabled={pending} className="mb-4" variant="outline" asChild>
+      <Button asChild className="mb-4" disabled={pending} variant="outline">
         <Link href="/">Go Back</Link>
       </Button>
     </div>
   );
-};
+}
 
 export default LoginForm;

@@ -1,14 +1,14 @@
 import {Card} from '@/components/ui';
 
-export const ProcessCard = () => {
+export function ProcessCard() {
   return (
     <Card
-      variant="landing"
+      className="relative z-20 flex translate-x-[100px] translate-y-[-170px] items-center justify-center"
       size="landing"
-      className="relative z-20 flex translate-x-[100px] translate-y-[-170px] items-center justify-center">
+      variant="landing">
       Processing...
     </Card>
   );
-};
+}
 
 export default ProcessCard;

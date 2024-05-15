@@ -6,47 +6,47 @@ type SpotlightProps = {
   fill?: string;
 };
 
-export const Spotlight = ({className, fill}: SpotlightProps) => {
+export function Spotlight({className, fill}: SpotlightProps) {
   return (
     <svg
       className={cn(
         'animate-spotlight pointer-events-none absolute z-40 h-[169%] w-[208%] overflow-clip  opacity-0 lg:fixed lg:h-[269%] lg:w-[284%]',
         className
       )}
-      viewBox="0 0 3787 2842"
-      fill="none">
+      fill="none"
+      viewBox="0 0 3787 2842">
       <g filter="url(#filter)">
         <ellipse
           cx="1924.71"
           cy="273.501"
+          fill={fill || 'white'}
+          fillOpacity="0.15"
           rx="1924.71"
           ry="273.501"
-          transform="matrix(-0.822377 -0.568943 -0.568943 0.822377 3631.88 2291.09)"
-          fill={fill || 'white'}
-          fillOpacity="0.15"></ellipse>
+          transform="matrix(-0.822377 -0.568943 -0.568943 0.822377 3631.88 2291.09)" />
       </g>
       <defs>
         <filter
-          id="filter"
-          x="0.860352"
-          y="0.838989"
-          width="3785.16"
-          height="2840.26"
+          colorInterpolationFilters="sRGB"
           filterUnits="userSpaceOnUse"
-          colorInterpolationFilters="sRGB">
-          <feFlood floodOpacity="0" result="BackgroundImageFix"></feFlood>
+          height="2840.26"
+          id="filter"
+          width="3785.16"
+          x="0.860352"
+          y="0.838989">
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
-            mode="normal"
             in="SourceGraphic"
             in2="BackgroundImageFix"
-            result="shape"></feBlend>
+            mode="normal"
+            result="shape" />
           <feGaussianBlur
-            stdDeviation="151"
-            result="effect1_foregroundBlur_1065_8"></feGaussianBlur>
+            result="effect1_foregroundBlur_1065_8"
+            stdDeviation="151" />
         </filter>
       </defs>
     </svg>
   );
-};
+}
 
 export default Spotlight;

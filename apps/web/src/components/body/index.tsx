@@ -15,13 +15,13 @@ const className = cn(
   font.variable
 );
 
-export const Body = ({children}: Readonly<{children: React.ReactNode}>) => (
-  <body className={className}>
-    <ThemeProvider attribute="class" enableSystem={false} defaultTheme="dark">
+export function Body({children}: Readonly<{children: React.ReactNode}>) {
+  return <body className={className}>
+    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
       <Suspense fallback={<Loading />}>{children}</Suspense>
     </ThemeProvider>
     <Toaster />
   </body>
-);
+}
 
 export default Body;

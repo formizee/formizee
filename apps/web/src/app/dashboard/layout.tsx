@@ -2,9 +2,9 @@ import {createServerClient} from '@/lib/supabase/server';
 import {Navbar, Sidebar, Content} from './components';
 import {redirect} from 'next/navigation';
 
-const DashboardLayout = async ({
+function DashboardLayout({
   children
-}: Readonly<{children: React.ReactNode}>) => {
+}: Readonly<{children: React.ReactNode}>) {
   const supabase = createServerClient();
 
   const {data, error} = await supabase.auth.getUser();
@@ -21,6 +21,6 @@ const DashboardLayout = async ({
       </div>
     </main>
   );
-};
+}
 
 export default DashboardLayout;

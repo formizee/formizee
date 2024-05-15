@@ -7,7 +7,7 @@ import {Button} from '../ui';
 import Link from 'next/link';
 import Logo from './logo';
 
-export const Navbar = () => {
+export function Navbar() {
   const [scrollPosition, setScrollPosition] = useState(0);
 
   const handleScroll = () => {
@@ -35,11 +35,11 @@ export const Navbar = () => {
         background
       )}>
       <Logo />
-      <Button variant="outline" asChild>
+      <Button asChild variant="outline">
         <Link href="/login">Login</Link>
       </Button>
     </nav>
   );
-};
+}
 
 export default Navbar;

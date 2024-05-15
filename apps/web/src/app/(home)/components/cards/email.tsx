@@ -1,7 +1,7 @@
 'use client';
 
-import {Card} from '@/components/ui';
-import {useMemo, useState} from 'react';
+import { Card } from '@/components/ui';
+import { useMemo, useState } from 'react';
 
 const EMAILS: Array<Email> = [
   {
@@ -36,6 +36,7 @@ interface Email {
 }
 
 interface ItemProps extends Omit<Email, 'replyTo'> {
+  setCurrentSelected: (id: number) => void;
   selected: boolean;
 }
 
@@ -49,75 +50,77 @@ interface BodyProps {
   children: React.ReactNode;
 }
 
-export const EmailCard = () => {
+function Item(props: ItemProps) {
+  return (
+    <button
+      className={`m-2 flex w-[318px] flex-col justify-start rounded-md p-2 ${props.selected ? 'bg-neutral-700' : 'bg-neutral-800'}`}
+      onClick={() => props.setCurrentSelected(props.id)}
+      tabIndex={-1}
+      type="button">
+      <span className="text-md font-semibold">{props.title}</span>
+      <span className="text-sm">{props.subject}</span>
+      <span className="text-ellipsis text-sm text-neutral-400">
+        {props.content}
+      </span>
+    </button>
+  );
+}
+
+function Body(props: BodyProps) {
+  return <p className="p-2 text-sm">{props.children}</p>;
+}
+
+function Header(props: HeaderProps) {
+  return (
+    <header className="flex flex-row items-center gap-2 border-b-2 border-b-neutral-700 p-2">
+      <div className="flex size-12 items-center justify-center rounded-full bg-neutral-700 font-bold">
+        {props.title.substring(0, 1)}
+      </div>
+      <div className="flex flex-col">
+        <span className="font-semibold">{props.title}</span>
+        <span className="text-sm text-neutral-400">{props.subject}</span>
+        <span className="text-sm">
+          Reply to:<span className="text-neutral-400">{props.replyTo}</span>
+        </span>
+      </div>
+    </header>
+  );
+}
+
+export function EmailCard() {
   const [currentSelected, setCurrentSelected] = useState(0);
   const currentEmail = useMemo(() => {
     return EMAILS[currentSelected];
   }, [currentSelected]);
 
-  const Item = (props: ItemProps) => {
-    return (
-      <button
-        tabIndex={-1}
-        onClick={() => setCurrentSelected(props.id)}
-        className={`m-2 flex w-[318px] flex-col justify-start rounded-md p-2 ${props.selected ? 'bg-neutral-700' : 'bg-neutral-800'}`}>
-        <span className="text-md font-semibold">{props.title}</span>
-        <span className="text-sm">{props.subject}</span>
-        <span className="text-ellipsis text-sm text-neutral-400">
-          {props.content}
-        </span>
-      </button>
-    );
-  };
-
-  const Body = (props: BodyProps) => {
-    return <p className="p-2 text-sm">{props.children}</p>;
-  };
-
-  const Header = (props: HeaderProps) => {
-    return (
-      <header className="flex flex-row items-center gap-2 border-b-2 border-b-neutral-700 p-2">
-        <div className="flex size-12 items-center justify-center rounded-full bg-neutral-700 font-bold">
-          {props.title.substring(0, 1)}
-        </div>
-        <div className="flex flex-col">
-          <span className="font-semibold">{props.title}</span>
-          <span className="text-sm text-neutral-400">{props.subject}</span>
-          <span className="text-sm">
-            Reply to:<span className="text-neutral-400">{props.replyTo}</span>
-          </span>
-        </div>
-      </header>
-    );
-  };
-
   return (
     <Card
-      variant="landing"
+      className="relative z-10 flex translate-x-[120px] translate-y-[-340px] flex-row items-center justify-center p-0"
       size="landing"
-      className="relative z-10 flex translate-x-[120px] translate-y-[-340px] flex-row items-center justify-center p-0">
+      variant="landing">
       <div className="h-full w-[48%] overflow-y-auto overflow-x-hidden">
         {EMAILS.map(item => (
           <Item
+            content={item.content}
             id={item.id}
             key={item.id}
-            title={item.title}
-            subject={item.subject}
-            content={item.content}
             selected={item.id === currentSelected}
+            setCurrentSelected={setCurrentSelected}
+            subject={item.subject}
+            title={item.title}
           />
         ))}
       </div>
       <div className="h-full w-[52%] border-l-2 border-l-neutral-700">
         <Header
-          title={currentEmail.title}
-          subject={currentEmail.subject}
-          replyTo={currentEmail.replyTo}
+          replyTo={currentEmail?.replyTo ?? ''}
+          subject={currentEmail?.subject ?? ''}
+          title={currentEmail?.title ?? ''}
         />
-        <Body>{currentEmail.content}</Body>
+        <Body>{currentEmail?.content}</Body>
       </div>
     </Card>
   );
-};
+}
 
 export default EmailCard;

@@ -4,7 +4,7 @@ import {Logo} from '@/components';
 import {usePathname} from 'next/navigation';
 import Link from 'next/link';
 
-export const NavbarLogo = () => {
+export function NavbarLogo() {
   const pathname = usePathname();
 
   if (pathname === '/') return <Logo />;
@@ -14,6 +14,6 @@ export const NavbarLogo = () => {
       <Logo />
     </Link>
   );
-};
+}
 
 export default NavbarLogo;

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-const TermsOfService = () => {
+function TermsOfService() {
   return (
     <div className="flex flex-col gap-y-4 text-neutral-400">
       <h1 className="bg-gradient-to-b from-white to-neutral-400 bg-clip-text text-5xl font-medium text-transparent">
@@ -783,13 +783,13 @@ const TermsOfService = () => {
         Please send your feedback, comments, requests for technical support: By
         email:{' '}
         <Link
-          href="mailto:support@formizee.com"
-          className="font-medium underline underline-offset-2">
+          className="font-medium underline underline-offset-2"
+          href="mailto:support@formizee.com">
           support@formizee.com
         </Link>
       </p>
     </div>
   );
-};
+}
 
 export default TermsOfService;

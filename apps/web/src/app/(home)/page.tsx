@@ -1,11 +1,11 @@
 import {Form, Cards, Spotlight} from './components';
 import {Navbar, Footer} from '@/components';
 
-const Home = () => {
+function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between overflow-x-clip bg-black lg:h-screen lg:justify-center">
       <Spotlight className="absolute -left-10 -top-40 lg:-left-0" />
-      <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)] dark:bg-black"></div>
+      <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)] dark:bg-black" />
       <div className="bg-grid-pattern pointer-events-none absolute inset-0" />
       <Navbar />
       <header className="z-10 flex w-full flex-col-reverse justify-evenly lg:h-full lg:flex-row lg:items-center lg:justify-between">
@@ -28,6 +28,6 @@ const Home = () => {
       <Footer />
     </main>
   );
-};
+}
 
 export default Home;
