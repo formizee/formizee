@@ -13,11 +13,9 @@ const project = resolve(process.cwd(), 'tsconfig.json');
 
 module.exports = {
   extends: [
-    '@vercel/style-guide/eslint/node',
     '@vercel/style-guide/eslint/typescript',
     '@vercel/style-guide/eslint/browser',
     '@vercel/style-guide/eslint/react',
-    '@vercel/style-guide/eslint/next',
     'eslint-config-turbo'
   ].map(require.resolve),
   parserOptions: {
@@ -37,17 +35,9 @@ module.exports = {
       }
     }
   },
-  ignorePatterns: ['node_modules/', 'dist/'],
+  ignorePatterns: ['node_modules/', 'dist/', '.eslintrc.js', '**/*.css'],
   // add rules configurations here
   rules: {
-    'import/no-extraneous-dependencies': [
-      'error',
-      {
-        devDependencies: ['**/*.test.js', '**/*.spec.js'],
-        peerDependencies: true,
-        packageDir: ['./']
-      }
-    ],
     '@typescript-eslint/prefer-promise-reject-errors': 'off',
     '@typescript-eslint/no-misused-promises': 'off',
     'prefer-promise-reject-errors': 'off',
