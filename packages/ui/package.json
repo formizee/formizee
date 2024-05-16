@@ -1,0 +1,55 @@
+{
+  "name": "@formizee/ui",
+  "version": "1.0.0",
+  "license": "MIT",
+  "private": true,
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./src/index.tsx",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./icons": {
+      "types": "./src/icons/index.tsx",
+      "import": "./dist/icons/index.mjs",
+      "require": "./dist/icons/index.js"
+    },
+    "./globals.css": "./dist/index.css"
+  },
+  "scripts": {
+    "dev": "tsup --watch",
+    "lint": "eslint \"**/*.{ts,tsx}\"",
+    "dev:styles": "tailwindcss -i ./src/styles/globals.css -o ./dist/index.css --watch",
+    "build": "tsup && tailwindcss -i ./src/styles/globals.css -o ./dist/index.css --minify"
+  },
+  "dependencies": {
+    "@radix-ui/react-dropdown-menu": "2.0.6",
+    "@radix-ui/react-label": "2.0.2",
+    "@radix-ui/react-slot": "1.0.2",
+    "@radix-ui/react-toast": "1.1.5",
+    "class-variance-authority": "0.7.0",
+    "clsx": "2.1.1",
+    "prism-react-renderer": "2.3.1",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-hook-form": "7.51.4",
+    "tailwind-merge": "2.3.0"
+  },
+  "devDependencies": {
+    "@formizee/eslint-config": "workspace:*",
+    "@formizee/tailwind-config": "workspace:*",
+    "@formizee/typescript-config": "workspace:*",
+    "@types/react": "18.3.2",
+    "@types/react-dom": "18.3.0",
+    "autoprefixer": "10.4.19",
+    "postcss": "8",
+    "tailwindcss": "3.4.3",
+    "tailwindcss-animate": "1.0.7",
+    "tsup": "8.0.2",
+    "typescript": "5"
+  },
+  "peerDependencies": {
+    "react": "^18.3.1"
+  }
+}
