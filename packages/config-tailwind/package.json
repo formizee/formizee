@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "license": "MIT",
   "private": true,
+  "exports": {
+    ".": "./tailwind.config.ts"
+  },
   "dependencies": {
     "tailwindcss-animate": "1.0.7"
   },
