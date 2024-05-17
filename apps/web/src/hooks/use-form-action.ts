@@ -4,7 +4,7 @@
 import type { FieldValues, UseFormProps } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import { useCallback, useEffect } from 'react';
-import { toast } from '@/components/ui';
+import { toast } from '@formizee/ui';
 import type { ActionState } from '@/types';
 
 type UseFormActionProps<

@@ -4,20 +4,18 @@
 import { useFormState, useFormStatus } from 'react-dom';
 import { useFormContext } from 'react-hook-form';
 import Link from 'next/link';
-import type { RegisterFormValues } from '@/useCases/auth';
-import { register } from '@/useCases/auth';
-import { useFormAction } from '@/hooks';
+import { Button, Input } from '@formizee/ui';
 import {
-  Button,
   Form,
   FormLabel,
   FormControl,
   FormField,
   FormItem,
-  FormMessage,
-  Input
-} from '@/components/ui';
-import { LoadingIcon } from '@/components/ui/icons';
+  FormMessage
+} from '@formizee/ui/form';
+import { LoadingIcon } from '@formizee/ui/icons';
+import { register, type RegisterFormValues } from '@/useCases/auth';
+import { useFormAction } from '@/hooks';
 
 export function LoginForm(): JSX.Element {
   const [state, formAction] = useFormState(register, null);

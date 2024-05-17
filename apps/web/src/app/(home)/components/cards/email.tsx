@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { Card } from '@/components/ui';
+import { Card } from '@formizee/ui';
 
 const EMAILS: Email[] = [
   {

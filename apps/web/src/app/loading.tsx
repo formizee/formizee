@@ -1,4 +1,4 @@
-import { LoadingIcon } from '@/components/ui/icons';
+import { LoadingIcon } from '@formizee/ui/icons';
 import { Transition } from '../components';
 
 function Loading(): JSX.Element {

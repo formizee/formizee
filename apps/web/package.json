@@ -1,5 +1,5 @@
 {
-  "name": "web",
+  "name": "@formizee/web",
   "author": "Pau García Chiner",
   "license": "Apache-2.0",
   "version": "0.1.0",
@@ -12,28 +12,24 @@
     "format": "prettier -w ."
   },
   "dependencies": {
-    "@hookform/resolvers": "3.3.4",
-    "@radix-ui/react-dropdown-menu": "2.0.6",
-    "@radix-ui/react-label": "2.0.2",
-    "@radix-ui/react-slot": "1.0.2",
-    "@radix-ui/react-toast": "1.1.5",
+    "@formizee/tailwind-config": "workspace:*",
+    "@formizee/ui": "workspace:*",
+    "@hookform/resolvers": "3.4.0",
     "@supabase/ssr": "0.3.0",
-    "@supabase/supabase-js": "2.43.1",
+    "@supabase/supabase-js": "2.43.2",
     "class-variance-authority": "0.7.0",
     "clsx": "2.1.1",
     "domain": "workspace:*",
     "next": "14.2.3",
     "next-themes": "0.3.0",
-    "prism-react-renderer": "2.3.1",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "react-hook-form": "7.51.3",
+    "react-hook-form": "7.51.4",
     "tailwind-merge": "2.3.0",
-    "zod": "3.23.6"
+    "zod": "3.23.8"
   },
   "devDependencies": {
     "@formizee/eslint-config": "workspace:*",
-    "@formizee/tailwind-config": "workspace:*",
     "@formizee/typescript-config": "workspace:*",
     "@types/node": "20.12.12",
     "@types/react": "18.3.2",

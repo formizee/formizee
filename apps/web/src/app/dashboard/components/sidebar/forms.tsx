@@ -1,6 +1,6 @@
 import type { Endpoint } from 'domain/models';
-import { Button } from '@/components/ui';
-import { DocumentIcon } from '@/components/ui/icons';
+import { Button } from '@formizee/ui';
+import { DocumentIcon } from '@formizee/ui/icons';
 
 interface SidebarFormsItemProps {
   children: string;

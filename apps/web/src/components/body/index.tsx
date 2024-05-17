@@ -1,6 +1,6 @@
 import { Inter } from 'next/font/google';
 import { Suspense } from 'react';
-import { Toaster } from '@/components/ui';
+import { Toaster } from '@formizee/ui/toaster';
 import { cn } from '@/lib/ui';
 import { ThemeProvider } from '../theme';
 

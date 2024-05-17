@@ -1,14 +1,13 @@
 'use client';
 
 import Link from 'next/link';
-import { logout } from '@/useCases/auth';
 import {
   ChatIcon,
   HomeIcon,
   LogoutIcon,
   SettingsIcon,
   UserIcon
-} from '@/components/ui/icons';
+} from '@formizee/ui/icons';
 import {
   Button,
   DropdownMenu,
@@ -16,7 +15,8 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger
-} from '@/components/ui';
+} from '@formizee/ui';
+import { logout } from '@/useCases/auth';
 
 interface SidebarAccountProps {
   username: string;

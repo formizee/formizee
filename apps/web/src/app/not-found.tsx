@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRightIcon } from '@/components/ui/icons';
+import { Button } from '@formizee/ui';
+import { ArrowRightIcon } from '@formizee/ui/icons';
 import { Transition } from '@/components';
-import { Button } from '@/components/ui';
 
 function NotFound(): JSX.Element {
   return (

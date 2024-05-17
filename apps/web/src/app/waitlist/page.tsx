@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { Button } from '@/components/ui';
+import { Button } from '@formizee/ui';
 
 function WaitlistPage(): JSX.Element {
   return (

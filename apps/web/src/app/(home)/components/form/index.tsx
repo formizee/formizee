@@ -4,19 +4,17 @@
 import { useFormState, useFormStatus } from 'react-dom';
 import { useFormContext } from 'react-hook-form';
 import Link from 'next/link';
-import type { JoinWaitlistFormValues } from '@/useCases/waitlist';
-import { joinWaitlist } from '@/useCases/waitlist';
-import { useFormAction } from '@/hooks';
 import {
-  Button,
   Form,
   FormControl,
   FormField,
   FormItem,
-  FormMessage,
-  Input
-} from '@/components/ui';
-import { LoadingIcon, MailIcon } from '@/components/ui/icons';
+  FormMessage
+} from '@formizee/ui/form';
+import { Button, Input } from '@formizee/ui';
+import { LoadingIcon, MailIcon } from '@formizee/ui/icons';
+import { joinWaitlist, type JoinWaitlistFormValues } from '@/useCases/waitlist';
+import { useFormAction } from '@/hooks';
 
 export function WaitlistForm(): JSX.Element {
   const [state, formAction] = useFormState(joinWaitlist, null);
