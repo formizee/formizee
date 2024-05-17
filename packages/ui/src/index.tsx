@@ -1,3 +1,7 @@
+import './styles/globals.css';
+
+export { cn } from './lib/ui';
+
 export * from './components/button';
 export * from './components/card';
 export * from './components/code-block';
