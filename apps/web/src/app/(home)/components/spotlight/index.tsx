@@ -19,7 +19,7 @@ export function Spotlight({ className, fill }: SpotlightProps): JSX.Element {
         <ellipse
           cx="1924.71"
           cy="273.501"
-          fill={fill || 'white'}
+          fill={fill ?? 'white'}
           fillOpacity="0.15"
           rx="1924.71"
           ry="273.501"
