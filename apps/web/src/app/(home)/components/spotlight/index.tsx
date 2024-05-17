@@ -1,5 +1,5 @@
 import React from 'react';
-import { cn } from '@/lib/ui';
+import { cn } from '@formizee/ui';
 
 interface SpotlightProps {
   className?: string;

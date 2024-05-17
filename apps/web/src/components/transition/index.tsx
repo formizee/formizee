@@ -1,4 +1,4 @@
-import { cn } from '@/lib/ui';
+import { cn } from '@formizee/ui';
 
 interface TransitionProps {
   className?: string;

@@ -3,8 +3,7 @@
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Button, Logo } from '@formizee/ui';
-import { cn } from '@/lib/ui';
+import { cn, Button, Logo } from '@formizee/ui';
 
 function NavbarLogo(): JSX.Element {
   const pathname = usePathname();

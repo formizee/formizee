@@ -1,7 +1,7 @@
 import { Inter } from 'next/font/google';
 import { Suspense } from 'react';
 import { Toaster } from '@formizee/ui/toaster';
-import { cn } from '@/lib/ui';
+import { cn } from '@formizee/ui';
 import { ThemeProvider } from '../theme';
 
 const font = Inter({
