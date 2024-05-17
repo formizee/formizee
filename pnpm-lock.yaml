@@ -97,7 +97,7 @@ importers:
         specifier: 3.4.3
         version: 3.4.3
       typescript:
-        specifier: ^5
+        specifier: 5.4.5
         version: 5.4.5
 
   packages/config-eslint:
@@ -130,7 +130,7 @@ importers:
         specifier: workspace:*
         version: link:../config-typescript
       typescript:
-        specifier: ^5
+        specifier: 5.4.5
         version: 5.4.5
 
   packages/ui:
@@ -200,7 +200,7 @@ importers:
         specifier: 8.0.2
         version: 8.0.2(postcss@8.4.38)(typescript@5.4.5)
       typescript:
-        specifier: '5'
+        specifier: 5.4.5
         version: 5.4.5
 
 packages:

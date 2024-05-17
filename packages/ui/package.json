@@ -57,7 +57,7 @@
     "tailwindcss": "3.4.3",
     "tailwindcss-animate": "1.0.7",
     "tsup": "8.0.2",
-    "typescript": "5"
+    "typescript": "5.4.5"
   },
   "peerDependencies": {
     "react": "^18.3.1",

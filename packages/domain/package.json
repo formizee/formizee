@@ -15,6 +15,6 @@
   "devDependencies": {
     "@formizee/eslint-config": "workspace:*",
     "@formizee/typescript-config": "workspace:*",
-    "typescript": "^5"
+    "typescript": "5.4.5"
   }
 }
