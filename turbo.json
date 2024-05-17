@@ -4,7 +4,12 @@
   "pipeline": {
     "lint": {"cache": false},
     "format": {},
-    "dev": {"cache": false, "persistent": true},
-    "build": {"outputs": ["dist/**", ".next/**", "!.next/cache/**"]}
+    "@formizee/ui#build": {"cache": true},
+    "build": {"outputs": ["dist/**", ".next/**", "!.next/cache/**"]},
+    "dev": {
+      "dependsOn": ["@formizee/ui#build"],
+      "cache": false,
+      "persistent": true
+    }
   }
 }
