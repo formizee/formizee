@@ -12,7 +12,6 @@
     "format": "prettier -w ."
   },
   "dependencies": {
-    "@formizee/tailwind-config": "workspace:*",
     "@formizee/ui": "workspace:*",
     "@hookform/resolvers": "3.4.0",
     "@supabase/ssr": "0.3.0",
@@ -27,6 +26,7 @@
   },
   "devDependencies": {
     "@formizee/eslint-config": "workspace:*",
+    "@formizee/tailwind-config": "workspace:*",
     "@formizee/typescript-config": "workspace:*",
     "@types/node": "20.12.12",
     "@types/react": "18.3.2",

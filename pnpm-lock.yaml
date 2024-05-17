@@ -23,9 +23,6 @@ importers:
 
   apps/web:
     dependencies:
-      '@formizee/tailwind-config':
-        specifier: workspace:*
-        version: link:../../packages/config-tailwind
       '@formizee/ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -63,6 +60,9 @@ importers:
       '@formizee/eslint-config':
         specifier: workspace:*
         version: link:../../packages/config-eslint
+      '@formizee/tailwind-config':
+        specifier: workspace:*
+        version: link:../../packages/config-tailwind
       '@formizee/typescript-config':
         specifier: workspace:*
         version: link:../../packages/config-typescript
