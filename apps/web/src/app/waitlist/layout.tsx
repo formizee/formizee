@@ -1,4 +1,4 @@
-import { Transition } from '@/components';
+import {Transition} from '@/components';
 
 function WaitlistLayout({
   children

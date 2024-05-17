@@ -8,5 +8,10 @@ export interface UsersRepository {
   updateEmail: (uid: Uid, newEmail: Email) => Promise<void>;
   updatePassword: (uid: Uid, newPassword: Password) => Promise<void>;
   updateLinkedEmails: (uid: Uid, linkedEmails: Email[]) => Promise<void>;
-  create: (uid: Uid, name: Name, email: Email, password: Password) => Promise<User>;
+  create: (
+    uid: Uid,
+    name: Name,
+    email: Email,
+    password: Password
+  ) => Promise<User>;
 }

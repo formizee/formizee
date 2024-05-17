@@ -1,4 +1,4 @@
-import { Navbar, Transition } from '@/components';
+import {Navbar, Transition} from '@/components';
 
 function LegalLayout({
   children

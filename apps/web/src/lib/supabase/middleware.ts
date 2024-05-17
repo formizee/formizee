@@ -1,6 +1,6 @@
 /* eslint-disable -- External Library */
-import { createServerClient, type CookieOptions } from '@supabase/ssr';
-import { NextResponse, type NextRequest } from 'next/server';
+import {createServerClient, type CookieOptions} from '@supabase/ssr';
+import {NextResponse, type NextRequest} from 'next/server';
 
 export const updateSession = async (request: NextRequest) => {
   let response = NextResponse.next({

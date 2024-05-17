@@ -1,11 +1,11 @@
 'use client';
 
 /* eslint-disable -- External Library */
-import type { FieldValues, UseFormProps } from 'react-hook-form';
-import { useForm } from 'react-hook-form';
-import { useCallback, useEffect } from 'react';
-import { toast } from '@formizee/ui';
-import type { ActionState } from '@/types';
+import type {FieldValues, UseFormProps} from 'react-hook-form';
+import {useForm} from 'react-hook-form';
+import {useCallback, useEffect} from 'react';
+import {toast} from '@formizee/ui';
+import type {ActionState} from '@/types';
 
 type UseFormActionProps<
   TFieldValues extends FieldValues = FieldValues,
@@ -18,7 +18,7 @@ type UseFormActionProps<
 export function useFormAction<
   TFieldValues extends FieldValues = FieldValues,
   TContext = any
->({ state, onSuccess, ...props }: UseFormActionProps<TFieldValues, TContext>) {
+>({state, onSuccess, ...props}: UseFormActionProps<TFieldValues, TContext>) {
   const form = useForm({
     ...props
   });
@@ -42,7 +42,7 @@ export function useFormAction<
         break;
       }
       case 'VALIDATION_ERROR': {
-        const { fieldErrors } = state;
+        const {fieldErrors} = state;
         Object.keys(fieldErrors).forEach(key => {
           form.setError(key as any, {
             message: fieldErrors[key]?.flat().join(' ')

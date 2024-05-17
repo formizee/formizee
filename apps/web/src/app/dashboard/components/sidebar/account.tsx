@@ -16,7 +16,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@formizee/ui';
-import { logout } from '@/useCases/auth';
+import {logout} from '@/useCases/auth';
 
 interface SidebarAccountProps {
   username: string;

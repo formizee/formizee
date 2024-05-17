@@ -1,5 +1,5 @@
-import { Button } from '@formizee/ui';
-import { DocumentAddIcon } from '@formizee/ui/icons';
+import {Button} from '@formizee/ui';
+import {DocumentAddIcon} from '@formizee/ui/icons';
 
 export function SidebarCreateForm(): JSX.Element {
   return (

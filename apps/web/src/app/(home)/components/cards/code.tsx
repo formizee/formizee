@@ -1,6 +1,6 @@
 'use client';
 
-import { Card, CodeBlock } from '@formizee/ui';
+import {Card, CodeBlock} from '@formizee/ui';
 
 export function CodeCard(): JSX.Element {
   const code = `<form action="https://formizee.com/f/zksmfkx" method="post">

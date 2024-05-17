@@ -9,5 +9,8 @@ export interface EndpointsRepository {
   setRedirectUrl: (uid: Uid, redirectUrl: URL) => Promise<void>;
   setTargetEmail: (uid: Uid, targetEmail: Email) => Promise<void>;
   addSubmission: (uid: Uid, submission: Submission) => Promise<void>;
-  setEmailNotifications: (uid: Uid, emailNotifications: boolean) => Promise<void>;
+  setEmailNotifications: (
+    uid: Uid,
+    emailNotifications: boolean
+  ) => Promise<void>;
 }

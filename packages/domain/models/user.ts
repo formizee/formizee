@@ -1,4 +1,4 @@
-import { Uid, Email, Name } from './values';
+import {Uid, Email, Name} from './values';
 
 export class User {
   private readonly _uid: Uid;

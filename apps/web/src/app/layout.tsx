@@ -1,5 +1,5 @@
-import type { Metadata } from 'next';
-import { Body } from '@/components';
+import type {Metadata} from 'next';
+import {Body} from '@/components';
 import Loading from './loading';
 import '@formizee/ui/globals.css';
 import './globals.css';

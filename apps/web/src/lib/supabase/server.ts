@@ -3,7 +3,7 @@ import {
   createServerClient as _createServerClient,
   type CookieOptions
 } from '@supabase/ssr';
-import { cookies } from 'next/headers';
+import {cookies} from 'next/headers';
 
 export const createServerClient = () => {
   const cookieStore = cookies();
@@ -18,7 +18,7 @@ export const createServerClient = () => {
         },
         set(name: string, value: string, options: CookieOptions) {
           try {
-            cookieStore.set({ name, value, ...options });
+            cookieStore.set({name, value, ...options});
           } catch (error) {
             // The `set` method was called from a Server Component.
             // This can be ignored if you have middleware refreshing
@@ -27,7 +27,7 @@ export const createServerClient = () => {
         },
         remove(name: string, options: CookieOptions) {
           try {
-            cookieStore.set({ name, value: '', ...options });
+            cookieStore.set({name, value: '', ...options});
           } catch (error) {
             // The `delete` method was called from a Server Component.
             // This can be ignored if you have middleware refreshing

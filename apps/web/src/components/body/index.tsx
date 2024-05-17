@@ -1,8 +1,8 @@
-import { Inter } from 'next/font/google';
-import { Suspense } from 'react';
-import { Toaster } from '@formizee/ui/toaster';
-import { cn } from '@formizee/ui';
-import { ThemeProvider } from '../theme';
+import {Inter} from 'next/font/google';
+import {Suspense} from 'react';
+import {Toaster} from '@formizee/ui/toaster';
+import {cn} from '@formizee/ui';
+import {ThemeProvider} from '../theme';
 
 const font = Inter({
   subsets: ['latin'],

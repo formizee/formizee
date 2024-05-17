@@ -1,11 +1,11 @@
 'use server';
 
-import { Email } from 'domain/models/values';
-import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
-import { z } from 'zod';
-import { authServiceLogin } from '@/data/services/auth';
-import type { ActionState } from '@/types';
+import {Email} from 'domain/models/values';
+import {revalidatePath} from 'next/cache';
+import {redirect} from 'next/navigation';
+import {z} from 'zod';
+import {authServiceLogin} from '@/data/services/auth';
+import type {ActionState} from '@/types';
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -24,7 +24,7 @@ export const login = async (
   });
 
   if (!input.success) {
-    const { fieldErrors } = input.error.flatten();
+    const {fieldErrors} = input.error.flatten();
 
     return {
       code: 'VALIDATION_ERROR',
@@ -35,7 +35,7 @@ export const login = async (
   const email = new Email(input.data.email);
   const password = input.data.password;
 
-  const { error } = await authServiceLogin(email, password);
+  const {error} = await authServiceLogin(email, password);
 
   if (error) {
     return {

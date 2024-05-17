@@ -1,5 +1,5 @@
-import { Uid, Email, Name } from './values';
-import type { Submission } from '.';
+import {Uid, Email, Name} from './values';
+import type {Submission} from '.';
 
 export class Endpoint {
   private readonly _uid: Uid;

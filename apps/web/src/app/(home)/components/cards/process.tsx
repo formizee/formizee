@@ -1,4 +1,4 @@
-import { Card } from '@formizee/ui';
+import {Card} from '@formizee/ui';
 
 export function ProcessCard(): JSX.Element {
   return (

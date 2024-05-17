@@ -1,6 +1,6 @@
-import { ProcessCard } from './process';
-import { EmailCard } from './email';
-import { CodeCard } from './code';
+import {ProcessCard} from './process';
+import {EmailCard} from './email';
+import {CodeCard} from './code';
 
 export function Cards(): JSX.Element {
   return (

@@ -1,9 +1,9 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import {usePathname} from 'next/navigation';
+import {useEffect, useState} from 'react';
 import Link from 'next/link';
-import { cn, Button, Logo } from '@formizee/ui';
+import {cn, Button, Logo} from '@formizee/ui';
 
 function NavbarLogo(): JSX.Element {
   const pathname = usePathname();
@@ -26,7 +26,7 @@ export function Navbar(): JSX.Element {
   };
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('scroll', handleScroll, {passive: true});
 
     return () => {
       window.removeEventListener('scroll', handleScroll);

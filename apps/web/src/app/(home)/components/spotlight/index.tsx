@@ -1,12 +1,12 @@
 import React from 'react';
-import { cn } from '@formizee/ui';
+import {cn} from '@formizee/ui';
 
 interface SpotlightProps {
   className?: string;
   fill?: string;
 }
 
-export function Spotlight({ className, fill }: SpotlightProps): JSX.Element {
+export function Spotlight({className, fill}: SpotlightProps): JSX.Element {
   return (
     <svg
       className={cn(

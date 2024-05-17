@@ -1,14 +1,14 @@
 'use client';
 
 import Image from 'next/image';
-import { Button } from '@formizee/ui';
-import { Transition } from '@/components';
+import {Button} from '@formizee/ui';
+import {Transition} from '@/components';
 
 export default function GlobalError({
   error,
   reset
 }: {
-  error: Error & { digest?: string };
+  error: Error & {digest?: string};
   reset: () => void;
 }): JSX.Element {
   return (

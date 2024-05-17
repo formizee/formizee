@@ -1,4 +1,4 @@
-import { Uid } from './values';
+import {Uid} from './values';
 
 export class Submission {
   private readonly _uid: Uid;

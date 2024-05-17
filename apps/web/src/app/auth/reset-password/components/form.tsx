@@ -1,10 +1,10 @@
 'use client';
 
 /* eslint-disable-next-line import/named -- Currently useFormState and useFormStatus are experimental */
-import { useFormState, useFormStatus } from 'react-dom';
-import { useFormContext } from 'react-hook-form';
+import {useFormState, useFormStatus} from 'react-dom';
+import {useFormContext} from 'react-hook-form';
 import Link from 'next/link';
-import { Button, Input } from '@formizee/ui';
+import {Button, Input} from '@formizee/ui';
 import {
   Form,
   FormControl,
@@ -12,9 +12,9 @@ import {
   FormItem,
   FormMessage
 } from '@formizee/ui/form';
-import { LoadingIcon } from '@formizee/ui/icons';
-import { useFormAction } from '@/hooks';
-import { resetPassword, type ResetPasswordFormValues } from '@/useCases/auth';
+import {LoadingIcon} from '@formizee/ui/icons';
+import {useFormAction} from '@/hooks';
+import {resetPassword, type ResetPasswordFormValues} from '@/useCases/auth';
 
 export function ResetPasswordForm(): JSX.Element {
   const [state, formAction] = useFormState(resetPassword, null);
@@ -37,14 +37,14 @@ export function ResetPasswordForm(): JSX.Element {
 
 function FormFields(): JSX.Element {
   const form = useFormContext();
-  const { pending } = useFormStatus();
+  const {pending} = useFormStatus();
 
   return (
     <div className="flex flex-col gap-y-4">
       <FormField
         control={form.control}
         name="email"
-        render={({ field }) => (
+        render={({field}) => (
           <FormItem>
             <FormControl>
               <Input
@@ -58,7 +58,7 @@ function FormFields(): JSX.Element {
             <FormMessage />
           </FormItem>
         )}
-        rules={{ required: true }}
+        rules={{required: true}}
       />
       <Button className="mt-4" disabled={pending}>
         {pending ? <LoadingIcon className="h-10 w-10" /> : 'Send Reset Email'}

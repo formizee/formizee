@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import { Button, Logo } from '@formizee/ui';
-import { ChatIcon, LinkIcon } from '@formizee/ui/icons';
+import {Button, Logo} from '@formizee/ui';
+import {ChatIcon, LinkIcon} from '@formizee/ui/icons';
 
 export function DashboardNavbar(): JSX.Element {
   return (

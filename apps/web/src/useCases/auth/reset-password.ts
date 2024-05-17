@@ -1,8 +1,8 @@
 'use server';
 
-import { Email } from 'domain/models/values';
-import { z } from 'zod';
-import type { ActionState } from '@/types';
+import {Email} from 'domain/models/values';
+import {z} from 'zod';
+import type {ActionState} from '@/types';
 
 const formSchema = z.object({
   email: z.string().email()
@@ -20,7 +20,7 @@ export const resetPassword = async (
   });
 
   if (!input.success) {
-    const { fieldErrors } = input.error.flatten();
+    const {fieldErrors} = input.error.flatten();
 
     return {
       code: 'VALIDATION_ERROR',

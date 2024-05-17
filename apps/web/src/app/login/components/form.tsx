@@ -1,10 +1,10 @@
 'use client';
 
 /* eslint-disable-next-line import/named -- Currently useFormState and useFormStatus are experimental */
-import { useFormState, useFormStatus } from 'react-dom';
-import { useFormContext } from 'react-hook-form';
+import {useFormState, useFormStatus} from 'react-dom';
+import {useFormContext} from 'react-hook-form';
 import Link from 'next/link';
-import { Button, Input } from '@formizee/ui';
+import {Button, Input} from '@formizee/ui';
 import {
   Form,
   FormLabel,
@@ -13,9 +13,9 @@ import {
   FormItem,
   FormMessage
 } from '@formizee/ui/form';
-import { LoadingIcon } from '@formizee/ui/icons';
-import { login, type LoginFormValues } from '@/useCases/auth';
-import { useFormAction } from '@/hooks';
+import {LoadingIcon} from '@formizee/ui/icons';
+import {login, type LoginFormValues} from '@/useCases/auth';
+import {useFormAction} from '@/hooks';
 
 export function LoginForm(): JSX.Element {
   const [state, formAction] = useFormState(login, null);
@@ -39,14 +39,14 @@ export function LoginForm(): JSX.Element {
 
 function FormFields(): JSX.Element {
   const form = useFormContext();
-  const { pending } = useFormStatus();
+  const {pending} = useFormStatus();
 
   return (
     <div className="flex flex-col gap-y-4">
       <FormField
         control={form.control}
         name="email"
-        render={({ field }) => (
+        render={({field}) => (
           <FormItem>
             <FormLabel>Email</FormLabel>
             <FormControl>
@@ -61,12 +61,12 @@ function FormFields(): JSX.Element {
             <FormMessage />
           </FormItem>
         )}
-        rules={{ required: true }}
+        rules={{required: true}}
       />
       <FormField
         control={form.control}
         name="password"
-        render={({ field }) => (
+        render={({field}) => (
           <FormItem>
             <div className="flex items-center justify-between">
               <FormLabel>Password</FormLabel>
@@ -87,7 +87,7 @@ function FormFields(): JSX.Element {
             <FormMessage />
           </FormItem>
         )}
-        rules={{ required: true }}
+        rules={{required: true}}
       />
       <Button className="mt-4" disabled={pending}>
         {pending ? <LoadingIcon className="h-10 w-10" /> : 'Continue'}

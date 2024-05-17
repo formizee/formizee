@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Button } from '@formizee/ui';
+import {Button} from '@formizee/ui';
 
 export function Footer(): JSX.Element {
   return (
