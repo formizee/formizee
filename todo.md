@@ -39,6 +39,9 @@
 
 ## Pre-Deploy Stuff
 
+- [ ] Add sentry to the project.
+- [ ] Update privacy policy and usage conditions
+
 - [ ] Update the status page.
 - [ ] Add all the metadata content.
 - [ ] Generate a sitemap of the webpage.
