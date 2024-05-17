@@ -11,7 +11,6 @@ export default defineConfig((options: Options) => ({
   dts: true,
   clean: true,
   minify: true,
-  sourcemap: true,
   external: ['react'],
   ...options
 }));
