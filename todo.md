@@ -18,7 +18,7 @@
 
 ## Logic & Behaviours
 
-- [ ] Waitlist form.
+- [x] Waitlist form.
 - [x] Authentication.
 
 ## Performance
