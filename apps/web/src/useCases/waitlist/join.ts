@@ -1,10 +1,11 @@
 'use server';
 
-import { Email } from 'domain/models/values';
-import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
-import { z } from 'zod';
-import type { ActionState } from '@/types';
+import {Email} from 'domain/models/values';
+import {revalidatePath} from 'next/cache';
+import {redirect} from 'next/navigation';
+import {z} from 'zod';
+import {waitlistServiceJoin} from '@/data/services/waitlist';
+import type {ActionState} from '@/types';
 
 const formSchema = z.object({
   email: z.string().email()
@@ -15,14 +16,13 @@ export type JoinWaitlistFormValues = z.infer<typeof formSchema>;
 export const joinWaitlist = async (
   _prevState: unknown,
   formData: FormData
-  /* eslint-disable-next-line -- Not implemented yet */
 ): Promise<ActionState | undefined> => {
   const input = formSchema.safeParse({
     email: formData.get('email')
   });
 
   if (!input.success) {
-    const { fieldErrors } = input.error.flatten();
+    const {fieldErrors} = input.error.flatten();
 
     return {
       code: 'VALIDATION_ERROR',
@@ -32,9 +32,7 @@ export const joinWaitlist = async (
 
   const email = new Email(input.data.email);
 
-  /* eslint-disable-next-line -- Not implemented yet */
-  console.log(email);
-  /*const {error} = await authServiceLogin(email, password);
+  const {error} = await waitlistServiceJoin(email);
 
   if (error) {
     return {
@@ -42,7 +40,7 @@ export const joinWaitlist = async (
       title: error.name,
       message: error.message
     };
-  } */
+  }
 
   revalidatePath('/', 'layout');
   redirect('/waitlist');
