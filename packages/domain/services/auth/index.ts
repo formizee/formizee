@@ -1,15 +1,5 @@
 import type {Name, Email, Password} from '@/models/values';
-import type {User} from '@/models/user';
-
-export type AuthResponse =
-  | {
-      data: {user: User};
-      error: null;
-    }
-  | {
-      data: null;
-      error: Error;
-    };
+import type {AuthResponse, AuthState} from './types'
 
 export type AuthServiceLogin = (
   email: Email,
@@ -21,5 +11,7 @@ export type AuthServiceRegister = (
   email: Email,
   password: Password
 ) => Promise<AuthResponse>;
+
+export type AuthServiceProtectRoute = (onState: AuthState) => Promise<boolean>;
 
 export type AuthServiceLogout = () => Promise<{error: Error | null}>;
