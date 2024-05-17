@@ -1,5 +1,4 @@
-import {redirect} from 'next/navigation';
-import {createServerClient} from '@/lib/supabase/server';
+import { protectRoute } from '@/useCases/auth';
 import {Transition} from '@/components';
 
 async function RegisterLayout({
@@ -7,12 +6,7 @@ async function RegisterLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>): Promise<JSX.Element> {
-  const supabase = createServerClient();
-
-  const {data, error} = await supabase.auth.getUser();
-  if (!error && data.user.id) {
-    redirect('/dashboard');
-  }
+  await protectRoute('logged', '/dasboard')
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-black">

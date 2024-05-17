@@ -1,16 +1,10 @@
-import {redirect} from 'next/navigation';
-import {createServerClient} from '@/lib/supabase/server';
+import { protectRoute } from '@/useCases/auth';
 import {Navbar, Sidebar, Content} from './components';
 
 async function DashboardLayout({
   children
 }: Readonly<{children: React.ReactNode}>): Promise<JSX.Element> {
-  const supabase = createServerClient();
-
-  const {data, error} = await supabase.auth.getUser();
-  if (error || !data.user.id) {
-    redirect('/login');
-  }
+  await protectRoute('not-logged', '/login');
 
   return (
     <main className="flex h-full flex-col items-center overflow-x-clip bg-black lg:justify-center">

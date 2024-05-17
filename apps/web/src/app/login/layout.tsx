@@ -1,18 +1,12 @@
-import {redirect} from 'next/navigation';
-import {createServerClient} from '@/lib/supabase/server';
 import {Transition} from '@/components';
+import { protectRoute } from '@/useCases/auth';
 
 async function LoginLayout({
   children
 }: Readonly<{
   children: React.ReactNode;
 }>): Promise<JSX.Element> {
-  const supabase = createServerClient();
-
-  const {data, error} = await supabase.auth.getUser();
-  if (!error && data.user.id) {
-    redirect('/dashboard');
-  }
+  await protectRoute('logged', '/dashboard');
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-black">
