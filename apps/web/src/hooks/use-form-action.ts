@@ -61,7 +61,9 @@ export function useFormAction<
       }
       case 'SUCCESS': {
         toast({
-          title: state.message,
+          title: state.title,
+          description: state.message,
+          variant: 'success',
           duration: 5000
         });
         handleSuccess();
