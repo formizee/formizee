@@ -1,0 +1,3 @@
+{
+  "extends": ["@formizee/eslint-config/domain.js"]
+}

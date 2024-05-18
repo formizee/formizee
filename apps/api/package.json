@@ -1,0 +1,27 @@
+{
+  "name": "@formizee/api",
+  "author": "Pau García Chiner",
+  "license": "Apache-2.0",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "lint": "eslint src",
+    "dev": "wrangler dev",
+    "start": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "format": "prettier -w src",
+    "cf-typegen": "wrangler types"
+  },
+  "dependencies": {
+    "awilix": "10.0.2",
+    "domain": "workspace:*",
+    "hono": "4.3.7"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "4.20240512.0",
+    "@formizee/eslint-config": "workspace:*",
+    "@formizee/typescript-config": "workspace:*",
+    "typescript": "5.4.5",
+    "wrangler": "3.57.0"
+  }
+}
