@@ -1,6 +1,7 @@
 export type ActionState =
   | {
       code: 'SUCCESS';
+      title: string;
       message: string;
     }
   | {
