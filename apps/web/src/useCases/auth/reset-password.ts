@@ -3,6 +3,7 @@
 import {Email} from 'domain/models/values';
 import {z} from 'zod';
 import type {ActionState} from '@/types';
+import { authServiceResetPassword } from '@/data/services/auth';
 
 const formSchema = z.object({
   email: z.string().email()
@@ -13,7 +14,6 @@ export type ResetPasswordFormValues = z.infer<typeof formSchema>;
 export const resetPassword = async (
   _prevState: unknown,
   formData: FormData
-  /* eslint-disable-next-line -- Not implemented yet */
 ): Promise<ActionState | undefined> => {
   const input = formSchema.safeParse({
     email: formData.get('email')
@@ -29,9 +29,8 @@ export const resetPassword = async (
   }
 
   const email = new Email(input.data.email);
-  /* eslint-disable-next-line -- Not implemented yet */
-  console.log(email);
-  /*const {error} = await authServiceRegister(name, email, password);
+
+  const {error} = await authServiceResetPassword(email);
 
   if (error) {
     return {
@@ -39,5 +38,11 @@ export const resetPassword = async (
       title: error.name,
       message: error.message
     };
-  }*/
+  }
+
+  return {
+    code: 'SUCCESS',
+    title: "Check Your Inbox",
+    message: "We have sent you an email."
+  };
 };
