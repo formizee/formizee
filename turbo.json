@@ -8,9 +8,10 @@
   "pipeline": {
     "lint": {"cache": false},
     "format": {},
-    "@formizee/ui#build": {"cache": true},
+    "dev": {"cache": false, "persistent": true},
     "build": {"outputs": ["dist/**", ".next/**", "!.next/cache/**"]},
-    "dev": {
+    "@formizee/ui#build": {"cache": true},
+    "@formizee/web#dev": {
       "dependsOn": ["@formizee/ui#build"],
       "cache": false,
       "persistent": true
