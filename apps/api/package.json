@@ -10,17 +10,21 @@
     "start": "wrangler dev",
     "deploy": "wrangler deploy",
     "format": "prettier -w src",
-    "cf-typegen": "wrangler types"
+    "cf-typegen": "wrangler types",
+    "db:up": "drizzle-kit up:sqlite",
+    "db:generate": "drizzle-kit generate:sqlite"
   },
   "dependencies": {
     "awilix": "10.0.2",
     "domain": "workspace:*",
+    "drizzle-orm": "0.30.10",
     "hono": "4.3.7"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "4.20240512.0",
     "@formizee/eslint-config": "workspace:*",
     "@formizee/typescript-config": "workspace:*",
+    "drizzle-kit": "0.21.2",
     "typescript": "5.4.5",
     "wrangler": "3.57.0"
   }
