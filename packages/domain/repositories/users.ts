@@ -2,8 +2,9 @@ import type {Uid, Name, Email, Password} from '@/models/values';
 import type {User, Response} from '@/models';
 
 export interface UsersRepository {
-  load: (uid: Uid) => Promise<Response<User>>;
+  load: (identifier: Uid | Email) => Promise<Response<User>>;
   delete: (uid: Uid) => Promise<Response<void>>;
+  loadPasswordHash: (identifier: Uid) => Promise<Response<string>>;
   updateName: (uid: Uid, newName: Name) => Promise<Response<void>>;
   updateEmail: (uid: Uid, newEmail: Email) => Promise<Response<void>>;
   updatePassword: (uid: Uid, newPassword: Password) => Promise<Response<void>>;
