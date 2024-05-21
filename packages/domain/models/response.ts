@@ -37,7 +37,11 @@ export class Response<T> {
     return this._ok;
   }
 
-  get body(): T | object {
-    return this._body;
+  get body(): T {
+    return this._body as T;
+  }
+
+  get error(): object {
+    return this._body as object;
   }
 }
