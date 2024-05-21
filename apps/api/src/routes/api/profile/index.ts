@@ -1,4 +1,5 @@
-import {verifySession} from '@/lib/auth/dal';
+import {StatusCode} from 'hono/utils/http-status';
+import {Hono} from 'hono';
 import {
   DeleteUser,
   LoadUser,
@@ -7,12 +8,12 @@ import {
   UpdateUserName,
   UpdateUserPassword
 } from '@/useCases/users';
-import {Hono} from 'hono';
-import {StatusCode} from 'hono/utils/http-status';
 
-const profileRouter = new Hono();
+import {verifySession} from '@/lib/auth';
 
-profileRouter.get('/', async context => {
+const router = new Hono();
+
+router.get('/', async context => {
   const {isAuth, user} = await verifySession(context);
   if (!isAuth || !user)
     return context.json(
@@ -26,7 +27,7 @@ profileRouter.get('/', async context => {
   return context.json(response.body, response.status as StatusCode);
 });
 
-profileRouter.put('/name', async context => {
+router.put('/name', async context => {
   const {name} = await context.req.json<{name: string}>();
 
   const {isAuth, user} = await verifySession(context);
@@ -42,7 +43,7 @@ profileRouter.put('/name', async context => {
   return context.json(response.error ?? 'OK', response.status as StatusCode);
 });
 
-profileRouter.put('/email', async context => {
+router.put('/email', async context => {
   const {email} = await context.req.json<{email: string}>();
 
   const {isAuth, user} = await verifySession(context);
@@ -58,7 +59,7 @@ profileRouter.put('/email', async context => {
   return context.json(response.error ?? 'OK', response.status as StatusCode);
 });
 
-profileRouter.put('/password', async context => {
+router.put('/password', async context => {
   const {password} = await context.req.json<{password: string}>();
 
   const {isAuth, user} = await verifySession(context);
@@ -74,7 +75,7 @@ profileRouter.put('/password', async context => {
   return context.json(response.error ?? 'OK', response.status as StatusCode);
 });
 
-profileRouter.put('/linked-emails', async context => {
+router.put('/linked-emails', async context => {
   const {emails} = await context.req.json<{emails: string[]}>();
 
   const {isAuth, user} = await verifySession(context);
@@ -90,7 +91,7 @@ profileRouter.put('/linked-emails', async context => {
   return context.json(response.error ?? 'OK', response.status as StatusCode);
 });
 
-profileRouter.delete('/', async context => {
+router.delete('/', async context => {
   const {isAuth, user} = await verifySession(context);
   if (!isAuth || !user)
     return context.json(
@@ -104,4 +105,4 @@ profileRouter.delete('/', async context => {
   return context.json(response.error ?? 'OK', response.status as StatusCode);
 });
 
-export default profileRouter;
+export default router;
