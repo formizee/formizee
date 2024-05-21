@@ -1,6 +1,6 @@
-import { Uid } from "domain/models/values";
-import { Response } from "domain/models";
-import { resolve } from "@/lib/di";
+import {Uid} from 'domain/models/values';
+import {Response} from 'domain/models';
+import {resolve} from '@/lib/di';
 
 export class LoadUserPasswordHash {
   private readonly _service = resolve('usersRepository');
@@ -10,7 +10,7 @@ export class LoadUserPasswordHash {
     this._identifier = new Uid(identifier);
   }
 
-  public async run (): Promise<Response<string>> {
+  public async run(): Promise<Response<string>> {
     return await this._service.loadPasswordHash(this._identifier);
   }
 }

@@ -1,4 +1,8 @@
-import { UsersRepository, EndpointsRepository, SubmissionsRepository } from "domain/repositories";
+import {
+  UsersRepository,
+  EndpointsRepository,
+  SubmissionsRepository
+} from 'domain/repositories';
 
 export default interface Dependencies {
   submissionsRepository: SubmissionsRepository;

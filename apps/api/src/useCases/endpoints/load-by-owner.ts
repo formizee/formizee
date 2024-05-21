@@ -1,16 +1,16 @@
-import { Endpoint, Response } from "domain/models";
-import { Uid } from "domain/models/values";
-import { resolve } from "@/lib/di";
+import {Endpoint, Response} from 'domain/models';
+import {Uid} from 'domain/models/values';
+import {resolve} from '@/lib/di';
 
 export class LoadEndpointsByOwner {
   private readonly _repository = resolve('endpointsRepository');
   private readonly _uid: Uid;
 
-  constructor (owner: string) {
+  constructor(owner: string) {
     this._uid = new Uid(owner);
   }
 
-  async run (): Promise<Response<Endpoint[]>> {
+  async run(): Promise<Response<Endpoint[]>> {
     return await this._repository.loadByOwner(this._uid);
   }
 }

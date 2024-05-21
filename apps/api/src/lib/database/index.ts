@@ -2,7 +2,7 @@ export class DatabaseConfigProvider {
   private static instance: DatabaseConfigProvider;
   private db: any;
 
-  private constructor() { }
+  private constructor() {}
 
   static getInstance(): DatabaseConfigProvider {
     if (!DatabaseConfigProvider.instance) {
@@ -18,10 +18,9 @@ export class DatabaseConfigProvider {
 
   getDb() {
     if (!this.db) {
-      throw new Error("Database is not set");
+      throw new Error('Database is not set');
     }
 
     return this.db;
   }
-
 }

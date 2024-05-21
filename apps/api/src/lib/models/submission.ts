@@ -1,6 +1,8 @@
-import { Uid } from 'domain/models/values';
+import {Uid} from 'domain/models/values';
 
-export const parseLinkedSubmissions = async (linkedSubmissions: string): Promise<string[]> => {
+export const parseLinkedSubmissions = async (
+  linkedSubmissions: string
+): Promise<string[]> => {
   try {
     if (linkedSubmissions === '') return Promise.resolve([]);
 
@@ -11,30 +13,30 @@ export const parseLinkedSubmissions = async (linkedSubmissions: string): Promise
     data.forEach((submission: string) => {
       let item = new Uid(submission);
       result.push(item.value);
-    })
+    });
 
     return Promise.resolve(result);
-  }
-  catch (error) {
+  } catch (error) {
     return Promise.reject(error);
   }
-}
+};
 
-export const stringifyLinkedSubmissions = async (linkedSubmissions: Uid[]): Promise<string> => {
+export const stringifyLinkedSubmissions = async (
+  linkedSubmissions: Uid[]
+): Promise<string> => {
   try {
     let data: string[] = [];
 
     linkedSubmissions.forEach(submission => {
-      data.push(submission.value)
-    })
+      data.push(submission.value);
+    });
 
     const result = JSON.stringify(data);
     return Promise.resolve(result);
-  }
-  catch (error) {
+  } catch (error) {
     return Promise.reject(error);
   }
-}
+};
 
 export const parseFormData = async (data: string): Promise<FormData> => {
   try {
@@ -52,9 +54,11 @@ export const parseFormData = async (data: string): Promise<FormData> => {
   } catch (error) {
     return Promise.reject(error);
   }
-}
+};
 
-export const stringifyFormData = async (formData: FormData): Promise<string> => {
+export const stringifyFormData = async (
+  formData: FormData
+): Promise<string> => {
   try {
     let data: any;
     formData.forEach((value, key) => {
@@ -65,4 +69,4 @@ export const stringifyFormData = async (formData: FormData): Promise<string> => 
   } catch (error) {
     return Promise.reject(error);
   }
-}
+};
