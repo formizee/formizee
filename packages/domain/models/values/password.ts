@@ -1,6 +1,6 @@
 export class Password {
   private readonly MIN_LENGTH = 8;
-  private readonly MAX_LENGTH = 32;
+  private readonly MAX_LENGTH = 64;
 
   constructor(readonly value: string) {
     this.value = value;
