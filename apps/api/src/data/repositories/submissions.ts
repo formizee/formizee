@@ -1,22 +1,19 @@
 import {DrizzleD1Database, drizzle} from 'drizzle-orm/d1';
 import {SubmissionsRepository} from 'domain/repositories';
-import {DatabaseConfigProvider} from '@/lib/database';
 import {Response, Submission} from 'domain/models';
+import {DatabaseProvider} from '@/lib/db';
 import {Uid} from 'domain/models/values';
 
-import {parseFormData, stringifyFormData} from '@/lib/models';
+import {parseFormData, stringifyFormData} from '@/lib/adapters';
 import {submissions} from '@/data/models/schema';
 import {eq} from 'drizzle-orm';
 
-export class SubmissionsRepositoryImplementation
-  implements SubmissionsRepository
-{
+export class SubmissionsRepositoryImplementation implements SubmissionsRepository {
   private readonly db: DrizzleD1Database;
 
   constructor() {
-    const configProvider = DatabaseConfigProvider.getInstance();
-    const dbBinding = configProvider.getDb();
-    this.db = drizzle(dbBinding);
+    const provider = DatabaseProvider.getInstance();
+    this.db = drizzle(provider.getDb());
   }
 
   async load(uid: Uid): Promise<Response<Submission>> {
