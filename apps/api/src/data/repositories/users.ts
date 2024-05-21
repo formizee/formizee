@@ -18,8 +18,14 @@ export class UsersRepositoryImplementation implements UsersRepository {
     this.db = drizzle(dbBinding);
   }
 
-  async load(uid: Uid) {
-    const response = await this.db.select().from(users).where(eq(users.id, uid.value))
+  async load(identifier: Uid | Email) {
+    let response;
+
+    if(identifier.value.includes('@')) {
+      response = await this.db.select().from(users).where(eq(users.email, identifier.value))
+    } else {
+      response = await this.db.select().from(users).where(eq(users.id, identifier.value))
+    }
 
     if (!response[0]) return Response.error('User not found.', 404);
 
@@ -28,6 +34,14 @@ export class UsersRepositoryImplementation implements UsersRepository {
 
     const user = new User(response[0].id, response[0].name, response[0].email, forms, linkedEmails);
     return Response.success(user);
+  }
+
+  async loadPasswordHash (identifier: Uid) {
+    const response = await this.db.select().from(users).where(eq(users.id, identifier.value))
+
+    if (!response[0]) return Response.error('User not found.', 404);
+
+    return Response.success(response[0].password);
   }
 
   async delete(uid: Uid) {
