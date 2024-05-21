@@ -1,11 +1,10 @@
 import {Uid, Email, Name} from './values';
-import type {Submission} from '.';
 
 export class Endpoint {
   private readonly _uid: Uid;
   private readonly _name: Name;
   private readonly _owner: Uid;
-  private readonly _submissions: Submission[];
+  private readonly _submissions: Uid[] = [];
 
   private readonly _isEnabled: boolean;
   private readonly _emailNotifications: boolean;
@@ -19,17 +18,22 @@ export class Endpoint {
     owner: string,
     targetEmail: string,
     redirectUrl: string,
-    submissions?: Submission[]
+    submissions?: string[]
   ) {
     this._uid = new Uid(uid);
     this._name = new Name(name);
     this._owner = new Uid(owner);
-    this._submissions = submissions ?? [];
+
+    if(submissions && submissions?.length > 0) {
+      submissions.forEach(submission => {
+        this._submissions.push(new Uid(submission));
+      })
+    }
 
     this._isEnabled = true;
     this._emailNotifications = true;
 
-    this._redirectUrl = new URL(redirectUrl);
+    this._redirectUrl = new URL(redirectUrl !== '' ? redirectUrl : `https://formizee.com/f/${this._uid}/thanks`);
     this._targetEmail = new Email(targetEmail);
   }
 
@@ -49,7 +53,7 @@ export class Endpoint {
     return this._isEnabled;
   }
 
-  get submissions(): Submission[] {
+  get submissions(): Uid[] {
     return this._submissions;
   }
 
