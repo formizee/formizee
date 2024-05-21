@@ -1,8 +1,8 @@
 import { Uid } from "domain/models/values";
-import { User } from "domain/models";
+import { Response } from "domain/models";
 import { resolve } from "@/lib/di";
 
-export class GetUserUseCase {
+export class DeleteUser {
   private readonly _repository = resolve('usersRepository');
   private readonly _uid: Uid;
 
@@ -10,7 +10,7 @@ export class GetUserUseCase {
     this._uid = new Uid(uid);
   }
 
-  async run (): Promise<User> {
-    return await this._repository.get(this._uid);
+  async run (): Promise<Response<void>> {
+    return await this._repository.delete(this._uid);
   }
 }
