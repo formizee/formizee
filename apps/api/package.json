@@ -12,10 +12,11 @@
     "format": "prettier -w src",
     "cf-typegen": "wrangler types",
     "db:up": "drizzle-kit up:sqlite",
-    "db:generate": "drizzle-kit generate:sqlite"
+    "db:generate": "drizzle-kit generate"
   },
   "dependencies": {
     "awilix": "10.0.2",
+    "bcryptjs": "2.4.3",
     "domain": "workspace:*",
     "drizzle-orm": "0.30.10",
     "hono": "4.3.7"
@@ -24,6 +25,7 @@
     "@cloudflare/workers-types": "4.20240512.0",
     "@formizee/eslint-config": "workspace:*",
     "@formizee/typescript-config": "workspace:*",
+    "@types/bcryptjs": "2.4.6",
     "drizzle-kit": "0.21.2",
     "typescript": "5.4.5",
     "wrangler": "3.57.0"

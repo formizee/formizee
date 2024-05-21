@@ -1,5 +1,5 @@
 {
-  "extends": "@formizee/typescript-config/base.json",
+  "extends": "@formizee/typescript-config/api.json",
 	"compilerOptions": {
 		"types": ["@cloudflare/workers-types/2023-07-01"],
     "paths": {
