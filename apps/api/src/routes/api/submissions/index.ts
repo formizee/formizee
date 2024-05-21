@@ -12,6 +12,41 @@ import {
 
 export const router = new Hono();
 
+router.get('/:uid', async context => {
+  const {isAuth, user} = await verifySession(context);
+  if (!isAuth || !user)
+    return context.json(
+      {error: 'Please, login first in order to do this action'},
+      401
+    );
+
+  // 1. Get the submission data
+  const submission = context.req.param('uid');
+
+  const service = new LoadSubmission(submission);
+  const response = await service.run();
+
+  if(!response.ok) return context.json(response.body, response.status as StatusCode)
+
+  // 2. Check if the user is the owner of the form
+  const endpointsService = new LoadEndpoint(response.body.endpoint);
+  const endpointResponse = await endpointsService.run();
+
+  if (!endpointResponse.ok)
+    return context.json(
+      endpointResponse.error,
+      endpointResponse.status as StatusCode
+    );
+
+  if (endpointResponse.body.owner !== user)
+    return context.json(
+      {error: 'You do not have permission to access this data'},
+      401
+    );
+
+  return context.json(response.body, response.status as StatusCode);
+});
+
 router.get('/:form', async context => {
   const {isAuth, user} = await verifySession(context);
   if (!isAuth || !user)
