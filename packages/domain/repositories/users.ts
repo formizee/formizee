@@ -1,17 +1,16 @@
 import type {Uid, Name, Email, Password} from '@/models/values';
-import type {User} from '@/models';
+import type {User, Response} from '@/models';
 
 export interface UsersRepository {
-  get: (uid: Uid) => Promise<User>;
-  delete: (uid: Uid) => Promise<void>;
-  updateName: (uid: Uid, newName: Name) => Promise<void>;
-  updateEmail: (uid: Uid, newEmail: Email) => Promise<void>;
-  updatePassword: (uid: Uid, newPassword: Password) => Promise<void>;
-  updateLinkedEmails: (uid: Uid, linkedEmails: Email[]) => Promise<void>;
-  create: (
-    uid: Uid,
+  load: (uid: Uid) => Promise<Response<User>>;
+  delete: (uid: Uid) => Promise<Response<void>>;
+  updateName: (uid: Uid, newName: Name) => Promise<Response<void>>;
+  updateEmail: (uid: Uid, newEmail: Email) => Promise<Response<void>>;
+  updatePassword: (uid: Uid, newPassword: Password) => Promise<Response<void>>;
+  updateLinkedEmails: (uid: Uid, linkedEmails: Email[]) => Promise<Response<void>>;
+  save: (
     name: Name,
     email: Email,
     password: Password
-  ) => Promise<User>;
+  ) => Promise<Response<User>>
 }
