@@ -1,2 +1,1 @@
-export {createSession, updateSession, deleteSession} from './session';
-export {verifySession} from './dal';
+export {createSession, updateSession, deleteSession, verifySession} from './session';
