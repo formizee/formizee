@@ -23,6 +23,9 @@ importers:
 
   apps/api:
     dependencies:
+      '@hono/zod-validator':
+        specifier: 0.2.1
+        version: 0.2.1(hono@4.3.7)(zod@3.23.8)
       awilix:
         specifier: 10.0.2
         version: 10.0.2
@@ -41,6 +44,9 @@ importers:
       jose:
         specifier: 5.3.0
         version: 5.3.0
+      zod:
+        specifier: 3.23.8
+        version: 3.23.8
     devDependencies:
       '@cloudflare/workers-types':
         specifier: 4.20240512.0
@@ -978,6 +984,12 @@ packages:
 
   '@floating-ui/utils@0.2.2':
     resolution: {integrity: sha512-J4yDIIthosAsRZ5CPYP/jQvUAQtlZTTD/4suA08/FEnlxqW3sKS9iAhgsa9VYLZ6vDHn/ixJgIqRQPotoBjxIw==}
+
+  '@hono/zod-validator@0.2.1':
+    resolution: {integrity: sha512-HFoxln7Q6JsE64qz2WBS28SD33UB2alp3aRKmcWnNLDzEL1BLsWfbdX6e1HIiUprHYTIXf5y7ax8eYidKUwyaA==}
+    peerDependencies:
+      hono: '>=3.9.0'
+      zod: ^3.19.1
 
   '@hookform/resolvers@3.4.0':
     resolution: {integrity: sha512-+oAqK3okmoEDnvUkJ3N/mvNMeeMv5Apgy1jkoRmlaaAF4vBgcJs9tHvtXU7VE4DvPosvAUUkPOaNFunzt1dbgA==}
@@ -4727,6 +4739,11 @@ snapshots:
       react-dom: 18.3.1(react@18.3.1)
 
   '@floating-ui/utils@0.2.2': {}
+
+  '@hono/zod-validator@0.2.1(hono@4.3.7)(zod@3.23.8)':
+    dependencies:
+      hono: 4.3.7
+      zod: 3.23.8
 
   '@hookform/resolvers@3.4.0(react-hook-form@7.51.4(react@18.3.1))':
     dependencies:
