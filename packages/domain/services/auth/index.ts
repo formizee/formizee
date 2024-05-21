@@ -1,5 +1,11 @@
 import type {Name, Email, Password} from '@/models/values';
 import type {AuthResponse, AuthState} from './types'
+import type {Response, User} from '@/models';
+
+export interface AuthService {
+  login(email: Email, password: string): Promise<Response<User>>;
+  register(name: Name, email: Email, password: Password): Promise<Response<User>>;
+}
 
 export type AuthServiceLogin = (
   email: Email,
