@@ -1,9 +1,8 @@
-import {SaveUser, LoadUser, LoadUserPasswordHash} from '@/useCases/users';
-import {Uid} from 'domain/models/values';
-import {Hono} from 'hono';
-
+import { AuthLogin, AuthRegister } from '@/useCases/auth';
 import {createSession, deleteSession} from '@/lib/auth';
-import {compare} from 'bcryptjs';
+import { StatusCode } from 'hono/utils/http-status';
+import { Hono } from 'hono';
+
 
 const authRouter = new Hono();
 
@@ -11,64 +10,42 @@ authRouter.get('/status', async context => {
   return context.json('OK', 200);
 });
 
-authRouter.post('/login', async c => {
-  const {email, password} = await c.req.json<{
+authRouter.post('/login', async context => {
+  const {email, password} = await context.req.json<{
     email: string;
     password: string;
   }>();
 
-  // 1. Validate data
-  const load = new LoadUser(email);
-  const user = await load.run();
+  const service = new AuthLogin(email, password);
+  const user = await service.run();
 
-  if (user.status === 404) return c.json({error: 'Invalid credentials'}, 401);
+  if(!user.ok) return context.json(user.body, user.status as StatusCode);
 
-  // 2. Validate login
-  const loadPassword = new LoadUserPasswordHash(user.body.uid);
-  const passwordHash = await loadPassword.run();
+  await createSession(context, user.body.uid);
 
-  if (passwordHash.status !== 200)
-    return c.json({error: 'Internal Error'}, 500);
-
-  const isValid = await compare(password, passwordHash.body);
-  if (!isValid) return c.json({error: 'Invalid credentials'}, 401);
-
-  // 3. Create a user session
-  await createSession(c, new Uid(user.body.uid));
-
-  return c.json(user.body, 201);
+  return context.json(user.body, 201);
 });
 
-authRouter.post('/register', async c => {
-  const {name, email, password} = await c.req.json<{
+authRouter.post('/register', async context => {
+  const {name, email, password} = await context.req.json<{
     name: string;
     email: string;
     password: string;
   }>();
 
-  // 1. Validate data
-  const load = new LoadUser(email);
-  const userExists = await load.run();
+  const service = new AuthRegister(name, email, password);
+  const user = await service.run();
 
-  if (userExists.status !== 404)
-    return c.json({error: 'User already exists'}, 409);
+  if(!user.ok) return context.json(user.body, user.status as StatusCode);
 
-  // 2. Insert data on database
-  const save = new SaveUser(name, email, password);
-  const userSaved = await save.run();
+  await createSession(context, user.body.uid);
 
-  if (userSaved.status !== 201) return c.json({error: 'Internal Error'}, 500);
-
-  // 3. Create a user session
-  await createSession(c, new Uid(userSaved.body.uid));
-
-  return c.json(userSaved.body, 201);
+  return context.json(user.body, 201);
 });
 
-authRouter.post('/logout', async c => {
-  await deleteSession(c);
-
-  return c.json('OK', 200);
+authRouter.post('/logout', async context => {
+  await deleteSession(context);
+  return context.json('OK', 200);
 });
 
 export default authRouter;
