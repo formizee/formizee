@@ -1,14 +1,15 @@
 import {LoadEndpointsByOwner, SaveEndpoint} from '@/useCases/endpoints';
-import {verifySession} from '@/lib/auth/dal';
-import {Hono} from 'hono';
 import {StatusCode} from 'hono/utils/http-status';
+import {Hono} from 'hono';
+
+import {verifySession} from '@/lib/auth';
 
 const router = new Hono();
 
-router.get('/', async c => {
-  const {isAuth, user} = await verifySession(c);
+router.get('/', async context => {
+  const {isAuth, user} = await verifySession(context);
   if (!isAuth || !user)
-    return c.json(
+    return context.json(
       {error: 'Please, login first in order to do this action'},
       401
     );
@@ -16,23 +17,23 @@ router.get('/', async c => {
   const service = new LoadEndpointsByOwner(user);
   const response = await service.run();
 
-  return c.json(response.body, response.status as StatusCode);
+  return context.json(response.body, response.status as StatusCode);
 });
 
-router.post('/', async c => {
-  const {isAuth, user} = await verifySession(c);
+router.post('/', async context => {
+  const {isAuth, user} = await verifySession(context);
   if (!isAuth || !user)
-    return c.json(
+    return context.json(
       {error: 'Please, login first in order to do this action'},
       401
     );
 
-  const {name} = await c.req.json<{name: string}>();
+  const {name} = await context.req.json<{name: string}>();
 
   const service = new SaveEndpoint(name, user);
   const response = await service.run();
 
-  return c.json(response.body, response.status as StatusCode);
+  return context.json(response.body, response.status as StatusCode);
 });
 
 export default router;
