@@ -9,8 +9,9 @@ import {
   SaveSubmission
 } from '@/useCases/submissions';
 
+/* @ts-ignore-next-line */
+import {zValidator} from '@hono/zod-validator';
 import {verifySession} from '@/lib/auth';
-import {zValidator} from '@/middleware';
 import {paramSchema} from './schema';
 
 export const router = new Hono();

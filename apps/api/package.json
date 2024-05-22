@@ -14,6 +14,7 @@
     "db:generate": "drizzle-kit generate"
   },
   "dependencies": {
+    "@hono/zod-validator": "0.2.1",
     "awilix": "10.0.2",
     "bcryptjs": "2.4.3",
     "domain": "workspace:*",

@@ -4,7 +4,8 @@ import {Hono} from 'hono';
 
 import {createSession, deleteSession} from '@/lib/auth';
 import {loginSchema, registerSchema} from './schema';
-import {zValidator} from '@/middleware';
+/* @ts-ignore-next-line */
+import {zValidator} from '@hono/zod-validator';
 
 const authRouter = new Hono();
 

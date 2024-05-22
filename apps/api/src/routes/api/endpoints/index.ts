@@ -2,7 +2,8 @@ import {LoadEndpointsByOwner, SaveEndpoint} from '@/useCases/endpoints';
 import {StatusCode} from 'hono/utils/http-status';
 import {Hono} from 'hono';
 
-import {zValidator} from '@/middleware';
+/* @ts-ignore-next-line */
+import {zValidator} from '@hono/zod-validator';
 import {verifySession} from '@/lib/auth';
 import {saveSchema} from './schema';
 

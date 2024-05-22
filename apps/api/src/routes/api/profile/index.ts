@@ -15,7 +15,8 @@ import {
   nameSchema,
   passwordSchema
 } from './schema';
-import {zValidator} from '@/middleware';
+/* @ts-ignore-next-line */
+import {zValidator} from '@hono/zod-validator';
 import {verifySession} from '@/lib/auth';
 
 const router = new Hono();
