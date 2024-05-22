@@ -56,7 +56,7 @@ export class UsersRepositoryImplementation implements UsersRepository {
         name: name.value,
         email: email.value,
         password: password.value,
-        linkedEmails: `[${email.value}]`
+        linkedEmails: `["${email.value}"]`
       })
       .returning();
 
