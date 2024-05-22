@@ -17,7 +17,7 @@ export class SecretsProvider {
     this.smtp = apiKey;
   }
 
-  getSmtp() {
+  getSmtp(): string {
     if (!this.smtp) {
       throw new Error('Smtp key is not set');
     }
