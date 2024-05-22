@@ -59,7 +59,7 @@ export const sendVerificationSchema = z.object({
   email: z.string().email()
 })
 
-export const verifyUserSchema = z.object({
+export const verifyTokenSchema = z.object({
   email: z.string().email(),
   token: z.string().length(6).regex(/^\d+$/)
 })

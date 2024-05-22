@@ -3,9 +3,10 @@ import {StatusCode} from 'hono/utils/http-status';
 import {Hono} from 'hono';
 
 import {createSession, deleteSession} from '@/lib/auth';
-import {loginSchema, registerSchema, sendVerificationSchema, verifyUserSchema} from './schema';
+import {loginSchema, registerSchema, sendVerificationSchema, verifyTokenSchema} from './schema';
 /* @ts-ignore-next-line */
 import {zValidator} from '@hono/zod-validator';
+import { AuthResetPassword } from '@/useCases/auth/reset-password';
 
 const authRouter = new Hono();
 
@@ -52,11 +53,24 @@ authRouter.post('/send-verification', zValidator('json', sendVerificationSchema)
   return context.json(response.body, response.status as StatusCode);
 })
 
-authRouter.post('/verify-account', zValidator('json', verifyUserSchema), async context => {
+authRouter.post('/verify-account', zValidator('json', verifyTokenSchema), async context => {
   const {email, token} = context.req.valid('json');
   
   const service = new AuthVerifyUser(email, token);
   const user = await service.run();
+
+  return context.json(user.body, user.status as StatusCode);
+})
+
+authRouter.post('/reset-password', zValidator('json', verifyTokenSchema), async context => {
+  const {email, token} = context.req.valid('json');
+  
+  const service = new AuthResetPassword(email, token);
+  const user = await service.run();
+
+  if (!user.ok) return context.json(user.body, user.status as StatusCode);
+
+  await createSession(context, user.body.uid);
 
   return context.json(user.body, user.status as StatusCode);
 })

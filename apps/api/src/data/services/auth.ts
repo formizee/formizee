@@ -86,6 +86,40 @@ export class AuthServiceImplementation implements AuthService {
     return Response.success(user);
   }
 
+  async resetPassword(email: Email, token: string): Promise<Response<User>> {
+    // 1. Find the token
+    const tokenResponse = await this.db.select().from(authTokens).where(eq(authTokens.email, email.value));
+    if(!tokenResponse[0]) return Response.error("Invalid token.", 401);
+
+    // 2. Check if is expired.
+    const currentTime = new Date();
+    const expireTime = new Date(tokenResponse[0].expiresAt);
+    if(currentTime > expireTime) {
+      await this.db.delete(authTokens).where(eq(authTokens.email, email.value));
+      return Response.error("Expired token, please get a new one.", 401);
+    }
+
+    // 3. Compare tokens.
+    if(tokenResponse[0].token.toString() !== token) return Response.error("Invalid token.", 401);
+
+    // 4. Delete the token
+    await this.db.delete(authTokens).where(eq(authTokens.email, email.value));
+
+    // 5. Retrieve user
+    const response = await this.db.update(users).set({verified: true}).where(eq(users.email, email.value)).returning();
+    if(!response[0]) return Response.error("The user does not exists.", 404);
+
+    const user = new User(
+      response[0].id,
+      response[0].name,
+      response[0].email,
+      response[0].forms,
+      response[0].linkedEmails,
+    );
+
+    return Response.success(user);
+  }
+
   async sendVerification(email: Email): Promise<Response<true>> {
     const sendEmail = async (to: string, token: string) => {
       const mail = new Mail(
