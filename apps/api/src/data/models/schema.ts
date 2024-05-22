@@ -9,6 +9,7 @@ export const users = sqliteTable('users', {
   name: text('name', {length: 32}).notNull(),
   email: text('email', {length: 32}).notNull().unique(),
   password: text('password', {length: 64}).notNull(),
+  verified: integer("verified", {mode: 'boolean'}).notNull().default(false),
   forms: text('forms').notNull(),
   linkedEmails: text('linkedEmails').notNull(),
   timestamp: text('timestamp')
@@ -50,3 +51,14 @@ export const submissions = sqliteTable('submissions', {
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull()
 });
+
+export const authTokens = sqliteTable('auth_tokens', {
+  email: text("email").primaryKey().notNull().references(() => users.email),
+  token: integer("token", {mode: 'number'}).notNull(),
+  expiresAt: text('expiresAt')
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  timestamp: text('timestamp')
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull()
+})

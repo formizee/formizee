@@ -5,6 +5,8 @@ import type {Response, User} from '@/models';
 export interface AuthService {
   login(email: Email, password: string): Promise<Response<User>>;
   register(name: Name, email: Email, password: Password): Promise<Response<User>>;
+  verifyUser(email: Email, token: string): Promise<Response<User>>;
+  sendVerification(email: Email): Promise<Response<true>>;
 }
 
 export type AuthServiceLogin = (

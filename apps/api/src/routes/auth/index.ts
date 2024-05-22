@@ -1,9 +1,9 @@
-import {AuthLogin, AuthRegister} from '@/useCases/auth';
+import {AuthLogin, AuthRegister, AuthSendVerification, AuthVerifyUser} from '@/useCases/auth';
 import {StatusCode} from 'hono/utils/http-status';
 import {Hono} from 'hono';
 
 import {createSession, deleteSession} from '@/lib/auth';
-import {loginSchema, registerSchema} from './schema';
+import {loginSchema, registerSchema, sendVerificationSchema, verifyUserSchema} from './schema';
 /* @ts-ignore-next-line */
 import {zValidator} from '@hono/zod-validator';
 
@@ -42,6 +42,24 @@ authRouter.post(
     return context.json(user.body, 201);
   }
 );
+
+authRouter.post('/send-verification', zValidator('json', sendVerificationSchema), async context => {
+  const {email} = context.req.valid('json');
+  
+  const service = new AuthSendVerification(email);
+  const response = await service.run();
+
+  return context.json(response.body, response.status as StatusCode);
+})
+
+authRouter.post('/verify-account', zValidator('json', verifyUserSchema), async context => {
+  const {email, token} = context.req.valid('json');
+  
+  const service = new AuthVerifyUser(email, token);
+  const user = await service.run();
+
+  return context.json(user.body, user.status as StatusCode);
+})
 
 authRouter.post('/logout', async context => {
   await deleteSession(context);
