@@ -2,7 +2,6 @@ import {LoadEndpoint} from '@/useCases/endpoints';
 import {StatusCode} from 'hono/utils/http-status';
 import {Hono} from 'hono';
 
-import {verifySession} from '@/lib/auth';
 import {
   DeleteSubmission,
   LoadSubmission,
@@ -10,9 +9,13 @@ import {
   SaveSubmission
 } from '@/useCases/submissions';
 
+import { verifySession } from '@/lib/auth';
+import { zValidator } from '@/middleware';
+import { paramSchema } from './schema';
+
 export const router = new Hono();
 
-router.get('/:uid', async context => {
+router.get('/:uid', zValidator('param', paramSchema), async context => {
   const {isAuth, user} = await verifySession(context);
   if (!isAuth || !user)
     return context.json(
@@ -21,7 +24,7 @@ router.get('/:uid', async context => {
     );
 
   // 1. Get the submission data
-  const submission = context.req.param('uid');
+  const submission = context.req.valid('param');
 
   const service = new LoadSubmission(submission);
   const response = await service.run();
@@ -47,7 +50,7 @@ router.get('/:uid', async context => {
   return context.json(response.body, response.status as StatusCode);
 });
 
-router.get('/:form', async context => {
+router.get('/:form', zValidator('param', paramSchema), async context => {
   const {isAuth, user} = await verifySession(context);
   if (!isAuth || !user)
     return context.json(
@@ -55,7 +58,7 @@ router.get('/:form', async context => {
       401
     );
 
-  const endpoint = context.req.param('form');
+  const endpoint = context.req.valid('param');
 
   // 1. Validate the request with zod
 
@@ -82,7 +85,7 @@ router.get('/:form', async context => {
   return context.json(response.body, response.status as StatusCode);
 });
 
-router.post('/:form', async context => {
+router.post('/:form', zValidator('param', paramSchema), async context => {
   const {isAuth, user} = await verifySession(context);
   if (!isAuth || !user)
     return context.json(
@@ -90,10 +93,8 @@ router.post('/:form', async context => {
       401
     );
 
-  const endpoint = context.req.param('form');
+  const endpoint = context.req.valid('param')
   const data = await context.req.formData();
-
-  // 1. Validate the request with zod
 
   // 2. Check if the user is the owner of the form
   const endpointsService = new LoadEndpoint(endpoint);
@@ -118,7 +119,7 @@ router.post('/:form', async context => {
   return context.json(response.body, response.status as StatusCode);
 });
 
-router.delete('/:uid', async context => {
+router.delete('/:uid', zValidator('param', paramSchema), async context => {
   const {isAuth, user} = await verifySession(context);
   if (!isAuth || !user)
     return context.json(
@@ -126,7 +127,7 @@ router.delete('/:uid', async context => {
       401
     );
 
-  const submission = context.req.param('uid');
+  const submission = context.req.valid('param');
 
   // 1. Validate the request with zod
 

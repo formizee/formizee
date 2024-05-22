@@ -2,7 +2,9 @@ import {LoadEndpointsByOwner, SaveEndpoint} from '@/useCases/endpoints';
 import {StatusCode} from 'hono/utils/http-status';
 import {Hono} from 'hono';
 
+import { zValidator } from '@/middleware';
 import {verifySession} from '@/lib/auth';
+import { saveSchema } from './schema';
 
 const router = new Hono();
 
@@ -20,7 +22,7 @@ router.get('/', async context => {
   return context.json(response.body, response.status as StatusCode);
 });
 
-router.post('/', async context => {
+router.post('/', zValidator('json', saveSchema), async context => {
   const {isAuth, user} = await verifySession(context);
   if (!isAuth || !user)
     return context.json(
@@ -28,7 +30,7 @@ router.post('/', async context => {
       401
     );
 
-  const {name} = await context.req.json<{name: string}>();
+  const {name} = context.req.valid('json')
 
   const service = new SaveEndpoint(name, user);
   const response = await service.run();

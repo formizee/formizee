@@ -9,6 +9,8 @@ import {
   UpdateUserPassword
 } from '@/useCases/users';
 
+import { emailSchema, linkedEmailsSchema, nameSchema, passwordSchema } from './schema';
+import { zValidator } from '@/middleware';
 import {verifySession} from '@/lib/auth';
 
 const router = new Hono();
@@ -27,8 +29,8 @@ router.get('/', async context => {
   return context.json(response.body, response.status as StatusCode);
 });
 
-router.put('/name', async context => {
-  const {name} = await context.req.json<{name: string}>();
+router.put('/name', zValidator('json', nameSchema), async context => {
+  const {name} = context.req.valid('json')
 
   const {isAuth, user} = await verifySession(context);
   if (!isAuth || !user)
@@ -43,8 +45,8 @@ router.put('/name', async context => {
   return context.json(response.error ?? 'OK', response.status as StatusCode);
 });
 
-router.put('/email', async context => {
-  const {email} = await context.req.json<{email: string}>();
+router.put('/email', zValidator('json', emailSchema), async context => {
+  const {email} = context.req.valid('json');
 
   const {isAuth, user} = await verifySession(context);
   if (!isAuth || !user)
@@ -59,8 +61,8 @@ router.put('/email', async context => {
   return context.json(response.error ?? 'OK', response.status as StatusCode);
 });
 
-router.put('/password', async context => {
-  const {password} = await context.req.json<{password: string}>();
+router.put('/password', zValidator('json', passwordSchema), async context => {
+  const {password} = context.req.valid('json');
 
   const {isAuth, user} = await verifySession(context);
   if (!isAuth || !user)
@@ -75,8 +77,8 @@ router.put('/password', async context => {
   return context.json(response.error ?? 'OK', response.status as StatusCode);
 });
 
-router.put('/linked-emails', async context => {
-  const {emails} = await context.req.json<{emails: string[]}>();
+router.put('/linked-emails', zValidator('json', linkedEmailsSchema), async context => {
+  const {emails} = context.req.valid('json');
 
   const {isAuth, user} = await verifySession(context);
   if (!isAuth || !user)
