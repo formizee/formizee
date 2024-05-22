@@ -1,33 +1,28 @@
-import nodemailer, {Transporter} from 'nodemailer';
 import {SecretsProvider} from '@/lib/secrets'
 import {MailService} from 'domain/services';
 import {Response, Mail} from 'domain/models';
 import {Uid} from 'domain/models/values';
+import {Resend} from 'resend';
 
 export class MailServiceImplementation implements MailService {
-  private readonly smtp: Transporter;
+  private readonly smtp: Resend;
 
   constructor() {
-    const pass = SecretsProvider.getInstance().getSmtp();
-    this.smtp = nodemailer.createTransport({
-      host: 'smtp.resend.com',
-      secure: true,
-      port: 465,
-      auth: { user: 'resend', pass }
-    });
+    const apiKey = SecretsProvider.getInstance().getSmtp();
+    this.smtp = new Resend(apiKey);
   }
 
   async send(mail: Mail): Promise<Response<Uid>> {
-    const info = await this.smtp.sendMail({
-      from: {name: mail.name, address: mail.from},
+    const {data, error} = await this.smtp.emails.send({
+      from: `${mail.name} <${mail.from}>`,
       to: mail.to,
       subject: mail.subject,
       html: mail.html
     });
 
-    if (!info.messageId) Response.error('Unexpected error.', 500);
-    const response = new Uid(info.messageId);
+    if (error || !data?.id) return Response.error('Unexpected error.', 500);
 
+    const response = new Uid(data?.id);
     return Response.success(response, 201);
   }
 }
