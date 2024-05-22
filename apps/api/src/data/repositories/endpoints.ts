@@ -64,7 +64,7 @@ export class EndpointsRepositoryImplementation implements EndpointsRepository {
     return Response.success(result);
   }
 
-  async save(name: Name, owner: Uid) {
+  async save(name: string, owner: Uid) {
     const ownerData = await this.db
       .select()
       .from(users)
@@ -74,7 +74,7 @@ export class EndpointsRepositoryImplementation implements EndpointsRepository {
     const response = await this.db
       .insert(endpoints)
       .values({
-        name: name.value,
+        name,
         owner: owner.value,
         targetEmail: ownerData[0].email
       })

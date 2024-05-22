@@ -1,10 +1,10 @@
 import type {Endpoint, Response} from '@/models';
-import type {Uid, Email, Name} from '@/models/values';
+import type {Uid, Email} from '@/models/values';
 
 export interface EndpointsRepository {
   load(uid: Uid): Promise<Response<Endpoint>>;
   loadByOwner(owner: Uid): Promise<Response<Endpoint[]>>;
-  save(name: Name, owner: Uid): Promise<Response<Endpoint>>;
+  save(name: string, owner: Uid): Promise<Response<Endpoint>>;
   delete(uid: Uid): Promise<Response<void>>;
 
   updateEnabled(uid: Uid, isEnabled: boolean): Promise<Response<void>>;

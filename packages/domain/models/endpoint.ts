@@ -1,8 +1,8 @@
-import {Uid, Email, Name} from './values';
+import {Uid, Email} from './values';
 
 export class Endpoint {
   private readonly _uid: Uid;
-  private readonly _name: Name;
+  private readonly _name: string;
   private readonly _owner: Uid;
   private readonly _submissions: Uid[] = [];
 
@@ -20,8 +20,8 @@ export class Endpoint {
     redirectUrl: string,
     submissions?: string[]
   ) {
+    this._name = name;
     this._uid = new Uid(uid);
-    this._name = new Name(name);
     this._owner = new Uid(owner);
 
     if(submissions && submissions?.length > 0) {
