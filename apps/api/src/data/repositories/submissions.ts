@@ -1,7 +1,7 @@
 import {DrizzleD1Database, drizzle} from 'drizzle-orm/d1';
 import {SubmissionsRepository} from 'domain/repositories';
 import {Response, Submission} from 'domain/models';
-import {DatabaseProvider} from '@/lib/db';
+import {SecretsProvider} from '@/lib/secrets';
 import {Uid} from 'domain/models/values';
 
 import {parseFormData, stringifyFormData} from '@/lib/adapters';
@@ -14,7 +14,7 @@ export class SubmissionsRepositoryImplementation
   private readonly db: DrizzleD1Database;
 
   constructor() {
-    const provider = DatabaseProvider.getInstance();
+    const provider = SecretsProvider.getInstance();
     this.db = drizzle(provider.getDb());
   }
 

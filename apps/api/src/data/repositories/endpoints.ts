@@ -1,7 +1,7 @@
 import {EndpointsRepository} from 'domain/repositories';
-import {Email, Name, Uid} from 'domain/models/values';
+import {Email, Uid} from 'domain/models/values';
 import {Response, Endpoint} from 'domain/models';
-import {DatabaseProvider} from '@/lib/db';
+import {SecretsProvider} from '@/lib/secrets';
 
 import {DrizzleD1Database, drizzle} from 'drizzle-orm/d1';
 import {parseLinkedSubmissions} from '@/lib/adapters';
@@ -12,7 +12,7 @@ export class EndpointsRepositoryImplementation implements EndpointsRepository {
   private readonly db: DrizzleD1Database;
 
   constructor() {
-    const provider = DatabaseProvider.getInstance();
+    const provider = SecretsProvider.getInstance();
     this.db = drizzle(provider.getDb());
   }
 

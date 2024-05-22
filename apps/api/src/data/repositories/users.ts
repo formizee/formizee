@@ -1,7 +1,7 @@
 import {Uid, Name, Email, Password} from 'domain/models/values';
 import {UsersRepository} from 'domain/repositories';
+import {SecretsProvider} from '@/lib/secrets';
 import {Response, User} from 'domain/models';
-import {DatabaseProvider} from '@/lib/db';
 
 import {DrizzleD1Database, drizzle} from 'drizzle-orm/d1';
 import {users} from '@/data/models/schema';
@@ -17,7 +17,7 @@ export class UsersRepositoryImplementation implements UsersRepository {
   private readonly db: DrizzleD1Database;
 
   constructor() {
-    const provider = DatabaseProvider.getInstance();
+    const provider = SecretsProvider.getInstance();
     this.db = drizzle(provider.getDb());
   }
 

@@ -2,7 +2,7 @@ import {Name, Email, Password} from 'domain/models/values';
 import {DrizzleD1Database, drizzle} from 'drizzle-orm/d1';
 import {Response, User} from 'domain/models';
 import {AuthService} from 'domain/services';
-import {DatabaseProvider} from '@/lib/db';
+import {SecretsProvider} from '@/lib/secrets';
 import {SaveUser} from '@/useCases/users';
 
 import {parseLinkedEmails, parseLinkedForms} from '@/lib/adapters';
@@ -14,7 +14,7 @@ export class AuthServiceImplementation implements AuthService {
   private readonly db: DrizzleD1Database;
 
   constructor() {
-    const provider = DatabaseProvider.getInstance();
+    const provider = SecretsProvider.getInstance();
     this.db = drizzle(provider.getDb());
   }
 

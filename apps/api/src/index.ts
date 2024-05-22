@@ -1,4 +1,4 @@
-import {DatabaseProvider} from '@/lib/db';
+import {SecretsProvider} from '@/lib/secrets';
 import {Hono} from 'hono';
 
 import apiRouter from '@/routes/api';
@@ -6,6 +6,7 @@ import authRouter from '@/routes/auth';
 
 export type Env = {
   DB: D1Database;
+  SMTP_SECRET: string;
   SESSION_SECRET: string;
 };
 
@@ -16,7 +17,8 @@ router.route('/auth', authRouter);
 
 export default {
   fetch(request: Request, env: Env, ctx: ExecutionContext) {
-    DatabaseProvider.getInstance().setDb(env.DB);
+    SecretsProvider.getInstance().setSmtp(env.SMTP_SECRET);
+    SecretsProvider.getInstance().setDb(env.DB);
     return router.fetch(request, env, ctx);
   }
 };
