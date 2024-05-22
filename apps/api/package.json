@@ -18,7 +18,7 @@
     "bcryptjs": "2.4.3",
     "domain": "workspace:*",
     "drizzle-orm": "0.30.10",
-    "hono": "4.3.7",
+    "hono": "4.3.9",
     "jose": "5.3.0",
     "zod": "3.23.8"
   },
