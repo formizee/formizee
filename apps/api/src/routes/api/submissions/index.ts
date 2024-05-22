@@ -9,9 +9,9 @@ import {
   SaveSubmission
 } from '@/useCases/submissions';
 
-import { verifySession } from '@/lib/auth';
-import { zValidator } from '@/middleware';
-import { paramSchema } from './schema';
+import {verifySession} from '@/lib/auth';
+import {zValidator} from '@/middleware';
+import {paramSchema} from './schema';
 
 export const router = new Hono();
 
@@ -29,7 +29,8 @@ router.get('/:uid', zValidator('param', paramSchema), async context => {
   const service = new LoadSubmission(submission);
   const response = await service.run();
 
-  if(!response.ok) return context.json(response.body, response.status as StatusCode)
+  if (!response.ok)
+    return context.json(response.body, response.status as StatusCode);
 
   // 2. Check if the user is the owner of the form
   const endpointsService = new LoadEndpoint(response.body.endpoint);
@@ -93,7 +94,7 @@ router.post('/:form', zValidator('param', paramSchema), async context => {
       401
     );
 
-  const endpoint = context.req.valid('param')
+  const endpoint = context.req.valid('param');
   const data = await context.req.formData();
 
   // 2. Check if the user is the owner of the form

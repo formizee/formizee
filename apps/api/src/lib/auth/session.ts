@@ -34,16 +34,15 @@ export async function updateSession(context: Context) {
   });
 }
 
-export async function verifySession (context: Context) {
+export async function verifySession(context: Context) {
   const cookie = getCookie(context, 'session');
   const session = await decrypt(context, cookie);
 
   if (!session || !session.user) return {isAuth: false, user: undefined};
 
   return {isAuth: true, user: session.user as string};
-};
+}
 
 export async function deleteSession(context: Context) {
   deleteCookie(context, 'session');
 }
-

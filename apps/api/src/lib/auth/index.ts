@@ -1,1 +1,6 @@
-export {createSession, updateSession, deleteSession, verifySession} from './session';
+export {
+  createSession,
+  updateSession,
+  deleteSession,
+  verifySession
+} from './session';

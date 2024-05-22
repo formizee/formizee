@@ -6,12 +6,11 @@ import {
   EndpointsRepositoryImplementation,
   UsersRepositoryImplementation
 } from '@/data/repositories';
-import { AuthServiceImplementation } from '@/data/services';
+import {AuthServiceImplementation} from '@/data/services';
 
 const container = createContainer<Dependencies>();
 
 container.register({
-
   /* Repositories */
   submissionsRepository: asClass(SubmissionsRepositoryImplementation),
   endpointsRepository: asClass(EndpointsRepositoryImplementation),

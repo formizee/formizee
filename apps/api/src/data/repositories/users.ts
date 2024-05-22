@@ -1,16 +1,16 @@
-import { Uid, Name, Email, Password } from 'domain/models/values';
-import { UsersRepository } from 'domain/repositories';
-import { Response, User } from 'domain/models';
-import { DatabaseProvider } from '@/lib/db';
+import {Uid, Name, Email, Password} from 'domain/models/values';
+import {UsersRepository} from 'domain/repositories';
+import {Response, User} from 'domain/models';
+import {DatabaseProvider} from '@/lib/db';
 
-import { DrizzleD1Database, drizzle } from 'drizzle-orm/d1';
-import { users } from '@/data/models/schema';
-import { eq } from 'drizzle-orm';
-import { hash } from 'bcryptjs';
+import {DrizzleD1Database, drizzle} from 'drizzle-orm/d1';
+import {users} from '@/data/models/schema';
+import {eq} from 'drizzle-orm';
+import {hash} from 'bcryptjs';
 import {
   parseLinkedEmails,
   parseLinkedForms,
-  stringifyLinkedEmails,
+  stringifyLinkedEmails
 } from '@/lib/adapters';
 
 export class UsersRepositoryImplementation implements UsersRepository {
@@ -22,7 +22,10 @@ export class UsersRepositoryImplementation implements UsersRepository {
   }
 
   async load(uid: Uid) {
-    const response = await this.db.select().from(users).where(eq(users.id, uid.value));
+    const response = await this.db
+      .select()
+      .from(users)
+      .where(eq(users.id, uid.value));
     if (!response[0]) return Response.error('User not found.', 404);
 
     const linkedEmails = await parseLinkedEmails(response[0].linkedEmails);
@@ -34,24 +37,30 @@ export class UsersRepositoryImplementation implements UsersRepository {
       response[0].email,
       linkedForms,
       linkedEmails
-    )
+    );
 
     return Response.success(user);
   }
 
   async save(name: Name, email: Email, password: Password) {
-    const userExists = await this.db.select().from(users).where(eq(users.email, email.value));
-    if (userExists[0]) return Response.error("User already exists.", 409);
+    const userExists = await this.db
+      .select()
+      .from(users)
+      .where(eq(users.email, email.value));
+    if (userExists[0]) return Response.error('User already exists.', 409);
 
-    const response = await this.db.insert(users).values({
-      forms: '[]',
-      name: name.value,
-      email: email.value,
-      password: password.value,
-      linkedEmails: `[${email.value}]`,
-    }).returning();
+    const response = await this.db
+      .insert(users)
+      .values({
+        forms: '[]',
+        name: name.value,
+        email: email.value,
+        password: password.value,
+        linkedEmails: `[${email.value}]`
+      })
+      .returning();
 
-    if (!response[0]) return Response.error("Unexpected error.", 500);
+    if (!response[0]) return Response.error('Unexpected error.', 500);
 
     const linkedForms = await parseLinkedForms(response[0].forms);
     const linkedEmails = await parseLinkedEmails(response[0].linkedEmails);
@@ -62,7 +71,7 @@ export class UsersRepositoryImplementation implements UsersRepository {
       response[0].email,
       linkedForms,
       linkedEmails
-    )
+    );
 
     return Response.success(user, 201);
   }
@@ -92,7 +101,7 @@ export class UsersRepositoryImplementation implements UsersRepository {
 
     const updated = await this.db
       .update(users)
-      .set({ name: newName.value })
+      .set({name: newName.value})
       .where(eq(users.id, uid.value))
       .returning();
     if (!updated[0]) return Response.error('Internal error.', 500);
@@ -109,7 +118,7 @@ export class UsersRepositoryImplementation implements UsersRepository {
 
     const updated = await this.db
       .update(users)
-      .set({ email: newEmail.value })
+      .set({email: newEmail.value})
       .where(eq(users.id, uid.value))
       .returning();
     if (!updated[0]) return Response.error('Internal error.', 500);
@@ -128,7 +137,7 @@ export class UsersRepositoryImplementation implements UsersRepository {
 
     const updated = await this.db
       .update(users)
-      .set({ password: newHashedPassword })
+      .set({password: newHashedPassword})
       .where(eq(users.id, uid.value))
       .returning();
     if (!updated[0]) return Response.error('Internal error.', 500);
@@ -147,7 +156,7 @@ export class UsersRepositoryImplementation implements UsersRepository {
 
     const updated = await this.db
       .update(users)
-      .set({ linkedEmails: _linkedEmails })
+      .set({linkedEmails: _linkedEmails})
       .where(eq(users.id, uid.value))
       .returning();
     if (!updated[0]) return Response.error('Internal error.', 500);

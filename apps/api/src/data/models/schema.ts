@@ -22,7 +22,9 @@ export const endpoints = sqliteTable('endpoints', {
     .$defaultFn(() => randomUUID()),
   name: text('name', {length: 64}).notNull().default('Untitled Form'),
   submissions: text('submissions').notNull().default('[]'),
-  owner: text('owner').references(() => users.id).notNull(),
+  owner: text('owner')
+    .references(() => users.id)
+    .notNull(),
 
   isEnabled: integer('isEnabled', {mode: 'boolean'}).default(true),
   emailNotifications: integer('emailNotifications', {mode: 'boolean'}).default(

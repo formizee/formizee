@@ -80,7 +80,7 @@ export class EndpointsRepositoryImplementation implements EndpointsRepository {
       })
       .returning();
 
-    if(!response[0]) return Response.error('Internal error.', 500)
+    if (!response[0]) return Response.error('Internal error.', 500);
 
     const endpoint = new Endpoint(
       response[0].id,

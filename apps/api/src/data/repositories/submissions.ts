@@ -8,7 +8,9 @@ import {parseFormData, stringifyFormData} from '@/lib/adapters';
 import {submissions} from '@/data/models/schema';
 import {eq} from 'drizzle-orm';
 
-export class SubmissionsRepositoryImplementation implements SubmissionsRepository {
+export class SubmissionsRepositoryImplementation
+  implements SubmissionsRepository
+{
   private readonly db: DrizzleD1Database;
 
   constructor() {

@@ -9,8 +9,13 @@ import {
   UpdateUserPassword
 } from '@/useCases/users';
 
-import { emailSchema, linkedEmailsSchema, nameSchema, passwordSchema } from './schema';
-import { zValidator } from '@/middleware';
+import {
+  emailSchema,
+  linkedEmailsSchema,
+  nameSchema,
+  passwordSchema
+} from './schema';
+import {zValidator} from '@/middleware';
 import {verifySession} from '@/lib/auth';
 
 const router = new Hono();
@@ -30,7 +35,7 @@ router.get('/', async context => {
 });
 
 router.put('/name', zValidator('json', nameSchema), async context => {
-  const {name} = context.req.valid('json')
+  const {name} = context.req.valid('json');
 
   const {isAuth, user} = await verifySession(context);
   if (!isAuth || !user)
@@ -77,21 +82,25 @@ router.put('/password', zValidator('json', passwordSchema), async context => {
   return context.json(response.error ?? 'OK', response.status as StatusCode);
 });
 
-router.put('/linked-emails', zValidator('json', linkedEmailsSchema), async context => {
-  const {emails} = context.req.valid('json');
+router.put(
+  '/linked-emails',
+  zValidator('json', linkedEmailsSchema),
+  async context => {
+    const {emails} = context.req.valid('json');
 
-  const {isAuth, user} = await verifySession(context);
-  if (!isAuth || !user)
-    return context.json(
-      {error: 'Please, login first in order to do this action'},
-      401
-    );
+    const {isAuth, user} = await verifySession(context);
+    if (!isAuth || !user)
+      return context.json(
+        {error: 'Please, login first in order to do this action'},
+        401
+      );
 
-  const service = new UpdateUserLinkedEmails(user, emails);
-  const response = await service.run();
+    const service = new UpdateUserLinkedEmails(user, emails);
+    const response = await service.run();
 
-  return context.json(response.error ?? 'OK', response.status as StatusCode);
-});
+    return context.json(response.error ?? 'OK', response.status as StatusCode);
+  }
+);
 
 router.delete('/', async context => {
   const {isAuth, user} = await verifySession(context);

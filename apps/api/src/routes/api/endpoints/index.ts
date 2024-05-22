@@ -2,9 +2,9 @@ import {LoadEndpointsByOwner, SaveEndpoint} from '@/useCases/endpoints';
 import {StatusCode} from 'hono/utils/http-status';
 import {Hono} from 'hono';
 
-import { zValidator } from '@/middleware';
+import {zValidator} from '@/middleware';
 import {verifySession} from '@/lib/auth';
-import { saveSchema } from './schema';
+import {saveSchema} from './schema';
 
 const router = new Hono();
 
@@ -30,7 +30,7 @@ router.post('/', zValidator('json', saveSchema), async context => {
       401
     );
 
-  const {name} = context.req.valid('json')
+  const {name} = context.req.valid('json');
 
   const service = new SaveEndpoint(name, user);
   const response = await service.run();
