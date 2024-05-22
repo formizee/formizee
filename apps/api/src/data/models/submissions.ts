@@ -8,7 +8,7 @@ export const submissions = sqliteTable('submissions', {
 
   endpoint: text('endpoint').references(() => endpoints.id).notNull(),
 
-  formData: text('form_data').notNull(),
+  formData: text('form_data', {mode: 'json'}).notNull().default([]),
 
   timestamp: text('timestamp').default(sql`CURRENT_TIMESTAMP`).notNull()
 });
