@@ -6,7 +6,11 @@ import {
   EndpointsRepositoryImplementation,
   UsersRepositoryImplementation
 } from '@/data/repositories';
-import {AuthServiceImplementation} from '@/data/services';
+
+import {
+  MailServiceImplementation,
+  AuthServiceImplementation
+} from '@/data/services';
 
 const container = createContainer<Dependencies>();
 
@@ -17,7 +21,8 @@ container.register({
   usersRepository: asClass(UsersRepositoryImplementation),
 
   /* Services */
-  authService: asClass(AuthServiceImplementation)
+  authService: asClass(AuthServiceImplementation),
+  mailService: asClass(MailServiceImplementation)
 });
 
 export const resolve = container.resolve;
