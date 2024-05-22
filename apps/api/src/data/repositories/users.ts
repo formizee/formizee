@@ -4,14 +4,9 @@ import {SecretsProvider} from '@/lib/secrets';
 import {Response, User} from 'domain/models';
 
 import {DrizzleD1Database, drizzle} from 'drizzle-orm/d1';
-import {users} from '@/data/models/schema';
+import {users} from '@/data/models';
 import {eq} from 'drizzle-orm';
 import {hash} from 'bcryptjs';
-import {
-  parseLinkedEmails,
-  parseLinkedForms,
-  stringifyLinkedEmails
-} from '@/lib/adapters';
 
 export class UsersRepositoryImplementation implements UsersRepository {
   private readonly db: DrizzleD1Database;
@@ -28,15 +23,12 @@ export class UsersRepositoryImplementation implements UsersRepository {
       .where(eq(users.id, uid.value));
     if (!response[0]) return Response.error('User not found.', 404);
 
-    const linkedEmails = await parseLinkedEmails(response[0].linkedEmails);
-    const linkedForms = await parseLinkedForms(response[0].forms);
-
     const user = new User(
       response[0].id,
       response[0].name,
       response[0].email,
-      linkedForms,
-      linkedEmails
+      response[0].forms,
+      response[0].linkedEmails
     );
 
     return Response.success(user);
@@ -52,25 +44,22 @@ export class UsersRepositoryImplementation implements UsersRepository {
     const response = await this.db
       .insert(users)
       .values({
-        forms: '[]',
+        forms: [],
         name: name.value,
         email: email.value,
         password: password.value,
-        linkedEmails: `["${email.value}"]`
+        linkedEmails: [email.value]
       })
       .returning();
 
     if (!response[0]) return Response.error('Unexpected error.', 500);
 
-    const linkedForms = await parseLinkedForms(response[0].forms);
-    const linkedEmails = await parseLinkedEmails(response[0].linkedEmails);
-
     const user = new User(
       response[0].id,
       response[0].name,
       response[0].email,
-      linkedForms,
-      linkedEmails
+      response[0].forms,
+      response[0].linkedEmails,
     );
 
     return Response.success(user, 201);
@@ -152,7 +141,8 @@ export class UsersRepositoryImplementation implements UsersRepository {
       .where(eq(users.id, uid.value));
     if (!userExists[0]) return Response.error('User not found.', 404);
 
-    const _linkedEmails = await stringifyLinkedEmails(linkedEmails);
+    const _linkedEmails: string[] = [];
+    linkedEmails.forEach(email => {_linkedEmails.push(email.value)});
 
     const updated = await this.db
       .update(users)

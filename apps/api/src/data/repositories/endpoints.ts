@@ -4,8 +4,7 @@ import {Response, Endpoint} from 'domain/models';
 import {SecretsProvider} from '@/lib/secrets';
 
 import {DrizzleD1Database, drizzle} from 'drizzle-orm/d1';
-import {parseLinkedSubmissions} from '@/lib/adapters';
-import {endpoints, users} from '../models/schema';
+import {endpoints, users} from '@/data/models';
 import {eq} from 'drizzle-orm';
 
 export class EndpointsRepositoryImplementation implements EndpointsRepository {
@@ -24,15 +23,13 @@ export class EndpointsRepositoryImplementation implements EndpointsRepository {
 
     if (!response[0]) return Response.error('Form not found.', 404);
 
-    const submissions = await parseLinkedSubmissions(response[0].submissions);
-
     const endpoint = new Endpoint(
       response[0].id,
       response[0].name,
       response[0].owner,
       response[0].targetEmail,
       response[0].redirectUrl,
-      submissions
+      response[0].submissions
     );
     return Response.success(endpoint);
   }
@@ -49,14 +46,13 @@ export class EndpointsRepositoryImplementation implements EndpointsRepository {
     let result: Endpoint[] = [];
 
     for (let i = 0; i <= response.length; i++) {
-      const submissions = await parseLinkedSubmissions(response[0].submissions);
       const endpoint = new Endpoint(
         response[0].id,
         response[0].name,
         response[0].owner,
         response[0].targetEmail,
         response[0].redirectUrl,
-        submissions
+        response[0].submissions
       );
       result.push(endpoint);
     }

@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "63d757d3-4563-48bf-838e-4737c7fe9dbb",
+  "id": "174dd297-8f76-48ce-ad8b-8f7d162d1f21",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "auth_tokens": {
@@ -21,13 +21,12 @@
           "notNull": true,
           "autoincrement": false
         },
-        "expiresAt": {
-          "name": "expiresAt",
+        "expires_at": {
+          "name": "expires_at",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
-          "default": "CURRENT_TIMESTAMP"
+          "autoincrement": false
         },
         "timestamp": {
           "name": "timestamp",
@@ -75,14 +74,6 @@
           "autoincrement": false,
           "default": "'Untitled Form'"
         },
-        "submissions": {
-          "name": "submissions",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": "'[]'"
-        },
         "owner": {
           "name": "owner",
           "type": "text",
@@ -90,36 +81,44 @@
           "notNull": true,
           "autoincrement": false
         },
-        "isEnabled": {
-          "name": "isEnabled",
+        "form_enabled": {
+          "name": "form_enabled",
           "type": "integer",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false,
           "default": true
         },
-        "emailNotifications": {
-          "name": "emailNotifications",
+        "email_enabled": {
+          "name": "email_enabled",
           "type": "integer",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false,
           "default": true
         },
-        "redirectUrl": {
-          "name": "redirectUrl",
+        "target_mail": {
+          "name": "target_mail",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "redirect_url": {
+          "name": "redirect_url",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
           "default": "''"
         },
-        "targetEmail": {
-          "name": "targetEmail",
+        "submissions": {
+          "name": "submissions",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false
+          "autoincrement": false,
+          "default": "'[]'"
         },
         "timestamp": {
           "name": "timestamp",
@@ -166,8 +165,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "form": {
-          "name": "form",
+        "form_data": {
+          "name": "form_data",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
@@ -220,7 +219,7 @@
         },
         "email": {
           "name": "email",
-          "type": "text(32)",
+          "type": "text",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
@@ -232,6 +231,21 @@
           "notNull": true,
           "autoincrement": false
         },
+        "forms": {
+          "name": "forms",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'[]'"
+        },
+        "linked_emails": {
+          "name": "linked_emails",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
         "verified": {
           "name": "verified",
           "type": "integer",
@@ -239,20 +253,6 @@
           "notNull": true,
           "autoincrement": false,
           "default": false
-        },
-        "forms": {
-          "name": "forms",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "linkedEmails": {
-          "name": "linkedEmails",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
         },
         "timestamp": {
           "name": "timestamp",

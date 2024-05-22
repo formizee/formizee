@@ -5,7 +5,7 @@ import {SecretsProvider} from '@/lib/secrets';
 import {Uid} from 'domain/models/values';
 
 import {parseFormData, stringifyFormData} from '@/lib/adapters';
-import {submissions} from '@/data/models/schema';
+import {submissions} from '@/data/models';
 import {eq} from 'drizzle-orm';
 
 export class SubmissionsRepositoryImplementation

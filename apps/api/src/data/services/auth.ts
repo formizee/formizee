@@ -4,13 +4,12 @@ import {Mail, Response, User} from 'domain/models';
 import {AuthService} from 'domain/services';
 import {SecretsProvider} from '@/lib/secrets';
 import {SaveUser} from '@/useCases/users';
+import {MailSend} from '@/useCases/mail';
 
-import {parseLinkedEmails, parseLinkedForms} from '@/lib/adapters';
-import {randomInt} from 'node:crypto';
+import {authTokens, users} from '@/data/models';
 import {compare, hash} from 'bcryptjs';
-import {authTokens, users} from '../models/schema';
+import {randomInt} from 'node:crypto';
 import {eq} from 'drizzle-orm';
-import { MailSend } from '@/useCases/mail';
 
 export class AuthServiceImplementation implements AuthService {
   private readonly db: DrizzleD1Database;
@@ -30,15 +29,12 @@ export class AuthServiceImplementation implements AuthService {
     const authenticate = await compare(response[0].password, password);
     if (!authenticate) return Response.error('Invalid email or password.', 401);
 
-    const linkedForms = await parseLinkedForms(response[0].forms);
-    const linkedEmails = await parseLinkedEmails(response[0].linkedEmails);
-
     const user = new User(
       response[0].id,
       response[0].name,
       response[0].email,
-      linkedForms,
-      linkedEmails
+      response[0].forms,
+      response[0].linkedEmails,
     );
 
     return Response.success(user);
@@ -79,16 +75,12 @@ export class AuthServiceImplementation implements AuthService {
     await this.db.delete(authTokens).where(eq(authTokens.email, email.value));
 
     // 6. Retrieve user
-
-    const linkedForms = await parseLinkedForms(response[0].forms);
-    const linkedEmails = await parseLinkedEmails(response[0].linkedEmails);
-
     const user = new User(
       response[0].id,
       response[0].name,
       response[0].email,
-      linkedForms,
-      linkedEmails
+      response[0].forms,
+      response[0].linkedEmails,
     );
 
     return Response.success(user);
