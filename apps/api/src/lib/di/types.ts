@@ -4,7 +4,7 @@ import {
   SubmissionsRepository
 } from 'domain/repositories';
 
-import {AuthService, MailService} from 'domain/services';
+import {AuthService, MailService, WaitlistService} from 'domain/services';
 
 export default interface Dependencies {
   /* Repositories */
@@ -13,6 +13,7 @@ export default interface Dependencies {
   usersRepository: UsersRepository;
 
   /* Services */
-  authService: AuthService;
+  waitlistService: WaitlistService;
   mailService: MailService;
+  authService: AuthService;
 }

@@ -4,6 +4,7 @@ import {Hono} from 'hono';
 //import submissionsRouter from '@/routessubmissions';
 //import endpointsRouter from '@/routes/endpoints';
 //import profileRouter from '@/routes/profile';
+import waitlistRouter from '@/routes/waitlist';
 import authRouter from '@/routes/auth';
 
 export type Env = {
@@ -19,6 +20,7 @@ router.get('/status', async context => context.json('OK', 200));
 //apiRouter.route('/submissions', submissionsRouter);
 //apiRouter.route('/endpoints', endpointsRouter);
 //apiRouter.route('/profile', profileRouter);
+router.route('/waitlist', waitlistRouter);
 router.route('/auth', authRouter);
 
 

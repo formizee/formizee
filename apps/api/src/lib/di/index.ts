@@ -8,6 +8,7 @@ import {
 } from '@/data/repositories';
 
 import {
+  WaitlistServiceImplementation,
   MailServiceImplementation,
   AuthServiceImplementation
 } from '@/data/services';
@@ -21,8 +22,9 @@ container.register({
   usersRepository: asClass(UsersRepositoryImplementation),
 
   /* Services */
-  authService: asClass(AuthServiceImplementation),
-  mailService: asClass(MailServiceImplementation)
+  waitlistService: asClass(WaitlistServiceImplementation),
+  mailService: asClass(MailServiceImplementation),
+  authService: asClass(AuthServiceImplementation)
 });
 
 export const resolve = container.resolve;

@@ -59,3 +59,9 @@ export const authTokens = sqliteTable('auth_tokens', {
 
   timestamp: text('timestamp').default(sql`CURRENT_TIMESTAMP`).notNull()
 })
+
+export const waitlist = sqliteTable('waitlist', {
+  email: text("email").primaryKey().references(() => users.email),
+
+  timestamp: text('timestamp').default(sql`CURRENT_TIMESTAMP`).notNull()
+})
