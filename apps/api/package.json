@@ -12,6 +12,7 @@
     "format": "prettier -w src",
     "cf-typegen": "wrangler types",
     "dev:email-templates": "email dev",
+    "dev:remote": "wrangler dev --remote",
     "db:generate": "drizzle-kit generate"
   },
   "dependencies": {

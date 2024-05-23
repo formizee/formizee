@@ -6,5 +6,5 @@ compatibility_flags = ["nodejs_compat"]
 
 [[d1_databases]]
 binding = "DB"
-database_name = "formizee-preview"
-database_id = "6a07ef76-6305-4faf-80d0-83b13aaf0709"
+database_name = "formizee"
+database_id = "b781729f-67e8-4387-af61-ec6f5f78b71e"
