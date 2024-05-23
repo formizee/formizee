@@ -27,7 +27,7 @@ export class AuthServiceImplementation implements AuthService {
       .where(eq(users.email, email.value));
     if (!response[0]) return Response.error('Invalid email or password.', 401);
 
-    const authenticate = await compare(response[0].password, password);
+    const authenticate = await compare(password, response[0].password);
     if (!authenticate) return Response.error('Invalid email or password.', 401);
 
     const user = new User(
