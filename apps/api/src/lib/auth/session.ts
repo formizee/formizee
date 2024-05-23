@@ -8,8 +8,8 @@ export async function createSession(context: Context, userUid: string) {
   const session = await encrypt(context, {user: userUid, expiresAt});
 
   setCookie(context, 'session', session, {
+    secure: context.env.WORKER_ENV === 'prod',
     httpOnly: true,
-    secure: true,
     expires: expiresAt,
     sameSite: 'lax',
     path: '/'
@@ -26,8 +26,8 @@ export async function updateSession(context: Context) {
 
   const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
   setCookie(context, 'session', session, {
+    secure: context.env.WORKER_ENV === 'prod',
     httpOnly: true,
-    secure: true,
     expires: expires,
     sameSite: 'lax',
     path: '/'
