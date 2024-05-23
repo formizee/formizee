@@ -1,6 +1,11 @@
 import type {Email} from '@/models/values';
+import {Response} from '@/models';
 
-export type Response =
+export interface WaitlistService {
+  join(email: Email): Promise<Response<true>>;
+}
+
+export type WaitlistResponse =
   | {
       error: null;
     }
@@ -8,4 +13,4 @@ export type Response =
       error: Error;
     };
 
-export type WaitlistServiceJoin = (email: Email) => Promise<Response>;
+export type WaitlistServiceJoin = (email: Email) => Promise<WaitlistResponse>;
