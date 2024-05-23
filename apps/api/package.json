@@ -6,14 +6,13 @@
   "private": true,
   "scripts": {
     "lint": "eslint src",
-    "dev": "wrangler dev",
     "start": "wrangler dev",
     "deploy": "wrangler deploy",
     "format": "prettier -w src",
     "cf-typegen": "wrangler types",
     "dev:email-templates": "email dev",
-    "dev:remote": "wrangler dev --remote",
-    "db:generate": "drizzle-kit generate"
+    "db:generate": "drizzle-kit generate",
+    "dev": "wrangler dev --show-interactive-dev-session=false"
   },
   "dependencies": {
     "@hono/zod-validator": "0.2.1",
