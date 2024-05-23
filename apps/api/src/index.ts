@@ -1,27 +1,31 @@
 import {SecretsProvider} from '@/lib/secrets';
 import {Hono} from 'hono';
 
-import apiRouter from '@/routes/api';
+//import submissionsRouter from '@/routessubmissions';
+//import endpointsRouter from '@/routes/endpoints';
+//import profileRouter from '@/routes/profile';
 import authRouter from '@/routes/auth';
 
 export type Env = {
   DB: D1Database;
+  WORKER_ENV: string;
   SMTP_SECRET: string;
   SESSION_SECRET: string;
 };
 
-const router = new Hono<{Bindings: Env}>();
+const router = new Hono<{Bindings: Env}>().basePath('/api');
 
-router.route('/api', apiRouter);
+router.get('/status', async context => context.json('OK', 200));
+//apiRouter.route('/submissions', submissionsRouter);
+//apiRouter.route('/endpoints', endpointsRouter);
+//apiRouter.route('/profile', profileRouter);
 router.route('/auth', authRouter);
 
-const routerFetch = (request: Request, env: Env, ctx: ExecutionContext) => {
-  SecretsProvider.getInstance().setSmtp(env.SMTP_SECRET);
-  SecretsProvider.getInstance().setDb(env.DB);
-  return router.fetch(request, env, ctx);
-}
 
 export default {
-  port: 4000,
-  fetch: routerFetch
+  fetch: (request: Request, env: Env, ctx: ExecutionContext) => {
+    SecretsProvider.getInstance().setSmtp(env.SMTP_SECRET);
+    SecretsProvider.getInstance().setDb(env.DB);
+    return router.fetch(request, env, ctx);
+  }
 };

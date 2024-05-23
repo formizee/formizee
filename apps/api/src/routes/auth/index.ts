@@ -1,20 +1,15 @@
-import {AuthLogin, AuthRegister, AuthSendVerification, AuthVerifyUser} from '@/useCases/auth';
+import {AuthLogin, AuthRegister, AuthSendVerification, AuthVerifyUser, AuthResetPassword} from '@/useCases/auth';
 import {StatusCode} from 'hono/utils/http-status';
 import {Hono} from 'hono';
 
-import {createSession, deleteSession} from '@/lib/auth';
 import {loginSchema, registerSchema, sendVerificationSchema, verifyTokenSchema} from './schema';
+import {createSession, deleteSession} from '@/lib/auth';
 /* @ts-ignore-next-line */
 import {zValidator} from '@hono/zod-validator';
-import { AuthResetPassword } from '@/useCases/auth/reset-password';
 
-const authRouter = new Hono();
+const auth = new Hono();
 
-authRouter.get('/status', async context => {
-  return context.json('OK', 200);
-});
-
-authRouter.post('/login', zValidator('json', loginSchema), async context => {
+auth.post('/login', zValidator('json', loginSchema), async context => {
   const {email, password} = context.req.valid('json');
 
   const service = new AuthLogin(email, password);
@@ -27,7 +22,7 @@ authRouter.post('/login', zValidator('json', loginSchema), async context => {
   return context.json(user.body, 201);
 });
 
-authRouter.post(
+auth.post(
   '/register',
   zValidator('json', registerSchema),
   async context => {
@@ -44,7 +39,7 @@ authRouter.post(
   }
 );
 
-authRouter.post('/send-verification', zValidator('json', sendVerificationSchema), async context => {
+auth.post('/send-verification', zValidator('json', sendVerificationSchema), async context => {
   const {email} = context.req.valid('json');
   
   const service = new AuthSendVerification(email);
@@ -53,7 +48,7 @@ authRouter.post('/send-verification', zValidator('json', sendVerificationSchema)
   return context.json(response.body, response.status as StatusCode);
 })
 
-authRouter.post('/verify-account', zValidator('json', verifyTokenSchema), async context => {
+auth.post('/verify-account', zValidator('json', verifyTokenSchema), async context => {
   const {email, token} = context.req.valid('json');
   
   const service = new AuthVerifyUser(email, token);
@@ -62,7 +57,7 @@ authRouter.post('/verify-account', zValidator('json', verifyTokenSchema), async 
   return context.json(user.body, user.status as StatusCode);
 })
 
-authRouter.post('/reset-password', zValidator('json', verifyTokenSchema), async context => {
+auth.post('/reset-password', zValidator('json', verifyTokenSchema), async context => {
   const {email, token} = context.req.valid('json');
   
   const service = new AuthResetPassword(email, token);
@@ -75,9 +70,9 @@ authRouter.post('/reset-password', zValidator('json', verifyTokenSchema), async 
   return context.json(user.body, user.status as StatusCode);
 })
 
-authRouter.post('/logout', async context => {
+auth.post('/logout', async context => {
   await deleteSession(context);
   return context.json('OK', 200);
 });
 
-export default authRouter;
+export default auth;
