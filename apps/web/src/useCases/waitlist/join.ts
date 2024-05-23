@@ -1,11 +1,11 @@
 'use server';
 
+import {waitlistServiceJoin} from '@/data/services/waitlist';
 import {Email} from 'domain/models/values';
 import {revalidatePath} from 'next/cache';
+import type {ActionState} from '@/types';
 import {redirect} from 'next/navigation';
 import {z} from 'zod';
-import {waitlistServiceJoin} from '@/data/services/waitlist';
-import type {ActionState} from '@/types';
 
 const formSchema = z.object({
   email: z.string().email()
@@ -31,7 +31,6 @@ export const joinWaitlist = async (
   }
 
   const email = new Email(input.data.email);
-
   const {error} = await waitlistServiceJoin(email);
 
   if (error) {
