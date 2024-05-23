@@ -15,10 +15,13 @@ const router = new Hono<{Bindings: Env}>();
 router.route('/api', apiRouter);
 router.route('/auth', authRouter);
 
+const routerFetch = (request: Request, env: Env, ctx: ExecutionContext) => {
+  SecretsProvider.getInstance().setSmtp(env.SMTP_SECRET);
+  SecretsProvider.getInstance().setDb(env.DB);
+  return router.fetch(request, env, ctx);
+}
+
 export default {
-  fetch(request: Request, env: Env, ctx: ExecutionContext) {
-    SecretsProvider.getInstance().setSmtp(env.SMTP_SECRET);
-    SecretsProvider.getInstance().setDb(env.DB);
-    return router.fetch(request, env, ctx);
-  }
+  port: 4000,
+  fetch: routerFetch
 };
