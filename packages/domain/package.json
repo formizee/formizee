@@ -5,8 +5,6 @@
   "exports": {
     "./models": "./models/index.ts",
     "./services": "./services/index.ts",
-    "./services/auth": "./services/auth/index.ts",
-    "./services/waitlist": "./services/waitlist.ts",
     "./repositories": "./repositories/index.ts",
     "./models/values": "./models/values/index.ts"
   },
