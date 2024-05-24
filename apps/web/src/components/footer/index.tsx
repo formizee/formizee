@@ -24,7 +24,7 @@ export function Footer(): JSX.Element {
       <div className="flex flex-col items-end gap-y-4 p-2 text-sm text-neutral-400 sm:flex-row sm:gap-x-6">
         <Link
           className="transition-colors hover:text-neutral-50"
-          href="https://status.formizee.com">
+          href="https://status.formizee.com" target="_blank">
           Status
         </Link>
         <Link
