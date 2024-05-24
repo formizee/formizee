@@ -19,7 +19,7 @@ export class WaitlistServiceImplementation implements WaitlistService {
   async join(email: Email): Promise<Response<true>> {
     const alreadyExists = await this.db.select().from(waitlist).where(eq(waitlist.email, email.value));
 
-    if(alreadyExists[0]) return Response.error('You have already joined the waiting list.', 409);
+    if(alreadyExists[0]) return Response.error("You're already on the list! We'll keep you updated on Formizee launch.", 409);
     
     await this.db.insert(waitlist).values({email: email.value})
 
