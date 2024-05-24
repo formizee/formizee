@@ -59,7 +59,7 @@ export class UsersRepositoryImplementation implements UsersRepository {
       response[0].name,
       response[0].email,
       response[0].forms,
-      response[0].linkedEmails,
+      response[0].linkedEmails
     );
 
     return Response.success(user, 201);
@@ -142,7 +142,9 @@ export class UsersRepositoryImplementation implements UsersRepository {
     if (!userExists[0]) return Response.error('User not found.', 404);
 
     const _linkedEmails: string[] = [];
-    linkedEmails.forEach(email => {_linkedEmails.push(email.value)});
+    linkedEmails.forEach(email => {
+      _linkedEmails.push(email.value);
+    });
 
     const updated = await this.db
       .update(users)

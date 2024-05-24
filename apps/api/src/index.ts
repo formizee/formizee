@@ -23,7 +23,6 @@ router.get('/status', async context => context.json('OK', 200));
 router.route('/waitlist', waitlistRouter);
 router.route('/auth', authRouter);
 
-
 export default {
   fetch: (request: Request, env: Env, ctx: ExecutionContext) => {
     SecretsProvider.getInstance().setSmtp(env.SMTP_SECRET);

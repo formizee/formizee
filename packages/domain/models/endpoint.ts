@@ -24,16 +24,20 @@ export class Endpoint {
     this._uid = new Uid(uid);
     this._owner = new Uid(owner);
 
-    if(submissions && submissions?.length > 0) {
+    if (submissions && submissions?.length > 0) {
       submissions.forEach(submission => {
         this._submissions.push(new Uid(submission));
-      })
+      });
     }
 
     this._isEnabled = true;
     this._emailNotifications = true;
 
-    this._redirectUrl = new URL(redirectUrl !== '' ? redirectUrl : `https://formizee.com/f/${this._uid}/thanks`);
+    this._redirectUrl = new URL(
+      redirectUrl !== ''
+        ? redirectUrl
+        : `https://formizee.com/f/${this._uid}/thanks`
+    );
     this._targetEmail = new Email(targetEmail);
   }
 

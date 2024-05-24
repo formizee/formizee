@@ -7,21 +7,27 @@ export class User {
   private readonly _forms: Uid[] = [];
   private readonly _linkedEmails: Email[] = [];
 
-  constructor(uid: string, name: string, email: string, forms?: string[], linkedEmails?: string[]) {
+  constructor(
+    uid: string,
+    name: string,
+    email: string,
+    forms?: string[],
+    linkedEmails?: string[]
+  ) {
     this._uid = new Uid(uid);
     this._name = new Name(name);
     this._email = new Email(email);
 
-    if(forms && forms.length > 0) {
+    if (forms && forms.length > 0) {
       forms.forEach(form => {
         this._forms.push(new Uid(form));
-      })
+      });
     }
 
-    if(linkedEmails) {
+    if (linkedEmails) {
       linkedEmails.forEach(email => {
         this._linkedEmails.push(new Email(email));
-      })
+      });
     } else this._linkedEmails = [this._email];
   }
 

@@ -6,7 +6,7 @@ import {SecretsProvider} from '@/lib/secrets';
 import {SaveUser} from '@/useCases/users';
 import {MailSend} from '@/useCases/mail';
 
-import { verifyEmailTemplate } from '@/emails/verify-email';
+import {verifyEmailTemplate} from '@/emails/verify-email';
 import {authTokens, users} from '@/data/models';
 import {compare, hash} from 'bcryptjs';
 import {randomInt} from 'node:crypto';
@@ -35,7 +35,7 @@ export class AuthServiceImplementation implements AuthService {
       response[0].name,
       response[0].email,
       response[0].forms,
-      response[0].linkedEmails,
+      response[0].linkedEmails
     );
 
     return Response.success(user);
@@ -54,23 +54,31 @@ export class AuthServiceImplementation implements AuthService {
 
   async verifyUser(email: Email, token: string): Promise<Response<User>> {
     // 1. Find the token
-    const tokenResponse = await this.db.select().from(authTokens).where(eq(authTokens.email, email.value));
-    if(!tokenResponse[0]) return Response.error("Invalid token.", 401);
+    const tokenResponse = await this.db
+      .select()
+      .from(authTokens)
+      .where(eq(authTokens.email, email.value));
+    if (!tokenResponse[0]) return Response.error('Invalid token.', 401);
 
     // 2. Check if is expired.
     const currentTime = new Date();
     const expireTime = new Date(tokenResponse[0].expiresAt);
-    if(currentTime > expireTime) {
+    if (currentTime > expireTime) {
       await this.db.delete(authTokens).where(eq(authTokens.email, email.value));
-      return Response.error("Expired token, please get a new one.", 401);
+      return Response.error('Expired token, please get a new one.', 401);
     }
 
     // 3. Compare tokens.
-    if(tokenResponse[0].token.toString() !== token) return Response.error("Invalid token.", 401);
+    if (tokenResponse[0].token.toString() !== token)
+      return Response.error('Invalid token.', 401);
 
     // 4. Verify user
-    const response = await this.db.update(users).set({verified: true}).where(eq(users.email, email.value)).returning();
-    if(!response[0]) return Response.error("The user does not exists.", 404);
+    const response = await this.db
+      .update(users)
+      .set({verified: true})
+      .where(eq(users.email, email.value))
+      .returning();
+    if (!response[0]) return Response.error('The user does not exists.', 404);
 
     // 5. Delete the token
     await this.db.delete(authTokens).where(eq(authTokens.email, email.value));
@@ -81,7 +89,7 @@ export class AuthServiceImplementation implements AuthService {
       response[0].name,
       response[0].email,
       response[0].forms,
-      response[0].linkedEmails,
+      response[0].linkedEmails
     );
 
     return Response.success(user);
@@ -89,33 +97,41 @@ export class AuthServiceImplementation implements AuthService {
 
   async resetPassword(email: Email, token: string): Promise<Response<User>> {
     // 1. Find the token
-    const tokenResponse = await this.db.select().from(authTokens).where(eq(authTokens.email, email.value));
-    if(!tokenResponse[0]) return Response.error("Invalid token.", 401);
+    const tokenResponse = await this.db
+      .select()
+      .from(authTokens)
+      .where(eq(authTokens.email, email.value));
+    if (!tokenResponse[0]) return Response.error('Invalid token.', 401);
 
     // 2. Check if is expired.
     const currentTime = new Date();
     const expireTime = new Date(tokenResponse[0].expiresAt);
-    if(currentTime > expireTime) {
+    if (currentTime > expireTime) {
       await this.db.delete(authTokens).where(eq(authTokens.email, email.value));
-      return Response.error("Expired token, please get a new one.", 401);
+      return Response.error('Expired token, please get a new one.', 401);
     }
 
     // 3. Compare tokens.
-    if(tokenResponse[0].token.toString() !== token) return Response.error("Invalid token.", 401);
+    if (tokenResponse[0].token.toString() !== token)
+      return Response.error('Invalid token.', 401);
 
     // 4. Delete the token
     await this.db.delete(authTokens).where(eq(authTokens.email, email.value));
 
     // 5. Retrieve user
-    const response = await this.db.update(users).set({verified: true}).where(eq(users.email, email.value)).returning();
-    if(!response[0]) return Response.error("The user does not exists.", 404);
+    const response = await this.db
+      .update(users)
+      .set({verified: true})
+      .where(eq(users.email, email.value))
+      .returning();
+    if (!response[0]) return Response.error('The user does not exists.', 404);
 
     const user = new User(
       response[0].id,
       response[0].name,
       response[0].email,
       response[0].forms,
-      response[0].linkedEmails,
+      response[0].linkedEmails
     );
 
     return Response.success(user);
@@ -126,55 +142,65 @@ export class AuthServiceImplementation implements AuthService {
       const html = verifyEmailTemplate(token);
 
       const mail = new Mail(
-        "Formizee.",
-        "noreply@formizee.com",
+        'Formizee.',
+        'noreply@formizee.com',
         to,
-        "Email Verification",
+        'Email Verification',
         html
       );
 
       const service = new MailSend(mail);
       await service.run();
-    }
+    };
 
     // 0. Check if the user exists.
-    const userResponse = await this.db.select().from(users).where(eq(users.email, email.value));
-    if(!userResponse[0]) return Response.error("The user does not exists.", 404);
+    const userResponse = await this.db
+      .select()
+      .from(users)
+      .where(eq(users.email, email.value));
+    if (!userResponse[0])
+      return Response.error('The user does not exists.', 404);
 
     // 1. Check if already exists a token and resend the email, otherwise delete the old token.
-    const existentToken = await this.db.select().from(authTokens).where(eq(authTokens.email, email.value));
+    const existentToken = await this.db
+      .select()
+      .from(authTokens)
+      .where(eq(authTokens.email, email.value));
 
-    if(existentToken[0]) {
+    if (existentToken[0]) {
       const expiresAt = new Date(existentToken[0].expiresAt);
       const currentTime = new Date();
 
-      if(currentTime < expiresAt) {
+      if (currentTime < expiresAt) {
         sendEmail(existentToken[0].email, existentToken[0].token.toString());
         return Response.success(true, 200);
-      }
-      else await this.db.delete(authTokens).where(eq(authTokens.email, email.value));
+      } else
+        await this.db
+          .delete(authTokens)
+          .where(eq(authTokens.email, email.value));
     }
-    
+
     // 2. Generate a token
     const token = Math.floor(randomInt(100000, 999999 + 1));
 
-
     // 3. Generate expires date
     const expiresAt = new Date();
-    expiresAt.setMinutes(expiresAt.getMinutes() + 10); 
+    expiresAt.setMinutes(expiresAt.getMinutes() + 10);
 
-    // 3. Store in auth_tokens db 
-    const dbResponse = await this.db.insert(authTokens).values({
-      expiresAt: expiresAt.toISOString(),
-      email: email.value,
-      token,
-    }).returning();
+    // 3. Store in auth_tokens db
+    const dbResponse = await this.db
+      .insert(authTokens)
+      .values({
+        expiresAt: expiresAt.toISOString(),
+        email: email.value,
+        token
+      })
+      .returning();
 
-    if(!dbResponse[0]) Response.error("Internal error.", 500)
+    if (!dbResponse[0]) Response.error('Internal error.', 500);
 
     // 4. Send email
     await sendEmail(email.value, token.toString());
     return Response.success(true, 202);
   }
-
 }

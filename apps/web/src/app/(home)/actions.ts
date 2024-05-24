@@ -27,12 +27,11 @@ export const joinWaitlist = async (
     };
   }
 
-  const response = await fetch(`${process.env.URL}/api/waitlist/join`,
-    {
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({email: input.data.email}),
-      method: 'POST',
-  })
+  const response = await fetch(`${process.env.URL}/api/waitlist/join`, {
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({email: input.data.email}),
+    method: 'POST'
+  });
 
   const {error} = await response.json();
 

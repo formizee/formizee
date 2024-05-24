@@ -1,32 +1,33 @@
-import { NextRequest, NextResponse } from 'next/server';
+import {NextRequest, NextResponse} from 'next/server';
 
 export async function POST(request: NextRequest) {
   const {name, email, password} = await request.json();
 
-  const res = await fetch(
-    `${process.env.API_URL}/api/auth/register`,
-    {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: 'include',
-      body: JSON.stringify({name, email, password}),
-  })
+  const res = await fetch(`${process.env.API_URL}/api/auth/register`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include',
+    body: JSON.stringify({name, email, password})
+  });
 
   const sessionHeader = res.headers.get('set-cookie');
-  const data = await res.json()
+  const data = await res.json();
 
   if (!res.ok || !sessionHeader) {
     const error = {
-      name: "Authentication Error",
+      name: 'Authentication Error',
       message: data.error
-    }
-    return NextResponse.json({data: null, error}, { status: res.status })
+    };
+    return NextResponse.json({data: null, error}, {status: res.status});
   }
 
-  return NextResponse.json({data: {user: data}, error: null}, {
-    status: res.status,
-    headers: {'Set-Cookie': sessionHeader}
-  });
+  return NextResponse.json(
+    {data: {user: data}, error: null},
+    {
+      status: res.status,
+      headers: {'Set-Cookie': sessionHeader}
+    }
+  );
 }

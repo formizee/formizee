@@ -1,14 +1,13 @@
-"use server";
+'use server';
 
-import { cookies } from 'next/headers';
+import {cookies} from 'next/headers';
 import {redirect} from 'next/navigation';
 
 export const logout = async () => {
-  const response = await fetch(`${process.env.URL}/api/auth/logout`,
-    {
-      method: 'POST',
-      credentials: 'include',
-  })
+  const response = await fetch(`${process.env.URL}/api/auth/logout`, {
+    method: 'POST',
+    credentials: 'include'
+  });
 
   const {error} = await response.json();
 
@@ -22,5 +21,5 @@ export const logout = async () => {
 
   cookies().delete('session');
 
-  redirect('/')
+  redirect('/');
 };

@@ -1,7 +1,11 @@
 # To-Do API
 
-## Authentication
-- [ ] Email System.
+# Important
+- [x] Zod validation.
+- [X] Update json types.
 
-- [~] Zod validation.
+## Authentication
+- [X] Email System.
+
+## Other steps
 - [ ] Rate limit.

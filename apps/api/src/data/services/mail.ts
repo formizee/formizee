@@ -1,4 +1,4 @@
-import {SecretsProvider} from '@/lib/secrets'
+import {SecretsProvider} from '@/lib/secrets';
 import {MailService} from 'domain/services';
 import {Response, Mail} from 'domain/models';
 import {Uid} from 'domain/models/values';

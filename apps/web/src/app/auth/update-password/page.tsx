@@ -16,7 +16,9 @@ function UpdatePassword(): JSX.Element {
           Update Your Password
         </h1>
         <p className="max-w-96 text-balance text-center sm:text-wrap sm:text-start">
-          Time for a fresh start! Create a new password that&apos;s at least 8 characters long and includes a mix of uppercase letters, lowercase letters, numbers, and symbols for maximum security.
+          Time for a fresh start! Create a new password that&apos;s at least 8
+          characters long and includes a mix of uppercase letters, lowercase
+          letters, numbers, and symbols for maximum security.
         </p>
       </header>
       <Form />

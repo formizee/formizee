@@ -10,5 +10,8 @@ export interface EndpointsRepository {
   updateEnabled(uid: Uid, isEnabled: boolean): Promise<Response<void>>;
   updateRedirectUrl(uid: Uid, redirectUrl: URL): Promise<Response<void>>;
   updateTargetEmail(uid: Uid, targetEmail: Email): Promise<Response<void>>;
-  updateEmailNotifications( uid: Uid, isEnabled: boolean): Promise<Response<void>>;
+  updateEmailNotifications(
+    uid: Uid,
+    isEnabled: boolean
+  ): Promise<Response<void>>;
 }

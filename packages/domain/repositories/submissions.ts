@@ -1,5 +1,5 @@
-import { Response, Submission } from "@/models";
-import { Uid } from "@/models/values";
+import {Response, Submission} from '@/models';
+import {Uid} from '@/models/values';
 
 export interface SubmissionsRepository {
   load(uid: Uid): Promise<Response<Submission>>;

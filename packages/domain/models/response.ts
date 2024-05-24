@@ -1,6 +1,6 @@
 type ResponseOptions = {
   status: number;
-}
+};
 
 export class Response<T> {
   private readonly _ok: boolean;
@@ -17,16 +17,16 @@ export class Response<T> {
     return status >= 200 && status < 300;
   }
 
-  static success<T>(body: T, status  = 200): Response<T> {
-    return new Response<T>(body, { status });
+  static success<T>(body: T, status = 200): Response<T> {
+    return new Response<T>(body, {status});
   }
 
   static error<T>(message: string, status = 500): Response<T> {
-    return new Response<T>({error: message}, { status });
+    return new Response<T>({error: message}, {status});
   }
 
   toJSON() {
-    return this._ok ? { data: this._body } : { error: this._body };
+    return this._ok ? {data: this._body} : {error: this._body};
   }
 
   get status(): number {
