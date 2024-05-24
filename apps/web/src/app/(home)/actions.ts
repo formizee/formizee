@@ -1,8 +1,5 @@
 'use server';
 
-import {waitlistServiceJoin} from '@/data/services/waitlist';
-import {Email} from 'domain/models/values';
-import {revalidatePath} from 'next/cache';
 import type {ActionState} from '@/types';
 import {redirect} from 'next/navigation';
 import {z} from 'zod';
@@ -30,8 +27,14 @@ export const joinWaitlist = async (
     };
   }
 
-  const email = new Email(input.data.email);
-  const {error} = await waitlistServiceJoin(email);
+  const response = await fetch(`${process.env.URL}/api/waitlist/join`,
+    {
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({email: input.data.email}),
+      method: 'POST',
+  })
+
+  const {error} = await response.json();
 
   if (error) {
     return {
@@ -41,6 +44,5 @@ export const joinWaitlist = async (
     };
   }
 
-  revalidatePath('/', 'layout');
   redirect('/waitlist');
 };

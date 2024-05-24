@@ -13,7 +13,7 @@ import {
 } from '@formizee/ui/form';
 import {Button, Input} from '@formizee/ui';
 import {LoadingIcon, MailIcon} from '@formizee/ui/icons';
-import {joinWaitlist, type JoinWaitlistFormValues} from '@/useCases/waitlist';
+import {joinWaitlist, type JoinWaitlistFormValues} from '../../actions';
 import {useFormAction} from '@/hooks';
 
 export function WaitlistForm(): JSX.Element {
