@@ -1,11 +1,8 @@
-import { protectRoute } from '@/useCases/auth';
 import {Navbar, Sidebar, Content} from './components';
 
 async function DashboardLayout({
   children
 }: Readonly<{children: React.ReactNode}>): Promise<JSX.Element> {
-  await protectRoute('not-logged', '/login');
-
   return (
     <main className="flex h-full flex-col items-center overflow-x-clip bg-black lg:justify-center">
       <Navbar />

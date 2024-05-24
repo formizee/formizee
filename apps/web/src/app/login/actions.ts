@@ -1,11 +1,7 @@
-'use server';
-
 import {Email} from 'domain/models/values';
-import {revalidatePath} from 'next/cache';
+import type {ActionState} from '@/types';
 import {redirect} from 'next/navigation';
 import {z} from 'zod';
-import {authServiceLogin} from '@/data/services/auth';
-import type {ActionState} from '@/types';
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -35,7 +31,17 @@ export const login = async (
   const email = new Email(input.data.email);
   const password = input.data.password;
 
-  const {error} = await authServiceLogin(email, password);
+  const response = await fetch(`${process.env.URL}/api/auth/login`,
+    {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: 'include',
+      body: JSON.stringify({email: email.value, password}),
+  })
+
+  const {error} = await response.json();
 
   if (error) {
     return {
@@ -45,6 +51,5 @@ export const login = async (
     };
   }
 
-  revalidatePath('/', 'layout');
   redirect('/dashboard');
 };
