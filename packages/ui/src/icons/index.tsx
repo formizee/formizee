@@ -7,6 +7,7 @@ export {LoadingIcon} from './loading';
 export {LogoutIcon} from './logout';
 export {CheckIcon} from './check';
 export {CloseIcon} from './close';
+export {DashIcon} from './dash';
 export {ChatIcon} from './chat';
 export {LinkIcon} from './link';
 export {UserIcon} from './user';
