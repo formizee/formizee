@@ -25,8 +25,8 @@ export function Body({
     <body className={className}>
       <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
         <Suspense fallback={fallback}>{children}</Suspense>
+        <Toaster />
       </ThemeProvider>
-      <Toaster />
     </body>
   );
 }
