@@ -12,11 +12,12 @@ import {
   loginSchema,
   registerSchema,
   sendVerificationSchema,
-  verifyTokenSchema
+  verifyTokenSchema,
 } from './schema';
 import {createSession, deleteSession} from '@/lib/auth';
 /* @ts-ignore-next-line */
 import {zValidator} from '@hono/zod-validator';
+import { createVerification, deleteVerification, readVerification } from '@/lib/auth/verification';
 
 const auth = new Hono();
 
@@ -50,42 +51,41 @@ auth.post(
   '/send-verification',
   zValidator('json', sendVerificationSchema),
   async context => {
-    const {email} = context.req.valid('json');
+    const {email, type} = context.req.valid('json');
 
     const service = new AuthSendVerification(email);
     const response = await service.run();
+
+    await createVerification(context, email, type);
 
     return context.json(response.body, response.status as StatusCode);
   }
 );
 
-auth.post(
-  '/verify-account',
-  zValidator('json', verifyTokenSchema),
-  async context => {
-    const {email, token} = context.req.valid('json');
+auth.post( '/verify', zValidator('json', verifyTokenSchema), async context => {
+    const {isValid, email, type} = await readVerification(context);
+    const {token} = context.req.valid('json');
 
-    const service = new AuthVerifyUser(email, token);
-    const user = await service.run();
+    if(!isValid || !email) return context.json({error: "The email for validation has not been specified."}, 400);
 
-    return context.json(user.body, user.status as StatusCode);
-  }
-);
+    let user: any;
 
-auth.post(
-  '/reset-password',
-  zValidator('json', verifyTokenSchema),
-  async context => {
-    const {email, token} = context.req.valid('json');
+    if (type === 'account') {
+      const service = new AuthVerifyUser(email, token);
+      user = await service.run();
+    }
 
-    const service = new AuthResetPassword(email, token);
-    const user = await service.run();
+    if (type === 'password') {
+      const service = new AuthResetPassword(email, token);
+      user = await service.run();
+    }
 
     if (!user.ok) return context.json(user.body, user.status as StatusCode);
 
     await createSession(context, user.body.uid);
+    await deleteVerification(context);
 
-    return context.json(user.body, user.status as StatusCode);
+    return context.json({user: user.body, type}, user.status as StatusCode);
   }
 );
 

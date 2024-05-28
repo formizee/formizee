@@ -55,10 +55,10 @@ export const registerSchema = z
   });
 
 export const sendVerificationSchema = z.object({
-  email: z.string().email()
+  email: z.string().email(),
+  type: z.enum(['password', 'account']),
 });
 
 export const verifyTokenSchema = z.object({
-  email: z.string().email(),
   token: z.string().length(6).regex(/^\d+$/)
 });
