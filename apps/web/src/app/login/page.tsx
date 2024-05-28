@@ -14,7 +14,7 @@ function Login(): JSX.Element {
           width={64}
         />
         <h1 className="bg-gradient-to-b from-white to-neutral-400 bg-clip-text text-xl font-bold text-transparent">
-          Login To Formizee.
+          Log In To Formizee
         </h1>
       </header>
       <Form />

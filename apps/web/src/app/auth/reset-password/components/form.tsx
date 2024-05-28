@@ -14,16 +14,16 @@ import {
 } from '@formizee/ui/form';
 import {LoadingIcon} from '@formizee/ui/icons';
 import {useFormAction} from '@/hooks';
-import {updatePassword, type UpdatePasswordFormValues} from '@/useCases/auth';
+import {resetPassword, type ResetPasswordFormValues} from '../actions';
 
-export function UpdatePasswordForm(): JSX.Element {
-  const [state, formAction] = useFormState(updatePassword, null);
+export function ResetPasswordForm(): JSX.Element {
+  const [state, formAction] = useFormState(resetPassword, null);
 
-  const form = useFormAction<UpdatePasswordFormValues>({
+  const form = useFormAction<ResetPasswordFormValues>({
     state,
     defaultValues: {
-      password: ''
-    }
+      email: ''
+    } 
   });
 
   return (
@@ -36,22 +36,22 @@ export function UpdatePasswordForm(): JSX.Element {
 }
 
 function FormFields(): JSX.Element {
-  const form = useFormContext();
   const {pending} = useFormStatus();
+  const form = useFormContext();
 
   return (
     <div className="flex flex-col gap-y-4">
       <FormField
         control={form.control}
-        name="password"
+        name="email"
         render={({field}) => (
           <FormItem>
             <FormControl>
               <Input
                 autoComplete="off"
-                placeholder="Enter your new password"
+                placeholder="Enter your email"
                 required
-                type="password"
+                type="email"
                 {...field}
               />
             </FormControl>
@@ -60,8 +60,8 @@ function FormFields(): JSX.Element {
         )}
         rules={{required: true}}
       />
-      <Button className="mt-4" disabled={pending}>
-        {pending ? <LoadingIcon className="h-10 w-10" /> : 'Update Account'}
+      <Button className="mt-4" disabled={pending} type="submit">
+        {pending ? <LoadingIcon className="h-10 w-10" /> : 'Send Reset Email'}
       </Button>
       <Button asChild className="mb-4" disabled={pending} variant="outline">
         <Link href="/login">Go Back</Link>
@@ -70,4 +70,4 @@ function FormFields(): JSX.Element {
   );
 }
 
-export default UpdatePasswordForm;
+export default ResetPasswordForm;

@@ -1,9 +1,10 @@
+import { Transition } from '@/components';
+import Form from './components/form';
 import Image from 'next/image';
-import Form from '../components/update-form';
 
 function UpdatePassword(): JSX.Element {
   return (
-    <>
+    <Transition>
       <header className="mb-11 flex w-full flex-col items-center gap-10 sm:mb-8 sm:items-start sm:gap-6">
         <Image
           alt="Formizee Logo."
@@ -22,7 +23,7 @@ function UpdatePassword(): JSX.Element {
         </p>
       </header>
       <Form />
-    </>
+    </Transition>
   );
 }
 

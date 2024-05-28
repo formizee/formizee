@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Form from './components/form';
 import { Transition } from '@/components';
 
-function ResetPassword(): JSX.Element {
+function Verify(): JSX.Element {
   return (
     <Transition>
       <header className="mb-11 flex w-full flex-col items-center gap-10 sm:mb-8 sm:items-start sm:gap-6">
@@ -14,11 +14,10 @@ function ResetPassword(): JSX.Element {
           width={64}
         />
         <h1 className="bg-gradient-to-b from-white to-neutral-400 bg-clip-text text-xl font-bold text-transparent">
-          Reset Your Password
+          Verify Your Identity
         </h1>
         <p className="max-w-96 text-balance text-center sm:text-wrap sm:text-start">
-          Include the email address associated with your account and we’ll send
-          you an email with instructions to reset your password.
+          Enter the 6-digit code you received via email. Check your spam folder if you don't see it.
         </p>
       </header>
       <Form />
@@ -26,4 +25,4 @@ function ResetPassword(): JSX.Element {
   );
 }
 
-export default ResetPassword;
+export default Verify;

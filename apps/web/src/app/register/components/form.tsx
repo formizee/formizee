@@ -14,7 +14,7 @@ import {
   FormMessage
 } from '@formizee/ui/form';
 import {LoadingIcon} from '@formizee/ui/icons';
-import {register, type RegisterFormValues} from '@/useCases/auth';
+import {register, type RegisterFormValues} from '../actions';
 import {useFormAction} from '@/hooks';
 
 export function LoginForm(): JSX.Element {

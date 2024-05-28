@@ -31,7 +31,7 @@ export const login = async (
   const email = new Email(input.data.email);
   const password = input.data.password;
 
-  const response = await fetch(`${process.env.URL}/api/auth/login`, {
+  const response = await fetch('/api/auth/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'

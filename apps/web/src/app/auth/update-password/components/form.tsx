@@ -14,15 +14,15 @@ import {
 } from '@formizee/ui/form';
 import {LoadingIcon} from '@formizee/ui/icons';
 import {useFormAction} from '@/hooks';
-import {resetPassword, type ResetPasswordFormValues} from '@/useCases/auth';
+import {updatePassword, type UpdatePasswordFormValues} from '../actions';
 
-export function ResetPasswordForm(): JSX.Element {
-  const [state, formAction] = useFormState(resetPassword, null);
+export function UpdatePasswordForm(): JSX.Element {
+  const [state, formAction] = useFormState(updatePassword, null);
 
-  const form = useFormAction<ResetPasswordFormValues>({
+  const form = useFormAction<UpdatePasswordFormValues>({
     state,
     defaultValues: {
-      email: ''
+      password: ''
     }
   });
 
@@ -43,15 +43,15 @@ function FormFields(): JSX.Element {
     <div className="flex flex-col gap-y-4">
       <FormField
         control={form.control}
-        name="email"
+        name="password"
         render={({field}) => (
           <FormItem>
             <FormControl>
               <Input
                 autoComplete="off"
-                placeholder="Enter your email"
+                placeholder="Enter your new password"
                 required
-                type="email"
+                type="password"
                 {...field}
               />
             </FormControl>
@@ -60,8 +60,8 @@ function FormFields(): JSX.Element {
         )}
         rules={{required: true}}
       />
-      <Button className="mt-4" disabled={pending} type="submit">
-        {pending ? <LoadingIcon className="h-10 w-10" /> : 'Send Reset Email'}
+      <Button className="mt-4" disabled={pending}>
+        {pending ? <LoadingIcon className="h-10 w-10" /> : 'Update Account'}
       </Button>
       <Button asChild className="mb-4" disabled={pending} variant="outline">
         <Link href="/login">Go Back</Link>
@@ -70,4 +70,4 @@ function FormFields(): JSX.Element {
   );
 }
 
-export default ResetPasswordForm;
+export default UpdatePasswordForm;
