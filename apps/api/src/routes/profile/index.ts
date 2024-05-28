@@ -21,6 +21,7 @@ import {verifySession} from '@/lib/auth';
 
 const router = new Hono();
 
+/*
 router.get('/', async context => {
   const {isAuth, user} = await verifySession(context);
   if (!isAuth || !user)
@@ -66,6 +67,7 @@ router.put('/email', zValidator('json', emailSchema), async context => {
 
   return context.json(response.error ?? 'OK', response.status as StatusCode);
 });
+*/
 
 router.put('/password', zValidator('json', passwordSchema), async context => {
   const {password} = context.req.valid('json');
@@ -83,6 +85,7 @@ router.put('/password', zValidator('json', passwordSchema), async context => {
   return context.json(response.error ?? 'OK', response.status as StatusCode);
 });
 
+/*
 router.put(
   '/linked-emails',
   zValidator('json', linkedEmailsSchema),
@@ -116,5 +119,6 @@ router.delete('/', async context => {
 
   return context.json(response.error ?? 'OK', response.status as StatusCode);
 });
+*/
 
 export default router;
