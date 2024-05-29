@@ -1,0 +1,3 @@
+{
+  "extends": "@formizee/typescript-config/base.json"
+}
