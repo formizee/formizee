@@ -27,6 +27,8 @@ export class UsersRepositoryImplementation implements UsersRepository {
       response[0].id,
       response[0].name,
       response[0].email,
+      response[0].isVerified,
+      response[0].permission,
       response[0].forms,
       response[0].linkedEmails
     );
@@ -58,6 +60,8 @@ export class UsersRepositoryImplementation implements UsersRepository {
       response[0].id,
       response[0].name,
       response[0].email,
+      response[0].isVerified,
+      response[0].permission,
       response[0].forms,
       response[0].linkedEmails
     );
