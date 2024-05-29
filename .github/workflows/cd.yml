@@ -10,7 +10,14 @@ jobs:
     runs-on: ubuntu-latest
     name: Deploy API
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9.0.5
+
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
