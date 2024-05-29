@@ -79,7 +79,7 @@ router.put('/password', zValidator('json', passwordSchema), async context => {
       401
     );
 
-  const service = new UpdateUserPassword(user, password);
+  const service = new UpdateUserPassword(user.uid, password);
   const response = await service.run();
 
   return context.json(response.error ?? 'OK', response.status as StatusCode);

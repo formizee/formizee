@@ -34,6 +34,8 @@ export class AuthServiceImplementation implements AuthService {
       response[0].id,
       response[0].name,
       response[0].email,
+      response[0].isVerified,
+      response[0].permission,
       response[0].forms,
       response[0].linkedEmails
     );
@@ -45,11 +47,13 @@ export class AuthServiceImplementation implements AuthService {
     name: Name,
     email: Email,
     password: Password
-  ): Promise<Response<User>> {
+  ): Promise<Response<true>> {
     const hashedPassword = await hash(password.value, 13);
 
     const service = new SaveUser(name.value, email.value, hashedPassword);
-    return await service.run();
+    await service.run();
+
+    return Response.success(true, 201);
   }
 
   async verifyUser(email: Email, token: string): Promise<Response<User>> {
@@ -75,7 +79,7 @@ export class AuthServiceImplementation implements AuthService {
     // 4. Verify user
     const response = await this.db
       .update(users)
-      .set({verified: true})
+      .set({isVerified: true})
       .where(eq(users.email, email.value))
       .returning();
     if (!response[0]) return Response.error('The user does not exists.', 404);
@@ -88,6 +92,8 @@ export class AuthServiceImplementation implements AuthService {
       response[0].id,
       response[0].name,
       response[0].email,
+      response[0].isVerified,
+      response[0].permission,
       response[0].forms,
       response[0].linkedEmails
     );
@@ -130,6 +136,8 @@ export class AuthServiceImplementation implements AuthService {
       response[0].id,
       response[0].name,
       response[0].email,
+      response[0].isVerified,
+      response[0].permission,
       response[0].forms,
       response[0].linkedEmails
     );

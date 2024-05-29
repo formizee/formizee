@@ -1,16 +1,23 @@
-import {SignJWT, jwtVerify} from 'jose';
-import {Context} from 'hono';
+import { SignJWT, jwtVerify } from 'jose';
+import { Context } from 'hono';
 
-interface SessionPayload {
-  user: string;
+export interface SessionPayload {
+  uid: string;
+  name: string;
   expiresAt: Date;
+  permission: 'user' | 'admin';
 }
 
 export async function encrypt(context: Context, payload: SessionPayload) {
   const encodedKey = new TextEncoder().encode(context.env.SESSION_SECRET);
 
-  return new SignJWT({user: payload.user, expiresAt: payload.expiresAt})
-    .setProtectedHeader({alg: 'HS256'})
+  return new SignJWT({
+    uid: payload.uid,
+    name: payload.name,
+    expiresAt: payload.expiresAt,
+    permission: payload.permission
+  })
+    .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
     .setExpirationTime('7d')
     .sign(encodedKey);
@@ -23,7 +30,7 @@ export async function decrypt(
   const encodedKey = new TextEncoder().encode(context.env.SESSION_SECRET);
 
   try {
-    const {payload} = await jwtVerify(session, encodedKey, {
+    const { payload } = await jwtVerify(session, encodedKey, {
       algorithms: ['HS256']
     });
     return payload;

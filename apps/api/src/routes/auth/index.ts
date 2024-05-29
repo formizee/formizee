@@ -28,10 +28,20 @@ auth.post('/login', zValidator('json', loginSchema), async context => {
   const user = await service.run();
 
   if (!user.ok) return context.json(user.body, user.status as StatusCode);
+  const {uid, name, permission, isVerified} = user.body;
 
-  await createSession(context, user.body.uid);
+  if(isVerified) {
+    await createSession(context, {uid, name, permission});
+    return context.json(user.body, 200);
+  }
+  else {
+    const verificationService = new AuthSendVerification(email);
+    await verificationService.run();
 
-  return context.json(user.body, 201);
+    await createVerification(context, email, 'account');
+    return context.json({error: "Please verify the user before login."}, 400);
+  }
+
 });
 
 auth.post('/register', zValidator('json', registerSchema), async context => {
@@ -42,9 +52,12 @@ auth.post('/register', zValidator('json', registerSchema), async context => {
 
   if (!user.ok) return context.json(user.body, user.status as StatusCode);
 
-  await createSession(context, user.body.uid);
+  const verificationService = new AuthSendVerification(email);
+  await verificationService.run();
 
-  return context.json(user.body, 201);
+  await createVerification(context, email, 'account');
+
+  return context.json("OK", 201);
 });
 
 auth.post(
