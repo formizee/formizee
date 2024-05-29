@@ -8,7 +8,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    name: Deploy API
+    name: Deploy Formizee API
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -21,10 +21,11 @@ jobs:
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           workingDirectory: "apps/api"
           packageManager: pnpm
         env:
-          WORKER_ENV: "prod"
-          SMTP_SECRET: ${{ secrets.SMTP_SECRET }}
           SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
+          SMTP_SECRET: ${{ secrets.SMTP_SECRET }}          
+          WORKER_ENV: "prod"
