@@ -47,13 +47,11 @@ export class AuthServiceImplementation implements AuthService {
     name: Name,
     email: Email,
     password: Password
-  ): Promise<Response<true>> {
+  ): Promise<Response<User>> {
     const hashedPassword = await hash(password.value, 13);
 
     const service = new SaveUser(name.value, email.value, hashedPassword);
-    await service.run();
-
-    return Response.success(true, 201);
+    return await service.run();
   }
 
   async verifyUser(email: Email, token: string): Promise<Response<User>> {
