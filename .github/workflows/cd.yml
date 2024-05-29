@@ -1,0 +1,22 @@
+name: Continuous Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy API
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          workingDirectory: "apps/api"
+        env:
+          WORKER_ENV: "prod"
+          SMTP_SECRET: ${{ secrets.SMTP_SECRET }}
+          SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
