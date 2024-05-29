@@ -39,7 +39,7 @@ auth.post('/login', zValidator('json', loginSchema), async context => {
     await verificationService.run();
 
     await createVerification(context, email, 'account');
-    return context.json({error: "Please verify the user before login."}, 400);
+    return context.json({error: "Please verify the user before login."}, 403);
   }
 
 });
