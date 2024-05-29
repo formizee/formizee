@@ -16,13 +16,13 @@ export async function POST(request: NextRequest) {
   if (!res.ok || !verificationHeader) {
     const error = {
       name: 'Authentication Error',
-      message: data.error
+      message: data.error ?? "Verification data not found, Please try later."
     };
-    return NextResponse.json({ data: null, error }, { status: res.status });
+    return NextResponse.json({ error }, { status: res.status });
   }
 
   return NextResponse.json(
-    { data: { user: data }, error: null },
+    { error: null },
     { 
       status: res.status,
       headers: {'Set-Cookie': verificationHeader}
