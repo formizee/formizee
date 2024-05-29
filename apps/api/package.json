@@ -15,6 +15,7 @@
     "dev": "wrangler dev --show-interactive-dev-session=false"
   },
   "dependencies": {
+    "@hono/sentry": "1.1.0",
     "@hono/zod-validator": "0.2.1",
     "awilix": "10.0.2",
     "bcryptjs": "2.4.3",

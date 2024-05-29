@@ -1,11 +1,14 @@
 import {SecretsProvider} from '@/lib/secrets';
 import {Hono} from 'hono';
 
-//import submissionsRouter from '@/routessubmissions';
-//import endpointsRouter from '@/routes/endpoints';
+/* @ts-ignore-next-line */
+import {sentry} from '@hono/sentry';
+
+import authRouter from '@/routes/auth';
 import profileRouter from '@/routes/profile';
 import waitlistRouter from '@/routes/waitlist';
-import authRouter from '@/routes/auth';
+//import endpointsRouter from '@/routes/endpoints';
+//import submissionsRouter from '@/routessubmissions';
 
 export type Env = {
   DB: D1Database;
@@ -16,12 +19,15 @@ export type Env = {
 
 const router = new Hono<{Bindings: Env}>().basePath('/api');
 
-router.get('/status', async context => context.json('OK', 200));
-//router.route('/submissions', submissionsRouter);
-//router.route('/endpoints', endpointsRouter);
+router.use('*', sentry())
+
+router.route('/auth', authRouter);
 router.route('/profile', profileRouter);
 router.route('/waitlist', waitlistRouter);
-router.route('/auth', authRouter);
+//router.route('/endpoints', endpointsRouter);
+//router.route('/submissions', submissionsRouter);
+
+router.get('/status', async context => context.json('OK', 200));
 
 export default {
   fetch: (request: Request, env: Env, context: ExecutionContext) => {
