@@ -1,5 +1,5 @@
 #:schema node_modules/wrangler/config-schema.json
-name = "api"
+name = "formizee-api"
 main = "src/index.ts"
 compatibility_date = "2024-05-12"
 compatibility_flags = ["nodejs_compat"]
