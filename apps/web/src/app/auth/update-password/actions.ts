@@ -26,7 +26,7 @@ export const updatePassword = async (
 
   const response = await fetch('/api/profile/password', {
     body: JSON.stringify({password: input.data.password}),
-    headers: { 'Content-Type': 'application/json' },
+    headers: {'Content-Type': 'application/json'},
     credentials: 'include',
     method: 'PUT'
   });
@@ -44,6 +44,7 @@ export const updatePassword = async (
   return {
     code: 'SUCCESS',
     title: "That's It!",
-    message: "Your password was updated correctly, you can now continue enjoying."
+    message:
+      'Your password was updated correctly, you can now continue enjoying.'
   };
 };

@@ -17,7 +17,7 @@ export async function encrypt(context: Context, payload: VerificationPayload) {
     .sign(encodedKey);
 }
 
-export async function decrypt( context: Context, data: string | undefined = '') {
+export async function decrypt(context: Context, data: string | undefined = '') {
   const encodedKey = new TextEncoder().encode(context.env.SESSION_SECRET);
 
   try {
@@ -30,7 +30,11 @@ export async function decrypt( context: Context, data: string | undefined = '') 
   }
 }
 
-export async function createVerification(context: Context, email: string, type: 'account' | 'password') {
+export async function createVerification(
+  context: Context,
+  email: string,
+  type: 'account' | 'password'
+) {
   const expiresAt = new Date(Date.now() + 60 * 60 * 1000);
   const data = await encrypt(context, {email, type});
 
@@ -47,7 +51,8 @@ export async function readVerification(context: Context) {
   const cookie = getCookie(context, 'verification');
   const data = await decrypt(context, cookie);
 
-  if (!data || !data.email) return {isValid: false, email: undefined, type: 'account'};
+  if (!data || !data.email)
+    return {isValid: false, email: undefined, type: 'account'};
 
   return {isValid: true, email: data.email as string, type: data.type};
 }

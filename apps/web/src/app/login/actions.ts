@@ -33,7 +33,7 @@ export const login = async (
 
   const response = await fetch('/api/auth/login', {
     body: JSON.stringify({email: email.value, password}),
-    headers: { 'Content-Type': 'application/json' },
+    headers: {'Content-Type': 'application/json'},
     credentials: 'include',
     method: 'POST'
   });
@@ -48,6 +48,6 @@ export const login = async (
     };
   }
 
-  if(response.status === 403) redirect('/auth/verify');
+  if (response.status === 403) redirect('/auth/verify');
   else redirect('/dashboard');
 };

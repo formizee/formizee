@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Form from './components/form';
-import { Transition } from '@/components';
+import {Transition} from '@/components';
 
 function ResetPassword(): JSX.Element {
   return (

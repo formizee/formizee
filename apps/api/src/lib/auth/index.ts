@@ -7,5 +7,5 @@ export {
 export {
   createVerification,
   readVerification,
-  deleteVerification,
+  deleteVerification
 } from './verification';

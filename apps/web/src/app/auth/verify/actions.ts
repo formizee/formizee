@@ -1,12 +1,12 @@
-import {redirect} from 'next/navigation'
+import {redirect} from 'next/navigation';
 import {ActionState} from '@/types';
 import {z} from 'zod';
 
 const verifyTokenSchema = z.object({
-  token: 
-    z.string()
-    .length(6, {message: "The code must have 6 numbers."})
-    .regex(/^\d+$/, {message: "The code must be only numbers."}),
+  token: z
+    .string()
+    .length(6, {message: 'The code must have 6 numbers.'})
+    .regex(/^\d+$/, {message: 'The code must be only numbers.'})
 });
 
 export type VerifyTokenFormValues = z.infer<typeof verifyTokenSchema>;
@@ -15,9 +15,8 @@ export const verifyToken = async (
   _prevState: unknown,
   formData: FormData
 ): Promise<ActionState | undefined> => {
-
   const input = verifyTokenSchema.safeParse({
-    token: formData.get('token'),
+    token: formData.get('token')
   });
 
   if (!input.success) {
@@ -28,11 +27,11 @@ export const verifyToken = async (
       fieldErrors
     };
   }
-  
+
   const {token} = input.data;
 
   const response = await fetch(`/api/auth/verify`, {
-    headers: { 'Content-Type': 'application/json' },
+    headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({token}),
     credentials: 'include',
     method: 'POST'

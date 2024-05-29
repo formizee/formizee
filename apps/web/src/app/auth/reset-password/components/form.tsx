@@ -23,7 +23,7 @@ export function ResetPasswordForm(): JSX.Element {
     state,
     defaultValues: {
       email: ''
-    } 
+    }
   });
 
   return (

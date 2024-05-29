@@ -1,9 +1,9 @@
-import {redirect} from 'next/navigation'
+import {redirect} from 'next/navigation';
 import {ActionState} from '@/types';
 import {z} from 'zod';
 
 const sendVerificationSchema = z.object({
-  email: z.string().email(),
+  email: z.string().email()
 });
 
 export type ResetPasswordFormValues = z.infer<typeof sendVerificationSchema>;
@@ -27,7 +27,7 @@ export const resetPassword = async (
 
   const response = await fetch('/api/auth/send-verification', {
     body: JSON.stringify({email: input.data.email, type: 'password'}),
-    headers: { 'Content-Type': 'application/json' },
+    headers: {'Content-Type': 'application/json'},
     credentials: 'include',
     method: 'POST'
   });

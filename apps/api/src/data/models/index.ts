@@ -13,9 +13,13 @@ export const users = sqliteTable('users', {
 
   password: text('password', {length: 64}).notNull(),
 
-  isVerified: integer('is_verified', {mode: 'boolean'}).notNull().default(false),
+  isVerified: integer('is_verified', {mode: 'boolean'})
+    .notNull()
+    .default(false),
 
-  permission: text('permission', {enum: ['admin', 'user']}).notNull().default('user'),
+  permission: text('permission', {enum: ['admin', 'user']})
+    .notNull()
+    .default('user'),
 
   forms: text('forms', {mode: 'json'}).notNull().$type<string[]>().default([]),
 

@@ -20,11 +20,11 @@ export async function POST(request: NextRequest) {
     user = null;
   }
 
-  if(!res.ok && res.status !== 403) {
+  if (!res.ok && res.status !== 403) {
     const error = {
-      name: "Authentication Error",
+      name: 'Authentication Error',
       message: data.error
-    }
+    };
 
     return NextResponse.json(
       {

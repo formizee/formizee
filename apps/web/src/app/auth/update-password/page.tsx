@@ -1,4 +1,4 @@
-import { Transition } from '@/components';
+import {Transition} from '@/components';
 import Form from './components/form';
 import Image from 'next/image';
 

@@ -2,14 +2,17 @@ import {deleteCookie, getCookie, setCookie} from 'hono/cookie';
 import {type SessionPayload, encrypt, decrypt} from './jwt';
 import {Context} from 'hono';
 
-export async function createSession(context: Context, payload: Omit<SessionPayload, 'expiresAt'>) {
+export async function createSession(
+  context: Context,
+  payload: Omit<SessionPayload, 'expiresAt'>
+) {
   const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
 
   const session = await encrypt(context, {
     expiresAt,
     uid: payload.uid,
     name: payload.name,
-    permission: payload.permission,
+    permission: payload.permission
   });
 
   setCookie(context, 'session', session, {

@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Form from './components/form';
-import { Transition } from '@/components';
+import {Transition} from '@/components';
 
 function Verify(): JSX.Element {
   return (
@@ -17,7 +17,8 @@ function Verify(): JSX.Element {
           Verify Your Identity
         </h1>
         <p className="max-w-96 text-balance text-center sm:text-wrap sm:text-start">
-          Enter the 6-digit code you received via email. Check your spam folder if you don't see it.
+          Enter the 6-digit code you received via email. Check your spam folder
+          if you don't see it.
         </p>
       </header>
       <Form />
