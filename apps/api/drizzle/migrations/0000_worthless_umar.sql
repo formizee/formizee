@@ -32,9 +32,10 @@ CREATE TABLE `users` (
 	`name` text(32) NOT NULL,
 	`email` text NOT NULL,
 	`password` text(64) NOT NULL,
+	`is_verified` integer DEFAULT false NOT NULL,
+	`permission` text DEFAULT 'user' NOT NULL,
 	`forms` text DEFAULT '[]' NOT NULL,
 	`linked_emails` text NOT NULL,
-	`verified` integer DEFAULT false NOT NULL,
 	`timestamp` text DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 --> statement-breakpoint
