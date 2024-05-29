@@ -4,30 +4,28 @@ export async function POST(request: NextRequest) {
   const { name, email, password } = await request.json();
 
   const res = await fetch(`${process.env.API_URL}/api/auth/register`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, email, password }),
     credentials: 'include',
-    body: JSON.stringify({ name, email, password })
+    method: 'POST',
   });
 
-  const sessionHeader = res.headers.get('set-cookie');
+  const verificationHeader = res.headers.get('set-cookie');
   const data = await res.json();
 
-  if (!res.ok || !sessionHeader) {
+  if (!res.ok || !verificationHeader) {
     const error = {
       name: 'Authentication Error',
-      message: data.error
+      message: data.error ?? "Verification data not found, Please try later."
     };
-    return NextResponse.json({ data: null, error }, { status: res.status });
+    return NextResponse.json({ error }, { status: res.status });
   }
 
   return NextResponse.json(
-    { data: { user: data }, error: null },
+    { error: null },
     {
       status: res.status,
-      headers: { 'Set-Cookie': sessionHeader }
+      headers: { 'Set-Cookie': verificationHeader }
     }
   );
 }

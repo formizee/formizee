@@ -32,12 +32,10 @@ export const login = async (
   const password = input.data.password;
 
   const response = await fetch('/api/auth/login', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
+    body: JSON.stringify({email: email.value, password}),
+    headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
-    body: JSON.stringify({email: email.value, password})
+    method: 'POST'
   });
 
   const {error} = await response.json();
@@ -50,5 +48,6 @@ export const login = async (
     };
   }
 
-  redirect('/dashboard');
+  if(response.status === 400) redirect('/auth/verify');
+  else redirect('/dashboard');
 };

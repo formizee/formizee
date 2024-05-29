@@ -12,22 +12,26 @@ export async function POST(request: NextRequest) {
     body: JSON.stringify({email, password})
   });
 
-  const sessionHeader = res.headers.get('set-cookie');
+  const cookieHeader = res.headers.get('set-cookie');
   const data = await res.json();
 
-  if (!res.ok || !sessionHeader) {
+  if (!cookieHeader) {
     const error = {
       name: 'Authentication Error',
-      message: data.error
+      message: "No session found, Please try later."
     };
     return NextResponse.json({data: null, error}, {status: res.status});
+  }
+
+  if (res.status === 400) {
+    return NextResponse.json({data: null, error: null}, {status: res.status, headers: {'Set-Cookie': cookieHeader}});
   }
 
   return NextResponse.json(
     {data: {user: data}, error: null},
     {
       status: res.status,
-      headers: {'Set-Cookie': sessionHeader}
+      headers: {'Set-Cookie': cookieHeader}
     }
   );
 }

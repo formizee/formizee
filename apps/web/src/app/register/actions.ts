@@ -66,5 +66,5 @@ export const register = async (
     };
   }
 
-  redirect('/dashboard');
+  redirect('/auth/verify');
 };
