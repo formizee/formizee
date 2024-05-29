@@ -7,7 +7,7 @@ export interface AuthService {
     name: Name,
     email: Email,
     password: Password
-  ): Promise<Response<true>>;
+  ): Promise<Response<User>>;
 
   sendVerification(email: Email): Promise<Response<true>>;
   verifyUser(email: Email, token: string): Promise<Response<User>>;
