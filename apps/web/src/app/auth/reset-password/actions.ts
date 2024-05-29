@@ -33,7 +33,6 @@ export const resetPassword = async (
   });
 
   const {error} = await response.json();
-  console.log(response.headers);
 
   if (error) {
     return {

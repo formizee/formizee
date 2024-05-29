@@ -39,10 +39,8 @@ export const verifyToken = async (
   });
 
   const {error, data} = await response.json();
-  console.log(data);
 
   if (error || !data) {
-    console.log(error);
     return {
       code: 'COMMON_ERROR',
       title: error.name,
