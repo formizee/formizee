@@ -25,8 +25,3 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           workingDirectory: "apps/api"
           packageManager: pnpm
-        env:
-          SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
-          SMTP_SECRET: ${{ secrets.SMTP_SECRET }}          
-          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}          
-          WORKER_ENV: "prod"
