@@ -10,22 +10,31 @@ export async function POST(request: NextRequest) {
     method: 'POST',
   });
 
-  const verificationHeader = res.headers.get('set-cookie');
+  const cookieHeader = res.headers.get('set-cookie');
   const data = await res.json();
 
-  if (!res.ok || !verificationHeader) {
+  if (!res.ok) {
     const error = {
       name: 'Authentication Error',
-      message: data.error ?? "Verification data not found, Please try later."
+      message: data.error
     };
     return NextResponse.json({ error }, { status: res.status });
   }
+
+  if (!cookieHeader) {
+    const error = {
+      name: 'Authentication Error',
+      message: "No session found, Please try later."
+    };
+    return NextResponse.json({data: null, error}, {status: res.status});
+  }
+
 
   return NextResponse.json(
     { error: null },
     {
       status: res.status,
-      headers: { 'Set-Cookie': verificationHeader }
+      headers: { 'Set-Cookie': cookieHeader }
     }
   );
 }

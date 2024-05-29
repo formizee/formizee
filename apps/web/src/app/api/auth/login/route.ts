@@ -14,24 +14,38 @@ export async function POST(request: NextRequest) {
 
   const cookieHeader = res.headers.get('set-cookie');
   const data = await res.json();
+  let user = data;
 
-  if (!cookieHeader) {
-    const error = {
-      name: 'Authentication Error',
-      message: "No session found, Please try later."
-    };
-    return NextResponse.json({data: null, error}, {status: res.status});
+  if (res.status === 403) {
+    user = null;
   }
 
-  if (res.status === 400) {
-    return NextResponse.json({data: null, error: null}, {status: res.status, headers: {'Set-Cookie': cookieHeader}});
+  if(!res.ok && res.status !== 403) {
+    const error = {
+      name: "Authentication Error",
+      message: data.error
+    }
+
+    return NextResponse.json(
+      {
+        data: {user},
+        error: error
+      },
+      {
+        status: res.status,
+        headers: cookieHeader ? {'Set-Cookie': cookieHeader} : {}
+      }
+    );
   }
 
   return NextResponse.json(
-    {data: {user: data}, error: null},
+    {
+      data: {user},
+      error: null
+    },
     {
       status: res.status,
-      headers: {'Set-Cookie': cookieHeader}
+      headers: cookieHeader ? {'Set-Cookie': cookieHeader} : {}
     }
   );
 }

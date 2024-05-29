@@ -48,6 +48,6 @@ export const login = async (
     };
   }
 
-  if(response.status === 400) redirect('/auth/verify');
+  if(response.status === 403) redirect('/auth/verify');
   else redirect('/dashboard');
 };

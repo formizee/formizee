@@ -1,5 +1,3 @@
-'use server';
-
 import {Name, Email, Password} from 'domain/models/values';
 import type {ActionState} from '@/types';
 import {redirect} from 'next/navigation';
@@ -45,14 +43,14 @@ export const register = async (
   const email = new Email(input.data.email);
   const password = new Password(input.data.password);
 
-  const response = await fetch(`${process.env.URL}/api/auth/register`, {
+  const response = await fetch('/api/auth/register', {
+    headers: {'Content-Type': 'application/json'},
+    credentials: 'include',
     body: JSON.stringify({
       name: name.value,
       email: email.value,
       password: password.value
     }),
-    headers: {'Content-Type': 'application/json'},
-    credentials: 'include',
     method: 'POST'
   });
 
