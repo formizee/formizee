@@ -23,6 +23,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           workingDirectory: "apps/api"
+          packageManager: pnpm
         env:
           WORKER_ENV: "prod"
           SMTP_SECRET: ${{ secrets.SMTP_SECRET }}
