@@ -24,9 +24,9 @@ router.route('/waitlist', waitlistRouter);
 router.route('/auth', authRouter);
 
 export default {
-  fetch: (request: Request, env: Env, ctx: ExecutionContext) => {
+  fetch: (request: Request, env: Env, context: ExecutionContext) => {
     SecretsProvider.getInstance().setSmtp(env.SMTP_SECRET);
     SecretsProvider.getInstance().setDb(env.DB);
-    return router.fetch(request, env, ctx);
+    return router.fetch(request, env, context);
   }
 };
