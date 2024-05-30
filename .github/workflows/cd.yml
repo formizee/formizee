@@ -26,6 +26,7 @@ jobs:
           cache: 'pnpm'
 
     name: Deploy Formizee API
+    steps:
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
