@@ -9,15 +9,14 @@
       "dependsOn": ["@formizee/ui#build"],
       "cache": false,
       "persistent": true
-    }
+    },
 
     "build": {"outputs": ["dist/**"]},
     "@formizee/ui#build": {"cache": true},
     "@formizee/web#build": {
-      "outputs": [".next/**", "!.next/cache/**"]
+      "outputs": [".next/**", "!.next/cache/**"],
       "dependsOn": ["^build"],
-      "env": ["URL", "API_URL"],
-    },
-
+      "env": ["URL", "API_URL"]
+    }
   }
 }
