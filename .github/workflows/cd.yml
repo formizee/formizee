@@ -6,10 +6,9 @@ on:
       - main
 
 jobs:
-  deploy:
+  deploy-api:
+    name: Deploy Formizee API
     runs-on: ubuntu-latest
-
-    name: Setup Enviroment
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -19,14 +18,6 @@ jobs:
         with:
           version: 9.0.5
 
-      - name: Install node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'pnpm'
-
-    name: Deploy Formizee API
-    steps:
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
@@ -35,8 +26,10 @@ jobs:
           workingDirectory: "apps/api"
           packageManager: pnpm
 
+  deploy-web:
     name: Deploy Formizee Webpage
     working-directory: "apps/web"
+    runs-on: ubuntu-latest
     env:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
