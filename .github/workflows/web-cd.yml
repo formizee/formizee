@@ -1,0 +1,50 @@
+name: Webpage Continuous Deployment
+
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'apps/web/**'
+      - 'packages/ui/**'
+      - 'packages/domain/**'
+      - 'packages/config-eslint/**'
+      - 'packages/config-tailwind/**'
+      - 'packages/config-typescript/**'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'apps/web/**'
+      - 'packages/ui/**'
+      - 'packages/domain/**'
+      - 'packages/config-eslint/**'
+      - 'packages/config-tailwind/**'
+      - 'packages/config-typescript/**'
+
+jobs:
+  deploy:
+    name: Deploy Formizee Webpage
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9.0.5
+
+      - name: Deploy
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-token: ${{ secrets.VERCEL_API_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-name: formizee-webpage
+          working-directory: 'apps/web'
+                
