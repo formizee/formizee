@@ -1,13 +1,16 @@
-name: Continuous Deployment
+name: API Continuous Deployment
 
 on:
   push:
-    branches:
-      - main
+    paths:
+      - 'apps/api/**'
+      - 'packages/domain/**'
+      - 'packages/config-eslint/**'
+      - 'packages/config-typescript/**'
 
 jobs:
-  deploy-api:
-    name: Deploy Formizee API
+  deploy:
+   name: Deploy Formizee API
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
