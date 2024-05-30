@@ -18,7 +18,7 @@ function Verify(): JSX.Element {
         </h1>
         <p className="max-w-96 text-balance text-center sm:text-wrap sm:text-start">
           Enter the 6-digit code you received via email. Check your spam folder
-          if you don't see it.
+          if you don&apos;t see it.
         </p>
       </header>
       <Form />
