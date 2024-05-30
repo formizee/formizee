@@ -12,6 +12,7 @@
     "cf-typegen": "wrangler types",
     "dev:email-templates": "email dev",
     "db:generate": "drizzle-kit generate",
+    "build": "wrangler deploy --dry-run --outdir=dist/",
     "dev": "wrangler dev --show-interactive-dev-session=false"
   },
   "dependencies": {
