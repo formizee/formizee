@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Slot} from '@radix-ui/react-slot';
 import {cva, type VariantProps} from 'class-variance-authority';
-import {cn} from '@/lib/ui';
+import {cn} from '../../lib/ui';
 
 const logoVariants = cva(
   'select-none bg-gradient-to-b from-white to-slate-400 bg-clip-text text-2xl font-semibold text-transparent no-underline',
