@@ -46,7 +46,7 @@ export class Endpoint {
   }
 
   get name(): string {
-    return this._name.value;
+    return this._name;
   }
 
   get owner(): string {
