@@ -20,7 +20,7 @@ on:
 
 jobs:
   deploy:
-   name: Deploy Formizee API
+    name: Deploy Formizee API
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
