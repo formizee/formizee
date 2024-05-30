@@ -2,6 +2,16 @@ name: API Continuous Deployment
 
 on:
   push:
+    branches:
+      - main
+    paths:
+      - 'apps/api/**'
+      - 'packages/domain/**'
+      - 'packages/config-eslint/**'
+      - 'packages/config-typescript/**'
+  pull_request:
+    branches:
+      - main
     paths:
       - 'apps/api/**'
       - 'packages/domain/**'
