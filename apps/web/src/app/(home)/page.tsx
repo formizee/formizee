@@ -17,9 +17,6 @@ function Home(): JSX.Element {
           </h1>
           <p className="text-md w-full text-balance text-neutral-400 sm:text-lg">
             The modern way to implement forms in your projects.
-            <br /> <span className="text-white">Smooth</span>,{' '}
-            <span className="text-white">Effortless</span> and{' '}
-            <span className="text-white">Open Source</span>.
           </p>
           <Form />
         </div>
