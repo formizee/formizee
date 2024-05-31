@@ -5,7 +5,7 @@ import '@formizee/ui/globals.css';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Formizee. | The Forms Backend platform',
+  title: 'Formizee | The Forms Backend platform',
   description: 'The Forms Backend platform, built for developers.',
   openGraph: {
     type: 'website',
