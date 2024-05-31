@@ -50,6 +50,9 @@ jobs:
         with:
           version: 9.0.5
 
+      - name: Install Dependencies
+        run: pnpm install
+
       - name: Install Vercel CLI
         run: pnpm install --global vercel@latest
 
