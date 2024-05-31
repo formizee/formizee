@@ -12,7 +12,8 @@ export const metadata: Metadata = {
     title: 'Formizee.',
     siteName: 'The open source Formspree alternative',
     url: 'https://formizee.com'
-  }
+  },
+  metadataBase: new URL('https://formizee.com')
 };
 
 export default function RootLayout({
