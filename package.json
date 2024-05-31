@@ -4,8 +4,8 @@
   "scripts": {
     "dev": "turbo dev",
     "lint": "turbo lint",
-    "build": "turbo build",
-    "format": "turbo format"
+    "format": "turbo format",
+    "build": "turbo build --cache-dir=.turbo"
   },
   "devDependencies": {
     "@formizee/typescript-config": "workspace:*",
