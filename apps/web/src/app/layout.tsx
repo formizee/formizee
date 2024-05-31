@@ -1,4 +1,3 @@
-import {Analytics} from '@vercel/analytics/next';
 import type {Metadata} from 'next';
 import {Body} from '@/components';
 import Loading from './loading';
@@ -18,7 +17,6 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <Body fallback={<Loading />}>{children}</Body>
-      <Analytics />
     </html>
   );
 }
