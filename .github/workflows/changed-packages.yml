@@ -17,6 +17,7 @@ on:
 
 jobs:
   dry-run:
+    name: "Building Artifacts"
     runs-on: ubuntu-latest
     env:
       # The turbo filter here varies depending on if we're using this workflow in a PR or on a push to a branch
@@ -32,10 +33,8 @@ jobs:
       web_changed: ${{ steps.web-changed.outputs.result }}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
-          # see `fetch-depth` in README: https://github.com/actions/checkout#checkout-v3, 
-          # we set to `0` so the referenced commits are available for the command below
           fetch-depth: 0
 
       - name: Changeset
