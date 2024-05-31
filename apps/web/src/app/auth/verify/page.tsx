@@ -4,7 +4,7 @@ import {Transition} from '@/components';
 
 function Verify(): JSX.Element {
   return (
-    <Transition>
+    <Transition className="z-20 flex flex-col px-5">
       <header className="mb-11 flex w-full flex-col items-center gap-10 sm:mb-8 sm:items-start sm:gap-6">
         <Image
           alt="Formizee Logo."
