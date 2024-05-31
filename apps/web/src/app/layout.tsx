@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     title: 'Formizee.',
-    siteName: 'Formizee.',
+    siteName: 'The open source Formspree alternative',
     url: 'https://formizee.com'
   }
 };
