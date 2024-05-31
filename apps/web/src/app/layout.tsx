@@ -5,8 +5,14 @@ import '@formizee/ui/globals.css';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Formizee.',
-  description: 'Form Backend built for developers.'
+  title: 'Formizee. | The Forms Backend platform',
+  description: 'The Forms Backend platform, built for developers.',
+  openGraph: {
+    type: 'website',
+    title: 'Formizee.',
+    siteName: 'Formizee.',
+    url: 'https://formizee.com'
+  }
 };
 
 export default function RootLayout({
