@@ -33,9 +33,18 @@ jobs:
       web_changed: ${{ steps.web-changed.outputs.result }}
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Setup Cache
+        uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: ${{ runner.os }}-turbo-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-
 
       - name: Changeset
         id: changeset
@@ -45,7 +54,7 @@ jobs:
 
         run: |
           echo 'result<<CHANGESET_DELIMITER' >> $GITHUB_OUTPUT
-          echo "$(npx -y turbo build --dry-run=json --filter=...[$TURBO_REF_FILTER]  --global-deps=.github/*)" >> $GITHUB_OUTPUT
+          echo "$(npx -y turbo build --cache-dir=.turbo --dry-run=json --filter=...[$TURBO_REF_FILTER]  --global-deps=.github/*)" >> $GITHUB_OUTPUT
           echo 'CHANGESET_DELIMITER' >> $GITHUB_OUTPUT
 
       - name: Output changed packages
