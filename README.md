@@ -12,7 +12,7 @@
 </h4>
 
 <p align="center">
-<a target="_blank" href="https://formizee.com/">Formizee</a> is a open source Formspree alternative. We're building the future of forms backend, just keeping things simple.
+<a target="_blank" href="https://formizee.com/">Formizee</a> is a open source Formspree alternative.<br/> We're building the future of forms backend, just keeping things simple.
 </p>
 
 <img align="center" src="./.github/showcase.png" />
