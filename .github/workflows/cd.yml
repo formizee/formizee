@@ -51,7 +51,7 @@ jobs:
           version: 9.0.5
 
       - name: Install Dependencies
-        run: pnpm install | pnpm install --global vercel@latest
+        run: pnpm install
 
       - name: Build Artifacts
         run: pnpm turbo build
