@@ -1,0 +1,73 @@
+# Turbo dry run to determine which apps have changed between the latest commit and target or previous commit
+name: 'Determine changed packages'
+
+on:
+  workflow_call:
+    outputs:
+      changed_packages:
+        description: 'Stringified JSON array of changed packages in this changeset'
+        value: ${{ jobs.dry-run.outputs.changed_packages }}
+      # AS A CONVENIENCE: These two outputs are shorthand so consumer can just check boolean output for these specific packages
+      api_changed:
+        description: 'Indicates if @formizee/api or its dependencies have changed'
+        value: ${{ jobs.dry-run.outputs.api_changed }}
+      web_changed:
+        description: 'Indicates if @formizee/web or its dependencies have changed'
+        value: ${{ jobs.dry-run.outputs.web_changed }}
+
+jobs:
+  dry-run:
+    runs-on: ubuntu-latest
+    env:
+      # The turbo filter here varies depending on if we're using this workflow in a PR or on a push to a branch
+      # For PRs, we want to use `github.event.pull_request.base.sha` to tell turbo to see which packages changed since that SHA
+      # For a branch push/merges, the above sha isn't available, so instead, we reference `github.event.before` to determine the previous `HEAD` of the branch we just pushed onto
+      #   See SO answer for more info https://stackoverflow.com/a/61861763/2379922
+      TURBO_REF_FILTER: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
+    outputs:
+      # Defining a job output for used by the next jobs:
+      # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idoutputs
+      changed_packages: ${{ steps.output-changed-packages.outputs.changed_packages }}
+      api_changed: ${{ steps.api-changed.outputs.result }}
+      web_changed: ${{ steps.web-changed.outputs.result }}
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          # see `fetch-depth` in README: https://github.com/actions/checkout#checkout-v3, 
+          # we set to `0` so the referenced commits are available for the command below
+          fetch-depth: 0
+
+      - name: Changeset
+        id: changeset
+        # 1. We need the 'output' of a turbo dry-run to get a json with all affected packages of these run.
+        # 2. The multi line json string is wrapped in EOF delimeters to make the GHA happy: https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#multiline-strings
+        # 3. We specify the .github/ folder as a dependency here. Just to be safe, if workflows changed, we use that to mean everything has changes pending... to force redeploys
+
+        run: |
+          echo 'result<<CHANGESET_DELIMITER' >> $GITHUB_OUTPUT
+          echo "$(npx -y turbo build --dry-run=json --filter=...[$TURBO_REF_FILTER]  --global-deps=.github/*)" >> $GITHUB_OUTPUT
+          echo 'CHANGESET_DELIMITER' >> $GITHUB_OUTPUT
+
+      - name: Output changed packages
+        id: output-changed-packages
+        run: |
+          echo 'changed_packages<<CHANGED_PACKAGES_DELIMITER' >> $GITHUB_OUTPUT
+          echo "${{ toJSON(fromJSON(steps.changeset.outputs.result).packages) }}" >> $GITHUB_OUTPUT
+          echo 'CHANGED_PACKAGES_DELIMITER' >> $GITHUB_OUTPUT
+
+      - name: Did the API or its dependencies change?
+        id: api-changed
+        # 1. Using the 'output' of the 'changeset' step inside the `if` to check if the specific app has changed
+        # 2. When `true`, we store it in the 'output' of the current step.
+        # NOTE: `api` is the name of my server package
+        if: ${{ contains(fromJSON(steps.changeset.outputs.result).packages, '@formizee/api') }} 
+        run: echo "result=true" >> $GITHUB_OUTPUT
+
+      - name: Did the Webpage or its dependencies change?
+        id: web-changed
+        # 1. Using the 'output' of the 'changeset' step inside the `if` to check if the specific app has changed
+        # 2. When `true`, we store it in the 'output' of the current step.
+        # NOTE: `web` is the name of my client package
+        if: ${{ contains(fromJSON(steps.changeset.outputs.result).packages, '@formizee/web') }} 
+        run: echo "result=true" >> $GITHUB_OUTPUT
