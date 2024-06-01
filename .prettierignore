@@ -1,0 +1,4 @@
+pnpm-workspace.yaml
+apps/**/.turbo
+node_modules
+.next
