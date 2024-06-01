@@ -3,7 +3,7 @@ import Link from 'next/link';
 function PrivacyPolicy(): JSX.Element {
   return (
     <div className="flex flex-col gap-y-4 text-neutral-400">
-      <h1 className="bg-gradient-to-b from-white to-neutral-400 bg-clip-text text-4xl font-medium text-transparent sm:text-5xl">
+      <h1 className="py-2 bg-gradient-to-b from-white to-neutral-400 bg-clip-text text-4xl font-medium text-transparent sm:text-5xl">
         Privacy Policy
       </h1>
       <h2 className="mt-8 text-2xl font-semibold text-neutral-50">
@@ -27,7 +27,7 @@ function PrivacyPolicy(): JSX.Element {
         <Link
           className="underline underline-offset-2"
           href="http://www.formizee.com">
-          http://www.formizee.com
+          https://www.formizee.com
         </Link>{' '}
         (the &quot;<strong className="font-medium text-neutral-50">Site</strong>
         &quot;), as well as any other related products and services that refer
