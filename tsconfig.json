@@ -1,3 +1,7 @@
 {
-  "extends": "@formizee/typescript-config/base.json"
+  "extends": "@formizee/typescript-config/base.json",
+  "compilerOptions": {
+    "jsx": "react",
+    "skipLibCheck": true
+  }
 }
