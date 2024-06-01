@@ -1,8 +1,13 @@
-import type {Metadata} from 'next';
+import type {Metadata, Viewport} from 'next';
 import {Body} from '@/components';
 import Loading from './loading';
 import '@formizee/ui/globals.css';
 import './globals.css';
+
+export const viewport: Viewport = {
+  colorScheme: 'dark',
+  themeColor: 'black',
+}
 
 export const metadata: Metadata = {
   title: 'Formizee | The Forms Backend platform',
@@ -13,7 +18,6 @@ export const metadata: Metadata = {
     siteName: 'The open source Formspree alternative',
     url: 'https://formizee.com'
   },
-  themeColor: '#000',
   metadataBase: new URL('https://formizee.com')
 };
 
