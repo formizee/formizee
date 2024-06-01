@@ -30,7 +30,7 @@ export const VerifyEmail = ({ tokenCode }: EmailProps) => (
         <Hr style={hr} />
         <Container style={{flexDirection: 'row', ...footer}}>
           <Link href="https://formizee.com" style={reportLink}>
-            Formizee Inc.
+            Formizee S.L.
           </Link>
         </Container>
       </Container>

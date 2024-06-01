@@ -19,7 +19,7 @@ export const verifyEmailTemplate = (token: string) => {
               <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:37.5em;flex-direction:row;justify-content:space-between;align-items:center;display:flex">
                 <tbody>
                   <tr style="width:100%">
-                    <td><a href="https://formizee.com" style="color:#a3a3a3;text-decoration:none;font-size:14px" target="_blank">Formizee Inc.</a></td>
+                    <td><a href="https://formizee.com" style="color:#a3a3a3;text-decoration:none;font-size:14px" target="_blank">Formizee S.L.</a></td>
                   </tr>
                 </tbody>
               </table>
