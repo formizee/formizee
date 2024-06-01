@@ -24,7 +24,7 @@ export class Endpoint {
     this._uid = new Uid(uid);
     this._owner = new Uid(owner);
 
-    if (submissions && submissions?.length > 0) {
+    if (submissions && submissions.length > 0) {
       submissions.forEach(submission => {
         this._submissions.push(new Uid(submission));
       });
@@ -36,7 +36,7 @@ export class Endpoint {
     this._redirectUrl = new URL(
       redirectUrl !== ''
         ? redirectUrl
-        : `https://formizee.com/f/${this._uid}/thanks`
+        : `https://formizee.com/f/${this._uid.value}/thanks`
     );
     this._targetEmail = new Email(targetEmail);
   }
