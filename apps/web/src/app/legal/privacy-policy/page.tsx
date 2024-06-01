@@ -11,7 +11,7 @@ function PrivacyPolicy(): JSX.Element {
       </h2>
       <p>
         We are{' '}
-        <strong className="font-medium text-neutral-50">Formizee, inc.</strong>,
+        <strong className="font-medium text-neutral-50">Formizee S.L.</strong>,
         doing business as Formizee. (&quot;
         <strong className="font-medium text-neutral-50">Company</strong>,&quot;
         &quot;

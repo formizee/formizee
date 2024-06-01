@@ -11,7 +11,7 @@ function TermsOfService(): JSX.Element {
       </h2>
       <p>
         We are{' '}
-        <strong className="font-medium text-neutral-50">Formizee, inc.</strong>,
+        <strong className="font-medium text-neutral-50">Formizee S.L.</strong>,
         doing business as Formizee. (&quot;
         <strong className="font-medium text-neutral-50">Company</strong>,&quot;
         &quot;
@@ -89,10 +89,10 @@ function TermsOfService(): JSX.Element {
       <p>
         Service and its original content (excluding Content provided by users),
         features and functionality are and will remain the exclusive property of
-        Formizee, Inc. and its licensors. Service is protected by copyright,
+        Formizee S.L. and its licensors. Service is protected by copyright,
         trademark, and other laws of the United States and foreign countries.
         Our trademarks and trade dress may not be used in connection with any
-        product or service without the prior written consent of Formizee, Inc.
+        product or service without the prior written consent of Formizee S.L.
       </p>
       <h2 className="mt-8 text-2xl font-semibold text-neutral-50">
         4. User Representations
@@ -438,16 +438,16 @@ function TermsOfService(): JSX.Element {
       </h2>
       <p>
         Our Service may contain links to third party web sites or services that
-        are not owned or controlled by Formizee, Inc.
+        are not owned or controlled by Formizee S.L.
       </p>
       <p>
-        Formizee, Inc. has no control over, and assumes no responsibility for
+        Formizee S.L. has no control over, and assumes no responsibility for
         the content, privacy policies, or practices of any third party web sites
         or services. We do not warrant the offerings of any of these
         entities/individuals or their websites.
       </p>
       <p>
-        YOU ACKNOWLEDGE AND AGREE THAT FORMIZEE, INC. SHALL NOT BE RESPONSIBLE
+        YOU ACKNOWLEDGE AND AGREE THAT FORMIZEE, S.L. SHALL NOT BE RESPONSIBLE
         OR LIABLE, DIRECTLY OR INDIRECTLY, FOR ANY DAMAGE OR LOSS CAUSED OR
         ALLEGED TO BE CAUSED BY OR IN CONNECTION WITH USE OF OR RELIANCE ON ANY
         SUCH CONTENT, GOODS OR SERVICES AVAILABLE ON OR THROUGH ANY SUCH THIRD
@@ -570,7 +570,7 @@ function TermsOfService(): JSX.Element {
         International Sales of Goods is expressly excluded. If your habitual
         residence is in the EU, and you are a consumer, you additionally possess
         the protection provided to you by obligatory provisions of the law in
-        your country to residence. Formizee, inc. and yourself both agree to
+        your country to residence. Formizee S.L. and yourself both agree to
         submit to the non-exclusive jurisdiction of the courts of Valencia,
         which means that you may make a claim to defend your consumer protection
         rights in regards to these Legal Terms in Spain, or in the EU country in
