@@ -1,18 +1,11 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
-    "lint": {"cache": false},
     "format": {},
-
+    "lint": {"cache": false},
     "dev": {"cache": false, "persistent": true},
-    "@formizee/web#dev": {
-      "dependsOn": ["@formizee/ui#build"],
-      "cache": false,
-      "persistent": true
-    },
+    "build": {"outputs": ["dist/**"], "cache": true},
 
-    "build": {"outputs": ["dist/**"]},
-    "@formizee/ui#build": {"cache": true},
     "@formizee/web#build": {
       "outputs": [".next/**", "!.next/cache/**"],
       "dependsOn": ["^build"],
