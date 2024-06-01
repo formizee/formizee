@@ -27,14 +27,14 @@ export class User {
     this._permission = permission;
 
     if (forms && forms.length > 0) {
-      forms.forEach(form => {
-        this._forms.push(new Uid(form));
+      forms.forEach(item => {
+        this._forms.push(new Uid(item));
       });
     }
 
     if (linkedEmails) {
-      linkedEmails.forEach(email => {
-        this._linkedEmails.push(new Email(email));
+      linkedEmails.forEach(item => {
+        this._linkedEmails.push(new Email(item));
       });
     } else this._linkedEmails = [this._email];
   }
