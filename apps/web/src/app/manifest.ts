@@ -7,8 +7,8 @@ export default function manifest(): MetadataRoute.Manifest {
     description: 'The Forms Backend platform, built for developers.',
     start_url: '/',
     display: 'standalone',
-    background_color: '#0a0a0a',
-    theme_color: '#0a0a0a',
+    background_color: '#000',
+    theme_color: '#000',
     icons: [
       {
         src: '/icons/icon-192x192.png',

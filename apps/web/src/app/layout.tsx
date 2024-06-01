@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     siteName: 'The open source Formspree alternative',
     url: 'https://formizee.com'
   },
-  themeColor: '#0a0a0a',
+  themeColor: '#000',
   metadataBase: new URL('https://formizee.com')
 };
 
