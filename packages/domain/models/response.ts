@@ -1,4 +1,4 @@
-type ResponseOptions = {
+interface ResponseOptions {
   status: number;
 };
 
@@ -23,10 +23,6 @@ export class Response<T> {
 
   static error<T>(message: string, status = 500): Response<T> {
     return new Response<T>({error: message}, {status});
-  }
-
-  toJSON() {
-    return this._ok ? {data: this._body} : {error: this._body};
   }
 
   get status(): number {
