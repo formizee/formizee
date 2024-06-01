@@ -1,16 +1,8 @@
 <div align="center" >
-    <img src="./.github/logo.svg" alt="Formizee. logo" width="80" height="80">
+    <img height="128" src="./.github/logo-light.png#gh-light-mode-only">
+    <img height="128" src="./.github/logo-dark.png#gh-dark-mode-only">
 </div>
-<h1 align="center">Formizee.</h1>
     
-<h4 align="center">
-  <a> ⚡️ Features  </a>
-  ·
-  <a> 📚 Docs </a>
-  ·
-  <a> 🗣️  Support </a>
-</h4>
-
 <p align="center">
 <a target="_blank" href="https://formizee.com/">Formizee</a> is a open source Formspree alternative.<br/> We're building the future of forms backend, just keeping things simple.
 </p>
