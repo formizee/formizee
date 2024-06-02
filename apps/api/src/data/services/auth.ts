@@ -6,7 +6,7 @@ import {SecretsProvider} from '@/lib/secrets';
 import {SaveUser} from '@/useCases/users';
 import {MailSend} from '@/useCases/mail';
 
-import {verifyEmailTemplate} from '@/emails/verify-email';
+import {verifyEmailTemplate} from '@/emails/auth';
 import {authTokens, users} from '@/data/models';
 import {compare, hash} from 'bcryptjs';
 import {randomInt} from 'node:crypto';

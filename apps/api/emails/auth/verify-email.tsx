@@ -6,15 +6,13 @@ interface EmailProps {
 }
 
 export const VerifyEmail = ({ tokenCode }: EmailProps) => (
-  <Html>
+  <Html lang="en">
     <Head />
     <Preview>Your otp code is {tokenCode}, Please do not share this code with anybody, If you didn't request this code, you can safely ignore this email.</Preview>
     <Body style={main}>
       <Container style={container}>
         <Img
           src={`https://avatars.githubusercontent.com/u/168822716?s=200&v=4`}
-          width="42"
-          height="42"
           alt="Formizee."
           style={logo}
         />
@@ -22,7 +20,9 @@ export const VerifyEmail = ({ tokenCode }: EmailProps) => (
         <Text style={paragraphTop}>
         To complete your registration, please use the OTP code below:
         </Text>
-        <code style={code}>{tokenCode}</code>
+        {tokenCode.split('').map(digit => (
+          <code style={code}>{digit}</code>
+        ))}
         <Text style={paragraphBottom}>
         Please do not share this code with anybody. If you didn't request 
         this code, you can safely ignore this email.
@@ -45,11 +45,11 @@ VerifyEmail.PreviewProps = {
 export default VerifyEmail;
 
 const logo = {
-  borderWidth: 4,
+  border: "1px solid #a3a3a3",
   borderRadius: 11,
   marginTop: 20,
-  width: 42,
-  height: 42,
+  width: 56,
+  height: 56,
 };
 
 const main = {
@@ -104,11 +104,13 @@ const hr = {
 };
 
 const code = {
+  border: "1px solid #d4d4d4",
   fontWeight: "700",
-  padding: "2px 8px",
+  marginRight: "8px",
+  padding: "4px 10px",
   backgroundColor: "#e5e5e5",
   letterSpacing: "0.3px",
-  fontSize: "26px",
+  fontSize: "24px",
   borderRadius: "4px",
   color: "#404040",
 };
