@@ -46,7 +46,7 @@ importers:
         version: link:../../packages/domain
       drizzle-orm:
         specifier: 0.30.10
-        version: 0.30.10(@cloudflare/workers-types@4.20240512.0)(@opentelemetry/api@1.8.0)(@types/pg@8.6.1)(@types/react@18.3.2)(react@18.3.1)
+        version: 0.30.10(@cloudflare/workers-types@4.20240529.0)(@opentelemetry/api@1.8.0)(@types/pg@8.6.1)(@types/react@18.3.2)(react@18.3.1)
       hono:
         specifier: 4.3.9
         version: 4.3.9
@@ -61,8 +61,8 @@ importers:
         version: 3.23.8
     devDependencies:
       '@cloudflare/workers-types':
-        specifier: 4.20240512.0
-        version: 4.20240512.0
+        specifier: 4.20240529.0
+        version: 4.20240529.0
       '@formizee/eslint-config':
         specifier: workspace:*
         version: link:../../packages/config-eslint
@@ -101,7 +101,7 @@ importers:
         version: 5.4.5
       wrangler:
         specifier: 3.57.1
-        version: 3.57.1(@cloudflare/workers-types@4.20240512.0)
+        version: 3.57.1(@cloudflare/workers-types@4.20240529.0)
 
   apps/web:
     dependencies:
@@ -423,8 +423,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@cloudflare/workers-types@4.20240512.0':
-    resolution: {integrity: sha512-o2yTEWg+YK/I1t/Me+dA0oarO0aCbjibp6wSeaw52DSE9tDyKJ7S+Qdyw/XsMrKn4t8kF6f/YOba+9O4MJfW9w==}
+  '@cloudflare/workers-types@4.20240529.0':
+    resolution: {integrity: sha512-W5obfjAwCNdYk3feUHtDfUxtTU6WIq83k6gmrLLJv+HkgCkOTwwrDNs+3w1Qln0tMj+FQx/fbwxw3ZuHIoyzGg==}
 
   '@cspotcode/source-map-support@0.8.1':
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
@@ -5507,7 +5507,7 @@ snapshots:
   '@cloudflare/workerd-windows-64@1.20240512.0':
     optional: true
 
-  '@cloudflare/workers-types@4.20240512.0': {}
+  '@cloudflare/workers-types@4.20240529.0': {}
 
   '@cspotcode/source-map-support@0.8.1':
     dependencies:
@@ -5992,7 +5992,7 @@ snapshots:
 
   '@logtail/edge@0.4.21':
     dependencies:
-      '@cloudflare/workers-types': 4.20240512.0
+      '@cloudflare/workers-types': 4.20240529.0
       '@logtail/core': 0.4.21
       '@logtail/types': 0.4.20
       '@msgpack/msgpack': 2.8.0
@@ -7665,9 +7665,9 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.30.10(@cloudflare/workers-types@4.20240512.0)(@opentelemetry/api@1.8.0)(@types/pg@8.6.1)(@types/react@18.3.2)(react@18.3.1):
+  drizzle-orm@0.30.10(@cloudflare/workers-types@4.20240529.0)(@opentelemetry/api@1.8.0)(@types/pg@8.6.1)(@types/react@18.3.2)(react@18.3.1):
     optionalDependencies:
-      '@cloudflare/workers-types': 4.20240512.0
+      '@cloudflare/workers-types': 4.20240529.0
       '@opentelemetry/api': 1.8.0
       '@types/pg': 8.6.1
       '@types/react': 18.3.2
@@ -10544,7 +10544,7 @@ snapshots:
       '@cloudflare/workerd-linux-arm64': 1.20240512.0
       '@cloudflare/workerd-windows-64': 1.20240512.0
 
-  wrangler@3.57.1(@cloudflare/workers-types@4.20240512.0):
+  wrangler@3.57.1(@cloudflare/workers-types@4.20240529.0):
     dependencies:
       '@cloudflare/kv-asset-handler': 0.3.2
       '@esbuild-plugins/node-globals-polyfill': 0.2.3(esbuild@0.17.19)
@@ -10561,7 +10561,7 @@ snapshots:
       source-map: 0.6.1
       xxhash-wasm: 1.0.2
     optionalDependencies:
-      '@cloudflare/workers-types': 4.20240512.0
+      '@cloudflare/workers-types': 4.20240529.0
       fsevents: 2.3.3
     transitivePeerDependencies:
       - bufferutil

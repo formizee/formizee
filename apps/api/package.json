@@ -27,7 +27,7 @@
     "zod": "3.23.8"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "4.20240512.0",
+    "@cloudflare/workers-types": "4.20240529.0",
     "@formizee/eslint-config": "workspace:*",
     "@formizee/typescript-config": "workspace:*",
     "@react-email/components": "0.0.18",
