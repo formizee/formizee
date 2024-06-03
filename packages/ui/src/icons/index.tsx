@@ -1,6 +1,7 @@
 export {ChevronRightIcon} from './chevron-right';
 export {DocumentAddIcon} from './document-add';
 export {ArrowRightIcon} from './arrow-right';
+export {ClipboardIcon} from './clipboard';
 export {DocumentIcon} from './document';
 export {SettingsIcon} from './settings';
 export {LoadingIcon} from './loading';
