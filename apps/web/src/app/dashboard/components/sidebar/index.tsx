@@ -4,7 +4,7 @@ import Forms from './forms';
 
 export function DashboardSidebar(): JSX.Element {
   return (
-    <div className="flex w-60 flex-col justify-between border-r border-r-neutral-800 px-2">
+    <div className="flex md:w-60 w-full flex-col justify-between md:border-r md:border-r-neutral-800 px-2">
       <CreateFormButton />
       <Forms forms={[]} />
       <Account username="@pauchiner" />
