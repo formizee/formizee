@@ -30,7 +30,7 @@ export function SidebarCreateForm(): JSX.Element {
             </DialogTitle>
             <DialogDescription className="text-left">
               Give your form a catchy name that captures its essence. This will
-              be your form's headline act!
+              be your form&apos;s headline act!
             </DialogDescription>
             <DialogFooter>
               <form className="flex w-full flex-row justify-between gap-x-4 pt-4">
@@ -42,7 +42,7 @@ export function SidebarCreateForm(): JSX.Element {
                   className="flex flex-1"
                 />
                 <Button type="submit">
-                  <span>Let's Build</span> <ArrowRightIcon />
+                  <span>Let&apos;s Build</span> <ArrowRightIcon />
                 </Button>
               </form>
             </DialogFooter>
