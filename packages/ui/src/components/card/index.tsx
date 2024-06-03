@@ -4,12 +4,13 @@ import {cva} from 'class-variance-authority';
 import {cn} from '../../lib/ui';
 
 const cardVariants = cva(
-  'relative flex flex-col border-2 border-neutral-700 bg-neutral-900/65',
+  'relative flex flex-col ',
   {
     variants: {
       variant: {
         default: 'rounded-lg shadow-md backdrop-blur-md',
-        landing: 'overflow-clip rounded-xl shadow-md backdrop-blur-md',
+        animated: 'rounded-xl bg-neutral-900',
+        landing: 'overflow-clip rounded-xl border-2 border-neutral-700 bg-neutral-900/80 shadow-md backdrop-blur-md',
         auth: 'z-10 flex items-center justify-center rounded-xl bg-transparent shadow-lg backdrop-blur-sm'
       },
       size: {
@@ -31,20 +32,25 @@ interface CardProps
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
   ({className, variant, size, ...props}, ref) => (
-    <div
-      className={cn(cardVariants({variant, size, className}))}
-      ref={ref}
-      {...props}>
-      {props.children}
-      <svg className="pointer-events-none absolute left-0 top-0 h-full w-full rounded-xl">
-        <rect
-          className="h-full w-full fill-red-400 opacity-15"
-          filter="url(#grainy)"
-        />
-        <filter id="grainy">
-          <feTurbulence baseFrequency="0.65" type="turbulence" />
-        </filter>
-      </svg>
+    <div className={cn(className, "relative inline-flex overflow-hidden rounded-xl p-[2px]")}>
+      {variant === 'animated' ? 
+        (<span className="absolute inset-[-1000%] animate-[spin_8s_linear_infinite] bg-[conic-gradient(from_180deg_at_50%_50%,#404040_0%,#404040_60%,#fbbf24_90%,#fef3c7_100%)]" />)
+        : (<></>)}
+      <div
+        className={cn(cardVariants({variant, size}))}
+        ref={ref}
+        {...props}>
+        {props.children}
+        <svg className="pointer-events-none absolute left-0 top-0 h-full w-full rounded-xl">
+          <rect
+            className="h-full w-full fill-red-400 opacity-15"
+            filter="url(#grainy)"
+          />
+          <filter id="grainy">
+            <feTurbulence baseFrequency="0.65" type="turbulence" />
+          </filter>
+        </svg>
+      </div>
     </div>
   )
 );
