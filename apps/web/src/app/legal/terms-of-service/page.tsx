@@ -3,7 +3,7 @@ import Link from 'next/link';
 function TermsOfService(): JSX.Element {
   return (
     <div className="flex flex-col gap-y-4 text-neutral-400">
-      <h1 className="py-2 bg-gradient-to-b from-white to-neutral-400 bg-clip-text text-4xl font-medium text-transparent sm:text-5xl">
+      <h1 className="bg-gradient-to-b from-white to-neutral-400 bg-clip-text py-2 text-4xl font-medium text-transparent sm:text-5xl">
         Terms Of Service
       </h1>
       <h2 className="mt-8 text-2xl font-semibold text-neutral-50">
@@ -441,9 +441,9 @@ function TermsOfService(): JSX.Element {
         are not owned or controlled by Formizee S.L.
       </p>
       <p>
-        Formizee S.L. has no control over, and assumes no responsibility for
-        the content, privacy policies, or practices of any third party web sites
-        or services. We do not warrant the offerings of any of these
+        Formizee S.L. has no control over, and assumes no responsibility for the
+        content, privacy policies, or practices of any third party web sites or
+        services. We do not warrant the offerings of any of these
         entities/individuals or their websites.
       </p>
       <p>

@@ -1,6 +1,6 @@
 interface ResponseOptions {
   status: number;
-};
+}
 
 export class Response<T> {
   private readonly _ok: boolean;

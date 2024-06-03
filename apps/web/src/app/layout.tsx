@@ -1,17 +1,17 @@
-import { Analytics } from '@vercel/analytics/react';
+import {Analytics} from '@vercel/analytics/react';
 import {ThemeProvider} from '@/components/theme';
-import { Toaster } from '@formizee/ui/toaster';
+import {Toaster} from '@formizee/ui/toaster';
 import type {Metadata, Viewport} from 'next';
-import { Inter } from 'next/font/google';
-import { Suspense } from 'react';
-import { cn } from '@formizee/ui';
+import {Inter} from 'next/font/google';
+import {Suspense} from 'react';
+import {cn} from '@formizee/ui';
 import '@formizee/ui/globals.css';
 import './globals.css';
 
 export const viewport: Viewport = {
   colorScheme: 'dark',
-  themeColor: 'black',
-}
+  themeColor: 'black'
+};
 
 export const metadata: Metadata = {
   title: 'Formizee | The Forms Backend platform',
@@ -37,8 +37,15 @@ export default function RootLayout({
 }>): JSX.Element {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn('min-h-screen bg-background font-sans antialiased', font.variable)}>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+      <body
+        className={cn(
+          'bg-background min-h-screen font-sans antialiased',
+          font.variable
+        )}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem={false}>
           <Suspense>{children}</Suspense>
           <Toaster />
         </ThemeProvider>

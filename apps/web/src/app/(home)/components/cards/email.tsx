@@ -54,8 +54,7 @@ function Item(props: ItemProps): JSX.Element {
   return (
     <div
       className={`h-50 m-2 flex w-[318px] flex-col justify-start rounded-md p-2 ${props.selected ? 'bg-neutral-700' : 'bg-neutral-800'}`}
-      tabIndex={-1}
-      >
+      tabIndex={-1}>
       <span className="text-md font-semibold">{props.title}</span>
       <span className="text-sm">{props.subject}</span>
       <span className="text-ellipsis text-sm text-neutral-400">
@@ -97,28 +96,28 @@ export function EmailCard(): JSX.Element {
       className="z-10 h-[216px] translate-x-[120px] translate-y-[-380px]"
       size="landing"
       variant="landing">
-      <div className="relative flex p-0 flex-row items-center justify-center ">
-      <div className="h-full mt-0 w-[48%] overflow-hidden">
-        {EMAILS.map(item => (
-          <Item
-            content={item.content}
-            id={item.id}
-            key={item.id}
-            selected={item.id === currentSelected}
-            setCurrentSelected={setCurrentSelected}
-            subject={item.subject}
-            title={item.title}
+      <div className="relative flex flex-row items-center justify-center p-0 ">
+        <div className="mt-0 h-full w-[48%] overflow-hidden">
+          {EMAILS.map(item => (
+            <Item
+              content={item.content}
+              id={item.id}
+              key={item.id}
+              selected={item.id === currentSelected}
+              setCurrentSelected={setCurrentSelected}
+              subject={item.subject}
+              title={item.title}
+            />
+          ))}
+        </div>
+        <div className="h-full w-[52%] border-l-2 border-l-neutral-700">
+          <Header
+            replyTo={currentEmail?.replyTo ?? ''}
+            subject={currentEmail?.subject ?? ''}
+            title={currentEmail?.title ?? ''}
           />
-        ))}
-      </div>
-      <div className="h-full w-[52%] border-l-2 border-l-neutral-700">
-        <Header
-          replyTo={currentEmail?.replyTo ?? ''}
-          subject={currentEmail?.subject ?? ''}
-          title={currentEmail?.title ?? ''}
-        />
-        <Body>{currentEmail?.content}</Body>
-      </div>
+          <Body>{currentEmail?.content}</Body>
+        </div>
       </div>
     </Card>
   );
