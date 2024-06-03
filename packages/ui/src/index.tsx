@@ -11,3 +11,4 @@ export * from './components/input-otp';
 export * from './components/label';
 export * from './components/logo';
 export * from './components/toast';
+export * from './components/tooltip';
