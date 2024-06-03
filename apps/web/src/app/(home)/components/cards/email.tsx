@@ -52,19 +52,16 @@ interface BodyProps {
 
 function Item(props: ItemProps): JSX.Element {
   return (
-    <button
-      className={`m-2 flex w-[318px] flex-col justify-start rounded-md p-2 ${props.selected ? 'bg-neutral-700' : 'bg-neutral-800'}`}
-      onClick={() => {
-        props.setCurrentSelected(props.id);
-      }}
+    <div
+      className={`h-50 m-2 flex w-[318px] flex-col justify-start rounded-md p-2 ${props.selected ? 'bg-neutral-700' : 'bg-neutral-800'}`}
       tabIndex={-1}
-      type="button">
+      >
       <span className="text-md font-semibold">{props.title}</span>
       <span className="text-sm">{props.subject}</span>
       <span className="text-ellipsis text-sm text-neutral-400">
         {props.content}
       </span>
-    </button>
+    </div>
   );
 }
 
@@ -97,10 +94,10 @@ export function EmailCard(): JSX.Element {
 
   return (
     <Card
-      className="relative z-10 flex translate-x-[120px] translate-y-[-340px] flex-row items-center justify-center p-0"
+      className="relative z-10 h-[216px] flex translate-x-[120px] translate-y-[-380px] flex-row items-center justify-center p-0"
       size="landing"
       variant="landing">
-      <div className="h-full w-[48%] overflow-y-auto overflow-x-hidden">
+      <div className="h-full mt-10 w-[48%] overflow-hidden">
         {EMAILS.map(item => (
           <Item
             content={item.content}
