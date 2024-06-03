@@ -94,10 +94,11 @@ export function EmailCard(): JSX.Element {
 
   return (
     <Card
-      className="relative z-10 h-[216px] flex translate-x-[120px] translate-y-[-380px] flex-row items-center justify-center p-0"
+      className="z-10 h-[216px] translate-x-[120px] translate-y-[-380px]"
       size="landing"
       variant="landing">
-      <div className="h-full mt-10 w-[48%] overflow-hidden">
+      <div className="relative flex p-0 flex-row items-center justify-center ">
+      <div className="h-full mt-0 w-[48%] overflow-hidden">
         {EMAILS.map(item => (
           <Item
             content={item.content}
@@ -117,6 +118,7 @@ export function EmailCard(): JSX.Element {
           title={currentEmail?.title ?? ''}
         />
         <Body>{currentEmail?.content}</Body>
+      </div>
       </div>
     </Card>
   );

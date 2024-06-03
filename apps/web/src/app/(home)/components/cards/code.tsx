@@ -5,9 +5,9 @@ import { ClipboardIcon, CheckIcon } from '@formizee/ui/icons';
 import { useEffect, useState } from 'react';
 
 const code = `<form action="https://formizee.com/f/123456" method="post">
-<input type="text" name="name"/>
-<input type="email" name="email"/>
-<button>Submit</button>
+  <input type="text" name="name"/>
+  <input type="email" name="email"/>
+  <button>Submit</button>
 </form>`;
 
 export function CodeCard(): JSX.Element {
@@ -34,7 +34,7 @@ export function CodeCard(): JSX.Element {
     <Card
       className="relative z-30 flex translate-x-[80px] justify-center"
       size="landing"
-      variant="landing">
+      variant="animated">
       <CodeBlock language="html">{code}</CodeBlock>
       <Tooltip>
         <TooltipTrigger asChild>
