@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { Button, Tooltip, TooltipContent, TooltipTrigger } from "@formizee/ui";
-import { CheckIcon, ClipboardIcon } from "@formizee/ui/icons"
-import { useEffect, useState } from "react";
+import {Button, Tooltip, TooltipContent, TooltipTrigger} from '@formizee/ui';
+import {CheckIcon, ClipboardIcon} from '@formizee/ui/icons';
+import {useEffect, useState} from 'react';
 
 interface ClipboardButtonProps {
   data: string;
@@ -17,22 +17,30 @@ export function ClipboardButton(props: ClipboardButtonProps): JSX.Element {
   const onClick = () => {
     setOnClipboard(true);
     navigator.clipboard.writeText(props.data);
-  }
+  };
 
   useEffect(() => {
     if (onClipboard) setTimeout(() => setOnClipboard(false), 2000);
-  }, [onClipboard, setOnClipboard])
+  }, [onClipboard, setOnClipboard]);
 
   return (
-    <Tooltip >
+    <Tooltip>
       <TooltipTrigger asChild>
-        <Button onClick={onClick} className={props.className} variant="outline" size="icon">
-          {onClipboard ? <CheckIcon className="fill-amber-400" />
-            : <ClipboardIcon className="animate-fade-in" />}
-
+        <Button
+          onClick={onClick}
+          className={props.className}
+          variant="outline"
+          size="icon">
+          {onClipboard ? (
+            <CheckIcon className="fill-amber-400" />
+          ) : (
+            <ClipboardIcon className="animate-fade-in" />
+          )}
         </Button>
       </TooltipTrigger>
-      <TooltipContent side={props.side ?? 'top'}>{props.tooltip ?? "Copy"}</TooltipContent>
+      <TooltipContent side={props.side ?? 'top'}>
+        {props.tooltip ?? 'Copy'}
+      </TooltipContent>
     </Tooltip>
-  )
+  );
 }

@@ -4,7 +4,7 @@ interface DashboardContentProps {
 
 export function DashboardContent(props: DashboardContentProps): JSX.Element {
   return (
-    <div className="md:flex hidden disp w-full flex-col items-center justify-center">
+    <div className="disp hidden w-full flex-col items-center justify-center md:flex">
       {props.children}
     </div>
   );

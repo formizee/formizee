@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { ClipboardButton } from '@/components';
-import { Card, CodeBlock } from '@formizee/ui';
+import {ClipboardButton} from '@/components';
+import {Card, CodeBlock} from '@formizee/ui';
 
 const code = `<form action="https://formizee.com/f/123456" method="post">
   <input type="text" name="name"/>
@@ -16,11 +16,11 @@ export function CodeCard(): JSX.Element {
       size="landing"
       variant="animated">
       <CodeBlock language="html">{code}</CodeBlock>
-      <ClipboardButton 
+      <ClipboardButton
         data={code}
         side="left"
         tooltip="Copy Code"
-        className="2xl:flex hidden absolute bottom-3 right-3"
+        className="absolute bottom-3 right-3 hidden 2xl:flex"
       />
     </Card>
   );
