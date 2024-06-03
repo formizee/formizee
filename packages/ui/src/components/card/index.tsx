@@ -14,7 +14,7 @@ const cardVariants = cva(
       },
       size: {
         default: 'min-h-48 min-w-[200px] p-4',
-        landing: 'h-48 w-[700px] p-4',
+        landing: 'w-[700px] p-4',
         auth: 'h-[310px] p-4'
       }
     },
