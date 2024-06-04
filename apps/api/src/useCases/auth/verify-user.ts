@@ -1,4 +1,4 @@
-import {Response, User} from 'domain/models';
+import {type Response, type User} from 'domain/models';
 import {Email} from 'domain/models/values';
 import {resolve} from '@/lib/di';
 

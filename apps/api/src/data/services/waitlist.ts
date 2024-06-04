@@ -1,12 +1,11 @@
-import {DrizzleD1Database} from 'drizzle-orm/d1';
-import {WaitlistService} from 'domain/services';
-import {SecretsProvider} from '@/lib/secrets';
-import {Email} from 'domain/models/values';
+import {type DrizzleD1Database} from 'drizzle-orm/d1';
+import {type WaitlistService} from 'domain/services';
+import {type Email} from 'domain/models/values';
 import {Response} from 'domain/models';
-
 import {drizzle} from 'drizzle-orm/d1';
-import {waitlist} from '../models';
 import {eq} from 'drizzle-orm';
+import {SecretsProvider} from '@/lib/secrets';
+import {waitlist} from '../models';
 
 export class WaitlistServiceImplementation implements WaitlistService {
   private readonly db: DrizzleD1Database;
@@ -23,10 +22,10 @@ export class WaitlistServiceImplementation implements WaitlistService {
       .where(eq(waitlist.email, email.value));
 
     if (alreadyExists[0])
-      return Response.error(
+      {return Response.error(
         "You're already on the list! We'll keep you updated on Formizee launch.",
         409
-      );
+      );}
 
     await this.db.insert(waitlist).values({email: email.value});
 

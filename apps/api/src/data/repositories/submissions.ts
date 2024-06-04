@@ -1,12 +1,11 @@
-import {DrizzleD1Database, drizzle} from 'drizzle-orm/d1';
-import {SubmissionsRepository} from 'domain/repositories';
+import {type DrizzleD1Database, drizzle} from 'drizzle-orm/d1';
+import {type SubmissionsRepository} from 'domain/repositories';
 import {Response, Submission} from 'domain/models';
-import {SecretsProvider} from '@/lib/secrets';
-import {Uid} from 'domain/models/values';
-
-import {parseFormData, stringifyFormData} from '@/lib/adapters';
-import {submissions} from '@/data/models';
+import {type Uid} from 'domain/models/values';
 import {eq} from 'drizzle-orm';
+import {SecretsProvider} from '@/lib/secrets';
+import {objectToFormData, formDataToObject} from '@/lib/adapters';
+import {submissions} from '@/data/models';
 
 export class SubmissionsRepositoryImplementation
   implements SubmissionsRepository
@@ -25,7 +24,7 @@ export class SubmissionsRepositoryImplementation
       .where(eq(submissions.id, uid.value));
     if (!response[0]) return Response.error('Submission not found.', 404);
 
-    const formData = await parseFormData(response[0].formData);
+    const formData = objectToFormData(JSON.parse(response[0].formData));
 
     const submission = new Submission(
       response[0].id,
@@ -44,9 +43,9 @@ export class SubmissionsRepositoryImplementation
       .where(eq(submissions.endpoint, form.value));
     if (!response[0]) return Response.error('No submission found.', 404);
 
-    let result: Submission[] = [];
+    const result: Submission[] = [];
     for (let i = 0; i <= response.length; i++) {
-      const formData = await parseFormData(response[0].formData);
+    const formData = objectToFormData(JSON.parse(response[0].formData));
       const item = new Submission(
         response[0].id,
         response[0].endpoint,
@@ -61,7 +60,8 @@ export class SubmissionsRepositoryImplementation
   }
 
   async save(form: Uid, data: FormData): Promise<Response<Submission>> {
-    const formData = await stringifyFormData(data);
+    const formDataObject = await formDataToObject(data);
+    const formData =JSON.stringify(formDataObject);
 
     const response = await this.db
       .insert(submissions)

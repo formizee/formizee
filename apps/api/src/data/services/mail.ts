@@ -1,8 +1,8 @@
-import {SecretsProvider} from '@/lib/secrets';
-import {MailService} from 'domain/services';
-import {Response, Mail} from 'domain/models';
+import {type MailService} from 'domain/services';
+import {Response, type Mail} from 'domain/models';
 import {Uid} from 'domain/models/values';
 import {Resend} from 'resend';
+import {SecretsProvider} from '@/lib/secrets';
 
 export class MailServiceImplementation implements MailService {
   private readonly smtp: Resend;
@@ -20,9 +20,10 @@ export class MailServiceImplementation implements MailService {
       html: mail.html
     });
 
-    if (error || !data?.id) return Response.error('Unexpected error.', 500);
+    if (error) return Response.error('Unexpected error.', 500);
+    if (!data?.id) return Response.error('Unexpected error.', 500);
 
-    const response = new Uid(data?.id);
+    const response = new Uid(data.id);
     return Response.success(response, 201);
   }
 }

@@ -1,19 +1,15 @@
-export class SecretsProvider {
-  private static instance: SecretsProvider;
-  private smtp: any;
-  private db: any;
+import type { D1Database } from "@cloudflare/workers-types";
 
-  private constructor() {}
+export class SecretsProvider {
+  private static instance: SecretsProvider = new SecretsProvider();
+  private db: D1Database | null = null;
+  private smtp: string | null = null;
 
   static getInstance(): SecretsProvider {
-    if (!SecretsProvider.instance) {
-      SecretsProvider.instance = new SecretsProvider();
-    }
-
     return SecretsProvider.instance;
   }
 
-  setSmtp(apiKey: string) {
+  setSmtp(apiKey: string): void {
     this.smtp = apiKey;
   }
 
@@ -25,11 +21,11 @@ export class SecretsProvider {
     return this.smtp;
   }
 
-  setDb(db: any) {
+  setDb(db: D1Database): void {
     this.db = db;
   }
 
-  getDb() {
+  getDb(): D1Database {
     if (!this.db) {
       throw new Error('Database is not set');
     }

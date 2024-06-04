@@ -1,9 +1,8 @@
-import {LoadEndpointsByOwner, SaveEndpoint} from '@/useCases/endpoints';
-import {StatusCode} from 'hono/utils/http-status';
+import {type StatusCode} from 'hono/utils/http-status';
 import {Hono} from 'hono';
-
-/* @ts-ignore-next-line */
+/* @ts-expect-error-next-line */
 import {zValidator} from '@hono/zod-validator';
+import {LoadEndpointsByOwner, SaveEndpoint} from '@/useCases/endpoints';
 import {verifySession} from '@/lib/auth';
 import {saveSchema} from './schema';
 
@@ -12,12 +11,12 @@ const router = new Hono();
 router.get('/', async context => {
   const {isAuth, user} = await verifySession(context);
   if (!isAuth || !user)
-    return context.json(
+    {return context.json(
       {error: 'Please, login first in order to do this action'},
       401
-    );
+    );}
 
-  const service = new LoadEndpointsByOwner(user);
+  const service = new LoadEndpointsByOwner(user.uid);
   const response = await service.run();
 
   return context.json(response.body, response.status as StatusCode);
@@ -26,14 +25,14 @@ router.get('/', async context => {
 router.post('/', zValidator('json', saveSchema), async context => {
   const {isAuth, user} = await verifySession(context);
   if (!isAuth || !user)
-    return context.json(
+    {return context.json(
       {error: 'Please, login first in order to do this action'},
       401
-    );
+    );}
 
   const {name} = context.req.valid('json');
 
-  const service = new SaveEndpoint(name, user);
+  const service = new SaveEndpoint(name, user.uid);
   const response = await service.run();
 
   return context.json(response.body, response.status as StatusCode);

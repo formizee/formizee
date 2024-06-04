@@ -1,5 +1,6 @@
-import {SignJWT, jwtVerify} from 'jose';
-import {Context} from 'hono';
+import {type JWTPayload, SignJWT, jwtVerify} from 'jose';
+import {type Context} from 'hono';
+import {type Env} from '@/types';
 
 export interface SessionPayload {
   uid: string;
@@ -8,8 +9,10 @@ export interface SessionPayload {
   permission: 'user' | 'admin';
 }
 
-export async function encrypt(context: Context, payload: SessionPayload) {
-  const encodedKey = new TextEncoder().encode(context.env.SESSION_SECRET);
+export async function encrypt(context: Context, payload: SessionPayload): Promise<string> {
+  const env = context.env as Env;
+
+  const encodedKey = new TextEncoder().encode(env.SESSION_SECRET);
 
   return new SignJWT({
     uid: payload.uid,
@@ -26,8 +29,10 @@ export async function encrypt(context: Context, payload: SessionPayload) {
 export async function decrypt(
   context: Context,
   session: string | undefined = ''
-) {
-  const encodedKey = new TextEncoder().encode(context.env.SESSION_SECRET);
+): Promise<JWTPayload> {
+  const env = context.env as Env;
+
+  const encodedKey = new TextEncoder().encode(env.SESSION_SECRET);
 
   try {
     const {payload} = await jwtVerify(session, encodedKey, {
@@ -35,6 +40,6 @@ export async function decrypt(
     });
     return payload;
   } catch (error) {
-    console.log('Failed to verify session');
+    throw Error('Failed to verify session');
   }
 }

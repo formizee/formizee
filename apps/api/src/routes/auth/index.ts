@@ -1,3 +1,9 @@
+import {type StatusCode} from 'hono/utils/http-status';
+import {Hono} from 'hono';
+/* @ts-expect-error-next-line */
+import {zValidator} from '@hono/zod-validator';
+import type { Response, User } from 'domain/models';
+import {createSession, deleteSession} from '@/lib/auth';
 import {
   AuthLogin,
   AuthRegister,
@@ -5,23 +11,17 @@ import {
   AuthVerifyUser,
   AuthResetPassword
 } from '@/useCases/auth';
-import {StatusCode} from 'hono/utils/http-status';
-import {Hono} from 'hono';
-
+import {
+  createVerification,
+  deleteVerification,
+  readVerification
+} from '@/lib/auth/verification';
 import {
   loginSchema,
   registerSchema,
   sendVerificationSchema,
   verifyTokenSchema
 } from './schema';
-import {createSession, deleteSession} from '@/lib/auth';
-/* @ts-ignore-next-line */
-import {zValidator} from '@hono/zod-validator';
-import {
-  createVerification,
-  deleteVerification,
-  readVerification
-} from '@/lib/auth/verification';
 
 const auth = new Hono();
 
@@ -37,13 +37,13 @@ auth.post('/login', zValidator('json', loginSchema), async context => {
   if (isVerified) {
     await createSession(context, {uid, name, permission});
     return context.json(user.body, 200);
-  } else {
+  } 
     const verificationService = new AuthSendVerification(email);
     await verificationService.run();
 
     await createVerification(context, email, 'account');
     return context.json({error: 'Please verify the user before login.'}, 403);
-  }
+  
 });
 
 auth.post('/register', zValidator('json', registerSchema), async context => {
@@ -82,33 +82,32 @@ auth.post('/verify', zValidator('json', verifyTokenSchema), async context => {
   const {token} = context.req.valid('json');
 
   if (!isValid || !email)
-    return context.json(
+    {return context.json(
       {error: 'The email for validation has not been specified.'},
       400
-    );
+    );}
 
-  let user: any;
+  let user: Response<User>;
 
   if (type === 'account') {
     const service = new AuthVerifyUser(email, token);
     user = await service.run();
   }
-
-  if (type === 'password') {
+  else {
     const service = new AuthResetPassword(email, token);
     user = await service.run();
   }
 
   if (!user.ok) return context.json(user.body, user.status as StatusCode);
 
-  await createSession(context, user.body.uid);
-  await deleteVerification(context);
+  await createSession(context, {uid: user.body.uid, name: user.body.name, permission: user.body.permission});
+  deleteVerification(context);
 
   return context.json({user: user.body, type}, user.status as StatusCode);
 });
 
-auth.post('/logout', async context => {
-  await deleteSession(context);
+auth.post('/logout', context => {
+  deleteSession(context);
   return context.json('OK', 200);
 });
 

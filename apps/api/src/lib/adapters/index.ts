@@ -1,1 +1,1 @@
-export {stringifyFormData, parseFormData} from './submission';
+export {objectToFormData, formDataToObject} from './submission';

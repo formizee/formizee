@@ -1,5 +1,5 @@
 import {Email} from 'domain/models/values';
-import {Response} from 'domain/models';
+import {type Response} from 'domain/models';
 import {resolve} from '@/lib/di';
 
 export class WaitlistJoin {

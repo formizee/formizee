@@ -1,17 +1,17 @@
-import {createContainer, asClass} from 'awilix';
-import Dependencies from './types';
+/*eslint import/no-cycle: [2, { maxDepth: 1 }] -- The depth is allowed in order to reuse cases */
 
+import {createContainer, asClass} from 'awilix';
 import {
   SubmissionsRepositoryImplementation,
   EndpointsRepositoryImplementation,
   UsersRepositoryImplementation
 } from '@/data/repositories';
-
 import {
   WaitlistServiceImplementation,
   MailServiceImplementation,
   AuthServiceImplementation
 } from '@/data/services';
+import type Dependencies from './types';
 
 const container = createContainer<Dependencies>();
 

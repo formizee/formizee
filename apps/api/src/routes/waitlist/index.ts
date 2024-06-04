@@ -1,12 +1,11 @@
-import {StatusCode} from 'hono/utils/http-status';
-import {WaitlistJoin} from '@/useCases/waitlist';
+import {type StatusCode} from 'hono/utils/http-status';
 import {Hono} from 'hono';
-
-/* @ts-ignore-next-line */
+/* @ts-expect-error-next-line */
 import {zValidator} from '@hono/zod-validator';
+import {WaitlistJoin} from '@/useCases/waitlist';
 import {joinSchema} from './schema';
 
-const router = new Hono();
+export const router = new Hono();
 
 router.post('/join', zValidator('json', joinSchema), async context => {
   const {email} = context.req.valid('json');

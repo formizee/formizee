@@ -1,4 +1,4 @@
-import {Endpoint, Response} from 'domain/models';
+import {type Endpoint, type Response} from 'domain/models';
 import {Uid} from 'domain/models/values';
 import {resolve} from '@/lib/di';
 

@@ -1,5 +1,7 @@
+/*eslint import/no-cycle: [2, { maxDepth: 1 }] -- The depth is allowed in order to reuse cases */
+
 import {Uid, Name} from 'domain/models/values';
-import {Response} from 'domain/models';
+import {type Response} from 'domain/models';
 import {resolve} from '@/lib/di';
 
 export class UpdateUserName {
@@ -12,7 +14,7 @@ export class UpdateUserName {
     this._uid = new Uid(uid);
   }
 
-  async run(): Promise<Response<void>> {
+  async run(): Promise<Response<true>> {
     return await this._repository.updateName(this._uid, this._name);
   }
 }

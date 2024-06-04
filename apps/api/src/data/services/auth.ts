@@ -1,16 +1,17 @@
-import {Name, Email, Password} from 'domain/models/values';
-import {DrizzleD1Database, drizzle} from 'drizzle-orm/d1';
+/*eslint import/no-cycle: [2, { maxDepth: 1 }] -- The depth is allowed in order to reuse cases */
+
+import {randomInt} from 'node:crypto';
+import {type Name, type Email, type Password} from 'domain/models/values';
+import {type DrizzleD1Database, drizzle} from 'drizzle-orm/d1';
 import {Mail, Response, User} from 'domain/models';
-import {AuthService} from 'domain/services';
+import {type AuthService} from 'domain/services';
+import {compare, hash} from 'bcryptjs';
+import {eq} from 'drizzle-orm';
 import {SecretsProvider} from '@/lib/secrets';
 import {SaveUser} from '@/useCases/users';
 import {MailSend} from '@/useCases/mail';
-
 import {verifyEmailTemplate} from '@/emails/auth';
 import {authTokens, users} from '@/data/models';
-import {compare, hash} from 'bcryptjs';
-import {randomInt} from 'node:crypto';
-import {eq} from 'drizzle-orm';
 
 export class AuthServiceImplementation implements AuthService {
   private readonly db: DrizzleD1Database;
@@ -72,7 +73,7 @@ export class AuthServiceImplementation implements AuthService {
 
     // 3. Compare tokens.
     if (tokenResponse[0].token.toString() !== token)
-      return Response.error('Invalid token.', 401);
+      {return Response.error('Invalid token.', 401);}
 
     // 4. Verify user
     const response = await this.db
@@ -117,7 +118,7 @@ export class AuthServiceImplementation implements AuthService {
 
     // 3. Compare tokens.
     if (tokenResponse[0].token.toString() !== token)
-      return Response.error('Invalid token.', 401);
+      {return Response.error('Invalid token.', 401);}
 
     // 4. Delete the token
     await this.db.delete(authTokens).where(eq(authTokens.email, email.value));
@@ -125,7 +126,7 @@ export class AuthServiceImplementation implements AuthService {
     // 5. Retrieve user
     const response = await this.db
       .update(users)
-      .set({verified: true})
+      .set({isVerified: true})
       .where(eq(users.email, email.value))
       .returning();
     if (!response[0]) return Response.error('The user does not exists.', 404);
@@ -144,7 +145,7 @@ export class AuthServiceImplementation implements AuthService {
   }
 
   async sendVerification(email: Email): Promise<Response<true>> {
-    const sendEmail = async (to: string, token: string) => {
+    const sendEmail = async (to: string, token: string): Promise<void> => {
       const html = verifyEmailTemplate(token);
 
       const mail = new Mail(
@@ -165,7 +166,7 @@ export class AuthServiceImplementation implements AuthService {
       .from(users)
       .where(eq(users.email, email.value));
     if (!userResponse[0])
-      return Response.error('The user does not exists.', 404);
+      {return Response.error('The user does not exists.', 404);}
 
     // 1. Check if already exists a token and resend the email, otherwise delete the old token.
     const existentToken = await this.db
@@ -178,10 +179,9 @@ export class AuthServiceImplementation implements AuthService {
       const currentTime = new Date();
 
       if (currentTime < expiresAt) {
-        sendEmail(existentToken[0].email, existentToken[0].token.toString());
+        await sendEmail(existentToken[0].email, existentToken[0].token.toString());
         return Response.success(true, 200);
-      } else
-        await this.db
+      } await this.db
           .delete(authTokens)
           .where(eq(authTokens.email, email.value));
     }

@@ -1,11 +1,10 @@
-import {EndpointsRepository} from 'domain/repositories';
-import {Email, Uid} from 'domain/models/values';
+import {type EndpointsRepository} from 'domain/repositories';
+import {type Email, type Uid} from 'domain/models/values';
 import {Response, Endpoint} from 'domain/models';
-import {SecretsProvider} from '@/lib/secrets';
-
-import {DrizzleD1Database, drizzle} from 'drizzle-orm/d1';
-import {endpoints, users} from '@/data/models';
+import {type DrizzleD1Database, drizzle} from 'drizzle-orm/d1';
 import {eq} from 'drizzle-orm';
+import {SecretsProvider} from '@/lib/secrets';
+import {endpoints, users} from '@/data/models';
 
 export class EndpointsRepositoryImplementation implements EndpointsRepository {
   private readonly db: DrizzleD1Database;
@@ -15,7 +14,7 @@ export class EndpointsRepositoryImplementation implements EndpointsRepository {
     this.db = drizzle(provider.getDb());
   }
 
-  async load(uid: Uid) {
+  async load(uid: Uid): Promise<Response<Endpoint>> {
     const response = await this.db
       .select()
       .from(endpoints)
@@ -34,16 +33,16 @@ export class EndpointsRepositoryImplementation implements EndpointsRepository {
     return Response.success(endpoint);
   }
 
-  async loadByOwner(owner: Uid) {
+  async loadByOwner(owner: Uid): Promise<Response<Endpoint[]>> {
     const response = await this.db
       .select()
       .from(endpoints)
       .where(eq(endpoints.owner, owner.value));
 
     if (!response[0])
-      return Response.error('The user does not have forms.', 404);
+      {return Response.error('The user does not have forms.', 404);}
 
-    let result: Endpoint[] = [];
+    const result: Endpoint[] = [];
 
     for (let i = 0; i <= response.length; i++) {
       const endpoint = new Endpoint(
@@ -60,7 +59,7 @@ export class EndpointsRepositoryImplementation implements EndpointsRepository {
     return Response.success(result);
   }
 
-  async save(name: string, owner: Uid) {
+  async save(name: string, owner: Uid): Promise<Response<Endpoint>> {
     const ownerData = await this.db
       .select()
       .from(users)
@@ -89,13 +88,23 @@ export class EndpointsRepositoryImplementation implements EndpointsRepository {
     return Response.success(endpoint);
   }
 
-  async delete(uid: Uid) {}
+   delete(_uid: Uid): Promise<Response<void>> {
+    throw Error("Not implemented yet.")
+  }
 
-  async updateEnabled(uid: Uid, isEnabled: boolean) {}
+   updateEnabled(_uid: Uid, _isEnabled: boolean): Promise<Response<void>> {
+    throw Error("Not implemented yet.")
+  }
 
-  async updateRedirectUrl(uid: Uid, redirectUrl: URL) {}
+   updateRedirectUrl(_uid: Uid, _redirectUrl: URL): Promise<Response<void>> {
+    throw Error("Not implemented yet.")
+  }
 
-  async updateTargetEmail(uid: Uid, targetEmail: Email) {}
+   updateTargetEmail(_uid: Uid, _targetEmail: Email): Promise<Response<void>> {
+    throw Error("Not implemented yet.")
+  }
 
-  async updateEmailNotifications(uid: Uid, isEnabled: boolean) {}
+   updateEmailNotifications(_uid: Uid, _isEnabled: boolean): Promise<Response<void>> {
+    throw Error("Not implemented yet.")
+  }
 }

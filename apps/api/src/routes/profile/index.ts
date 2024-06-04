@@ -1,23 +1,26 @@
-import {StatusCode} from 'hono/utils/http-status';
+import {type StatusCode} from 'hono/utils/http-status';
 import {Hono} from 'hono';
+/* @ts-expect-error-next-line */
+import {zValidator} from '@hono/zod-validator';
 import {
+/*
   DeleteUser,
   LoadUser,
   UpdateUserEmail,
   UpdateUserLinkedEmails,
   UpdateUserName,
+  */
   UpdateUserPassword
 } from '@/useCases/users';
-
+import {verifySession} from '@/lib/auth';
 import {
+/*
   emailSchema,
   linkedEmailsSchema,
   nameSchema,
+*/
   passwordSchema
 } from './schema';
-/* @ts-ignore-next-line */
-import {zValidator} from '@hono/zod-validator';
-import {verifySession} from '@/lib/auth';
 
 const router = new Hono();
 
@@ -74,15 +77,15 @@ router.put('/password', zValidator('json', passwordSchema), async context => {
 
   const {isAuth, user} = await verifySession(context);
   if (!isAuth || !user)
-    return context.json(
+    {return context.json(
       {error: 'Please, login first in order to do this action'},
       401
-    );
+    );}
 
   const service = new UpdateUserPassword(user.uid, password);
   const response = await service.run();
 
-  return context.json(response.error ?? 'OK', response.status as StatusCode);
+  return context.json(response.body, response.status as StatusCode);
 });
 
 /*

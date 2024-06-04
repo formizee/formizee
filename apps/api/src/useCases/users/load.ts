@@ -1,4 +1,6 @@
-import {User, Response} from 'domain/models';
+/*eslint import/no-cycle: [2, { maxDepth: 1 }] -- The depth is allowed in order to reuse cases */
+
+import {type User, type Response} from 'domain/models';
 import {Email, Uid} from 'domain/models/values';
 import {resolve} from '@/lib/di';
 

@@ -1,12 +1,11 @@
-import {Uid, Name, Email, Password} from 'domain/models/values';
-import {UsersRepository} from 'domain/repositories';
-import {SecretsProvider} from '@/lib/secrets';
+import {type Uid, type Name, type Email, type Password} from 'domain/models/values';
+import {type UsersRepository} from 'domain/repositories';
 import {Response, User} from 'domain/models';
-
-import {DrizzleD1Database, drizzle} from 'drizzle-orm/d1';
-import {users} from '@/data/models';
+import {type DrizzleD1Database, drizzle} from 'drizzle-orm/d1';
 import {eq} from 'drizzle-orm';
 import {hash} from 'bcryptjs';
+import {users} from '@/data/models';
+import {SecretsProvider} from '@/lib/secrets';
 
 export class UsersRepositoryImplementation implements UsersRepository {
   private readonly db: DrizzleD1Database;
@@ -16,7 +15,7 @@ export class UsersRepositoryImplementation implements UsersRepository {
     this.db = drizzle(provider.getDb());
   }
 
-  async load(uid: Uid) {
+  async load(uid: Uid): Promise<Response<User>> {
     const response = await this.db
       .select()
       .from(users)
@@ -36,7 +35,7 @@ export class UsersRepositoryImplementation implements UsersRepository {
     return Response.success(user);
   }
 
-  async save(name: Name, email: Email, password: Password) {
+  async save(name: Name, email: Email, password: Password): Promise<Response<User>> {
     const userExists = await this.db
       .select()
       .from(users)
@@ -69,7 +68,7 @@ export class UsersRepositoryImplementation implements UsersRepository {
     return Response.success(user, 201);
   }
 
-  async delete(uid: Uid) {
+  async delete(uid: Uid): Promise<Response<true>> {
     const userExists = await this.db
       .select()
       .from(users)
@@ -82,10 +81,10 @@ export class UsersRepositoryImplementation implements UsersRepository {
       .returning();
     if (!deleted[0]) return Response.error('Internal error.', 500);
 
-    return Response.success('User deleted.');
+    return Response.success(true);
   }
 
-  async updateName(uid: Uid, newName: Name) {
+  async updateName(uid: Uid, newName: Name): Promise<Response<true>> {
     const userExists = await this.db
       .select()
       .from(users)
@@ -99,10 +98,10 @@ export class UsersRepositoryImplementation implements UsersRepository {
       .returning();
     if (!updated[0]) return Response.error('Internal error.', 500);
 
-    return Response.success('User name updated.');
+    return Response.success(true);
   }
 
-  async updateEmail(uid: Uid, newEmail: Email) {
+  async updateEmail(uid: Uid, newEmail: Email): Promise<Response<true>> {
     const userExists = await this.db
       .select()
       .from(users)
@@ -116,10 +115,10 @@ export class UsersRepositoryImplementation implements UsersRepository {
       .returning();
     if (!updated[0]) return Response.error('Internal error.', 500);
 
-    return Response.success('User email updated.');
+    return Response.success(true);
   }
 
-  async updatePassword(uid: Uid, newPassword: Password) {
+  async updatePassword(uid: Uid, newPassword: Password): Promise<Response<true>> {
     const userExists = await this.db
       .select()
       .from(users)
@@ -135,10 +134,10 @@ export class UsersRepositoryImplementation implements UsersRepository {
       .returning();
     if (!updated[0]) return Response.error('Internal error.', 500);
 
-    return Response.success('User email updated.');
+    return Response.success(true);
   }
 
-  async updateLinkedEmails(uid: Uid, linkedEmails: Email[]) {
+  async updateLinkedEmails(uid: Uid, linkedEmails: Email[]): Promise<Response<true>> {
     const userExists = await this.db
       .select()
       .from(users)
@@ -157,6 +156,6 @@ export class UsersRepositoryImplementation implements UsersRepository {
       .returning();
     if (!updated[0]) return Response.error('Internal error.', 500);
 
-    return Response.success('User email updated.');
+    return Response.success(true);
   }
 }

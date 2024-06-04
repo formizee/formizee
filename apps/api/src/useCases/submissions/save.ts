@@ -1,4 +1,4 @@
-import {Response, Submission} from 'domain/models';
+import {type Response, type Submission} from 'domain/models';
 import {Uid} from 'domain/models/values';
 import {resolve} from '@/lib/di';
 

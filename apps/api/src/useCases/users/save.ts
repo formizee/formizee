@@ -1,5 +1,7 @@
+/*eslint import/no-cycle: [2, { maxDepth: 1 }] -- The depth is allowed in order to reuse cases */
+
 import {Name, Email, Password} from 'domain/models/values';
-import {User, Response} from 'domain/models';
+import {type User, type Response} from 'domain/models';
 import {resolve} from '@/lib/di';
 
 export class SaveUser {
