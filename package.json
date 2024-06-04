@@ -3,12 +3,16 @@
   "private": true,
   "scripts": {
     "dev": "turbo dev",
+    "prepare": "husky",
     "lint": "turbo lint",
     "format": "turbo format",
     "build": "turbo build --cache-dir=.turbo"
   },
   "devDependencies": {
+    "@commitlint/config-angular": "19.3.0",
     "@formizee/typescript-config": "workspace:*",
+    "commitlint": "19.3.0",
+    "husky": "9.0.11",
     "oxlint": "0.4.2",
     "prettier": "3.3.0",
     "prettier-plugin-tailwindcss": "0.6.1",
