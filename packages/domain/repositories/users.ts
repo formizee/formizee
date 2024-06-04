@@ -8,13 +8,13 @@ export interface UsersRepository {
     email: Email,
     password: Password
   ) => Promise<Response<User>>;
-  delete: (uid: Uid) => Promise<Response<void>>;
+  delete: (uid: Uid) => Promise<Response<true>>;
 
-  updateName: (uid: Uid, newName: Name) => Promise<Response<void>>;
-  updateEmail: (uid: Uid, newEmail: Email) => Promise<Response<void>>;
-  updatePassword: (uid: Uid, newPassword: Password) => Promise<Response<void>>;
+  updateName: (uid: Uid, newName: Name) => Promise<Response<true>>;
+  updateEmail: (uid: Uid, newEmail: Email) => Promise<Response<true>>;
+  updatePassword: (uid: Uid, newPassword: Password) => Promise<Response<true>>;
   updateLinkedEmails: (
     uid: Uid,
     linkedEmails: Email[]
-  ) => Promise<Response<void>>;
+  ) => Promise<Response<true>>;
 }
