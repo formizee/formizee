@@ -35,7 +35,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
     <div className={cn(className, "relative inline-flex overflow-hidden rounded-xl p-[2px]")}>
       {variant === 'animated' ? 
         (<span className="absolute inset-[-1000%] animate-[spin_8s_linear_infinite] bg-[conic-gradient(from_180deg_at_50%_50%,#404040_0%,#404040_60%,#fbbf24_90%,#fef3c7_100%)]" />)
-        : (<></>)}
+        : (<div/>)}
       <div
         className={cn(cardVariants({variant, size}))}
         ref={ref}
