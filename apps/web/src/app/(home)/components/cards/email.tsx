@@ -96,7 +96,7 @@ export function EmailCard(): JSX.Element {
       className="z-10 h-[216px] translate-x-[120px] translate-y-[-380px]"
       size="landing"
       variant="landing">
-      <div className="relative flex flex-row items-center justify-center p-0 ">
+      <div className="relative flex flex-row items-center justify-center p-0">
         <div className="mt-0 h-full w-[48%] overflow-hidden">
           {EMAILS.map(item => (
             <Item

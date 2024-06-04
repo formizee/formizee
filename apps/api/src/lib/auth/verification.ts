@@ -60,9 +60,7 @@ export async function createVerification(
   });
 }
 
-export async function readVerification(
-  context: Context
-): Promise<{
+export async function readVerification(context: Context): Promise<{
   isValid: boolean;
   email: string | undefined;
   type: 'account' | 'password';
