@@ -9,7 +9,7 @@
     "build": "turbo build --cache-dir=.turbo"
   },
   "devDependencies": {
-    "@commitlint/config-angular": "19.3.0",
+    "@commitlint/config-conventional": "19.2.2",
     "@formizee/typescript-config": "workspace:*",
     "commitlint": "19.3.0",
     "husky": "9.0.11",
