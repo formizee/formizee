@@ -2,9 +2,9 @@
 // by running `wrangler types`
 
 interface Env {
-	SESSION_SECRET: string;
-	SMTP_SECRET: string;
-	LOGTAIL_SECRET: string;
-	WORKER_ENV: string;
-	DB: D1Database;
+  SESSION_SECRET: string;
+  SMTP_SECRET: string;
+  LOGTAIL_SECRET: string;
+  WORKER_ENV: string;
+  DB: D1Database;
 }

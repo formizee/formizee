@@ -1,6 +1,6 @@
 import './styles/globals.css';
 
-export { cn } from './lib/ui';
+export {cn} from './lib/ui';
 
 export * from './components/badge';
 export * from './components/button';

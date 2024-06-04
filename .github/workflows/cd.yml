@@ -3,8 +3,6 @@ name: Continuous Deployment
 on:
   push:
     branches: [main]
-  pull_request: 
-    branches: [main]
 
 jobs:
   checks:
@@ -36,6 +34,7 @@ jobs:
         with:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          command: versions upload --experimental-versions
           workingDirectory: "apps/api"
           packageManager: pnpm
 
@@ -74,7 +73,7 @@ jobs:
         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_API_TOKEN }}
 
       - name: Build Project Artifacts
-        run: vercel build --prod --token=${{ secrets.VERCEL_API_TOKEN }}
+        run: vercel build --token=${{ secrets.VERCEL_API_TOKEN }}
 
       - name: Deploy Project Artifacts to Vercel
-        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_API_TOKEN }}
+        run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_API_TOKEN }}

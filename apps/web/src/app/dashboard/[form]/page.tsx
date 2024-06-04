@@ -55,7 +55,7 @@ export default function Page({params}: {params: {form: string}}): JSX.Element {
         </TabsList>
         <TabsContent value="overview">
           <div className="flex w-full flex-col rounded-md border border-neutral-700">
-            <div className="flex flex-col gap-2 p-6 ">
+            <div className="flex flex-col gap-2 p-6">
               <h2 className="text-2xl font-semibold">Form URL</h2>
               <p>Used when interacting with the Formizee API.</p>
               <div className="flex gap-x-2">
@@ -70,7 +70,7 @@ export default function Page({params}: {params: {form: string}}): JSX.Element {
                 />
               </div>
             </div>
-            <div className="flex justify-between border-t border-neutral-700 p-6 ">
+            <div className="flex justify-between border-t border-neutral-700 p-6">
               <span className="flex items-center gap-x-2">
                 Learn more about{' '}
                 <a

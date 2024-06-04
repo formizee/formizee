@@ -1,4 +1,14 @@
-pnpm-workspace.yaml
+.github/workflows/**
+.turbo
+.vercel
+.next
+
+apps/api/drizzle/**
+packages/**/.turbo
 apps/**/.turbo
 node_modules
-.next
+dist
+
+pnpm-workspace.yaml
+pnpm-lock.yaml
+**.md
