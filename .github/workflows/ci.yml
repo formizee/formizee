@@ -66,6 +66,9 @@ jobs:
     name: Build Repository
     needs: [commits, lint, format]
     runs-on: ubuntu-latest
+    env:
+      TURBO_TEAM: ${{ secrets.VERCEL_ORG_ID }}
+      TURBO_TOKEN: ${{ secrets.VERCEL_API_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
