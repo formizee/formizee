@@ -36,5 +36,5 @@ export const verifyEmailTemplate = (token: string) => {
       </body>
 
     </html>
-  `
-}
+  `;
+};

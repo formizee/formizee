@@ -1,5 +1,5 @@
 import defaultTheme from 'tailwindcss/defaultTheme';
-import type { Config } from 'tailwindcss';
+import type {Config} from 'tailwindcss';
 
 // We want each package to be responsible for its own content.
 const config: Omit<Config, 'content'> = {
@@ -23,20 +23,20 @@ const config: Omit<Config, 'content'> = {
       },
       keyframes: {
         'accordion-down': {
-          from: { height: '0' },
-          to: { height: 'var(--radix-accordion-content-height)' }
+          from: {height: '0'},
+          to: {height: 'var(--radix-accordion-content-height)'}
         },
         'accordion-up': {
-          from: { height: 'var(--radix-accordion-content-height)' },
-          to: { height: '0' }
+          from: {height: 'var(--radix-accordion-content-height)'},
+          to: {height: '0'}
         },
         'caret-blink': {
-          '0%,70%,100%': { opacity: '1' },
-          '20%,50%': { opacity: '0' },
+          '0%,70%,100%': {opacity: '1'},
+          '20%,50%': {opacity: '0'}
         },
         'fade-in': {
-          '0%': { opacity: '0', transform: 'translateY(10px)' },
-          '100%': { opacity: '1', transform: 'translateY(0px)' }
+          '0%': {opacity: '0', transform: 'translateY(10px)'},
+          '100%': {opacity: '1', transform: 'translateY(0px)'}
         },
         spotlight: {
           from: {

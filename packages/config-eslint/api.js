@@ -1,4 +1,4 @@
-const { resolve } = require('node:path');
+const {resolve} = require('node:path');
 
 const project = resolve(process.cwd(), 'tsconfig.json');
 
@@ -36,6 +36,6 @@ module.exports = {
     '@typescript-eslint/consistent-type-definitions': 'off',
     '@typescript-eslint/unbound-method': 'off',
     'unicorn/prefer-node-protocol': 'off',
-    'import/no-default-export': 'off',
-  } 
+    'import/no-default-export': 'off'
+  }
 };

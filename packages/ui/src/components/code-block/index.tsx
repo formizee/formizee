@@ -1,6 +1,6 @@
 /* eslint-disable react/no-array-index-key -- There's is not going to be any sorting / addition / removal */
-import type { PrismTheme } from 'prism-react-renderer';
-import { Highlight } from 'prism-react-renderer';
+import type {PrismTheme} from 'prism-react-renderer';
+import {Highlight} from 'prism-react-renderer';
 
 export type LanguageType = 'html' | 'js' | 'jsx' | 'ts' | 'tsx';
 
@@ -108,18 +108,18 @@ const theme: PrismTheme = {
 export function CodeBlock(props: CodeBlockProps): JSX.Element {
   return (
     <Highlight code={props.children} language={props.language} theme={theme}>
-      {({ tokens, getLineProps, getTokenProps }) => (
+      {({tokens, getLineProps, getTokenProps}) => (
         <pre className="flex flex-col md:text-lg" style={{}}>
           {tokens.map((line, i) => (
             <div
               className="my-1 md:my-0.5"
               key={i}
-              style={getLineProps({ line }).style}>
+              style={getLineProps({line}).style}>
               <span className="mr-3 select-none text-sm text-neutral-400">
                 {i + 1}
               </span>
               {line.map((token, key) => (
-                <span key={key} {...getTokenProps({ token })} />
+                <span key={key} {...getTokenProps({token})} />
               ))}
             </div>
           ))}

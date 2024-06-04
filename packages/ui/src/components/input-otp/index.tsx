@@ -48,9 +48,11 @@ const InputOTPSlot = React.forwardRef<
       )}
       {...props}>
       {char}
-      {hasFakeCaret ? <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+      {hasFakeCaret ? (
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
           <div className="animate-caret-blink h-4 w-px bg-neutral-950 duration-1000 dark:bg-amber-400" />
-        </div> : null}
+        </div>
+      ) : null}
     </div>
   );
 });
