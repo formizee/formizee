@@ -27,7 +27,8 @@ export const joinWaitlist = async (
     };
   }
 
-  if(!process.env.URL) throw new Error("Webpage URL enviroment variable is not defined.");
+  if (!process.env.URL)
+    throw new Error('Webpage URL enviroment variable is not defined.');
 
   const response = await fetch(`${process.env.URL}/api/waitlist/join`, {
     headers: {'Content-Type': 'application/json'},

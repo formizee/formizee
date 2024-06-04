@@ -1,4 +1,4 @@
-import type { D1Database } from "@cloudflare/workers-types";
+import type {D1Database} from '@cloudflare/workers-types';
 
 export class SecretsProvider {
   private static instance: SecretsProvider = new SecretsProvider();

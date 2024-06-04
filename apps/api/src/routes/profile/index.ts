@@ -3,7 +3,7 @@ import {Hono} from 'hono';
 /* @ts-expect-error-next-line */
 import {zValidator} from '@hono/zod-validator';
 import {
-/*
+  /*
   DeleteUser,
   LoadUser,
   UpdateUserEmail,
@@ -14,7 +14,7 @@ import {
 } from '@/useCases/users';
 import {verifySession} from '@/lib/auth';
 import {
-/*
+  /*
   emailSchema,
   linkedEmailsSchema,
   nameSchema,
@@ -76,11 +76,12 @@ router.put('/password', zValidator('json', passwordSchema), async context => {
   const {password} = context.req.valid('json');
 
   const {isAuth, user} = await verifySession(context);
-  if (!isAuth || !user)
-    {return context.json(
+  if (!isAuth || !user) {
+    return context.json(
       {error: 'Please, login first in order to do this action'},
       401
-    );}
+    );
+  }
 
   const service = new UpdateUserPassword(user.uid, password);
   const response = await service.run();

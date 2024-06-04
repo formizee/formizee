@@ -45,7 +45,7 @@ export class SubmissionsRepositoryImplementation
 
     const result: Submission[] = [];
     for (let i = 0; i <= response.length; i++) {
-    const formData = objectToFormData(JSON.parse(response[0].formData));
+      const formData = objectToFormData(JSON.parse(response[0].formData));
       const item = new Submission(
         response[0].id,
         response[0].endpoint,
@@ -61,7 +61,7 @@ export class SubmissionsRepositoryImplementation
 
   async save(form: Uid, data: FormData): Promise<Response<Submission>> {
     const formDataObject = await formDataToObject(data);
-    const formData =JSON.stringify(formDataObject);
+    const formData = JSON.stringify(formDataObject);
 
     const response = await this.db
       .insert(submissions)

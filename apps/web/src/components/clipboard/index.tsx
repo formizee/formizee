@@ -20,7 +20,10 @@ export function ClipboardButton(props: ClipboardButtonProps): JSX.Element {
   };
 
   useEffect(() => {
-    if (onClipboard) setTimeout(() => { setOnClipboard(false); }, 2000);
+    if (onClipboard)
+      setTimeout(() => {
+        setOnClipboard(false);
+      }, 2000);
   }, [onClipboard, setOnClipboard]);
 
   return (

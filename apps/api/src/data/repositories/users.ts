@@ -1,4 +1,9 @@
-import {type Uid, type Name, type Email, type Password} from 'domain/models/values';
+import {
+  type Uid,
+  type Name,
+  type Email,
+  type Password
+} from 'domain/models/values';
 import {type UsersRepository} from 'domain/repositories';
 import {Response, User} from 'domain/models';
 import {type DrizzleD1Database, drizzle} from 'drizzle-orm/d1';
@@ -35,7 +40,11 @@ export class UsersRepositoryImplementation implements UsersRepository {
     return Response.success(user);
   }
 
-  async save(name: Name, email: Email, password: Password): Promise<Response<User>> {
+  async save(
+    name: Name,
+    email: Email,
+    password: Password
+  ): Promise<Response<User>> {
     const userExists = await this.db
       .select()
       .from(users)
@@ -118,7 +127,10 @@ export class UsersRepositoryImplementation implements UsersRepository {
     return Response.success(true);
   }
 
-  async updatePassword(uid: Uid, newPassword: Password): Promise<Response<true>> {
+  async updatePassword(
+    uid: Uid,
+    newPassword: Password
+  ): Promise<Response<true>> {
     const userExists = await this.db
       .select()
       .from(users)
@@ -137,7 +149,10 @@ export class UsersRepositoryImplementation implements UsersRepository {
     return Response.success(true);
   }
 
-  async updateLinkedEmails(uid: Uid, linkedEmails: Email[]): Promise<Response<true>> {
+  async updateLinkedEmails(
+    uid: Uid,
+    linkedEmails: Email[]
+  ): Promise<Response<true>> {
     const userExists = await this.db
       .select()
       .from(users)

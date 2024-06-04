@@ -1,7 +1,8 @@
 import {NextResponse} from 'next/server';
 
 export async function POST(): Promise<NextResponse> {
-  if(!process.env.API_URL) throw new Error("API_URL enviroment variable is not defined.");
+  if (!process.env.API_URL)
+    throw new Error('API_URL enviroment variable is not defined.');
 
   const res = await fetch(`${process.env.API_URL}/api/auth/logout`, {
     method: 'POST',

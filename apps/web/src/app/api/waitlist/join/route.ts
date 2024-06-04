@@ -3,7 +3,8 @@ import {type NextRequest, NextResponse} from 'next/server';
 export async function POST(request: NextRequest): Promise<NextResponse> {
   const {email} = await request.json();
 
-  if(!process.env.API_URL) throw new Error("API_URL enviroment variable is not defined.");
+  if (!process.env.API_URL)
+    throw new Error('API_URL enviroment variable is not defined.');
 
   const res = await fetch(`${process.env.API_URL}/api/waitlist/join`, {
     headers: {'Content-Type': 'application/json'},

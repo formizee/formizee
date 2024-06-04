@@ -1,11 +1,9 @@
-
 export const objectToFormData = <T extends Record<string, unknown>>(
   obj: T,
   formData?: FormData,
   parentKey?: string
 ): FormData => {
   const resultFormData = formData ?? new FormData();
-
 
   for (const key in obj) {
     if (Object.prototype.hasOwnProperty.call(obj, key)) {
@@ -17,10 +15,22 @@ export const objectToFormData = <T extends Record<string, unknown>>(
       } else if (Array.isArray(value)) {
         value.forEach((item, index) => {
           const nestedKey = `${currentKey}[${index.toString()}]`;
-          objectToFormData(item as Record<string, unknown>, resultFormData, nestedKey);
+          objectToFormData(
+            item as Record<string, unknown>,
+            resultFormData,
+            nestedKey
+          );
         });
-      } else if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
-        objectToFormData(value as Record<string, unknown>, resultFormData, currentKey);
+      } else if (
+        typeof value === 'object' &&
+        value !== null &&
+        !Array.isArray(value)
+      ) {
+        objectToFormData(
+          value as Record<string, unknown>,
+          resultFormData,
+          currentKey
+        );
       } else {
         resultFormData.append(currentKey, String(value));
       }
@@ -30,9 +40,7 @@ export const objectToFormData = <T extends Record<string, unknown>>(
   return resultFormData;
 };
 
-export const formDataToObject = async (
-  formData: FormData
-): Promise<object> => {
+export const formDataToObject = async (formData: FormData): Promise<object> => {
   try {
     const result = Object.fromEntries(formData);
     return Promise.resolve(result);

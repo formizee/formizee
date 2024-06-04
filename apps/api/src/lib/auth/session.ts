@@ -26,7 +26,9 @@ export async function createSession(
   });
 }
 
-export async function verifySession(context: Context): Promise<{isAuth: boolean, user: Omit<SessionPayload, 'expiresAt'> | null}> {
+export async function verifySession(
+  context: Context
+): Promise<{isAuth: boolean; user: Omit<SessionPayload, 'expiresAt'> | null}> {
   const cookie = getCookie(context, 'session');
   const session = await decrypt(context, cookie);
 

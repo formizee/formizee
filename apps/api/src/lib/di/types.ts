@@ -3,7 +3,11 @@ import {
   type EndpointsRepository,
   type SubmissionsRepository
 } from 'domain/repositories';
-import {type AuthService, type MailService, type WaitlistService} from 'domain/services';
+import {
+  type AuthService,
+  type MailService,
+  type WaitlistService
+} from 'domain/services';
 
 export default interface Dependencies {
   /* Repositories */

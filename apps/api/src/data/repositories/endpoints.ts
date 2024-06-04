@@ -39,8 +39,9 @@ export class EndpointsRepositoryImplementation implements EndpointsRepository {
       .from(endpoints)
       .where(eq(endpoints.owner, owner.value));
 
-    if (!response[0])
-      {return Response.error('The user does not have forms.', 404);}
+    if (!response[0]) {
+      return Response.error('The user does not have forms.', 404);
+    }
 
     const result: Endpoint[] = [];
 
@@ -88,23 +89,26 @@ export class EndpointsRepositoryImplementation implements EndpointsRepository {
     return Response.success(endpoint);
   }
 
-   delete(_uid: Uid): Promise<Response<void>> {
-    throw Error("Not implemented yet.")
+  delete(_uid: Uid): Promise<Response<void>> {
+    throw Error('Not implemented yet.');
   }
 
-   updateEnabled(_uid: Uid, _isEnabled: boolean): Promise<Response<void>> {
-    throw Error("Not implemented yet.")
+  updateEnabled(_uid: Uid, _isEnabled: boolean): Promise<Response<void>> {
+    throw Error('Not implemented yet.');
   }
 
-   updateRedirectUrl(_uid: Uid, _redirectUrl: URL): Promise<Response<void>> {
-    throw Error("Not implemented yet.")
+  updateRedirectUrl(_uid: Uid, _redirectUrl: URL): Promise<Response<void>> {
+    throw Error('Not implemented yet.');
   }
 
-   updateTargetEmail(_uid: Uid, _targetEmail: Email): Promise<Response<void>> {
-    throw Error("Not implemented yet.")
+  updateTargetEmail(_uid: Uid, _targetEmail: Email): Promise<Response<void>> {
+    throw Error('Not implemented yet.');
   }
 
-   updateEmailNotifications(_uid: Uid, _isEnabled: boolean): Promise<Response<void>> {
-    throw Error("Not implemented yet.")
+  updateEmailNotifications(
+    _uid: Uid,
+    _isEnabled: boolean
+  ): Promise<Response<void>> {
+    throw Error('Not implemented yet.');
   }
 }

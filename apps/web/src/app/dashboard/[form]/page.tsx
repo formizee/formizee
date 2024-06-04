@@ -73,7 +73,9 @@ export default function Page({params}: {params: {form: string}}): JSX.Element {
             <div className="flex justify-between border-t border-neutral-700 p-6 ">
               <span className="flex items-center gap-x-2">
                 Learn more about{' '}
-                <a href="https://formizee.com/docs" className="flex items-center gap-x-1 text-amber-400">
+                <a
+                  href="https://formizee.com/docs"
+                  className="flex items-center gap-x-1 text-amber-400">
                   Form URL
                   <LinkIcon />
                 </a>

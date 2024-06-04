@@ -10,11 +10,12 @@ const router = new Hono();
 
 router.get('/', async context => {
   const {isAuth, user} = await verifySession(context);
-  if (!isAuth || !user)
-    {return context.json(
+  if (!isAuth || !user) {
+    return context.json(
       {error: 'Please, login first in order to do this action'},
       401
-    );}
+    );
+  }
 
   const service = new LoadEndpointsByOwner(user.uid);
   const response = await service.run();
@@ -24,11 +25,12 @@ router.get('/', async context => {
 
 router.post('/', zValidator('json', saveSchema), async context => {
   const {isAuth, user} = await verifySession(context);
-  if (!isAuth || !user)
-    {return context.json(
+  if (!isAuth || !user) {
+    return context.json(
       {error: 'Please, login first in order to do this action'},
       401
-    );}
+    );
+  }
 
   const {name} = context.req.valid('json');
 

@@ -2,7 +2,10 @@ import {Logtail} from '@logtail/edge';
 import {type Context} from 'hono';
 import {type Env} from '@/types';
 
-export const reportError = async (error: Error, context: Context): Promise<Response> => {
+export const reportError = async (
+  error: Error,
+  context: Context
+): Promise<Response> => {
   const env = context.env as Env;
 
   if (env.WORKER_ENV === 'dev') {

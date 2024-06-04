@@ -16,11 +16,12 @@ export const router = new Hono();
 
 router.get('/:uid', zValidator('param', paramSchema), async context => {
   const {isAuth, user} = await verifySession(context);
-  if (!isAuth || !user)
-    {return context.json(
+  if (!isAuth || !user) {
+    return context.json(
       {error: 'Please, login first in order to do this action'},
       401
-    );}
+    );
+  }
 
   // 1. Get the submission data
   const submission = context.req.valid('param');
@@ -28,35 +29,39 @@ router.get('/:uid', zValidator('param', paramSchema), async context => {
   const service = new LoadSubmission(submission);
   const response = await service.run();
 
-  if (!response.ok)
-    {return context.json(response.body, response.status as StatusCode);}
+  if (!response.ok) {
+    return context.json(response.body, response.status as StatusCode);
+  }
 
   // 2. Check if the user is the owner of the form
   const endpointsService = new LoadEndpoint(response.body.endpoint);
   const endpointResponse = await endpointsService.run();
 
-  if (!endpointResponse.ok)
-    {return context.json(
+  if (!endpointResponse.ok) {
+    return context.json(
       endpointResponse.error,
       endpointResponse.status as StatusCode
-    );}
+    );
+  }
 
-  if (endpointResponse.body.owner !== user.uid)
-    {return context.json(
+  if (endpointResponse.body.owner !== user.uid) {
+    return context.json(
       {error: 'You do not have permission to access this data'},
       401
-    );}
+    );
+  }
 
   return context.json(response.body, response.status as StatusCode);
 });
 
 router.get('/:form', zValidator('param', paramSchema), async context => {
   const {isAuth, user} = await verifySession(context);
-  if (!isAuth || !user)
-    {return context.json(
+  if (!isAuth || !user) {
+    return context.json(
       {error: 'Please, login first in order to do this action'},
       401
-    );}
+    );
+  }
 
   const endpoint = context.req.valid('param');
 
@@ -66,17 +71,19 @@ router.get('/:form', zValidator('param', paramSchema), async context => {
   const endpointsService = new LoadEndpoint(endpoint);
   const endpointResponse = await endpointsService.run();
 
-  if (!endpointResponse.ok)
-    {return context.json(
+  if (!endpointResponse.ok) {
+    return context.json(
       endpointResponse.error,
       endpointResponse.status as StatusCode
-    );}
+    );
+  }
 
-  if (endpointResponse.body.owner !== user.uid)
-    {return context.json(
+  if (endpointResponse.body.owner !== user.uid) {
+    return context.json(
       {error: 'You do not have permission to access this data'},
       401
-    );}
+    );
+  }
 
   // 3. Get the submissions of the form
   const submissionsService = new LoadSubmissionByForm(endpoint);
@@ -87,11 +94,12 @@ router.get('/:form', zValidator('param', paramSchema), async context => {
 
 router.post('/:form', zValidator('param', paramSchema), async context => {
   const {isAuth, user} = await verifySession(context);
-  if (!isAuth || !user)
-    {return context.json(
+  if (!isAuth || !user) {
+    return context.json(
       {error: 'Please, login first in order to do this action'},
       401
-    );}
+    );
+  }
 
   const endpoint = context.req.valid('param');
   const data = await context.req.formData();
@@ -100,17 +108,19 @@ router.post('/:form', zValidator('param', paramSchema), async context => {
   const endpointsService = new LoadEndpoint(endpoint);
   const endpointResponse = await endpointsService.run();
 
-  if (!endpointResponse.ok)
-    {return context.json(
+  if (!endpointResponse.ok) {
+    return context.json(
       endpointResponse.error,
       endpointResponse.status as StatusCode
-    );}
+    );
+  }
 
-  if (endpointResponse.body.owner !== user.uid)
-    {return context.json(
+  if (endpointResponse.body.owner !== user.uid) {
+    return context.json(
       {error: 'You do not have permission to access this data'},
       401
-    );}
+    );
+  }
 
   // 3. Post the submission to the endpoint
   const submissionsService = new SaveSubmission(endpoint, data);
@@ -121,11 +131,12 @@ router.post('/:form', zValidator('param', paramSchema), async context => {
 
 router.delete('/:uid', zValidator('param', paramSchema), async context => {
   const {isAuth, user} = await verifySession(context);
-  if (!isAuth || !user)
-    {return context.json(
+  if (!isAuth || !user) {
+    return context.json(
       {error: 'Please, login first in order to do this action'},
       401
-    );}
+    );
+  }
 
   const submission = context.req.valid('param');
 
@@ -135,26 +146,29 @@ router.delete('/:uid', zValidator('param', paramSchema), async context => {
   const submissionsService = new LoadSubmission(submission);
   const submissionsResponse = await submissionsService.run();
 
-  if (!submissionsResponse.ok)
-    {return context.json(
+  if (!submissionsResponse.ok) {
+    return context.json(
       submissionsResponse.error,
       submissionsResponse.status as StatusCode
-    );}
+    );
+  }
 
   const endpointsService = new LoadEndpoint(submissionsResponse.body.endpoint);
   const endpointResponse = await endpointsService.run();
 
-  if (!endpointResponse.ok)
-    {return context.json(
+  if (!endpointResponse.ok) {
+    return context.json(
       endpointResponse.error,
       endpointResponse.status as StatusCode
-    );}
+    );
+  }
 
-  if (endpointResponse.body.owner !== user.uid)
-    {return context.json(
+  if (endpointResponse.body.owner !== user.uid) {
+    return context.json(
       {error: 'You do not have permission to access this data'},
       401
-    );}
+    );
+  }
 
   // 3. Post the submission to the endpoint
   const service = new DeleteSubmission(submission);

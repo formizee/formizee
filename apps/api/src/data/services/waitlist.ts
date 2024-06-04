@@ -21,11 +21,12 @@ export class WaitlistServiceImplementation implements WaitlistService {
       .from(waitlist)
       .where(eq(waitlist.email, email.value));
 
-    if (alreadyExists[0])
-      {return Response.error(
+    if (alreadyExists[0]) {
+      return Response.error(
         "You're already on the list! We'll keep you updated on Formizee launch.",
         409
-      );}
+      );
+    }
 
     await this.db.insert(waitlist).values({email: email.value});
 

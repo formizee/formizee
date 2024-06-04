@@ -9,7 +9,10 @@ export interface SessionPayload {
   permission: 'user' | 'admin';
 }
 
-export async function encrypt(context: Context, payload: SessionPayload): Promise<string> {
+export async function encrypt(
+  context: Context,
+  payload: SessionPayload
+): Promise<string> {
   const env = context.env as Env;
 
   const encodedKey = new TextEncoder().encode(env.SESSION_SECRET);

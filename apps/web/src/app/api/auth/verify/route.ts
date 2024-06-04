@@ -13,7 +13,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     return NextResponse.json({data: null, error}, {status: 400});
   }
 
-  if(!process.env.API_URL) throw new Error("API_URL enviroment variable is not defined.");
+  if (!process.env.API_URL)
+    throw new Error('API_URL enviroment variable is not defined.');
 
   const res = await fetch(`${process.env.API_URL}/api/auth/verify`, {
     headers: {

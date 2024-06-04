@@ -2,7 +2,7 @@ import {type StatusCode} from 'hono/utils/http-status';
 import {Hono} from 'hono';
 /* @ts-expect-error-next-line */
 import {zValidator} from '@hono/zod-validator';
-import type { Response, User } from 'domain/models';
+import type {Response, User} from 'domain/models';
 import {createSession, deleteSession} from '@/lib/auth';
 import {
   AuthLogin,
@@ -37,13 +37,12 @@ auth.post('/login', zValidator('json', loginSchema), async context => {
   if (isVerified) {
     await createSession(context, {uid, name, permission});
     return context.json(user.body, 200);
-  } 
-    const verificationService = new AuthSendVerification(email);
-    await verificationService.run();
+  }
+  const verificationService = new AuthSendVerification(email);
+  await verificationService.run();
 
-    await createVerification(context, email, 'account');
-    return context.json({error: 'Please verify the user before login.'}, 403);
-  
+  await createVerification(context, email, 'account');
+  return context.json({error: 'Please verify the user before login.'}, 403);
 });
 
 auth.post('/register', zValidator('json', registerSchema), async context => {
@@ -81,26 +80,30 @@ auth.post('/verify', zValidator('json', verifyTokenSchema), async context => {
   const {isValid, email, type} = await readVerification(context);
   const {token} = context.req.valid('json');
 
-  if (!isValid || !email)
-    {return context.json(
+  if (!isValid || !email) {
+    return context.json(
       {error: 'The email for validation has not been specified.'},
       400
-    );}
+    );
+  }
 
   let user: Response<User>;
 
   if (type === 'account') {
     const service = new AuthVerifyUser(email, token);
     user = await service.run();
-  }
-  else {
+  } else {
     const service = new AuthResetPassword(email, token);
     user = await service.run();
   }
 
   if (!user.ok) return context.json(user.body, user.status as StatusCode);
 
-  await createSession(context, {uid: user.body.uid, name: user.body.name, permission: user.body.permission});
+  await createSession(context, {
+    uid: user.body.uid,
+    name: user.body.name,
+    permission: user.body.permission
+  });
   deleteVerification(context);
 
   return context.json({user: user.body, type}, user.status as StatusCode);

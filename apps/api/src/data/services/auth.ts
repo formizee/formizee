@@ -72,8 +72,9 @@ export class AuthServiceImplementation implements AuthService {
     }
 
     // 3. Compare tokens.
-    if (tokenResponse[0].token.toString() !== token)
-      {return Response.error('Invalid token.', 401);}
+    if (tokenResponse[0].token.toString() !== token) {
+      return Response.error('Invalid token.', 401);
+    }
 
     // 4. Verify user
     const response = await this.db
@@ -117,8 +118,9 @@ export class AuthServiceImplementation implements AuthService {
     }
 
     // 3. Compare tokens.
-    if (tokenResponse[0].token.toString() !== token)
-      {return Response.error('Invalid token.', 401);}
+    if (tokenResponse[0].token.toString() !== token) {
+      return Response.error('Invalid token.', 401);
+    }
 
     // 4. Delete the token
     await this.db.delete(authTokens).where(eq(authTokens.email, email.value));
@@ -165,8 +167,9 @@ export class AuthServiceImplementation implements AuthService {
       .select()
       .from(users)
       .where(eq(users.email, email.value));
-    if (!userResponse[0])
-      {return Response.error('The user does not exists.', 404);}
+    if (!userResponse[0]) {
+      return Response.error('The user does not exists.', 404);
+    }
 
     // 1. Check if already exists a token and resend the email, otherwise delete the old token.
     const existentToken = await this.db
@@ -179,11 +182,13 @@ export class AuthServiceImplementation implements AuthService {
       const currentTime = new Date();
 
       if (currentTime < expiresAt) {
-        await sendEmail(existentToken[0].email, existentToken[0].token.toString());
+        await sendEmail(
+          existentToken[0].email,
+          existentToken[0].token.toString()
+        );
         return Response.success(true, 200);
-      } await this.db
-          .delete(authTokens)
-          .where(eq(authTokens.email, email.value));
+      }
+      await this.db.delete(authTokens).where(eq(authTokens.email, email.value));
     }
 
     // 2. Generate a token
