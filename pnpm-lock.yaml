@@ -11,9 +11,9 @@ importers:
       '@formizee/typescript-config':
         specifier: workspace:*
         version: link:packages/config-typescript
-      eslint:
-        specifier: ^8
-        version: 8.57.0
+      oxlint:
+        specifier: 0.4.2
+        version: 0.4.2
       prettier:
         specifier: 3.2.5
         version: 3.2.5
@@ -1390,6 +1390,46 @@ packages:
   '@opentelemetry/api@1.8.0':
     resolution: {integrity: sha512-I/s6F7yKUDdtMsoBWXJe8Qz40Tui5vsuKCWJEWVL+5q9sSWRzzx6v2KeNsOBEwd94j0eWkpWCH4yB6rZg9Mf0w==}
     engines: {node: '>=8.0.0'}
+
+  '@oxlint/darwin-arm64@0.4.2':
+    resolution: {integrity: sha512-CFXWZimr7fwBR6JxjiFI/4zkCT6qSjIbdQNWz9mhyZFDSAdchiqLtUNNfAWtAs9GfHNT+tBbasnn+LquSVU2/Q==}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@oxlint/darwin-x64@0.4.2':
+    resolution: {integrity: sha512-e4Niy4gMfIAy1vj21Bo365tjyfreeqP/1VdgauVPNnSLGM5w/TTh5VUQ8DYAp0iYhVGqBdKk7CnBr6tadup+vQ==}
+    cpu: [x64]
+    os: [darwin]
+
+  '@oxlint/linux-arm64-gnu@0.4.2':
+    resolution: {integrity: sha512-V84gsMy1QQkgWXD70sEm97UMjwIzzrLd+se5vIHbmcWRt5MIS1VT5D1lQCjl2ADQnIBxuqv66j/zgwVkewRkRQ==}
+    cpu: [arm64]
+    os: [linux]
+
+  '@oxlint/linux-arm64-musl@0.4.2':
+    resolution: {integrity: sha512-ktzyvyOVO5lPVn0YPn4G8cBuIVcHdGwnBfUQOW/ZV39TrQvW+g4QMAYfxjjl8qYDb1oBAMG8UXYbk4NSmEr+hA==}
+    cpu: [arm64]
+    os: [linux]
+
+  '@oxlint/linux-x64-gnu@0.4.2':
+    resolution: {integrity: sha512-ee2FukXvFfQkveSPSBR7ePX3KKI+sS360EtDlTCwCFyRq9e/YsamwGC69V7S/hBV62tBOL+++qgqv4Q8mF7h/A==}
+    cpu: [x64]
+    os: [linux]
+
+  '@oxlint/linux-x64-musl@0.4.2':
+    resolution: {integrity: sha512-Zldot210KZGULkEx2JXDA31yZiQTHEghl7ragYw4IdSB2VOBObabfBCh0Y4lBt+lqPKdDJbMxAiKGNYld1abdQ==}
+    cpu: [x64]
+    os: [linux]
+
+  '@oxlint/win32-arm64@0.4.2':
+    resolution: {integrity: sha512-aQ1575I9QdCb3IgzoBhLH8h0ySFup9IJXHd/VmnzEzLYhiq/N78NL6WeN/rBhd/Xp/b7YC8wSU4x67C3a+GHrQ==}
+    cpu: [arm64]
+    os: [win32]
+
+  '@oxlint/win32-x64@0.4.2':
+    resolution: {integrity: sha512-z47AU5Czu+IZFLz8gMQhieFPI68iiVngPCHhOSpuX2HNkXALW5Wg4U+LwBr8Pn4vIdL6ANnOaOf7LH9bJrF/dA==}
+    cpu: [x64]
+    os: [win32]
 
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
@@ -4171,6 +4211,11 @@ packages:
     resolution: {integrity: sha512-5b6Y85tPxZZ7QytO+BQzysW31HJku27cRIlkbAXaNx+BdcVi+LlRFmVXzeF6a7JCwJpyw5c4b+YSVImQIrBpuQ==}
     engines: {node: '>=10'}
 
+  oxlint@0.4.2:
+    resolution: {integrity: sha512-q8vrd3OVi5+66+XX3Yy/d9Xo1SVhUXrrZKiSuy2q5NM9h2rmnIdm6uNtsETwoarJHtU9Lep5F2fYtRF1jzcPgQ==}
+    engines: {node: '>=14.*'}
+    hasBin: true
+
   p-limit@2.3.0:
     resolution: {integrity: sha512-//88mFWSJx8lxCzwdAABTJL2MyWB12+eIY7MDL2SqLmAkeKU9qxRvWuSyTjm3FUmpBEMuFfckAIqEaVGUDxb6w==}
     engines: {node: '>=6'}
@@ -6134,6 +6179,30 @@ snapshots:
   '@one-ini/wasm@0.1.1': {}
 
   '@opentelemetry/api@1.8.0':
+    optional: true
+
+  '@oxlint/darwin-arm64@0.4.2':
+    optional: true
+
+  '@oxlint/darwin-x64@0.4.2':
+    optional: true
+
+  '@oxlint/linux-arm64-gnu@0.4.2':
+    optional: true
+
+  '@oxlint/linux-arm64-musl@0.4.2':
+    optional: true
+
+  '@oxlint/linux-x64-gnu@0.4.2':
+    optional: true
+
+  '@oxlint/linux-x64-musl@0.4.2':
+    optional: true
+
+  '@oxlint/win32-arm64@0.4.2':
+    optional: true
+
+  '@oxlint/win32-x64@0.4.2':
     optional: true
 
   '@pkgjs/parseargs@0.11.0':
@@ -9352,6 +9421,17 @@ snapshots:
       log-symbols: 4.1.0
       strip-ansi: 6.0.1
       wcwidth: 1.0.1
+
+  oxlint@0.4.2:
+    optionalDependencies:
+      '@oxlint/darwin-arm64': 0.4.2
+      '@oxlint/darwin-x64': 0.4.2
+      '@oxlint/linux-arm64-gnu': 0.4.2
+      '@oxlint/linux-arm64-musl': 0.4.2
+      '@oxlint/linux-x64-gnu': 0.4.2
+      '@oxlint/linux-x64-musl': 0.4.2
+      '@oxlint/win32-arm64': 0.4.2
+      '@oxlint/win32-x64': 0.4.2
 
   p-limit@2.3.0:
     dependencies:

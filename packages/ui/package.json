@@ -29,7 +29,7 @@
   },
   "scripts": {
     "build": "tsup",
-    "lint": "eslint \"**/*.{ts,tsx}\"",
+    "lint": "oxlint \"**/*.{ts,tsx}\"",
     "dev": "tsup --watch",
     "dev:styles": "tailwindcss -i ./src/styles/globals.css -o ./dist/index.css --watch",
     "build:styles": "tailwindcss -i ./src/styles/globals.css -o ./dist/index.css --minify"
