@@ -1,10 +1,10 @@
 import {Analytics} from '@vercel/analytics/react';
-import {ThemeProvider} from '@/components/theme';
 import {Toaster} from '@formizee/ui/toaster';
 import type {Metadata, Viewport} from 'next';
 import {Inter} from 'next/font/google';
 import {Suspense} from 'react';
 import {cn} from '@formizee/ui';
+import {ThemeProvider} from '@/components/theme';
 import '@formizee/ui/globals.css';
 import './globals.css';
 

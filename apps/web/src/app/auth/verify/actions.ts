@@ -1,6 +1,6 @@
 import {redirect} from 'next/navigation';
-import {ActionState} from '@/types';
 import {z} from 'zod';
+import {type ActionState} from '@/types';
 
 const verifyTokenSchema = z.object({
   token: z

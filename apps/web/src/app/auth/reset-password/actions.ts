@@ -1,6 +1,6 @@
 import {redirect} from 'next/navigation';
-import {ActionState} from '@/types';
 import {z} from 'zod';
+import {type ActionState} from '@/types';
 
 const sendVerificationSchema = z.object({
   email: z.string().email()

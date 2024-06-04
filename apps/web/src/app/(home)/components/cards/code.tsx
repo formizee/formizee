@@ -1,7 +1,7 @@
 'use client';
 
-import {ClipboardButton} from '@/components';
 import {Card, CodeBlock} from '@formizee/ui';
+import {ClipboardButton} from '@/components';
 
 const code = `<form action="https://formizee.com/f/123456" method="post">
   <input type="text" name="name"/>

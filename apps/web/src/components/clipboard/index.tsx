@@ -14,13 +14,13 @@ interface ClipboardButtonProps {
 export function ClipboardButton(props: ClipboardButtonProps): JSX.Element {
   const [onClipboard, setOnClipboard] = useState(false);
 
-  const onClick = () => {
+  const onClick = async (): Promise<void> => {
     setOnClipboard(true);
-    navigator.clipboard.writeText(props.data);
+    await navigator.clipboard.writeText(props.data);
   };
 
   useEffect(() => {
-    if (onClipboard) setTimeout(() => setOnClipboard(false), 2000);
+    if (onClipboard) setTimeout(() => { setOnClipboard(false); }, 2000);
   }, [onClipboard, setOnClipboard]);
 
   return (

@@ -1,6 +1,6 @@
 import type {NextRequest} from 'next/server';
 
-export function middleware(request: NextRequest) {
+export function middleware(request: NextRequest): Response | undefined {
   const currentSession = request.cookies.get('session')?.value;
 
   if (currentSession && request.nextUrl.pathname.startsWith('/login')) {

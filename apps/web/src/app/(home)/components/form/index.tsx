@@ -13,8 +13,8 @@ import {
 } from '@formizee/ui/form';
 import {Button, Input} from '@formizee/ui';
 import {LoadingIcon, MailIcon} from '@formizee/ui/icons';
-import {joinWaitlist, type JoinWaitlistFormValues} from '../../actions';
 import {useFormAction} from '@/hooks';
+import {joinWaitlist, type JoinWaitlistFormValues} from '../../actions';
 
 export function WaitlistForm(): JSX.Element {
   const [state, formAction] = useFormState(joinWaitlist, null);

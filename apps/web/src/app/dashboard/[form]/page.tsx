@@ -1,6 +1,5 @@
 'use client';
 
-import {ClipboardButton} from '@/components';
 import {
   Badge,
   Button,
@@ -18,8 +17,9 @@ import {
   PluginIcon,
   SettingsIcon
 } from '@formizee/ui/icons';
+import {ClipboardButton} from '@/components';
 
-export default function Page({params}: {params: {form: string}}) {
+export default function Page({params}: {params: {form: string}}): JSX.Element {
   const form = {
     name: 'My New Form'
   };
@@ -73,7 +73,7 @@ export default function Page({params}: {params: {form: string}}) {
             <div className="flex justify-between border-t border-neutral-700 p-6 ">
               <span className="flex items-center gap-x-2">
                 Learn more about{' '}
-                <a className="flex items-center gap-x-1 text-amber-400">
+                <a href="https://formizee.com/docs" className="flex items-center gap-x-1 text-amber-400">
                   Form URL
                   <LinkIcon />
                 </a>

@@ -1,8 +1,8 @@
 import {Navbar, Sidebar, Content} from './components';
 
-async function DashboardLayout({
+function DashboardLayout({
   children
-}: Readonly<{children: React.ReactNode}>): Promise<JSX.Element> {
+}: Readonly<{children: React.ReactNode}>): JSX.Element {
   return (
     <main className="flex h-full flex-col items-center overflow-x-clip bg-black lg:justify-center">
       <Navbar />

@@ -2,8 +2,11 @@
 
 import {cookies} from 'next/headers';
 import {redirect} from 'next/navigation';
+import { type ActionState } from '@/types';
 
-export const logout = async () => {
+export const logout = async (): Promise<ActionState> => {
+  if(!process.env.URL) throw new Error("Wepage URL enviroment variable is not defined");
+
   const response = await fetch(`${process.env.URL}/api/auth/logout`, {
     method: 'POST',
     credentials: 'include'

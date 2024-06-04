@@ -1,7 +1,7 @@
 import {cookies} from 'next/headers';
-import {NextRequest, NextResponse} from 'next/server';
+import {type NextRequest, NextResponse} from 'next/server';
 
-export async function POST(request: NextRequest) {
+export async function POST(request: NextRequest): Promise<NextResponse> {
   const verification = cookies().get('verification');
   const {token} = await request.json();
 
@@ -12,6 +12,8 @@ export async function POST(request: NextRequest) {
     };
     return NextResponse.json({data: null, error}, {status: 400});
   }
+
+  if(!process.env.API_URL) throw new Error("API_URL enviroment variable is not defined.");
 
   const res = await fetch(`${process.env.API_URL}/api/auth/verify`, {
     headers: {
@@ -35,7 +37,7 @@ export async function POST(request: NextRequest) {
   }
 
   return NextResponse.json(
-    {data: data, error: null},
+    {data, error: null},
     {status: res.status, headers: {'Set-Cookie': sessionHeader}}
   );
 }
