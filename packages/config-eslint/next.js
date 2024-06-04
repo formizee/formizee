@@ -40,16 +40,10 @@ module.exports = {
   ignorePatterns: ['node_modules/', 'dist/'],
   // add rules configurations here
   rules: {
-    'import/no-extraneous-dependencies': [
-      'error',
-      {
-        devDependencies: ['**/*.test.js', '**/*.spec.js'],
-        peerDependencies: true,
-        packageDir: ['./']
-      }
-    ],
     '@typescript-eslint/prefer-promise-reject-errors': 'off',
     '@typescript-eslint/prefer-nullish-coalescing': 'off',
+    '@typescript-eslint/no-unsafe-member-access': 'off',
+    '@typescript-eslint/no-unsafe-assignment': 'off',
     '@typescript-eslint/no-misused-promises': 'off',
     'prefer-promise-reject-errors': 'off',
     'unicorn/prefer-node-protocol': 'off',
