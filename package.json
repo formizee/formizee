@@ -11,7 +11,7 @@
     "@formizee/typescript-config": "workspace:*",
     "oxlint": "0.4.2",
     "prettier": "3.3.0",
-    "prettier-plugin-tailwindcss": "0.5.14",
+    "prettier-plugin-tailwindcss": "0.6.1",
     "turbo": "1.13.3",
     "typescript": "5.4.5"
   },
