@@ -5,8 +5,8 @@
     "dev": "turbo dev",
     "prepare": "husky",
     "lint": "turbo lint",
-    "format": "turbo format",
-    "build": "turbo build --cache-dir=.turbo"
+    "build": "turbo build --cache-dir=.turbo",
+    "format": "prettier -w --config .prettierrc.json --ignore-path .prettierignore ."
   },
   "devDependencies": {
     "@commitlint/config-conventional": "19.2.2",
