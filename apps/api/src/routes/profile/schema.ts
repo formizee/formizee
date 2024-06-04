@@ -1,4 +1,4 @@
-import {z} from 'zod';
+import { z } from 'zod';
 
 export const nameSchema = z.object({
   name: z.string().min(4).max(32)
@@ -16,16 +16,16 @@ export const passwordSchema = z
   .object({
     password: z
       .string()
-      .min(8, {message: 'Password must be between 8 and 64 characters long'})
-      .max(64, {message: 'Password must be between 8 and 32 characters long'})
+      .min(8, { message: 'Password must be between 8 and 64 characters long' })
+      .max(64, { message: 'Password must be between 8 and 32 characters long' })
   })
-  .superRefine(({password}, checkPassComplexity) => {
+  .superRefine(({ password }, checkPassComplexity) => {
     const containsUppercase = (ch: string): boolean => /[A-Z]/.test(ch);
 
     const containsLowercase = (ch: string): boolean => /[a-z]/.test(ch);
 
     const containsSpecialChar = (ch: string): boolean =>
-      /[`!@#$%^&*()_\-+=\[\]{};':"\\|,.<>\/?~ ]/.test(ch);
+      /[`!@#$%^&*()_\-+=[\]{};':"|,.<>/?~ ]/.test(ch);
 
     let countOfUpperCase = 0,
       countOfLowerCase = 0,
