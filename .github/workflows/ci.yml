@@ -1,7 +1,6 @@
 name: Continuous Deployment
 
 on:
-  push:
   pull_request: 
 
 jobs:
@@ -90,6 +89,7 @@ jobs:
 
   web_preview:
     name: Preview Formizee Webpage
+    needs: [commits, lint, format]
     runs-on: ubuntu-latest
     env:
       TURBO_TEAM: ${{ secrets.VERCEL_ORG_ID }}
