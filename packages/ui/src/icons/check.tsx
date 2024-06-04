@@ -1,11 +1,11 @@
 import {cn} from '../lib/ui';
 import type {IconProps} from './types';
 
-interface Props extends IconProps {
+interface CheckIconProps extends IconProps {
   variant: 'default' | 'circle';
 }
 
-export function CheckIcon(props: Props): JSX.Element {
+export function CheckIcon(props: CheckIconProps): JSX.Element {
   return (
     <svg
       className={cn('h-4 w-4', props.className)}
