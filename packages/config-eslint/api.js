@@ -37,6 +37,5 @@ module.exports = {
     '@typescript-eslint/unbound-method': 'off',
     'unicorn/prefer-node-protocol': 'off',
     'import/no-default-export': 'off',
-    'no-useless-escape': 'off',
   } 
 };
