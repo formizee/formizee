@@ -7,9 +7,9 @@ const cardVariants = cva('relative flex flex-col', {
   variants: {
     variant: {
       default: 'rounded-lg shadow-md backdrop-blur-md',
-      animated: 'rounded-xl bg-neutral-900',
+      animated: 'z-20 rounded-xl bg-neutral-900',
       landing:
-        'overflow-clip rounded-xl border-2 border-neutral-700 bg-neutral-900/80 shadow-md backdrop-blur-md',
+        'overflow-clip rounded-xl border-2 border-neutral-700 bg-neutral-900/60 shadow-md backdrop-blur-md',
       auth: 'z-10 flex items-center justify-center rounded-xl bg-transparent shadow-lg backdrop-blur-sm'
     },
     size: {
@@ -36,7 +36,10 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
         'relative inline-flex overflow-hidden rounded-xl p-[2px]'
       )}>
       {variant === 'animated' ? (
-        <span className="absolute inset-[-1000%] animate-[spin_8s_linear_infinite] bg-[conic-gradient(from_180deg_at_50%_50%,#404040_0%,#404040_60%,#fbbf24_90%,#fef3c7_100%)]" />
+        <div>
+          <span className="absolute inset-[-1000%] animate-[spin_8s_linear_infinite] bg-[conic-gradient(from_340deg_at_50%_50%,#404040_0%,#404040_60%,#fbbf24_90%,#fef3c7_100%)]" />
+          <span className="absolute inset-[-1000%] animate-[fade-card-background_1s_linear_2.5s_forwards] bg-neutral-700" />
+        </div>
       ) : (
         <div />
       )}
