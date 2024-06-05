@@ -1,4 +1,5 @@
 import defaultTheme from 'tailwindcss/defaultTheme';
+import plugin from 'tailwindcss/plugin';
 import type {Config} from 'tailwindcss';
 
 // We want each package to be responsible for its own content.
@@ -10,6 +11,12 @@ const config: Omit<Config, 'content'> = {
     './src/**/*.{ts,tsx}'
   ],
   theme: {
+    textShadow: {
+      sm: '1px 1px 2px var(--tw-shadow-color)',
+      DEFAULT: '2px 2px 4px var(--tw-shadow-color)',
+      lg: '4px 4px 8px var(--tw-shadow-color)',
+      xl: '4px 4px 16px var(--tw-shadow-color)'
+    },
     container: {
       center: true,
       padding: '2rem',
@@ -58,6 +65,18 @@ const config: Omit<Config, 'content'> = {
       }
     }
   },
-  plugins: [require('tailwindcss-animate')]
+  plugins: [
+    require('tailwindcss-animate'),
+    plugin(({matchUtilities, theme}) => {
+      matchUtilities(
+        {
+          'text-shadow': value => ({
+            textShadow: value
+          })
+        },
+        {values: theme('textShadow')}
+      );
+    })
+  ]
 };
 export default config;
