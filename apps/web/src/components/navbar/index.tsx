@@ -17,7 +17,11 @@ function NavbarLogo(): JSX.Element {
   );
 }
 
-export function Navbar(): JSX.Element {
+interface NavbarProps {
+  className?: string;
+}
+
+export function Navbar(props: NavbarProps): JSX.Element {
   const [scrollPosition, setScrollPosition] = useState(0);
 
   const handleScroll = (): void => {
@@ -41,6 +45,7 @@ export function Navbar(): JSX.Element {
   return (
     <nav
       className={cn(
+        props.className,
         'fixed top-0 z-50 flex h-14 w-full items-center justify-between border-b px-4 transition-all duration-500',
         background
       )}>
