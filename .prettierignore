@@ -3,6 +3,7 @@
 .vercel
 .next
 
+apps/api/.wrangler
 apps/api/drizzle/**
 packages/**/.turbo
 apps/**/.turbo
