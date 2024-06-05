@@ -65,16 +65,16 @@ function FormFields(): JSX.Element {
           <span>Join The Waitlist</span>
         </Button>
       </div>
-      <p className="mb-6 mt-3 text-balance text-start text-xs text-neutral-400">
+      <p className="mb-3 mt-3 text-start text-xs text-neutral-400">
         {'By joining, you agree to our '}
         <Link
-          className="underline underline-offset-2 transition-colors hover:text-neutral-50"
+          className="underline underline-offset-2 transition-colors hover:text-neutral-50 whitespace-nowrap"
           href="/legal/terms-of-service">
           Terms of Service
         </Link>
         {' and '}{' '}
         <Link
-          className="underline underline-offset-2 transition-colors hover:text-neutral-50"
+          className="underline underline-offset-2 transition-colors hover:text-neutral-50 whitespace-nowrap"
           href="/legal/privacy-policy">
           Privacy Policy
         </Link>
