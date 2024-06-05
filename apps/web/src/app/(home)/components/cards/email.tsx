@@ -93,7 +93,7 @@ export function EmailCard(): JSX.Element {
 
   return (
     <Card
-      className="z-10 h-[216px] translate-x-[120px] translate-y-[-380px]"
+      className="z-10 h-[216px] translate-x-[120px] translate-y-[-385px]"
       size="landing"
       variant="landing">
       <div className="relative flex flex-row items-center justify-center p-0">
