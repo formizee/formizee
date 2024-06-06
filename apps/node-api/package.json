@@ -1,0 +1,26 @@
+{
+  "name": "@formizee/node-api",
+  "author": "Pau García Chiner",
+  "license": "Apache-2.0",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "lint": "oxlint src",
+    "build": "tsc --build",
+    "start": "tsx src/index.ts",
+    "format": "prettier -w src",
+    "dev": "tsx watch src/index.ts"
+  },
+  "dependencies": {
+    "@formizee/eslint-config": "workspace:*",
+    "@hono/node-server": "1.11.2",
+    "awilix": "10.0.2",
+    "domain": "workspace:*",
+    "dotenv": "16.4.5",
+    "hono": "4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "20.14.2",
+    "tsx": "4.12.0"
+  }
+}
