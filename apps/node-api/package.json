@@ -14,13 +14,16 @@
   "dependencies": {
     "@formizee/eslint-config": "workspace:*",
     "@hono/node-server": "1.11.2",
+    "@vercel/postgres": "0.8.0",
     "awilix": "10.0.2",
     "domain": "workspace:*",
     "dotenv": "16.4.5",
+    "drizzle-orm": "0.30.10",
     "hono": "4.4.3"
   },
   "devDependencies": {
     "@types/node": "20.14.2",
+    "drizzle-kit": "0.21.2",
     "tsx": "4.12.0"
   }
 }
