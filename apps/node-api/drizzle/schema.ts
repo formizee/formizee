@@ -30,13 +30,11 @@ export const users = pgTable('users', {
   forms: uuid('forms')
     .array()
     .notNull()
-    .$type<string[]>()
     .default(sql`ARRAY[]::uuid[]`),
 
   linkedEmails: text('linked_emails')
     .array()
     .notNull()
-    .$type<string[]>()
     .default(sql`ARRAY[]::text[]`),
 
   createdAt: timestamp('created_at').notNull().defaultNow(),
@@ -63,10 +61,10 @@ export const endpoints = pgTable('endpoints', {
 
   redirectUrl: text('redirect_url').notNull().default(''),
 
-  submissions: bigserial('submissions', {mode: 'number'})
+  submissions: integer('submissions')
+    .array()
     .notNull()
-    .$type<string[]>()
-    .default(sql`ARRAY[]::serial[]`),
+    .default(sql`ARRAY[]::integer[]`),
 
   createdAt: timestamp('created_at').notNull().defaultNow(),
 
