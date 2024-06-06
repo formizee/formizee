@@ -8,5 +8,5 @@ export default defineConfig({
     url: process.env.POSTGRES_URL!,
     host: process.env.POSTGRES_HOST!,
     database: process.env.POSTGRES_DATABASE!
-  },
+  }
 });

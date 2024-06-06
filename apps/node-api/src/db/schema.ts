@@ -1,7 +1,18 @@
-import {boolean, text, serial, bigserial, timestamp, uuid, integer, pgEnum, pgTable, jsonb} from 'drizzle-orm/pg-core';
+import {
+  boolean,
+  text,
+  serial,
+  bigserial,
+  timestamp,
+  uuid,
+  integer,
+  pgEnum,
+  pgTable,
+  jsonb
+} from 'drizzle-orm/pg-core';
 import {sql} from 'drizzle-orm';
 
-export const permissions =  pgEnum('permissions', ['user', 'admin']);
+export const permissions = pgEnum('permissions', ['user', 'admin']);
 
 export const users = pgTable('users', {
   id: uuid('id').primaryKey(),
@@ -30,7 +41,9 @@ export const users = pgTable('users', {
 
   createdAt: timestamp('created_at').notNull().defaultNow(),
 
-  updatedAt: timestamp('updated_at').notNull().$onUpdate(() => new Date()),
+  updatedAt: timestamp('updated_at')
+    .notNull()
+    .$onUpdate(() => new Date())
 });
 
 export const endpoints = pgTable('endpoints', {
@@ -38,7 +51,9 @@ export const endpoints = pgTable('endpoints', {
 
   name: text('name').notNull().default('Untitled Form'),
 
-  owner: uuid('owner').notNull().references(() => users.id),
+  owner: uuid('owner')
+    .notNull()
+    .references(() => users.id),
 
   isEnabled: boolean('form_enabled').notNull().default(true),
 
@@ -55,7 +70,9 @@ export const endpoints = pgTable('endpoints', {
 
   createdAt: timestamp('created_at').notNull().defaultNow(),
 
-  updatedAt: timestamp('updated_at').notNull().$onUpdate(() => new Date()),
+  updatedAt: timestamp('updated_at')
+    .notNull()
+    .$onUpdate(() => new Date())
 });
 
 export const submissions = pgTable('submissions', {
@@ -69,7 +86,9 @@ export const submissions = pgTable('submissions', {
 
   createdAt: timestamp('created_at').notNull().defaultNow(),
 
-  updatedAt: timestamp('updated_at').notNull().$onUpdate(() => new Date()),
+  updatedAt: timestamp('updated_at')
+    .notNull()
+    .$onUpdate(() => new Date())
 });
 
 export const authTokens = pgTable('auth_tokens', {
@@ -77,13 +96,15 @@ export const authTokens = pgTable('auth_tokens', {
 
   token: integer('token').notNull(),
 
-  email: text('email').notNull().references(() => users.email),
+  email: text('email')
+    .notNull()
+    .references(() => users.email),
 
   createdAt: timestamp('created_at').notNull().defaultNow(),
 
-  expiresAt: timestamp('expires_at').notNull().$default(() => 
-    new Date(Date.now() + 60 * 60 * 1000)
-  )
+  expiresAt: timestamp('expires_at')
+    .notNull()
+    .$default(() => new Date(Date.now() + 60 * 60 * 1000))
 });
 
 export const waitlist = pgTable('waitlist', {
@@ -92,4 +113,4 @@ export const waitlist = pgTable('waitlist', {
   email: text('email').notNull().unique(),
 
   createdAt: timestamp('created_at').notNull().defaultNow()
-})
+});
