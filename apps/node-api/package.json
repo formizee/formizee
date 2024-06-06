@@ -9,7 +9,9 @@
     "build": "tsc --build",
     "start": "tsx src/index.ts",
     "format": "prettier -w src",
-    "dev": "tsx watch src/index.ts"
+    "db:push": "drizzle-kit push",
+    "dev": "tsx watch src/index.ts",
+    "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
     "@formizee/eslint-config": "workspace:*",
