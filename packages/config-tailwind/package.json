@@ -6,10 +6,8 @@
   "exports": {
     ".": "./tailwind.config.ts"
   },
-  "dependencies": {
-    "tailwindcss-animate": "1.0.7"
-  },
   "devDependencies": {
-    "tailwindcss": "3.4.3"
+    "tailwindcss": "3.4.3",
+    "tailwindcss-animate": "1.0.7"
   }
 }

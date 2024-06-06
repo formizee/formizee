@@ -31,6 +31,7 @@ export function ClipboardButton(props: ClipboardButtonProps): JSX.Element {
       <TooltipTrigger asChild>
         <Button
           onClick={onClick}
+          aria-label={props.tooltip}
           className={props.className}
           variant="outline"
           size="icon">

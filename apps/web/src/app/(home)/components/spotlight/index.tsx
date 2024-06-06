@@ -10,7 +10,7 @@ export function Spotlight({className, fill}: SpotlightProps): JSX.Element {
   return (
     <svg
       className={cn(
-        'animate-spotlight pointer-events-none absolute z-40 h-[169%] w-[208%] overflow-clip opacity-0 lg:fixed lg:h-[199%] lg:w-[224%]',
+        'sm:animate-spotlight pointer-events-none absolute z-40 w-full overflow-clip opacity-0 sm:h-[169%] sm:w-[208%] sm:transform-gpu lg:fixed lg:h-[190%] lg:w-[235%]',
         className
       )}
       fill="none"

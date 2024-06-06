@@ -189,14 +189,13 @@ importers:
         version: 1.13.3(eslint@8.57.0)
 
   packages/config-tailwind:
-    dependencies:
-      tailwindcss-animate:
-        specifier: 1.0.7
-        version: 1.0.7(tailwindcss@3.4.3)
     devDependencies:
       tailwindcss:
         specifier: 3.4.3
         version: 3.4.3
+      tailwindcss-animate:
+        specifier: 1.0.7
+        version: 1.0.7(tailwindcss@3.4.3)
 
   packages/config-typescript: {}
 
