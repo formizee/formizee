@@ -6,7 +6,7 @@ function Home(): JSX.Element {
     <main className="relative flex min-h-screen flex-col items-center justify-between overflow-x-clip bg-black lg:h-screen lg:justify-center">
       <Spotlight
         fill="#fffbeb"
-        className="absolute -left-10 -top-40 lg:-left-0"
+        className="absolute left-20 top-72 sm:-left-10 sm:-top-40 lg:-left-0"
       />
       <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)] dark:bg-black" />
       <div className="animate-out zoom-out-100 delay-800 fill-mode-forwards fade-out-100 bg-grid-pattern pointer-events-none fixed inset-0 scale-105 overflow-clip opacity-0 duration-1000" />
