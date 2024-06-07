@@ -77,7 +77,9 @@ export const submissions = pgTable('submissions', {
 
   data: jsonb('data').notNull(),
 
-  files: text('files').array().default(sql`ARRAY[]::text[]`),
+  files: text('files')
+    .array()
+    .default(sql`ARRAY[]::text[]`),
 
   isSpam: boolean('is_spam').notNull().default(false),
 
