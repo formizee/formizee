@@ -2,30 +2,54 @@ import {Uid} from './values';
 
 export class Submission {
   private readonly _uid: Uid;
-  private readonly _date: Date;
   private readonly _endpoint: Uid;
-  private readonly _form: FormData;
 
-  constructor(uid: string, endpoint: string, date: string, form: FormData) {
-    this._form = form;
+  private readonly _data: unknown;
+  private readonly _isSpam: boolean;
+  private readonly _files: URL[] = [];
+
+  private readonly _createdAt: Date;
+
+  constructor(
+    uid: string,
+    endpoint: string,
+    data: unknown,
+    createdAt: string,
+    files?: string[],
+    isSpam?: boolean
+  ) {
+    this._data = data;
     this._uid = new Uid(uid);
-    this._date = new Date(date);
+    this._isSpam = isSpam ?? false;
     this._endpoint = new Uid(endpoint);
+    this._createdAt = new Date(createdAt);
+
+    files?.forEach(file => {
+      this._files.push(new URL(file));
+    });
   }
 
   get uid(): string {
     return this._uid.value;
   }
 
-  get date(): Date {
-    return this._date;
+  get data(): unknown {
+    return this._data;
   }
 
-  get form(): FormData {
-    return this._form;
+  get files(): URL[] {
+    return this._files;
+  }
+
+  get isSpam(): boolean {
+    return this._isSpam;
   }
 
   get endpoint(): string {
     return this._endpoint.value;
+  }
+
+  get createdAt(): Date {
+    return this._createdAt;
   }
 }
