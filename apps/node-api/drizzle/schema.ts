@@ -61,11 +61,6 @@ export const endpoints = pgTable('endpoints', {
 
   redirectUrl: text('redirect_url').notNull().default(''),
 
-  submissions: integer('submissions')
-    .array()
-    .notNull()
-    .default(sql`ARRAY[]::integer[]`),
-
   createdAt: timestamp('created_at').notNull().defaultNow(),
 
   updatedAt: timestamp('updated_at')
@@ -80,13 +75,13 @@ export const submissions = pgTable('submissions', {
     .references(() => endpoints.id)
     .notNull(),
 
-  formData: jsonb('form_data').notNull(),
+  data: jsonb('data').notNull(),
 
-  createdAt: timestamp('created_at').notNull().defaultNow(),
+  files: text('files').array().default(sql`ARRAY[]::text[]`),
 
-  updatedAt: timestamp('updated_at')
-    .notNull()
-    .$onUpdate(() => new Date())
+  isSpam: boolean('is_spam').notNull().default(false),
+
+  createdAt: timestamp('created_at').notNull().defaultNow()
 });
 
 export const authTokens = pgTable('auth_tokens', {
