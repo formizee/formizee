@@ -548,16 +548,19 @@ paths:
               schema:
                 $ref: '#/components/schemas/error'
 
-  /submissions/{endpointId}:
+  /submissions:
     get:
       summary: Get Endpoint Submissions Data
-      parameters:
-        - name: endpointId
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                endpoint:
+                  type: string
+                  format: uuid
+              required: [endpoint]
       responses:
         '200':
           description: Submissions Loaded Successfully
