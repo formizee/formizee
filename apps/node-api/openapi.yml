@@ -21,7 +21,7 @@ components:
       type: apiKey
       in: cookie
       name: session
-        
+
   schemas:
     user:
       type: object
@@ -38,7 +38,7 @@ components:
           format: email
 
         isVerified:
-          type: boolean 
+          type: boolean
 
         permission:
           type: string
@@ -71,10 +71,10 @@ components:
           format: uuid
 
         isEnabled:
-          type: boolean 
+          type: boolean
 
         emailNotifications:
-          type: boolean 
+          type: boolean
 
         targetEmail:
           type: string
@@ -125,7 +125,7 @@ security:
   - session: []
 
 paths:
-  auth/register:
+  /auth/register:
     post:
       summary: User Register
       security: []
@@ -166,7 +166,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/error'
 
-  auth/send-verification:
+  /auth/send-verification:
     post:
       summary: Send Verification Email
       security: []
@@ -205,7 +205,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/error'
 
-  auth/login:
+  /auth/login:
     post:
       summary: User Login
       security: []
@@ -230,9 +230,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/user'
-          headers: 
+          headers:
             Set-Cookie:
-              schema: 
+              schema:
                 type: string
                 example: session=abcde12345; Path=/; HttpOnly
         '400':
@@ -250,7 +250,7 @@ paths:
         '403':
           description: User Needs Verification
 
-  auth/logout:
+  /auth/logout:
     post:
       summary: User Logout
       security: []
@@ -263,7 +263,7 @@ paths:
                 type: string
                 example: OK
 
-  auth/verify:
+  /auth/verify:
     post:
       summary: Verify User With Email
       security: []
@@ -300,7 +300,6 @@ paths:
   /endpoints/{id}:
     get:
       summary: Get Single Endpoint Data
-      security: [session]
       parameters:
         - name: id
           in: path
@@ -335,7 +334,6 @@ paths:
                 $ref: '#/components/schemas/error'
     delete:
       summary: Delete Endpoint Data
-      security: [session]
       parameters:
         - name: id
           in: path
@@ -366,7 +364,6 @@ paths:
                 $ref: '#/components/schemas/error'
     patch:
       summary: Update Endpoint Data
-      security: [session]
       parameters:
         - name: id
           in: path
@@ -385,10 +382,10 @@ paths:
                   type: string
 
                 isEnabled:
-                  type: boolean 
+                  type: boolean
 
                 emailNotifications:
-                  type: boolean 
+                  type: boolean
 
                 targetEmail:
                   type: string
@@ -427,7 +424,6 @@ paths:
   /endpoints:
     get:
       summary: Get Endpoints Data
-      security: [session]
       responses:
         '200':
           description: Endpoints Loaded Successfully
@@ -453,7 +449,6 @@ paths:
   /profile:
     get:
       summary: Get User Profile
-      security: [session]
       responses:
         '200':
           description: User Loaded Successfully
@@ -475,7 +470,6 @@ paths:
                 $ref: '#/components/schemas/error'
     delete:
       summary: Delete User Profile
-      security: [session]
       responses:
         '204':
           description: User Deleted Successfully
@@ -499,7 +493,6 @@ paths:
                 $ref: '#/components/schemas/error'
     patch:
       summary: Update User Profile
-      security: [session]
       requestBody:
         required: true
         content:
@@ -558,7 +551,6 @@ paths:
   /submissions/{endpointId}:
     get:
       summary: Get Endpoint Submissions Data
-      security: [session]
       parameters:
         - name: endpointId
           in: path
@@ -597,7 +589,6 @@ paths:
   /submissions/{id}:
     delete:
       summary: Delete Submission Data
-      security: [session]
       parameters:
         - name: id
           in: path
@@ -628,7 +619,6 @@ paths:
                 $ref: '#/components/schemas/error'
     patch:
       summary: Update Submission Data
-      security: [session]
       parameters:
         - name: id
           in: path
