@@ -4,7 +4,6 @@ export class Endpoint {
   private readonly _uid: Uid;
   private readonly _name: string;
   private readonly _owner: Uid;
-  private readonly _submissions: Uid[] = [];
 
   private readonly _isEnabled: boolean;
   private readonly _emailNotifications: boolean;
@@ -12,23 +11,21 @@ export class Endpoint {
   private readonly _redirectUrl: URL;
   private readonly _targetEmail: Email;
 
+  private readonly _createdAt: Date;
+  private readonly _updatedAt: Date;
+
   constructor(
     uid: string,
     name: string,
     owner: string,
     targetEmail: string,
     redirectUrl: string,
-    submissions?: string[]
+    createdAt: string,
+    updatedAt: string
   ) {
     this._name = name;
     this._uid = new Uid(uid);
     this._owner = new Uid(owner);
-
-    if (submissions && submissions.length > 0) {
-      submissions.forEach(submission => {
-        this._submissions.push(new Uid(submission));
-      });
-    }
 
     this._isEnabled = true;
     this._emailNotifications = true;
@@ -39,6 +36,9 @@ export class Endpoint {
         : `https://formizee.com/f/${this._uid.value}/thanks`
     );
     this._targetEmail = new Email(targetEmail);
+
+    this._createdAt = new Date(createdAt);
+    this._updatedAt = new Date(updatedAt);
   }
 
   get uid(): string {
@@ -57,10 +57,6 @@ export class Endpoint {
     return this._isEnabled;
   }
 
-  get submissions(): Uid[] {
-    return this._submissions;
-  }
-
   get targetEmail(): string {
     return this._targetEmail.value;
   }
@@ -71,5 +67,13 @@ export class Endpoint {
 
   get emailNotifications(): boolean {
     return this._emailNotifications;
+  }
+
+  get createdAt(): Date {
+    return this._createdAt;
+  }
+
+  get updatedAt(): Date {
+    return this._updatedAt;
   }
 }
