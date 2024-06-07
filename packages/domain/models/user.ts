@@ -6,10 +6,14 @@ export class User {
   private readonly _uid: Uid;
   private readonly _name: Name;
   private readonly _email: Email;
-  private readonly _forms: Uid[] = [];
   private readonly _isVerified: boolean;
   private readonly _permission: UserPermission;
+
+  private readonly _forms: Uid[] = [];
   private readonly _linkedEmails: Email[] = [];
+
+  private readonly _createdAt: Date;
+  private readonly _updatedAt: Date;
 
   constructor(
     uid: string,
@@ -17,6 +21,8 @@ export class User {
     email: string,
     isVerified: boolean,
     permission: UserPermission,
+    createdAt: string,
+    updatedAt: string,
     forms?: string[],
     linkedEmails?: string[]
   ) {
@@ -37,6 +43,9 @@ export class User {
         this._linkedEmails.push(new Email(item));
       });
     } else this._linkedEmails = [this._email];
+
+    this._createdAt = new Date(createdAt);
+    this._updatedAt = new Date(updatedAt);
   }
 
   get uid(): string {
@@ -65,5 +74,13 @@ export class User {
 
   get linkedForms(): Uid[] {
     return this._forms;
+  }
+
+  get createdAt(): Date {
+    return this._createdAt;
+  }
+
+  get updatedAt(): Date {
+    return this._updatedAt;
   }
 }
