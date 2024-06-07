@@ -1,0 +1,697 @@
+openapi: 3.0.0
+
+info:
+  title: Formizee API
+  description: The Forms Backend Platform API
+  termsOfService: https://www.formizee.com/legal/terms-of-service
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  contact:
+    email: support@example.com
+  version: 0.1.0
+
+servers:
+  - url: https://api.formizee.com/v1
+    description: Production API
+
+components:
+  securitySchemes:
+    session:
+      type: apiKey
+      in: cookie
+      name: session
+        
+  schemas:
+    user:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+
+        name:
+          type: string
+
+        email:
+          type: string
+          format: email
+
+        isVerified:
+          type: boolean 
+
+        permission:
+          type: string
+          enum: [user, admin]
+
+        forms:
+          type: array
+          items:
+            type: string
+            format: uuid
+
+        linkedEmails:
+          type: array
+          items:
+            type: string
+            format: email
+
+    endpoint:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+
+        name:
+          type: string
+
+        owner:
+          type: string
+          format: uuid
+
+        isEnabled:
+          type: boolean 
+
+        emailNotifications:
+          type: boolean 
+
+        targetEmail:
+          type: string
+          format: email
+
+        redirectUrl:
+          type: string
+          format: uri
+
+    submission:
+      type: object
+      properties:
+        id:
+          type: integer
+
+        endpoint:
+          type: string
+          format: uuid
+
+        data:
+          type: string
+          format: binary
+
+        files:
+          type: array
+          items:
+            type: string
+            format: uri
+
+        isSpam:
+          type: boolean
+
+        createdAt:
+          type: string
+          format: date-time
+
+    error:
+      type: object
+      properties:
+        name:
+          type: string
+
+        message:
+          type: string
+          format: string
+
+security:
+  - session: []
+
+paths:
+  auth/register:
+    post:
+      summary: User Register
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+              required: [name, email, password]
+      responses:
+        '201':
+          description: Register Successful
+          content:
+            application/json:
+              schema:
+                type: string
+                example: OK
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '409':
+          description: User Already Exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+
+  auth/send-verification:
+    post:
+      summary: Send Verification Email
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  enum: [account, password]
+              required: [email, type]
+      responses:
+        '202':
+          description: Verification Sent Successful
+          content:
+            application/json:
+              schema:
+                type: string
+                example: OK
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: User Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+
+  auth/login:
+    post:
+      summary: User Login
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+              required: [email, password]
+      responses:
+        '200':
+          description: Login Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+          headers: 
+            Set-Cookie:
+              schema: 
+                type: string
+                example: session=abcde12345; Path=/; HttpOnly
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: User Needs Verification
+
+  auth/logout:
+    post:
+      summary: User Logout
+      security: []
+      responses:
+        '200':
+          description: Logout Successful
+          content:
+            application/json:
+              schema:
+                type: string
+                example: OK
+
+  auth/verify:
+    post:
+      summary: Verify User With Email
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+              required: [token]
+      responses:
+        '200':
+          description: Verification Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+
+  /endpoints/{id}:
+    get:
+      summary: Get Single Endpoint Data
+      security: [session]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Endpoint Loaded Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/endpoint'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Unauthorized Access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: Endpoint Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    delete:
+      summary: Delete Endpoint Data
+      security: [session]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Endpoint Deleted Successfully
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Unauthorized Access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: Endpoint Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    patch:
+      summary: Update Endpoint Data
+      security: [session]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+
+                isEnabled:
+                  type: boolean 
+
+                emailNotifications:
+                  type: boolean 
+
+                targetEmail:
+                  type: string
+                  format: email
+
+                redirectUrl:
+                  type: string
+                  format: uri
+
+      responses:
+        '200':
+          description: Endpoint Updated Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/endpoint'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Unauthorized Access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: Endpoint Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+
+  /endpoints:
+    get:
+      summary: Get Endpoints Data
+      security: [session]
+      responses:
+        '200':
+          description: Endpoints Loaded Successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/endpoint'
+        '401':
+          description: Unauthorized Access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: No Endpoints For The Current User
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+
+  /profile:
+    get:
+      summary: Get User Profile
+      security: [session]
+      responses:
+        '200':
+          description: User Loaded Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+        '401':
+          description: Unauthorized Access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: User Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    delete:
+      summary: Delete User Profile
+      security: [session]
+      responses:
+        '204':
+          description: User Deleted Successfully
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Unauthorized Access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: User Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    patch:
+      summary: Update User Profile
+      security: [session]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+
+                email:
+                  type: string
+                  format: email
+
+                password:
+                  type: string
+                  format: password
+
+                forms:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+
+                linkedEmails:
+                  type: array
+                  items:
+                    type: string
+                    format: email
+      responses:
+        '200':
+          description: User Updated Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Unauthorized Access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: User Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+
+  /submissions/{endpointId}:
+    get:
+      summary: Get Endpoint Submissions Data
+      security: [session]
+      parameters:
+        - name: endpointId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Submissions Loaded Successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/submission'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Unauthorized Access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: Endpoint Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+
+  /submissions/{id}:
+    delete:
+      summary: Delete Submission Data
+      security: [session]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Submission Deleted Successfully
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Unauthorized Access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: Submission Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    patch:
+      summary: Update Submission Data
+      security: [session]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                isSpam:
+                  type: boolean
+      responses:
+        '200':
+          description: Submission Updated Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/submission'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Unauthorized Access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: Submission Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+
+  /waitlist/join:
+    post:
+      summary: Join On Waitlist
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+              required: [email]
+      responses:
+        '201':
+          description: User Joined Successfully
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
