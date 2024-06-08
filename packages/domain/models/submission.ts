@@ -4,7 +4,7 @@ export class Submission {
   private readonly _uid: Uid;
   private readonly _endpoint: Uid;
 
-  private readonly _data: unknown;
+  private readonly _data: JSON;
   private readonly _isSpam: boolean;
   private readonly _files: URL[] = [];
 
@@ -13,7 +13,7 @@ export class Submission {
   constructor(
     uid: string,
     endpoint: string,
-    data: unknown,
+    data: JSON,
     createdAt: Date,
     files?: string[],
     isSpam?: boolean

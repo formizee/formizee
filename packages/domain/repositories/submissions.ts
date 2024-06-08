@@ -7,7 +7,7 @@ export interface SubmissionsRepository {
   update: (uid: Uid, isSpam: boolean) => Promise<Response<Submission>>;
   save: (
     endpoint: Uid,
-    data: unknown,
+    data: JSON,
     files?: string[]
   ) => Promise<Response<Submission>>;
   delete: (uid: Uid) => Promise<Response<true>>;
