@@ -1,16 +1,10 @@
-import {serve} from '@hono/node-server';
 import {Hono} from 'hono';
-import '@/lib/enviroment';
+import {server} from '@/lib/server';
 
-const app = new Hono();
+const router = new Hono();
 
-app.get('/', c => {
+router.get('/', c => {
   return c.text('Hello Hono!');
 });
 
-console.info(`Server is running on port ${process.env.PORT!}`);
-
-serve({
-  fetch: app.fetch,
-  port: Number(process.env.PORT!)
-});
+server(router);
