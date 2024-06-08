@@ -125,6 +125,7 @@ security:
   - session: []
 
 tags:
+  - name: Health
   - name: Authentication
   - name: Waitlist
   - name: Profile
@@ -622,6 +623,27 @@ paths:
                 $ref: '#/components/schemas/error'
         '404':
           description: User Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+
+  /status:
+    get:
+      summary: Get API Status
+      description: Returns the Formizee API status.
+      operationId: status
+      tags: [Health]
+      security: []
+      responses:
+        '200':
+          description: API is running without errors.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+        '500':
+          description: API is down or in maintenance.
           content:
             application/json:
               schema:
