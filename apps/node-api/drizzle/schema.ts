@@ -41,17 +41,18 @@ export const users = pgTable('users', {
 
   updatedAt: timestamp('updated_at')
     .notNull()
+    .defaultNow()
     .$onUpdate(() => new Date())
 });
 
 export const endpoints = pgTable('endpoints', {
   id: uuid('id').primaryKey(),
 
-  name: text('name').notNull().default('Untitled Form'),
+  name: text('name').notNull(),
 
   owner: uuid('owner')
     .notNull()
-    .references(() => users.id),
+    .references(() => users.id, {onDelete: 'set null'}),
 
   isEnabled: boolean('form_enabled').notNull().default(true),
 
@@ -65,6 +66,7 @@ export const endpoints = pgTable('endpoints', {
 
   updatedAt: timestamp('updated_at')
     .notNull()
+    .defaultNow()
     .$onUpdate(() => new Date())
 });
 
@@ -72,7 +74,7 @@ export const submissions = pgTable('submissions', {
   id: bigserial('id', {mode: 'number'}).primaryKey(),
 
   endpoint: uuid('endpoint')
-    .references(() => endpoints.id)
+    .references(() => endpoints.id, {onDelete: 'set null'})
     .notNull(),
 
   data: jsonb('data').notNull(),
@@ -93,7 +95,7 @@ export const authTokens = pgTable('auth_tokens', {
 
   email: text('email')
     .notNull()
-    .references(() => users.email),
+    .references(() => users.email, {onDelete: 'cascade'}),
 
   createdAt: timestamp('created_at').notNull().defaultNow(),
 
