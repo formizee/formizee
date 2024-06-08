@@ -122,7 +122,7 @@ importers:
         version: 1.11.2
       '@hono/zod-validator':
         specifier: 0.2.2
-        version: 0.2.2(hono@4.4.3)(zod@3.23.8)
+        version: 0.2.2(hono@4.4.4)(zod@3.23.8)
       awilix:
         specifier: 10.0.2
         version: 10.0.2
@@ -139,8 +139,8 @@ importers:
         specifier: 0.30.10
         version: 0.30.10(@cloudflare/workers-types@4.20240529.0)(@neondatabase/serverless@0.9.3)(@opentelemetry/api@1.8.0)(@types/pg@8.11.6)(@types/react@18.3.2)(@vercel/postgres@0.8.0)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1)
       hono:
-        specifier: 4.4.3
-        version: 4.4.3
+        specifier: 4.4.4
+        version: 4.4.4
       nodemailer:
         specifier: 6.9.13
         version: 6.9.13
@@ -3877,8 +3877,8 @@ packages:
     resolution: {integrity: sha512-6c5LVE23HnIS8iBhY+XPmYJlPeeClznOi7mBNsAsJCgxo8Ciz75LTjqRUf5wv4RYq8kL+1KPLUZHCtKmbZssNg==}
     engines: {node: '>=16.0.0'}
 
-  hono@4.4.3:
-    resolution: {integrity: sha512-G7rTruKzrHXPz1KB4B50deKydPA9+aeei+WC1hikP0abN9N+a6yORuweageaqWocYfYNkpoqA5ezGV2mzQasvw==}
+  hono@4.4.4:
+    resolution: {integrity: sha512-zO5+4K8yf1iuKhBZhwmpZ/0LzPMr8Zt1RugEGM1xvOqgh9DyLb7tslOtoBks4bmm5bIcLtzLCXUpYpXOkwpABA==}
     engines: {node: '>=16.0.0'}
 
   hosted-git-info@2.8.9:
@@ -6644,9 +6644,9 @@ snapshots:
       hono: 4.3.9
       zod: 3.23.8
 
-  '@hono/zod-validator@0.2.2(hono@4.4.3)(zod@3.23.8)':
+  '@hono/zod-validator@0.2.2(hono@4.4.4)(zod@3.23.8)':
     dependencies:
-      hono: 4.4.3
+      hono: 4.4.4
       zod: 3.23.8
 
   '@hookform/resolvers@3.4.0(react-hook-form@7.51.4(react@18.3.1))':
@@ -9592,7 +9592,7 @@ snapshots:
 
   hono@4.3.9: {}
 
-  hono@4.4.3: {}
+  hono@4.4.4: {}
 
   hosted-git-info@2.8.9: {}
 
