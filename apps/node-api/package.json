@@ -17,6 +17,7 @@
     "@formizee/eslint-config": "workspace:*",
     "@hono/node-server": "1.11.2",
     "awilix": "10.0.2",
+    "bcryptjs": "2.4.3",
     "domain": "workspace:*",
     "dotenv": "16.4.5",
     "drizzle-orm": "0.30.10",
@@ -24,6 +25,7 @@
     "pg": "8.12.0"
   },
   "devDependencies": {
+    "@types/bcryptjs": "2.4.6",
     "@types/node": "20.14.2",
     "@types/pg": "8.11.6",
     "drizzle-kit": "0.21.2",
