@@ -8,7 +8,7 @@ app.get('/', c => {
   return c.text('Hello Hono!');
 });
 
-console.log(`Server is running on port ${process.env.PORT!}`);
+console.info(`Server is running on port ${process.env.PORT!}`);
 
 serve({
   fetch: app.fetch,
