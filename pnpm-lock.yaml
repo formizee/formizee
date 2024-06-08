@@ -120,6 +120,9 @@ importers:
       '@hono/node-server':
         specifier: 1.11.2
         version: 1.11.2
+      '@hono/zod-validator':
+        specifier: 0.2.2
+        version: 0.2.2(hono@4.4.3)(zod@3.23.8)
       awilix:
         specifier: 10.0.2
         version: 10.0.2
@@ -144,6 +147,9 @@ importers:
       pg:
         specifier: 8.12.0
         version: 8.12.0
+      zod:
+        specifier: 3.23.8
+        version: 3.23.8
     devDependencies:
       '@types/bcryptjs':
         specifier: 2.4.6
@@ -1319,6 +1325,12 @@ packages:
 
   '@hono/zod-validator@0.2.1':
     resolution: {integrity: sha512-HFoxln7Q6JsE64qz2WBS28SD33UB2alp3aRKmcWnNLDzEL1BLsWfbdX6e1HIiUprHYTIXf5y7ax8eYidKUwyaA==}
+    peerDependencies:
+      hono: '>=3.9.0'
+      zod: ^3.19.1
+
+  '@hono/zod-validator@0.2.2':
+    resolution: {integrity: sha512-dSDxaPV70Py8wuIU2QNpoVEIOSzSXZ/6/B/h4xA7eOMz7+AarKTSGV8E6QwrdcCbBLkpqfJ4Q2TmBO0eP1tCBQ==}
     peerDependencies:
       hono: '>=3.9.0'
       zod: ^3.19.1
@@ -6630,6 +6642,11 @@ snapshots:
   '@hono/zod-validator@0.2.1(hono@4.3.9)(zod@3.23.8)':
     dependencies:
       hono: 4.3.9
+      zod: 3.23.8
+
+  '@hono/zod-validator@0.2.2(hono@4.4.3)(zod@3.23.8)':
+    dependencies:
+      hono: 4.4.3
       zod: 3.23.8
 
   '@hookform/resolvers@3.4.0(react-hook-form@7.51.4(react@18.3.1))':
