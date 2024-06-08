@@ -1,1 +1,1 @@
-export {MailSend} from './send';
+export {SendMail} from './send';

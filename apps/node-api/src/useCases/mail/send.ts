@@ -2,7 +2,7 @@ import {type Response, type Mail} from 'domain/models';
 import {type Uid} from 'domain/models/values';
 import {resolve} from '@/lib/di';
 
-export class MailSend {
+export class SendMail {
   private readonly _service = resolve('mailService');
   private readonly _mail: Mail;
 

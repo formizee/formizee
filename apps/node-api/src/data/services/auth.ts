@@ -5,7 +5,7 @@ import {Mail, Response, type User} from 'domain/models';
 import {compare} from 'bcryptjs';
 import {verifyEmailTemplate} from '@emails/auth';
 import {db, eq, users, authTokens} from '@db/index';
-import {MailSend} from '@/useCases/mail';
+import {SendMail} from '@/useCases/mail';
 import {createUser} from '@/lib/utils';
 
 export class AuthService implements Service {
@@ -99,7 +99,7 @@ export class AuthService implements Service {
         html
       );
 
-      const service = new MailSend(mail);
+      const service = new SendMail(mail);
       await service.run();
     };
 
