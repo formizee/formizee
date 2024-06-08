@@ -21,8 +21,8 @@ export class User {
     email: string,
     isVerified: boolean,
     permission: UserPermission,
-    createdAt: string,
-    updatedAt: string,
+    createdAt: Date,
+    updatedAt: Date,
     forms?: string[],
     linkedEmails?: string[]
   ) {
@@ -44,8 +44,8 @@ export class User {
       });
     } else this._linkedEmails = [this._email];
 
-    this._createdAt = new Date(createdAt);
-    this._updatedAt = new Date(updatedAt);
+    this._createdAt = createdAt;
+    this._updatedAt = updatedAt;
   }
 
   get uid(): string {
