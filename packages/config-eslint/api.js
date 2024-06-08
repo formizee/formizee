@@ -35,6 +35,7 @@ module.exports = {
     '@typescript-eslint/prefer-promise-reject-errors': 'off',
     '@typescript-eslint/consistent-type-definitions': 'off',
     '@typescript-eslint/unbound-method': 'off',
+    'import/no-extraneous-dependencies': 'off',
     'unicorn/prefer-node-protocol': 'off',
     'import/no-default-export': 'off'
   }
