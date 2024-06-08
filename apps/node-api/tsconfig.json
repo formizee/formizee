@@ -10,7 +10,8 @@
     "outDir": "dist/",
     "paths": {
       "@/*": ["./src/*"],
-      "@db/*": ["./drizzle/*"]
+      "@db/*": ["./drizzle/*"],
+      "@emails/*": ["./emails/*"]
     }
   }
 }
