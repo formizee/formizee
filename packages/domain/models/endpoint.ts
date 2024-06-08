@@ -20,25 +20,28 @@ export class Endpoint {
     owner: string,
     targetEmail: string,
     redirectUrl: string,
-    createdAt: string,
-    updatedAt: string
+    isEnabled: boolean,
+    emailNotifications: boolean,
+    createdAt: Date,
+    updatedAt: Date
   ) {
     this._name = name;
     this._uid = new Uid(uid);
     this._owner = new Uid(owner);
 
-    this._isEnabled = true;
-    this._emailNotifications = true;
+    this._isEnabled = isEnabled;
+    this._emailNotifications = emailNotifications;
+
+    this._targetEmail = new Email(targetEmail);
 
     this._redirectUrl = new URL(
       redirectUrl !== ''
         ? redirectUrl
         : `https://formizee.com/f/${this._uid.value}/thanks`
     );
-    this._targetEmail = new Email(targetEmail);
 
-    this._createdAt = new Date(createdAt);
-    this._updatedAt = new Date(updatedAt);
+    this._createdAt = createdAt;
+    this._updatedAt = updatedAt;
   }
 
   get uid(): string {
