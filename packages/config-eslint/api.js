@@ -14,8 +14,7 @@ const project = resolve(process.cwd(), 'tsconfig.json');
 module.exports = {
   extends: [
     '@vercel/style-guide/eslint/typescript',
-    '@vercel/style-guide/eslint/node',
-    'eslint-config-turbo'
+    '@vercel/style-guide/eslint/node'
   ].map(require.resolve),
   parserOptions: {
     project
@@ -37,6 +36,7 @@ module.exports = {
     '@typescript-eslint/unbound-method': 'off',
     'import/no-extraneous-dependencies': 'off',
     'unicorn/prefer-node-protocol': 'off',
-    'import/no-default-export': 'off'
+    'import/no-default-export': 'off',
+    'no-console': 'off'
   }
 };
