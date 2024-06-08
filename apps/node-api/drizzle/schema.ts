@@ -37,6 +37,8 @@ export const users = pgTable('users', {
     .notNull()
     .default(sql`ARRAY[]::text[]`),
 
+  lastAccess: timestamp('last_access').notNull().defaultNow(),
+
   createdAt: timestamp('created_at').notNull().defaultNow(),
 
   updatedAt: timestamp('updated_at')
