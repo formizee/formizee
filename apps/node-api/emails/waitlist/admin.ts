@@ -29,5 +29,5 @@ export const joinAdminWaitlist = (email: string): string => {
       </tbody>
     </table>
   </body>
-</html>`
-}
+</html>`;
+};

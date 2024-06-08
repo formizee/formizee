@@ -29,5 +29,5 @@ export const joinUserWaitlist = (): string => {
       </tbody>
     </table>
   </body>
-</html>`
-}
+</html>`;
+};
