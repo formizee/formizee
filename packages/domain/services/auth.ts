@@ -10,6 +10,5 @@ export interface AuthService {
   ) => Promise<Response<User>>;
 
   sendVerification: (email: Email) => Promise<Response<true>>;
-  verifyUser: (email: Email, token: string) => Promise<Response<User>>;
-  resetPassword: (email: Email, token: string) => Promise<Response<User>>;
+  verify: (email: Email, token: string) => Promise<Response<User>>;
 }
