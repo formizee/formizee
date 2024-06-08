@@ -5,8 +5,8 @@ import {Mail, Response, type User} from 'domain/models';
 import {compare} from 'bcryptjs';
 import {verifyEmailTemplate} from '@emails/auth';
 import {db, eq, users, authTokens} from '@db/index';
-import {SendMail} from '@/useCases/mail';
 import {createUser} from '@/lib/utils';
+import {MailService} from './mail';
 
 export class AuthService implements Service {
   async login(email: Email, password: string): Promise<Response<User>> {
@@ -99,8 +99,8 @@ export class AuthService implements Service {
         html
       );
 
-      const service = new SendMail(mail);
-      await service.run();
+      const service = new MailService();
+      await service.send(mail);
     };
 
     const user = await db.query.users.findFirst({with: {email: email.value}});
