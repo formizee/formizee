@@ -15,7 +15,7 @@ import {sql} from 'drizzle-orm';
 export const permissions = pgEnum('permissions', ['user', 'admin']);
 
 export const users = pgTable('users', {
-  id: uuid('id').primaryKey(),
+  id: uuid('id').defaultRandom().primaryKey(),
 
   name: text('name').notNull(),
 
@@ -46,7 +46,7 @@ export const users = pgTable('users', {
 });
 
 export const endpoints = pgTable('endpoints', {
-  id: uuid('id').primaryKey(),
+  id: uuid('id').defaultRandom().primaryKey(),
 
   name: text('name').notNull(),
 
