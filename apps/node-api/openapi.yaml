@@ -816,8 +816,8 @@ paths:
                   type: string
                   format: uuid
                 data:
-                  type: string
-                  format: binary
+                  type: object
+                  format: json
                 files:
                   type: array
                   items:
