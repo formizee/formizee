@@ -14,7 +14,7 @@ export class Submission {
     uid: string,
     endpoint: string,
     data: unknown,
-    createdAt: string,
+    createdAt: Date,
     files?: string[],
     isSpam?: boolean
   ) {
