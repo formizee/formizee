@@ -21,10 +21,9 @@ const messages = (message: string): void => {
   const content = generateContent(rawData);
   if (message.includes('->')) {
     console.log(`${generateType(requestType)} -> ${content}\n`);
-  }
-  else {
+  } else {
     console.log(`${generateType(requestType)} <- ${content}`);
-  } 
+  }
 };
 
 export const logger = honoLogger(messages);
