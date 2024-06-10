@@ -2,7 +2,7 @@ import type {UsersRepository as Repository} from 'domain/repositories';
 import type {Uid, Email, Name, Password} from 'domain/models/values';
 import {Response, type User} from 'domain/models';
 import * as bcryptjs from 'bcryptjs';
-import {db, eq, users} from '@db/index';
+import {db, eq, users} from '@drizzle/db';
 import {createUser} from '@/lib/utils';
 
 export class UsersRepository implements Repository {

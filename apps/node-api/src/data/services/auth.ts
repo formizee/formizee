@@ -3,8 +3,8 @@ import type {Email, Name, Password} from 'domain/models/values';
 import type {AuthService as Service} from 'domain/services';
 import {Mail, Response, type User} from 'domain/models';
 import * as bcryptjs from 'bcryptjs';
+import {db, eq, users, authTokens} from '@drizzle/db';
 import {verifyEmailTemplate} from '@emails/auth';
-import {db, eq, users, authTokens} from '@db/index';
 import {createUser} from '@/lib/utils';
 import {MailService} from './mail';
 

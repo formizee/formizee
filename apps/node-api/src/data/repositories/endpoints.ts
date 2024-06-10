@@ -1,7 +1,7 @@
 import type {EndpointsRepository as Repository} from 'domain/repositories';
 import type {Uid, Email} from 'domain/models/values';
 import {Response, type Endpoint} from 'domain/models';
-import {eq, db, endpoints} from '@db/index';
+import {eq, db, endpoints} from '@drizzle/db';
 import {createEndpoint} from '@/lib/utils';
 
 export class EndpointsRepository implements Repository {

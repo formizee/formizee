@@ -2,7 +2,7 @@ import type {SubmissionsRepository as Repository} from 'domain/repositories';
 import {Response, type Submission} from 'domain/models';
 import type {Uid} from 'domain/models/values';
 import {createSubmission} from '@/lib/utils';
-import {db, eq, submissions} from '@db/index';
+import {db, eq, submissions} from '@drizzle/db';
 
 export class SubmissionsRepository implements Repository {
   async loadAll(endpoint: Uid): Promise<Response<Submission[]>> {

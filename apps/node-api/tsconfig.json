@@ -3,9 +3,9 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "@db/*": ["./drizzle/*"],
-      "@emails/*": ["./emails/*"]
+      "@/*": ["src/*"],
+      "@emails/*": ["emails/*"],
+      "@drizzle/*": ["drizzle/*"]
     }
   }
 }

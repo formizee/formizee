@@ -1,7 +1,7 @@
 import type {WaitlistService as Service} from 'domain/services';
 import type {Email} from 'domain/models/values';
 import {Response} from 'domain/models';
-import {db, waitlist} from '@db/index';
+import {db, eq, waitlist} from '@drizzle/db';
 
 export class WaitlistService implements Service {
   async join(email: Email): Promise<Response<true>> {

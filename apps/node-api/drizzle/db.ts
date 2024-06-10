@@ -1,7 +1,7 @@
 import {drizzle} from 'drizzle-orm/node-postgres';
 import {eq as compare} from 'drizzle-orm';
 import pg from 'pg';
-import * as schemas from './schema';
+import * as schemas from './schemas';
 import '@/lib/enviroment';
 
 // Schemas
