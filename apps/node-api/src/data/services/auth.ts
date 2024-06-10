@@ -10,7 +10,9 @@ import {MailService} from './mail';
 
 export class AuthService implements Service {
   async login(email: Email, password: string): Promise<Response<User>> {
-    const user = await db.query.users.findFirst({where: eq(users.email, email.value)});
+    const user = await db.query.users.findFirst({
+      where: eq(users.email, email.value)
+    });
     if (!user) {
       return Response.error('User or password not match.', 401);
     }
@@ -107,7 +109,9 @@ export class AuthService implements Service {
       await service.send(mail);
     };
 
-    const user = await db.query.users.findFirst({where: eq(users.email, email.value)});
+    const user = await db.query.users.findFirst({
+      where: eq(users.email, email.value)
+    });
     if (!user) {
       return Response.error('The user does not exists.', 404);
     }
