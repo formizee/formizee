@@ -3,6 +3,11 @@
   "display": "API",
   "extends": "./base.json",
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "Bundler",
+    "target": "ESNext",
+    "module": "ESNext",
+    "outDir": "dist/",
+    "types": ["node"]
   }
 }
