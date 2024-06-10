@@ -53,8 +53,13 @@ components:
         linkedEmails:
           type: array
           items:
-            type: string
-            format: email
+            type: object
+            properties:
+              email:
+                type: string
+                format: email
+              isVerified:
+                type: boolean
 
     endpoint:
       type: object
@@ -577,8 +582,13 @@ paths:
                 linkedEmails:
                   type: array
                   items:
-                    type: string
-                    format: email
+                    type: object
+                    properties:
+                      email:
+                        type: string
+                        format: email
+                      isVerified:
+                        type: boolean
       responses:
         '200':
           description: User Updated Successfully

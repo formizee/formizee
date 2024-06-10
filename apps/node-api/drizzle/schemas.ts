@@ -32,10 +32,9 @@ export const users = pgTable('users', {
     .notNull()
     .default(sql`ARRAY[]::uuid[]`),
 
-  linkedEmails: text('linked_emails')
-    .array()
+  linkedEmails: jsonb('linked_emails')
     .notNull()
-    .default(sql`ARRAY[]::text[]`),
+    .$type<{email: string; isVerified: boolean}[]>(),
 
   lastAccess: timestamp('last_access').notNull().defaultNow(),
 

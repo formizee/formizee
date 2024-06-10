@@ -5,6 +5,8 @@ export const createUser = (data: {
   name: string;
   email: string;
   isVerified: boolean;
+  forms: string[];
+  linkedEmails: {email: string; isVerified: boolean}[];
   permission: 'user' | 'admin';
   createdAt: Date;
   updatedAt: Date;
@@ -16,7 +18,9 @@ export const createUser = (data: {
     data.isVerified,
     data.permission,
     data.createdAt,
-    data.updatedAt
+    data.updatedAt,
+    data.forms,
+    data.linkedEmails
   );
 };
 

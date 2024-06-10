@@ -53,7 +53,8 @@ export class AuthService implements Service {
       .values({
         name: name.value,
         email: email.value,
-        password: passwordHash
+        password: passwordHash,
+        linkedEmails: [{email: email.value, isVerified: true}]
       })
       .returning();
 

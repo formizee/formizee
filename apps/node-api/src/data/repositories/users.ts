@@ -1,7 +1,13 @@
 import type {UsersRepository as Repository} from 'domain/repositories';
-import type {Uid, Email, Name, Password} from 'domain/models/values';
+import type {
+  Uid,
+  Email,
+  Name,
+  Password,
+  LinkedEmail
+} from 'domain/models/values';
 import {Response, type User} from 'domain/models';
-import * as bcryptjs from 'bcryptjs';
+import bcryptjs from 'bcryptjs';
 import {db, eq, users} from '@drizzle/db';
 import {createUser} from '@/lib/utils';
 
@@ -52,6 +58,12 @@ export class UsersRepository implements Repository {
     });
     if (!user) return Response.error('User not found.', 404);
 
+    const alreadyExists = await db.query.users.findFirst({
+      where: eq(users.email, newEmail.value)
+    });
+    if (!alreadyExists)
+      return Response.error('The email is already taken by other user.', 409);
+
     const data = await db
       .update(users)
       .set({email: newEmail.value})
@@ -89,32 +101,9 @@ export class UsersRepository implements Repository {
     return Response.success(response);
   }
 
-  async updateForms(uid: Uid, forms: Uid[]): Promise<Response<User>> {
-    const user = await db.query.users.findFirst({
-      where: eq(users.id, uid.value)
-    });
-    if (!user) return Response.error('User not found.', 404);
-
-    const newForms = forms.map(item => {
-      return item.value;
-    });
-
-    const data = await db
-      .update(users)
-      .set({forms: newForms})
-      .where(eq(users.id, uid.value))
-      .returning({updatedForms: users.forms});
-    if (!data[0]) return Response.error("User forms can't be updated", 500);
-
-    user.forms = data[0].updatedForms;
-    const response = createUser(user);
-
-    return Response.success(response);
-  }
-
   async updateLinkedEmails(
     uid: Uid,
-    linkedEmails: Email[]
+    linkedEmails: LinkedEmail[]
   ): Promise<Response<User>> {
     const user = await db.query.users.findFirst({
       where: eq(users.id, uid.value)
@@ -122,7 +111,7 @@ export class UsersRepository implements Repository {
     if (!user) return Response.error('User not found.', 404);
 
     const newLinkedEmails = linkedEmails.map(item => {
-      return item.value;
+      return {email: item.email, isVerified: item.isVerified};
     });
 
     const data = await db

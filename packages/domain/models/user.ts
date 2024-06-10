@@ -1,4 +1,4 @@
-import {Uid, Email, Name} from './values';
+import {Uid, Email, Name, LinkedEmail} from './values';
 
 export type UserPermission = 'user' | 'admin';
 
@@ -10,7 +10,7 @@ export class User {
   private readonly _permission: UserPermission;
 
   private readonly _forms: Uid[] = [];
-  private readonly _linkedEmails: Email[] = [];
+  private readonly _linkedEmails: LinkedEmail[] = [];
 
   private readonly _createdAt: Date;
   private readonly _updatedAt: Date;
@@ -24,7 +24,7 @@ export class User {
     createdAt: Date,
     updatedAt: Date,
     forms?: string[],
-    linkedEmails?: string[]
+    linkedEmails?: {email: string; isVerified: boolean}[]
   ) {
     this._uid = new Uid(uid);
     this._name = new Name(name);
@@ -38,11 +38,8 @@ export class User {
       });
     }
 
-    if (linkedEmails) {
-      linkedEmails.forEach(item => {
-        this._linkedEmails.push(new Email(item));
-      });
-    } else this._linkedEmails = [this._email];
+    if (!linkedEmails)
+      this._linkedEmails = [new LinkedEmail(this._email.value, true)];
 
     this._createdAt = createdAt;
     this._updatedAt = updatedAt;
@@ -68,7 +65,7 @@ export class User {
     return this._permission;
   }
 
-  get linkedEmails(): Email[] {
+  get linkedEmails(): LinkedEmail[] {
     return this._linkedEmails;
   }
 
