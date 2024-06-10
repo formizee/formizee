@@ -64,6 +64,27 @@ export class EndpointsRepository implements Repository {
     return Response.success(true);
   }
 
+  async updateName(uid: Uid, name: string): Promise<Response<Endpoint>> {
+    const endpoint = await db.query.endpoints.findFirst({
+      where: eq(endpoints.id, uid.value)
+    });
+    if (!endpoint) return Response.error('Endpoint not found.', 404);
+
+    const data = await db
+      .update(endpoints)
+      .set({name})
+      .where(eq(endpoints.id, uid.value))
+      .returning({updatedName: endpoints.name});
+    if (!data[0]) {
+      return Response.error("Endpoint name can't be updated", 500);
+    }
+
+    endpoint.name = data[0].updatedName;
+    const response = createEndpoint(endpoint);
+
+    return Response.success(response);
+  }
+
   async updateEnabled(
     uid: Uid,
     isEnabled: boolean
