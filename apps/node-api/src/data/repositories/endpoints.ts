@@ -31,11 +31,7 @@ export class EndpointsRepository implements Repository {
     return Response.success(response);
   }
 
-  async save(
-    name: string,
-    owner: Uid,
-    targetEmail: Email
-  ): Promise<Response<Endpoint>> {
+  async save(name: string, owner: Uid): Promise<Response<Endpoint>> {
     const user = await db.query.users.findFirst({
       where: eq(users.id, owner.value)
     });
@@ -43,12 +39,18 @@ export class EndpointsRepository implements Repository {
       return Response.error('User not exits', 404);
     }
 
+    if (!user.linkedEmails[0]) {
+      return Response.error('User does not have a primary email.', 500);
+    }
+
+    const targetEmail = user.linkedEmails[0]?.email;
+
     const endpoint = await db
       .insert(endpoints)
       .values({
         name,
-        owner: owner.value,
-        targetEmail: targetEmail.value
+        targetEmail,
+        owner: owner.value
       })
       .returning();
 

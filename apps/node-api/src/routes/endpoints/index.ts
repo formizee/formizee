@@ -36,7 +36,7 @@ endpoints.get('/', async context => {
 
 endpoints.post('/', zValidator('json', Post), async context => {
   const {isAuth, user} = await verifySession(context);
-  const {name, targetEmail} = context.req.valid('json');
+  const {name} = context.req.valid('json');
 
   if (!isAuth || !user) {
     return context.json(
@@ -45,7 +45,7 @@ endpoints.post('/', zValidator('json', Post), async context => {
     );
   }
 
-  const service = new SaveEndpoint(name, user.uid, targetEmail);
+  const service = new SaveEndpoint(name, user.uid);
   const response = await service.run();
 
   return context.json(response.body, response.status as StatusCode);

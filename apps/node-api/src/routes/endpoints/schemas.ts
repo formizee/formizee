@@ -1,8 +1,7 @@
 import {z} from 'zod';
 
 export const Post = z.object({
-  name: z.string().min(8).max(64),
-  targetEmail: z.string().email()
+  name: z.string().min(8).max(64)
 });
 
 export const Patch = z.object({

@@ -499,10 +499,7 @@ paths:
               properties:
                 name:
                   type: string
-                targetEmail:
-                  type: string
-                  format: email
-              required: [name, targetEmail]
+              required: [name]
       responses:
         '200':
           description: Endpoint Saved Successfully
