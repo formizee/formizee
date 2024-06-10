@@ -28,9 +28,9 @@ export async function verifyVerification(context: Context): Promise<{
 }> {
   const cookie = getCookie(context, 'verification');
   const verification = await decrypt(cookie);
-  const data = verification.data as Verification;
+  const data = verification?.data as Verification;
 
-  if (!data.email) {
+  if (!verification || !data.email) {
     return {isValid: false, data: null};
   }
 

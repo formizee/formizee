@@ -15,7 +15,7 @@ export async function encrypt(
 
 export async function decrypt(
   data: string | undefined = ''
-): Promise<JWTPayload> {
+): Promise<JWTPayload | null> {
   const encodedKey = new TextEncoder().encode(process.env.JWT_SECRET);
 
   try {
@@ -24,6 +24,7 @@ export async function decrypt(
     });
     return payload;
   } catch (error) {
-    throw Error('Failed to verify data');
+    console.error('Failed on decrypt JWT data:', data);
+    return null;
   }
 }

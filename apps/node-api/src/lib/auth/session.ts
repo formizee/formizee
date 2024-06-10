@@ -28,9 +28,11 @@ export async function verifySession(
 ): Promise<{isAuth: boolean; user: Session | null}> {
   const cookie = getCookie(context, 'session');
   const session = await decrypt(cookie);
-  const data = session.data as Session;
+  const data = session?.data as Session;
 
-  if (!data.uid) return {isAuth: false, user: null};
+  if (!session || !data.uid) {
+    return {isAuth: false, user: null};
+  }
 
   return {
     isAuth: true,
