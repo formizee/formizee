@@ -98,7 +98,7 @@ export class AuthService implements Service {
       const html = verifyEmailTemplate(token);
 
       const mail = new Mail(
-        'Formizee.',
+        'Formizee',
         'noreply@formizee.com',
         to,
         'Email Verification',
