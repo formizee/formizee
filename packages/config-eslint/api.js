@@ -35,6 +35,7 @@ module.exports = {
     '@typescript-eslint/consistent-type-definitions': 'off',
     '@typescript-eslint/unbound-method': 'off',
     'import/no-extraneous-dependencies': 'off',
+    'import/no-named-as-default-member': 'off',
     'unicorn/prefer-node-protocol': 'off',
     'import/no-default-export': 'off',
     'no-console': 'off'
