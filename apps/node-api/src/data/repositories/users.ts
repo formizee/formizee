@@ -1,7 +1,7 @@
 import type {UsersRepository as Repository} from 'domain/repositories';
 import type {Uid, Email, Name, Password} from 'domain/models/values';
 import {Response, type User} from 'domain/models';
-import {hash} from 'bcryptjs';
+import * as bcryptjs from 'bcryptjs';
 import {db, eq, users} from '@db/index';
 import {createUser} from '@/lib/utils';
 
@@ -64,7 +64,7 @@ export class UsersRepository implements Repository {
     const user = await db.query.users.findFirst({with: {id: uid.value}});
     if (!user) return Response.error('User not found.', 404);
 
-    const password = await hash(newPassword.value, 13);
+    const password = await bcryptjs.hash(newPassword.value, 13);
 
     const data = await db
       .update(users)

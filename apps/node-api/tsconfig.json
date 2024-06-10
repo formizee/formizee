@@ -1,13 +1,7 @@
 {
+  "extends": "@formizee/typescript-config/api.json",
   "compilerOptions": {
-    "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "strict": true,
-    "skipLibCheck": true,
-    "types": ["node"],
     "baseUrl": ".",
-    "outDir": "dist/",
     "paths": {
       "@/*": ["./src/*"],
       "@db/*": ["./drizzle/*"],

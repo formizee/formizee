@@ -2,7 +2,7 @@ import {randomInt} from 'crypto';
 import type {Email, Name, Password} from 'domain/models/values';
 import type {AuthService as Service} from 'domain/services';
 import {Mail, Response, type User} from 'domain/models';
-import {compare} from 'bcryptjs';
+import * as bcryptjs from 'bcryptjs';
 import {verifyEmailTemplate} from '@emails/auth';
 import {db, eq, users, authTokens} from '@db/index';
 import {createUser} from '@/lib/utils';
@@ -15,7 +15,7 @@ export class AuthService implements Service {
       return Response.error('User or password not match.', 401);
     }
 
-    const passwordMatch = await compare(password, user.password);
+    const passwordMatch = await bcryptjs.compare(password, user.password);
     if (!passwordMatch) {
       return Response.error('User or password not match.', 401);
     }
@@ -52,6 +52,10 @@ export class AuthService implements Service {
         password: password.value
       })
       .returning();
+
+    if (!user[0]) {
+      return Response.error("User can't be created", 500);
+    }
 
     const response = createUser(user[0]);
     return Response.success(response);

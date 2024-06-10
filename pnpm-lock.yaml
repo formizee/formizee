@@ -117,6 +117,9 @@ importers:
       '@formizee/eslint-config':
         specifier: workspace:*
         version: link:../../packages/config-eslint
+      '@formizee/typescript-config':
+        specifier: workspace:*
+        version: link:../../packages/config-typescript
       '@hono/node-server':
         specifier: 1.11.2
         version: 1.11.2

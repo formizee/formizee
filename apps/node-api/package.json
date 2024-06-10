@@ -3,6 +3,7 @@
   "author": "Pau García Chiner",
   "license": "Apache-2.0",
   "version": "0.1.0",
+  "type": "module",
   "private": true,
   "scripts": {
     "lint": "oxlint src",
@@ -15,6 +16,7 @@
   },
   "dependencies": {
     "@formizee/eslint-config": "workspace:*",
+    "@formizee/typescript-config": "workspace:*",
     "@hono/node-server": "1.11.2",
     "@hono/zod-validator": "0.2.2",
     "awilix": "10.0.2",

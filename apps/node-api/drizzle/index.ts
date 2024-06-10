@@ -1,6 +1,6 @@
 import {drizzle} from 'drizzle-orm/node-postgres';
 import {eq as compare} from 'drizzle-orm';
-import {Client} from 'pg';
+import pg from 'pg';
 import * as schemas from './schema';
 import '@/lib/enviroment';
 
@@ -11,8 +11,8 @@ export const endpoints = schemas.endpoints;
 export const authTokens = schemas.authTokens;
 export const submissions = schemas.submissions;
 
-const client = new Client({
-  connectionString: process.env.DATABASE_URL!
+const client = new pg.Client({
+  connectionString: process.env.DATABASE_URL
 });
 await client.connect();
 
