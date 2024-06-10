@@ -39,18 +39,12 @@ export class EndpointsRepository implements Repository {
       return Response.error('User not exits', 404);
     }
 
-    if (!user.linkedEmails[0]) {
-      return Response.error('User does not have a primary email.', 500);
-    }
-
-    const targetEmail = user.linkedEmails[0]?.email;
-
     const endpoint = await db
       .insert(endpoints)
       .values({
         name,
-        targetEmail,
-        owner: owner.value
+        owner: owner.value,
+        targetEmail: user.email
       })
       .returning();
 
