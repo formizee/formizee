@@ -62,7 +62,9 @@ export const endpoints = pgTable('endpoints', {
 
   targetEmail: text('target_mail').notNull(),
 
-  redirectUrl: text('redirect_url').notNull().default(''),
+  redirectUrl: text('redirect_url')
+    .notNull()
+    .default('https://formizee.com/thanks-you'),
 
   createdAt: timestamp('created_at').notNull().defaultNow(),
 
