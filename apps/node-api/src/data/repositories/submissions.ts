@@ -21,7 +21,9 @@ export class SubmissionsRepository implements Repository {
   }
 
   async load(uid: Uid): Promise<Response<Submission>> {
-    const data = await db.query.submissions.findFirst({where: eq(submissions.id, Number(uid.value))});
+    const data = await db.query.submissions.findFirst({
+      where: eq(submissions.id, Number(uid.value))
+    });
     if (!data) return Response.error('Submission not found.', 404);
 
     const response = createSubmission(data);
@@ -73,7 +75,9 @@ export class SubmissionsRepository implements Repository {
   }
 
   async delete(uid: Uid): Promise<Response<true>> {
-    const data = await db.query.submissions.findFirst({where: eq(submissions.id, Number(uid.value))});
+    const data = await db.query.submissions.findFirst({
+      where: eq(submissions.id, Number(uid.value))
+    });
     if (!data) return Response.error('Submission not found.', 404);
 
     await db.delete(submissions).where(eq(submissions.id, Number(uid.value)));
