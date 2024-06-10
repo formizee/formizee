@@ -6,8 +6,8 @@ import {db, eq, users} from '@drizzle/db';
 import {createUser} from '@/lib/utils';
 
 export class UsersRepository implements Repository {
-  async load(identifier: Uid | Email): Promise<Response<User>> {
-    const data = await db.query.users.findFirst({with: {id: identifier}});
+  async load(uid: Uid | Email): Promise<Response<User>> {
+    const data = await db.query.users.findFirst({where: eq(users.id, uid.value)});
     if (!data) return Response.error('User not found.', 404);
 
     const user = createUser(data);
@@ -15,7 +15,7 @@ export class UsersRepository implements Repository {
   }
 
   async delete(uid: Uid): Promise<Response<true>> {
-    const userExists = await db.query.users.findFirst({with: {id: uid.value}});
+    const userExists = await db.query.users.findFirst({where: eq(users.id, uid.value)});
     if (!userExists) return Response.error('User not found.', 404);
 
     await db.delete(users).where(eq(users.id, uid.value));
@@ -24,7 +24,7 @@ export class UsersRepository implements Repository {
   }
 
   async updateName(uid: Uid, newName: Name): Promise<Response<User>> {
-    const user = await db.query.users.findFirst({with: {id: uid.value}});
+    const user = await db.query.users.findFirst({where: eq(users.id, uid.value)});
     if (!user) return Response.error('User not found.', 404);
 
     const data = await db
@@ -41,7 +41,7 @@ export class UsersRepository implements Repository {
   }
 
   async updateEmail(uid: Uid, newEmail: Email): Promise<Response<User>> {
-    const user = await db.query.users.findFirst({with: {id: uid.value}});
+    const user = await db.query.users.findFirst({where: eq(users.id, uid.value)});
     if (!user) return Response.error('User not found.', 404);
 
     const data = await db
@@ -61,7 +61,7 @@ export class UsersRepository implements Repository {
     uid: Uid,
     newPassword: Password
   ): Promise<Response<User>> {
-    const user = await db.query.users.findFirst({with: {id: uid.value}});
+    const user = await db.query.users.findFirst({where: eq(users.id, uid.value)});
     if (!user) return Response.error('User not found.', 404);
 
     const password = await bcryptjs.hash(newPassword.value, 13);
@@ -80,7 +80,7 @@ export class UsersRepository implements Repository {
   }
 
   async updateForms(uid: Uid, forms: Uid[]): Promise<Response<User>> {
-    const user = await db.query.users.findFirst({with: {id: uid.value}});
+    const user = await db.query.users.findFirst({where: eq(users.id, uid.value)});
     if (!user) return Response.error('User not found.', 404);
 
     const newForms = forms.map(item => {
@@ -104,7 +104,7 @@ export class UsersRepository implements Repository {
     uid: Uid,
     linkedEmails: Email[]
   ): Promise<Response<User>> {
-    const user = await db.query.users.findFirst({with: {id: uid.value}});
+    const user = await db.query.users.findFirst({where: eq(users.id, uid.value)});
     if (!user) return Response.error('User not found.', 404);
 
     const newLinkedEmails = linkedEmails.map(item => {

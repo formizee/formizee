@@ -7,7 +7,7 @@ import {createEndpoint} from '@/lib/utils';
 export class EndpointsRepository implements Repository {
   async loadAll(owner: Uid): Promise<Response<Endpoint[]>> {
     const data = await db.query.endpoints.findMany({
-      with: {endpoint: owner.value}
+      where: eq(endpoints.owner, owner.value)
     });
     if (data.length < 1) {
       return Response.error('There is no forms yet.', 404);
@@ -21,7 +21,7 @@ export class EndpointsRepository implements Repository {
   }
 
   async load(uid: Uid): Promise<Response<Endpoint>> {
-    const data = await db.query.endpoints.findFirst({with: {id: uid.value}});
+    const data = await db.query.endpoints.findFirst({where: eq(endpoints.id, uid.value)});
     if (!data) return Response.error('Endpoint not found.', 404);
 
     const response = createEndpoint(data);
@@ -53,7 +53,7 @@ export class EndpointsRepository implements Repository {
 
   async delete(uid: Uid): Promise<Response<true>> {
     const userExists = await db.query.endpoints.findFirst({
-      with: {id: uid.value}
+      where: eq(endpoints.id, uid.value)
     });
     if (!userExists) return Response.error('User not found.', 404);
 
@@ -67,7 +67,7 @@ export class EndpointsRepository implements Repository {
     isEnabled: boolean
   ): Promise<Response<Endpoint>> {
     const endpoint = await db.query.endpoints.findFirst({
-      with: {id: uid.value}
+      where: eq(endpoints.id, uid.value)
     });
     if (!endpoint) return Response.error('Endpoint not found.', 404);
 
@@ -91,7 +91,7 @@ export class EndpointsRepository implements Repository {
     redirectUrl: URL
   ): Promise<Response<Endpoint>> {
     const endpoint = await db.query.endpoints.findFirst({
-      with: {id: uid.value}
+      where: eq(endpoints.id, uid.value)
     });
     if (!endpoint) return Response.error('Endpoint not found.', 404);
 
@@ -115,7 +115,7 @@ export class EndpointsRepository implements Repository {
     targetEmail: Email
   ): Promise<Response<Endpoint>> {
     const endpoint = await db.query.endpoints.findFirst({
-      with: {id: uid.value}
+      where: eq(endpoints.id, uid.value)
     });
     if (!endpoint) return Response.error('Endpoint not found.', 404);
 
@@ -139,7 +139,7 @@ export class EndpointsRepository implements Repository {
     isEnabled: boolean
   ): Promise<Response<Endpoint>> {
     const endpoint = await db.query.endpoints.findFirst({
-      with: {id: uid.value}
+      where: eq(endpoints.id, uid.value)
     });
     if (!endpoint) return Response.error('Endpoint not found.', 404);
 

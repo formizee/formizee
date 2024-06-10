@@ -6,7 +6,7 @@ import {db, eq, waitlist} from '@drizzle/db';
 export class WaitlistService implements Service {
   async join(email: Email): Promise<Response<true>> {
     const userExists = await db.query.waitlist.findFirst({
-      with: {email: email.value}
+      where: eq(waitlist.email, email.value)
     });
     if (userExists) {
       return Response.error(

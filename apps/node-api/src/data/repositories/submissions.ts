@@ -7,7 +7,7 @@ import {db, eq, submissions} from '@drizzle/db';
 export class SubmissionsRepository implements Repository {
   async loadAll(endpoint: Uid): Promise<Response<Submission[]>> {
     const data = await db.query.submissions.findMany({
-      with: {endpoint: endpoint.value}
+      where: eq(submissions.endpoint, endpoint.value)
     });
     if (data.length < 1) {
       return Response.error('There is no submissions yet.', 404);
@@ -21,7 +21,7 @@ export class SubmissionsRepository implements Repository {
   }
 
   async load(uid: Uid): Promise<Response<Submission>> {
-    const data = await db.query.submissions.findFirst({with: {id: uid.value}});
+    const data = await db.query.submissions.findFirst({where: eq(submissions.id, Number(uid.value))});
     if (!data) return Response.error('Submission not found.', 404);
 
     const response = createSubmission(data);
@@ -31,7 +31,7 @@ export class SubmissionsRepository implements Repository {
 
   async update(uid: Uid, isSpam: boolean): Promise<Response<Submission>> {
     const submission = await db.query.submissions.findFirst({
-      with: {id: uid.value}
+      where: eq(submissions.id, Number(uid.value))
     });
     if (!submission) return Response.error('Submission not found.', 404);
 
@@ -73,7 +73,7 @@ export class SubmissionsRepository implements Repository {
   }
 
   async delete(uid: Uid): Promise<Response<true>> {
-    const data = await db.query.submissions.findFirst({with: {id: uid.value}});
+    const data = await db.query.submissions.findFirst({where: eq(submissions.id, Number(uid.value))});
     if (!data) return Response.error('Submission not found.', 404);
 
     await db.delete(submissions).where(eq(submissions.id, Number(uid.value)));
