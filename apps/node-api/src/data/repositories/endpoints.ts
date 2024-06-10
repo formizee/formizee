@@ -1,7 +1,7 @@
 import type {EndpointsRepository as Repository} from 'domain/repositories';
 import type {Uid, Email} from 'domain/models/values';
 import {Response, type Endpoint} from 'domain/models';
-import {eq, db, endpoints} from '@drizzle/db';
+import {eq, db, endpoints, users} from '@drizzle/db';
 import {createEndpoint} from '@/lib/utils';
 
 export class EndpointsRepository implements Repository {
@@ -36,6 +36,13 @@ export class EndpointsRepository implements Repository {
     owner: Uid,
     targetEmail: Email
   ): Promise<Response<Endpoint>> {
+    const user = await db.query.users.findFirst({
+      where: eq(users.id, owner.value)
+    });
+    if (!user) {
+      return Response.error('User not exits', 404);
+    }
+
     const endpoint = await db
       .insert(endpoints)
       .values({
@@ -49,17 +56,36 @@ export class EndpointsRepository implements Repository {
       return Response.error("Endpoint can't be created.", 500);
     }
 
+    const forms = user.forms;
+    forms.push(endpoint[0].id);
+
+    await db.update(users).set({forms});
+
     const response = createEndpoint(endpoint[0]);
     return Response.success(response);
   }
 
   async delete(uid: Uid): Promise<Response<true>> {
-    const userExists = await db.query.endpoints.findFirst({
+    const endpoint = await db.query.endpoints.findFirst({
       where: eq(endpoints.id, uid.value)
     });
-    if (!userExists) return Response.error('User not found.', 404);
+
+    if (!endpoint) {
+      return Response.error('Endpoint not found.', 404);
+    }
+
+    const user = await db.query.users.findFirst({
+      where: eq(users.id, endpoint.owner)
+    });
+
+    if (!user) {
+      return Response.error('The endpoint does not have owner.', 404);
+    }
 
     await db.delete(endpoints).where(eq(endpoints.id, uid.value));
+
+    const forms = user.forms.filter(form => form !== endpoint.id);
+    await db.update(users).set({forms});
 
     return Response.success(true);
   }
