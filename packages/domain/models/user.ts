@@ -38,9 +38,11 @@ export class User {
       });
     }
 
-    if (!linkedEmails) {
-      this._linkedEmails = [new LinkedEmail(this._email.value, true)];
-    }
+    if (linkedEmails && linkedEmails.length > 0) {
+      linkedEmails.forEach(item => {
+        this._linkedEmails.push(new LinkedEmail(item.email, item.isVerified));
+      });
+    } else this._linkedEmails = [new LinkedEmail(this._email.value, true)];
 
     this._createdAt = createdAt;
     this._updatedAt = updatedAt;
