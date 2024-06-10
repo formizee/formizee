@@ -168,7 +168,47 @@ export class EndpointsRepository implements Repository {
     const endpoint = await db.query.endpoints.findFirst({
       where: eq(endpoints.id, uid.value)
     });
-    if (!endpoint) return Response.error('Endpoint not found.', 404);
+
+    if (!endpoint) {
+      return Response.error('Endpoint not found.', 404);
+    }
+
+    const user = await db.query.users.findFirst({
+      where: eq(users.id, endpoint.owner)
+    });
+
+    if (!user) {
+      return Response.error('Endpoint owner not found.', 404);
+    }
+
+    const targetEmailExists = user.linkedEmails.some(
+      linkedEmail => linkedEmail.email === targetEmail.value
+    );
+    if (!targetEmailExists) {
+      return Response.error(
+        'The target email needs to be one of the owner linked emails.',
+        401
+      );
+    }
+
+    const validTargetEmail = user.linkedEmails.some(
+      linkedEmail =>
+        linkedEmail.email === targetEmail.value && linkedEmail.isVerified
+    );
+    if (!validTargetEmail) {
+      return Response.error(
+        'The target email is not verified, please verify the email before using it',
+        401
+      );
+    }
+
+    const targetEmailAlreadyUsed = targetEmail.value === endpoint.targetEmail;
+    if (targetEmailAlreadyUsed) {
+      return Response.error(
+        'The target email is already being used in this form.',
+        409
+      );
+    }
 
     const data = await db
       .update(endpoints)
