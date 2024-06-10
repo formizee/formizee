@@ -2,7 +2,7 @@ import {randomInt} from 'crypto';
 import type {Email, Name, Password} from 'domain/models/values';
 import type {AuthService as Service} from 'domain/services';
 import {Mail, Response, type User} from 'domain/models';
-import * as bcryptjs from 'bcryptjs';
+import bcryptjs from 'bcryptjs';
 import {db, eq, users, authTokens} from '@drizzle/db';
 import {verifyEmailTemplate} from '@emails/auth';
 import {createUser} from '@/lib/utils';
@@ -46,12 +46,14 @@ export class AuthService implements Service {
       );
     }
 
+    const passwordHash = await bcryptjs.hash(password.value, 13);
+
     const user = await db
       .insert(users)
       .values({
         name: name.value,
         email: email.value,
-        password: password.value
+        password: passwordHash
       })
       .returning();
 
