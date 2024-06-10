@@ -34,11 +34,7 @@ export class Endpoint {
 
     this._targetEmail = new Email(targetEmail);
 
-    this._redirectUrl = new URL(
-      redirectUrl !== ''
-        ? redirectUrl
-        : `https://formizee.com/f/${this._uid.value}/thanks`
-    );
+    this._redirectUrl = new URL(redirectUrl);
 
     this._createdAt = createdAt;
     this._updatedAt = updatedAt;
