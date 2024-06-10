@@ -47,7 +47,7 @@ export const createEndpoint = (data: {
 export const createSubmission = (data: {
   id: number;
   endpoint: string;
-  data: unknown;
+  data: JSON;
   createdAt: Date;
   files: string[] | null;
   isSpam: boolean;
