@@ -183,7 +183,7 @@ paths:
 
   /auth/register:
     post:
-      summary: User Register
+      summary: Register
       description: Creates a new user.
       operationId: registerAuth
       tags: [Authentication]
@@ -494,7 +494,10 @@ paths:
               properties:
                 name:
                   type: string
-              required: [name]
+                targetEmail:
+                  type: string
+                  format: email
+              required: [name, targetEmail]
       responses:
         '200':
           description: Endpoint Saved Successfully
