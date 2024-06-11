@@ -2,6 +2,8 @@ import type {WaitlistService as Service} from 'domain/services';
 import type {Email} from 'domain/models/values';
 import {Response} from 'domain/models';
 import {db, eq, waitlist} from '@drizzle/db';
+import {joinAdminWaitlist, joinUserWaitlist} from '@emails/waitlist';
+import {MailService} from './mail';
 
 export class WaitlistService implements Service {
   async join(email: Email): Promise<Response<true>> {
@@ -16,6 +18,18 @@ export class WaitlistService implements Service {
     }
 
     await db.insert(waitlist).values({email: email.value});
+
+    const mailService = new MailService();
+
+    const supportEmail = process.env.SUPPORT_EMAIL;
+
+    if (supportEmail) {
+      const adminEmail = joinAdminWaitlist(supportEmail);
+      await mailService.send(adminEmail);
+    }
+
+    const userEmail = joinUserWaitlist(email.value);
+    await mailService.send(userEmail);
 
     return Response.success(true, 201);
   }
