@@ -3,7 +3,7 @@ import {type Uid} from '../models/values';
 
 export interface SubmissionsRepository {
   loadAll: (endpoint: Uid) => Promise<Response<Submission[]>>;
-  load: (uid: Uid) => Promise<Response<Submission>>;
+  load: (endpoint: Uid, uid: Uid) => Promise<Response<Submission>>;
   update: (uid: Uid, isSpam: boolean) => Promise<Response<Submission>>;
   save: (
     endpoint: Uid,
