@@ -4,7 +4,9 @@ import type {User, Response} from '../models';
 export interface UsersRepository {
   load: (identifier: Uid | Email) => Promise<Response<User>>;
   delete: (uid: Uid, password: string) => Promise<Response<true>>;
-  updateName: (uid: Uid, newName: Name) => Promise<Response<User>>;
-  updateEmail: (uid: Uid, newEmail: Email) => Promise<Response<User>>;
-  updatePassword: (uid: Uid, newPassword: Password) => Promise<Response<User>>;
+
+  updateName: (uid: Uid, name: Name) => Promise<Response<User>>;
+  updateEmail: (uid: Uid, email: Email) => Promise<Response<User>>;
+  updatePassword: (uid: Uid, password: Password) => Promise<Response<User>>;
+
 }
