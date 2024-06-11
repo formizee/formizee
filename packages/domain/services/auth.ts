@@ -1,4 +1,4 @@
-import type {Name, Email, Password} from '../models/values';
+import type {Uid, Name, Email, Password} from '../models/values';
 import type {Response, User} from '../models';
 
 export interface AuthService {
@@ -11,4 +11,10 @@ export interface AuthService {
 
   sendVerification: (email: Email) => Promise<Response<true>>;
   verify: (email: Email, token: string) => Promise<Response<User>>;
+
+  sendLinkedEmailVerification: (
+    user: Uid,
+    linkedEmail: Email
+  ) => Promise<Response<true>>;
+  verifyLinkedEmail: (jwtToken: string) => Promise<Response<true>>;
 }

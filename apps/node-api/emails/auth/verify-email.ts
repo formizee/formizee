@@ -48,7 +48,7 @@ export const verifyEmail = (to: string, token: string): Mail => {
     'Formizee',
     'noreply@formizee.com',
     to,
-    'Email Verification',
+    'Account Verification',
     html
   );
 };
