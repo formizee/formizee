@@ -142,7 +142,7 @@ export class AuthService implements Service {
       return Response.error("Token can't be created.", 500);
     }
 
-    await mailService.send(verifyEmail(email.value, newToken.toString()));
+    await mailService.send(verifyEmail(email.value, newTokenCode.toString()));
     return Response.success(true, 202);
   }
 }
