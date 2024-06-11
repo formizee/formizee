@@ -45,6 +45,13 @@ export class UsersRepository implements Repository {
     });
     if (!user) return Response.error('User not found.', 404);
 
+    if (user.name === newName.value) {
+      return Response.error(
+        'The new name is already being used in this account.',
+        409
+      );
+    }
+
     const data = await db
       .update(users)
       .set({name: newName.value})
