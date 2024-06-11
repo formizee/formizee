@@ -22,11 +22,17 @@ export class UsersRepository implements Repository {
     return Response.success(user);
   }
 
-  async delete(uid: Uid): Promise<Response<true>> {
-    const userExists = await db.query.users.findFirst({
+  async delete(uid: Uid, password: string): Promise<Response<true>> {
+    const user = await db.query.users.findFirst({
       where: eq(users.id, uid.value)
     });
-    if (!userExists) return Response.error('User not found.', 404);
+    if (!user) return Response.error('User not found.', 404);
+
+    const authenticated = await bcryptjs.compare(password, user.password);
+
+    if (!authenticated) {
+      return Response.error('The password does not match.', 401);
+    }
 
     await db.delete(users).where(eq(users.id, uid.value));
 

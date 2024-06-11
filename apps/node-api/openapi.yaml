@@ -613,9 +613,19 @@ paths:
                 $ref: '#/components/schemas/error'
     delete:
       summary: Delete User Profile
-      description: Deletes the user data.
+      description: Deletes the user data (Only can be done from the Formizee Dashboard).
       operationId: deleteUser
       tags: [Profile]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+                  format: password
       responses:
         '204':
           description: User Deleted Successfully
