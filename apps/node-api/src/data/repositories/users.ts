@@ -82,8 +82,7 @@ export class UsersRepository implements Repository {
     }
 
     const verifiedEmail = user.linkedEmails.some(
-      linkedEmail =>
-        linkedEmail.email === email.value && linkedEmail.isVerified
+      linkedEmail => linkedEmail.email === email.value && linkedEmail.isVerified
     );
     if (!verifiedEmail) {
       return Response.error(
@@ -113,10 +112,7 @@ export class UsersRepository implements Repository {
     return Response.success(response);
   }
 
-  async updatePassword(
-    uid: Uid,
-    password: Password
-  ): Promise<Response<User>> {
+  async updatePassword(uid: Uid, password: Password): Promise<Response<User>> {
     const user = await db.query.users.findFirst({
       where: eq(users.id, uid.value)
     });
@@ -137,6 +133,4 @@ export class UsersRepository implements Repository {
     return Response.success(response);
   }
 
-
-  }
 }
