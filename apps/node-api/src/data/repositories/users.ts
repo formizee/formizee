@@ -39,13 +39,13 @@ export class UsersRepository implements Repository {
     return Response.success(true);
   }
 
-  async updateName(uid: Uid, newName: Name): Promise<Response<User>> {
+  async updateName(uid: Uid, name: Name): Promise<Response<User>> {
     const user = await db.query.users.findFirst({
       where: eq(users.id, uid.value)
     });
     if (!user) return Response.error('User not found.', 404);
 
-    if (user.name === newName.value) {
+    if (user.name === name.value) {
       return Response.error(
         'The new name is already being used in this account.',
         409
@@ -54,7 +54,7 @@ export class UsersRepository implements Repository {
 
     const data = await db
       .update(users)
-      .set({name: newName.value})
+      .set({name: name.value})
       .where(eq(users.id, uid.value))
       .returning({updatedName: users.name});
     if (!data[0]) return Response.error("User name can't be updated", 500);
@@ -65,14 +65,14 @@ export class UsersRepository implements Repository {
     return Response.success(response);
   }
 
-  async updateEmail(uid: Uid, newEmail: Email): Promise<Response<User>> {
+  async updateEmail(uid: Uid, email: Email): Promise<Response<User>> {
     const user = await db.query.users.findFirst({
       where: eq(users.id, uid.value)
     });
     if (!user) return Response.error('User not found.', 404);
 
     const emailExists = user.linkedEmails.some(
-      linkedEmail => linkedEmail.email === newEmail.value
+      linkedEmail => linkedEmail.email === email.value
     );
     if (!emailExists) {
       return Response.error(
@@ -83,7 +83,7 @@ export class UsersRepository implements Repository {
 
     const verifiedEmail = user.linkedEmails.some(
       linkedEmail =>
-        linkedEmail.email === newEmail.value && linkedEmail.isVerified
+        linkedEmail.email === email.value && linkedEmail.isVerified
     );
     if (!verifiedEmail) {
       return Response.error(
@@ -92,7 +92,7 @@ export class UsersRepository implements Repository {
       );
     }
 
-    const emailAlreadyUsed = newEmail.value === user.email;
+    const emailAlreadyUsed = email.value === user.email;
     if (emailAlreadyUsed) {
       return Response.error(
         'The new email is already being used in this account as default.',
@@ -102,7 +102,7 @@ export class UsersRepository implements Repository {
 
     const data = await db
       .update(users)
-      .set({email: newEmail.value})
+      .set({email: email.value})
       .where(eq(users.id, uid.value))
       .returning({updatedEmail: users.email});
     if (!data[0]) return Response.error("User email can't be updated", 500);
@@ -115,18 +115,18 @@ export class UsersRepository implements Repository {
 
   async updatePassword(
     uid: Uid,
-    newPassword: Password
+    password: Password
   ): Promise<Response<User>> {
     const user = await db.query.users.findFirst({
       where: eq(users.id, uid.value)
     });
     if (!user) return Response.error('User not found.', 404);
 
-    const password = await bcryptjs.hash(newPassword.value, 13);
+    const newPassword = await bcryptjs.hash(password.value, 13);
 
     const data = await db
       .update(users)
-      .set({password})
+      .set({password: newPassword})
       .where(eq(users.id, uid.value))
       .returning({updatedPassword: users.password});
     if (!data[0]) return Response.error("User password can't be updated", 500);
@@ -137,31 +137,6 @@ export class UsersRepository implements Repository {
     return Response.success(response);
   }
 
-  async updateLinkedEmails(
-    uid: Uid,
-    linkedEmails: LinkedEmail[]
-  ): Promise<Response<User>> {
-    const user = await db.query.users.findFirst({
-      where: eq(users.id, uid.value)
-    });
-    if (!user) return Response.error('User not found.', 404);
 
-    const newLinkedEmails = linkedEmails.map(item => {
-      return {email: item.email, isVerified: item.isVerified};
-    });
-
-    const data = await db
-      .update(users)
-      .set({linkedEmails: newLinkedEmails})
-      .where(eq(users.id, uid.value))
-      .returning({updatedLinkedEmails: users.linkedEmails});
-    if (!data[0]) {
-      return Response.error("User linked emails can't be updated", 500);
-    }
-
-    user.linkedEmails = data[0].updatedLinkedEmails;
-    const response = createUser(user);
-
-    return Response.success(response);
   }
 }
