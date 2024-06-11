@@ -1,15 +1,10 @@
 import type {UsersRepository as Repository} from 'domain/repositories';
-import type {
-  Uid,
-  Email,
-  Name,
-  Password,
-  LinkedEmail
-} from 'domain/models/values';
+import type {Uid, Email, Name, Password} from 'domain/models/values';
 import {Response, type User} from 'domain/models';
 import bcryptjs from 'bcryptjs';
 import {db, eq, users} from '@drizzle/db';
 import {createUser} from '@/lib/utils';
+import {AuthService} from '../services';
 
 export class UsersRepository implements Repository {
   async load(uid: Uid | Email): Promise<Response<User>> {
@@ -133,4 +128,68 @@ export class UsersRepository implements Repository {
     return Response.success(response);
   }
 
+  async saveLinkedEmail(uid: Uid, linkedEmail: Email): Promise<Response<User>> {
+    const user = await db.query.users.findFirst({
+      where: eq(users.id, uid.value)
+    });
+    if (!user) return Response.error('User not found.', 404);
+
+    const alreadyExists = user.linkedEmails.some(
+      item => item.email === linkedEmail.value
+    );
+    if (alreadyExists) {
+      return Response.error(
+        'The user already has this email linked to it',
+        409
+      );
+    }
+
+    const limitExceeded = user.linkedEmails.length >= 3;
+    if (limitExceeded) {
+      return Response.error('You cannot add more than 3 linked emails', 403);
+    }
+
+    const linkedEmails = user.linkedEmails;
+    linkedEmails.push({email: linkedEmail.value, isVerified: false});
+
+    await db.update(users).set({linkedEmails}).where(eq(users.id, uid.value));
+    user.linkedEmails = linkedEmails;
+
+    const authService = new AuthService();
+    await authService.sendLinkedEmailVerification(uid, linkedEmail);
+
+    const response = createUser(user);
+    return Response.success(response, 201);
+  }
+
+  async deleteLinkedEmail(
+    uid: Uid,
+    linkedEmail: Email
+  ): Promise<Response<true>> {
+    const user = await db.query.users.findFirst({
+      where: eq(users.id, uid.value)
+    });
+    if (!user) {
+      return Response.error('User not found.', 404);
+    }
+
+    const linkedEmailExists = user.linkedEmails.some(
+      item => item.email === linkedEmail.value
+    );
+    if (!linkedEmailExists) {
+      return Response.error('User linked email not found.', 404);
+    }
+
+    const isPrimaryEmail = user.email === linkedEmail.value;
+    if (isPrimaryEmail) {
+      return Response.error("You can't delete the primary email.", 401);
+    }
+
+    const linkedEmails = user.linkedEmails.filter(
+      email => email.email !== linkedEmail.value
+    );
+    await db.update(users).set({linkedEmails}).where(eq(users.id, user.id));
+
+    return Response.success(true);
+  }
 }
