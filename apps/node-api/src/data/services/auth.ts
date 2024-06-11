@@ -1,10 +1,10 @@
 import {randomInt} from 'crypto';
 import type {Email, Name, Password} from 'domain/models/values';
 import type {AuthService as Service} from 'domain/services';
-import {Mail, Response, type User} from 'domain/models';
+import {Response, type User} from 'domain/models';
 import bcryptjs from 'bcryptjs';
-import {db, eq, users, authTokens} from '@drizzle/db';
-import {verifyEmailTemplate} from '@emails/auth';
+import {db, eq, and, users, authTokens} from '@drizzle/db';
+import {verifyEmail} from '@emails/auth';
 import {createUser} from '@/lib/utils';
 import {MailService} from './mail';
 
@@ -67,15 +67,26 @@ export class AuthService implements Service {
   }
 
   async verify(email: Email, token: string): Promise<Response<User>> {
-    const currentToken = await db.query.authTokens.findFirst({
-      where: eq(authTokens.email, email.value)
+    const user = await db.query.users.findFirst({
+      where: eq(users.email, email.value)
     });
+    if (!user) {
+      return Response.error('User not found.', 404);
+    }
+
+    const currentToken = await db.query.authTokens.findFirst({
+      where: and(
+        eq(authTokens.user, user.id),
+        eq(authTokens.email, email.value)
+      )
+    });
+
     if (!currentToken) {
       return Response.error('Invalid token.', 401);
     }
 
     if (new Date() > currentToken.expiresAt) {
-      await db.delete(authTokens).where(eq(authTokens.email, email.value));
+      await db.delete(authTokens).where(eq(authTokens.id, currentToken.id));
       return Response.error('Expired token, please get a new one.', 401);
     }
 
@@ -83,35 +94,16 @@ export class AuthService implements Service {
       return Response.error('Invalid token.', 401);
     }
 
-    await db.delete(authTokens).where(eq(authTokens.email, email.value));
+    await db.delete(authTokens).where(eq(authTokens.id, currentToken.id));
 
-    const user = await db
-      .update(users)
-      .set({isVerified: true})
-      .where(eq(users.email, email.value))
-      .returning();
-    if (!user[0]) return Response.error('User not found.', 404);
+    await db.update(users).set({isVerified: true}).where(eq(users.id, user.id));
 
-    const response = createUser(user[0]);
+    user.isVerified = true;
+    const response = createUser(user);
     return Response.success(response);
   }
 
   async sendVerification(email: Email): Promise<Response<true>> {
-    const sendEmail = async (to: string, token: string): Promise<void> => {
-      const html = verifyEmailTemplate(token);
-
-      const mail = new Mail(
-        'Formizee',
-        'noreply@formizee.com',
-        to,
-        'Email Verification',
-        html
-      );
-
-      const service = new MailService();
-      await service.send(mail);
-    };
-
     const user = await db.query.users.findFirst({
       where: eq(users.email, email.value)
     });
@@ -120,14 +112,19 @@ export class AuthService implements Service {
     }
 
     const token = await db.query.authTokens.findFirst({
-      where: eq(authTokens.email, email.value)
+      where: and(eq(authTokens.user, user.id), eq(authTokens.email, user.email))
     });
+
+    const mailService = new MailService();
+
     if (token) {
       if (new Date() < token.expiresAt) {
-        await sendEmail(token.email, token.token.toString());
+        await mailService.send(
+          verifyEmail(token.email, token.token.toString())
+        );
         return Response.success(true, 202);
       }
-      await db.delete(authTokens).where(eq(authTokens.email, email.value));
+      await db.delete(authTokens).where(eq(authTokens.id, token.id));
     }
 
     const newTokenCode = Math.floor(randomInt(100000, 999999 + 1));
@@ -135,6 +132,7 @@ export class AuthService implements Service {
     const newToken = await db
       .insert(authTokens)
       .values({
+        user: user.id,
         email: email.value,
         token: newTokenCode
       })
@@ -144,7 +142,7 @@ export class AuthService implements Service {
       return Response.error("Token can't be created.", 500);
     }
 
-    await sendEmail(email.value, newTokenCode.toString());
+    await mailService.send(verifyEmail(email.value, newToken.toString()));
     return Response.success(true, 202);
   }
 }
