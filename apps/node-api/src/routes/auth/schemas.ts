@@ -1,7 +1,20 @@
 import {z} from 'zod';
 
-const Password = z
+export const Login = z.object({
+  email: z.string().email(),
+  password: z.string()
+});
+
+export const Register = z
   .object({
+    name: z
+      .string()
+      .min(4, {message: 'Name must be between 4 and 32 characters long'})
+      .max(32, {message: 'Name must be between 4 and 32 characters long'})
+      .regex(/^[a-z0-9.-]+$/, {
+        message: 'Name must only contain lowercase letters and numbers'
+      }),
+    email: z.string().email(),
     password: z
       .string()
       .min(8, {message: 'Password must be between 8 and 64 characters long'})
@@ -40,25 +53,6 @@ const Password = z
       });
     }
   });
-
-export const Login = z.object({
-  email: z.string().email(),
-  password: z.string()
-});
-
-export const Register = z
-  .object({
-    name: z
-      .string()
-      .min(4, {message: 'Name must be between 4 and 32 characters long'})
-      .max(32, {message: 'Name must be between 4 and 32 characters long'})
-      .regex(/^[a-z0-9.-]+$/, {
-        message: 'Name must only contain lowercase letters and numbers'
-      }),
-    email: z.string().email(),
-    password: z.string()
-  })
-  .and(Password);
 
 export const Verify = z.object({
   token: z.string().length(6).regex(/^\d+$/)
