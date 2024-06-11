@@ -147,6 +147,7 @@ endpoints.patch(
   }
 );
 
+//eslint-disable-next-line -- Drizzle eslint plugin mistake
 endpoints.delete('/:uid', zValidator('param', Param), async context => {
   const {isAuth, user} = await verifySession(context);
   const {uid} = context.req.valid('param');

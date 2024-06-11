@@ -13,6 +13,7 @@ export class DeleteUser {
   }
 
   async run(): Promise<Response<true>> {
+    //eslint-disable-next-line -- Drizzle eslint plugin mistake
     return await this._repository.delete(this._uid, this._password);
   }
 }
