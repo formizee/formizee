@@ -3,6 +3,12 @@ export interface Payload<T> {
   data: T;
 }
 
+export interface LinkedEmailToken {
+  uid: string;
+  email: string;
+  token: number;
+}
+
 export interface Session {
   uid: string;
   name: string;
@@ -13,3 +19,5 @@ export interface Verification {
   email: string;
   type: 'account' | 'password';
 }
+
+export type Data = Session | Verification | LinkedEmailToken;

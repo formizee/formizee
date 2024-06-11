@@ -1,9 +1,7 @@
 import {type JWTPayload, SignJWT, jwtVerify} from 'jose';
-import type {Payload, Session, Verification} from './types';
+import type {Payload, Data} from './types';
 
-export async function encrypt(
-  payload: Payload<Session | Verification>
-): Promise<string> {
+export async function encrypt(payload: Payload<Data>): Promise<string> {
   const encodedKey = new TextEncoder().encode(process.env.JWT_SECRET);
 
   return new SignJWT({...payload})
