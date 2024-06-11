@@ -325,6 +325,76 @@ paths:
               schema:
                 $ref: '#/components/schemas/error'
 
+  /auth/linked-emails/verify:
+    post:
+      summary: Linked Email Verification
+      description: Verifies a linked email from the given user.
+      operationId: verifyLinkedEmailAuth
+      tags: [Authentication]
+      security: []
+      parameters:
+        - in: query
+          name: token
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Verification Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+
+  /auth/linked-emails/send-verification:
+    post:
+      summary: Send Linked Email Verification
+      description: Send a email with a token to verify a user linked email.
+      operationId: sendLinkedEmailVerificationAuth
+      tags: [Authentication]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+              required: [email]
+      responses:
+        '202':
+          description: Verification Sent Successful
+          content:
+            application/json:
+              schema:
+                type: string
+                example: OK
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: User Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+
   /endpoints/{id}:
     get:
       summary: Get Endpoint
@@ -626,6 +696,97 @@ paths:
                 $ref: '#/components/schemas/error'
         '404':
           description: User Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+
+  /profile/linked-emails:
+    post:
+      summary: Add Linked Email
+      description: Adds another email to the profile linked emails.
+      operationId: saveProfileLinkedEmail
+      tags: [Profile]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+      responses:
+        '201':
+          description: Linked email Saved Successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/user'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Unauthorized Access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: Linked Emails Limit Exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '409':
+          description: Linked Email Already Exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+
+  /profile/linked-emails/{email}:
+    delete:
+      summary: Delete Linked Email
+      description: Deletes a email from the profile linked emails.
+      operationId: deleteProfileLinkedEmail
+      tags: [Profile]
+      parameters:
+        - name: email
+          in: path
+          required: true
+          schema:
+            type: string
+            format: email
+      responses:
+        '200':
+          description: Linked email Delete Successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/user'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Unauthorized Access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: Linked Email Not Found
           content:
             application/json:
               schema:
