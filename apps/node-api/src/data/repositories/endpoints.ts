@@ -55,7 +55,7 @@ export class EndpointsRepository implements Repository {
     const forms = user.forms;
     forms.push(endpoint[0].id);
 
-    await db.update(users).set({forms});
+    await db.update(users).set({forms}).where(eq(users.id, user.id));
 
     const response = createEndpoint(endpoint[0]);
     return Response.success(response);
@@ -81,7 +81,7 @@ export class EndpointsRepository implements Repository {
     await db.delete(endpoints).where(eq(endpoints.id, uid.value));
 
     const forms = user.forms.filter(form => form !== endpoint.id);
-    await db.update(users).set({forms});
+    await db.update(users).set({forms}).where(eq(users.id, user.id));
 
     return Response.success(true);
   }
