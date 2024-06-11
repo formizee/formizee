@@ -1,11 +1,13 @@
 import {randomInt} from 'crypto';
-import type {Email, Name, Password} from 'domain/models/values';
+import type {Uid, Email, Name, Password} from 'domain/models/values';
 import type {AuthService as Service} from 'domain/services';
 import {Response, type User} from 'domain/models';
 import bcryptjs from 'bcryptjs';
 import {db, eq, and, users, authTokens} from '@drizzle/db';
-import {verifyEmail} from '@emails/auth';
+import {verifyEmail, verifyLinkedEmail} from '@emails/auth';
 import {createUser} from '@/lib/utils';
+import {decrypt, encrypt} from '@/lib/auth/jwt';
+import type {LinkedEmailToken} from '@/lib/auth/types';
 import {MailService} from './mail';
 
 export class AuthService implements Service {
@@ -144,5 +146,117 @@ export class AuthService implements Service {
 
     await mailService.send(verifyEmail(email.value, newTokenCode.toString()));
     return Response.success(true, 202);
+  }
+
+  async sendLinkedEmailVerification(
+    uid: Uid,
+    email: Email
+  ): Promise<Response<true>> {
+    const user = await db.query.users.findFirst({
+      where: eq(users.id, uid.value)
+    });
+    if (!user) {
+      return Response.error('The user does not exists.', 404);
+    }
+
+    const token = await db.query.authTokens.findFirst({
+      where: and(
+        eq(authTokens.user, user.id),
+        eq(authTokens.email, email.value)
+      )
+    });
+
+    const mailService = new MailService();
+    const expiresAt = new Date(Date.now() + 60 * 60 * 1000);
+
+    if (token) {
+      if (new Date() < token.expiresAt) {
+        const jwtToken = await encrypt({
+          expiresAt,
+          data: {uid: uid.value, email: email.value, token: token.token}
+        });
+        const magicLink = `https://formizee.com/auth/linked-emails/verify?token=${jwtToken}`;
+        await mailService.send(verifyLinkedEmail(token.email, magicLink));
+        return Response.success(true, 202);
+      }
+      await db.delete(authTokens).where(eq(authTokens.id, token.id));
+    }
+
+    const newTokenCode = Math.floor(randomInt(100000, 999999 + 1));
+
+    const newToken = await db
+      .insert(authTokens)
+      .values({
+        user: user.id,
+        email: email.value,
+        token: newTokenCode
+      })
+      .returning();
+
+    if (!newToken[0]) {
+      return Response.error("Token can't be created.", 500);
+    }
+
+    const jwtToken = await encrypt({
+      expiresAt,
+      data: {uid: uid.value, email: email.value, token: newTokenCode}
+    });
+    const magicLink = `https://formizee.com/auth/linked-emails/verify?token=${jwtToken}`;
+
+    await mailService.send(verifyLinkedEmail(email.value, magicLink));
+    return Response.success(true, 202);
+  }
+
+  async verifyLinkedEmail(jwtToken: string): Promise<Response<true>> {
+    const token = await decrypt(jwtToken);
+    const data = token?.data as LinkedEmailToken;
+
+    if (!data.token || !data.uid || !data.email) {
+      return Response.error('Invalid token.', 401);
+    }
+
+    const user = await db.query.users.findFirst({
+      where: eq(users.id, data.uid)
+    });
+
+    if (!user) {
+      return Response.error('User not found.', 404);
+    }
+
+    const currentToken = await db.query.authTokens.findFirst({
+      where: and(
+        eq(authTokens.user, data.uid),
+        eq(authTokens.email, data.email)
+      )
+    });
+
+    if (!currentToken) {
+      return Response.error('Invalid token.', 401);
+    }
+
+    if (new Date() > currentToken.expiresAt) {
+      await db.delete(authTokens).where(eq(authTokens.id, currentToken.id));
+      return Response.error('Expired token, please get a new one.', 401);
+    }
+
+    if (currentToken.token !== data.token) {
+      return Response.error('Invalid token.', 401);
+    }
+
+    await db.delete(authTokens).where(eq(authTokens.id, currentToken.id));
+
+    const linkedEmails = user.linkedEmails.map(linkedEmail => {
+      if (linkedEmail.email === data.email)
+        return {email: linkedEmail.email, isVerified: true};
+      return linkedEmail;
+    });
+
+    await db
+      .update(users)
+      .set({linkedEmails})
+      .where(eq(users.id, user.id))
+      .returning();
+
+    return Response.success(true);
   }
 }
