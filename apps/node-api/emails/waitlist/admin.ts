@@ -1,4 +1,6 @@
-export const joinAdminWaitlist = (email: string): string => {
+import {Mail} from 'domain/models';
+
+const template = (email: string): string => {
   return `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
@@ -30,4 +32,14 @@ export const joinAdminWaitlist = (email: string): string => {
     </table>
   </body>
 </html>`;
+};
+
+export const joinAdminWaitlist = (to: string): Mail => {
+  return new Mail(
+    'Formizee',
+    'noreply@formizee.com',
+    to,
+    'Waitlist Confirmation for Formizee',
+    template(to)
+  );
 };
