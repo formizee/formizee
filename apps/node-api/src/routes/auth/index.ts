@@ -4,6 +4,8 @@ import {Hono} from 'hono';
 import {
   LoginAuth,
   RegisterAuth,
+  VerifyLinkedEmail,
+  SendLinkedEmailVerificationAuth,
   SendVerificationAuth,
   VerifyAuth
 } from '@/useCases/auth';
@@ -12,9 +14,17 @@ import {
   createVerification,
   deleteSession,
   deleteVerification,
+  verifySession,
   verifyVerification
 } from '@/lib/auth';
-import {Login, Register, Verify, SendVerification} from './schemas';
+import {
+  Login,
+  Register,
+  Verify,
+  SendVerification,
+  LinkedEmailsSendVerification,
+  VerifyLinkedEmails
+} from './schemas';
 
 export const auth = new Hono();
 
@@ -98,6 +108,40 @@ auth.post(
     const response = await service.run();
 
     await createVerification(context, {email, type});
+
+    return context.json(response.body, response.status as StatusCode);
+  }
+);
+
+auth.post(
+  '/linked-emails/send-verification',
+  zValidator('json', LinkedEmailsSendVerification),
+  async context => {
+    const {isAuth, user} = await verifySession(context);
+    const {email} = context.req.valid('json');
+
+    if (!isAuth || !user) {
+      return context.json(
+        {error: 'Please, login first in order to do this action.'},
+        401
+      );
+    }
+
+    const service = new SendLinkedEmailVerificationAuth(user.uid, email);
+    const response = await service.run();
+
+    return context.json(response.body, response.status as StatusCode);
+  }
+);
+
+auth.post(
+  '/linked-emails/verify',
+  zValidator('query', VerifyLinkedEmails),
+  async context => {
+    const {token} = context.req.valid('query');
+
+    const service = new VerifyLinkedEmail(token);
+    const response = await service.run();
 
     return context.json(response.body, response.status as StatusCode);
   }

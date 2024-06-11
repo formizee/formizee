@@ -62,3 +62,10 @@ export const SendVerification = z.object({
   email: z.string().email(),
   type: z.enum(['password', 'account'])
 });
+
+export const LinkedEmailsSendVerification = z.object({
+  email: z.string().email()
+});
+export const VerifyLinkedEmails = z.object({
+  token: z.string()
+});
