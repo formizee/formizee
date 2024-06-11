@@ -12,6 +12,7 @@ const project = resolve(process.cwd(), 'tsconfig.json');
  */
 
 module.exports = {
+  plugins: ['drizzle'],
   extends: [
     '@vercel/style-guide/eslint/typescript',
     '@vercel/style-guide/eslint/node'
@@ -31,6 +32,10 @@ module.exports = {
   },
   ignorePatterns: ['node_modules/', 'dist/'],
   rules: {
+    // Drizzle
+    'drizzle/enforce-delete-with-where': 'error',
+    'drizzle/enforce-update-with-where': 'error',
+
     '@typescript-eslint/prefer-promise-reject-errors': 'off',
     '@typescript-eslint/consistent-type-definitions': 'off',
     '@typescript-eslint/unbound-method': 'off',
