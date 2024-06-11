@@ -246,8 +246,9 @@ export class AuthService implements Service {
     await db.delete(authTokens).where(eq(authTokens.id, currentToken.id));
 
     const linkedEmails = user.linkedEmails.map(linkedEmail => {
-      if (linkedEmail.email === data.email)
+      if (linkedEmail.email === data.email) {
         return {email: linkedEmail.email, isVerified: true};
+      }
       return linkedEmail;
     });
 
