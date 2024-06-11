@@ -71,11 +71,34 @@ export class UsersRepository implements Repository {
     });
     if (!user) return Response.error('User not found.', 404);
 
-    const alreadyExists = await db.query.users.findFirst({
-      where: eq(users.email, newEmail.value)
-    });
-    if (!alreadyExists)
-      return Response.error('The email is already taken by other user.', 409);
+    const emailExists = user.linkedEmails.some(
+      linkedEmail => linkedEmail.email === newEmail.value
+    );
+    if (!emailExists) {
+      return Response.error(
+        'The new email needs to be one of your linked emails.',
+        401
+      );
+    }
+
+    const verifiedEmail = user.linkedEmails.some(
+      linkedEmail =>
+        linkedEmail.email === newEmail.value && linkedEmail.isVerified
+    );
+    if (!verifiedEmail) {
+      return Response.error(
+        'The new email is not verified, please verify the email before using it',
+        401
+      );
+    }
+
+    const emailAlreadyUsed = newEmail.value === user.email;
+    if (emailAlreadyUsed) {
+      return Response.error(
+        'The new email is already being used in this account as default.',
+        409
+      );
+    }
 
     const data = await db
       .update(users)

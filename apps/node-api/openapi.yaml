@@ -549,7 +549,7 @@ paths:
                 $ref: '#/components/schemas/error'
     patch:
       summary: Update User Profile
-      description: Updates the user data.
+      description: Updates the user data (Only can be done from the Formizee Dashboard).
       operationId: updateUser
       tags: [Profile]
       requestBody:
@@ -569,23 +569,6 @@ paths:
                 password:
                   type: string
                   format: password
-
-                forms:
-                  type: array
-                  items:
-                    type: string
-                    format: uuid
-
-                linkedEmails:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      email:
-                        type: string
-                        format: email
-                      isVerified:
-                        type: boolean
       responses:
         '200':
           description: User Updated Successfully
