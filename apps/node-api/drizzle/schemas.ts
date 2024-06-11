@@ -96,9 +96,11 @@ export const authTokens = pgTable('auth_tokens', {
 
   token: integer('token').notNull(),
 
-  email: text('email')
+  user: uuid('user')
     .notNull()
-    .references(() => users.email, {onDelete: 'cascade'}),
+    .references(() => users.id, {onDelete: 'cascade'}),
+
+  email: text('email').notNull(),
 
   createdAt: timestamp('created_at').notNull().defaultNow(),
 
