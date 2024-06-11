@@ -159,6 +159,23 @@ export class AuthService implements Service {
       return Response.error('The user does not exists.', 404);
     }
 
+    const emailExists = user.linkedEmails.some(
+      linkedEmail => linkedEmail.email === email.value
+    );
+    if (!emailExists) {
+      return Response.error(
+        'The email does not exists in the user linked emails.',
+        404
+      );
+    }
+
+    const isAlreadyVerified = user.linkedEmails.some(
+      linkedEmail => linkedEmail.email === email.value && linkedEmail.isVerified
+    );
+    if (isAlreadyVerified) {
+      return Response.error('The email is already verified.', 401);
+    }
+
     const token = await db.query.authTokens.findFirst({
       where: and(
         eq(authTokens.user, user.id),
