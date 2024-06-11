@@ -1,1 +1,1 @@
-export {verifyEmailTemplate} from './verify-email';
+export {verifyEmail} from './verify-email';

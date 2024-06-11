@@ -1,4 +1,6 @@
-export const verifyEmailTemplate = (token: string): string => {
+import {Mail} from 'domain/models';
+
+const verifyEmailTemplate = (token: string): string => {
   const digits = token.split('');
 
   return `
@@ -37,4 +39,16 @@ export const verifyEmailTemplate = (token: string): string => {
 
     </html>
   `;
+};
+
+export const verifyEmail = (to: string, token: string): Mail => {
+  const html = verifyEmailTemplate(token);
+
+  return new Mail(
+    'Formizee',
+    'noreply@formizee.com',
+    to,
+    'Email Verification',
+    html
+  );
 };
