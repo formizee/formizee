@@ -1,5 +1,5 @@
 import {drizzle} from 'drizzle-orm/node-postgres';
-import {eq as compare} from 'drizzle-orm';
+import {eq as _eq, and as _and} from 'drizzle-orm';
 import pg from 'pg';
 import * as schemas from './schemas';
 import '@/lib/enviroment';
@@ -16,6 +16,8 @@ const client = new pg.Client({
 });
 await client.connect();
 
-// Drizzle Utilities
 export const db = drizzle(client, {schema: schemas});
-export const eq = compare;
+
+// Drizzle Operators
+export const eq = _eq;
+export const and = _and;
