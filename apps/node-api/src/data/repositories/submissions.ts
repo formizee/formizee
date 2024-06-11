@@ -2,16 +2,13 @@ import type {SubmissionsRepository as Repository} from 'domain/repositories';
 import {Response, type Submission} from 'domain/models';
 import type {Uid} from 'domain/models/values';
 import {createSubmission} from '@/lib/utils';
-import {db, eq, submissions} from '@drizzle/db';
+import {db, eq, and, submissions} from '@drizzle/db';
 
 export class SubmissionsRepository implements Repository {
   async loadAll(endpoint: Uid): Promise<Response<Submission[]>> {
     const data = await db.query.submissions.findMany({
       where: eq(submissions.endpoint, endpoint.value)
     });
-    if (data.length < 1) {
-      return Response.error('There is no submissions yet.', 404);
-    }
 
     const response = data.map(submission => {
       return createSubmission(submission);
@@ -20,9 +17,12 @@ export class SubmissionsRepository implements Repository {
     return Response.success(response);
   }
 
-  async load(uid: Uid): Promise<Response<Submission>> {
+  async load(endpoint: Uid, uid: Uid): Promise<Response<Submission>> {
     const data = await db.query.submissions.findFirst({
-      where: eq(submissions.id, Number(uid.value))
+      where: and(
+        eq(submissions.id, Number(uid.value)),
+        eq(submissions.endpoint, endpoint.value)
+      )
     });
     if (!data) return Response.error('Submission not found.', 404);
 

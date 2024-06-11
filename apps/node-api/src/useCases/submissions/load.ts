@@ -4,13 +4,15 @@ import {resolve} from '@/lib/di';
 
 export class LoadSubmission {
   private readonly _repository = resolve('submissionsRepository');
+  private readonly _endpoint: Uid;
   private readonly _uid: Uid;
 
-  constructor(uid: string) {
+  constructor(endpoint: string, uid: string) {
+    this._endpoint = new Uid(endpoint);
     this._uid = new Uid(uid);
   }
 
   async run(): Promise<Response<Submission>> {
-    return await this._repository.load(this._uid);
+    return await this._repository.load(this._endpoint, this._uid);
   }
 }
