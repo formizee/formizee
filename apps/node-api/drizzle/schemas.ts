@@ -80,11 +80,7 @@ export const submissions = pgTable('submissions', {
     .references(() => endpoints.id, {onDelete: 'set null'})
     .notNull(),
 
-  data: jsonb('data').notNull().$type<JSON>(),
-
-  files: text('files')
-    .array()
-    .default(sql`ARRAY[]::text[]`),
+  data: jsonb('data').notNull().$type<object>(),
 
   isSpam: boolean('is_spam').notNull().default(false),
 
