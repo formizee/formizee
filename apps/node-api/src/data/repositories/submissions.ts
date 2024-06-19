@@ -31,9 +31,16 @@ export class SubmissionsRepository implements Repository {
     return Response.success(response);
   }
 
-  async update(uid: Uid, isSpam: boolean): Promise<Response<Submission>> {
+  async update(
+    endpoint: Uid,
+    uid: Uid,
+    isSpam: boolean
+  ): Promise<Response<Submission>> {
     const submission = await db.query.submissions.findFirst({
-      where: eq(submissions.id, Number(uid.value))
+      where: and(
+        eq(submissions.id, Number(uid.value)),
+        eq(submissions.endpoint, endpoint.value)
+      )
     });
     if (!submission) return Response.error('Submission not found.', 404);
 
@@ -52,17 +59,12 @@ export class SubmissionsRepository implements Repository {
     return Response.success(response);
   }
 
-  async save(
-    endpoint: Uid,
-    data: JSON,
-    files?: string[]
-  ): Promise<Response<Submission>> {
+  async save(endpoint: Uid, data: object): Promise<Response<Submission>> {
     const submission = await db
       .insert(submissions)
       .values({
         endpoint: endpoint.value,
-        data,
-        files
+        data
       })
       .returning();
 
@@ -74,14 +76,17 @@ export class SubmissionsRepository implements Repository {
     return Response.success(response);
   }
 
-  async delete(uid: Uid): Promise<Response<true>> {
+  async delete(endpoint: Uid, uid: Uid): Promise<Response<true>> {
     const data = await db.query.submissions.findFirst({
-      where: eq(submissions.id, Number(uid.value))
+      where: and(
+        eq(submissions.id, Number(uid.value)),
+        eq(submissions.endpoint, endpoint.value)
+      )
     });
     if (!data) return Response.error('Submission not found.', 404);
 
     await db.delete(submissions).where(eq(submissions.id, Number(uid.value)));
 
-    return Response.success(true);
+    return Response.success(true, 201);
   }
 }
