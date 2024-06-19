@@ -24,7 +24,9 @@ export class EndpointsRepository implements Repository {
     const data = await db.query.endpoints.findFirst({
       where: eq(endpoints.id, uid.value)
     });
-    if (!data) return Response.error('Endpoint not found.', 404);
+    if (!data) {
+      return Response.error('Endpoint not found.', 404);
+    }
 
     const response = createEndpoint(data);
 
