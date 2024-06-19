@@ -4,11 +4,11 @@ import {type Uid} from '../models/values';
 export interface SubmissionsRepository {
   loadAll: (endpoint: Uid) => Promise<Response<Submission[]>>;
   load: (endpoint: Uid, uid: Uid) => Promise<Response<Submission>>;
-  update: (uid: Uid, isSpam: boolean) => Promise<Response<Submission>>;
-  save: (
+  update: (
     endpoint: Uid,
-    data: JSON,
-    files?: string[]
+    uid: Uid,
+    isSpam: boolean
   ) => Promise<Response<Submission>>;
-  delete: (uid: Uid) => Promise<Response<true>>;
+  save: (endpoint: Uid, data: object) => Promise<Response<Submission>>;
+  delete: (endpoint: Uid, uid: Uid) => Promise<Response<true>>;
 }

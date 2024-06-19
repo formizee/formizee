@@ -51,9 +51,8 @@ export const createEndpoint = (data: {
 export const createSubmission = (data: {
   id: number;
   endpoint: string;
-  data: JSON;
+  data: object;
   createdAt: Date;
-  files: string[] | null;
   isSpam: boolean;
 }): Submission => {
   return new Submission(
@@ -61,7 +60,6 @@ export const createSubmission = (data: {
     data.endpoint,
     data.data,
     data.createdAt,
-    data.files ?? [],
     data.isSpam
   );
 };

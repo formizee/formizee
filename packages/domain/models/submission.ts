@@ -4,18 +4,16 @@ export class Submission {
   private readonly _uid: Uid;
   private readonly _endpoint: Uid;
 
-  private readonly _data: JSON;
+  private readonly _data: object;
   private readonly _isSpam: boolean;
-  private readonly _files: URL[] = [];
 
   private readonly _createdAt: Date;
 
   constructor(
     uid: string,
     endpoint: string,
-    data: JSON,
+    data: object,
     createdAt: Date,
-    files?: string[],
     isSpam?: boolean
   ) {
     this._data = data;
@@ -23,10 +21,6 @@ export class Submission {
     this._isSpam = isSpam ?? false;
     this._endpoint = new Uid(endpoint);
     this._createdAt = new Date(createdAt);
-
-    files?.forEach(file => {
-      this._files.push(new URL(file));
-    });
   }
 
   get uid(): string {
@@ -35,10 +29,6 @@ export class Submission {
 
   get data(): unknown {
     return this._data;
-  }
-
-  get files(): URL[] {
-    return this._files;
   }
 
   get isSpam(): boolean {
