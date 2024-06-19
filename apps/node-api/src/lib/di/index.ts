@@ -4,7 +4,12 @@ import {
   EndpointsRepository,
   SubmissionsRepository
 } from '@/data/repositories';
-import {AuthService, MailService, WaitlistService} from '@/data/services';
+import {
+  AuthService,
+  MailService,
+  StorageService,
+  WaitlistService
+} from '@/data/services';
 import type Dependencies from './types';
 
 const container = createContainer<Dependencies>();
@@ -17,6 +22,7 @@ container.register({
 
   /* Services */
   waitlistService: asClass(WaitlistService),
+  storageService: asClass(StorageService),
   mailService: asClass(MailService),
   authService: asClass(AuthService)
 });

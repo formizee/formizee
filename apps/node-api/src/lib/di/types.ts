@@ -6,6 +6,7 @@ import {
 import {
   type AuthService,
   type MailService,
+  type StorageService,
   type WaitlistService
 } from 'domain/services';
 
@@ -17,6 +18,7 @@ export default interface Dependencies {
 
   /* Services */
   waitlistService: WaitlistService;
+  storageService: StorageService;
   mailService: MailService;
   authService: AuthService;
 }
