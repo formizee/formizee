@@ -1,9 +1,13 @@
 # TODO
 - [x] Implement endpoints.
 - [x] Implement profile.
-- [ ] Implement submissions.
+- [x] Implement submissions.
 
-# General
+## Important
+- [~] Think about teams and it's permissions.
+- [~] think about pricing permissions too.
+
+## General
 - [ ] Add cors in order to block sensitive profile and auth requests.
 
 - [ ] Implement API Keys.
@@ -18,8 +22,10 @@
 - [ ] Treat carefully send verification request and rate limits
 
 ## Waitlist Post
-- [ ] Implement email sending on waitlist join.
+- [x] Implement email sending on waitlist join.
 
 ## Submission Post
+- [~] Accepts FormData and Json and transform all to json
 - [ ] Send emails to the owner on submit.
-- [ ] Redirect to the default url.
+- [~] Redirect to the default url.
+- [ ] Store files in a S3 bucket.
