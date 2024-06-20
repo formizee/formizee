@@ -14,6 +14,52 @@ import {sql} from 'drizzle-orm';
 
 export const permissions = pgEnum('permissions', ['user', 'admin']);
 
+export const teamRoles = pgEnum('team_roles', ['owner', 'member']);
+export const userPermissions = pgEnum('user_permissions', ['read', 'edit', 'create', 'delete']);
+export const billingPlans = pgEnum('billing_plans', ['hobby', 'professional', 'teams', 'custom']);
+
+export const teams = pgTable('teams', {
+  id: uuid('id').defaultRandom().primaryKey(),
+
+  name: text('name').notNull(),
+
+  plan: billingPlans('plan').notNull().default('hobby'),
+
+  availableEmails: text('available_emails')
+    .array()
+    .notNull()
+    .default(sql`ARRAY[]::text[]`),
+
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+
+  updatedAt: timestamp('updated_at')
+    .notNull()
+    .defaultNow()
+    .$onUpdate(() => new Date())
+})
+
+export const members = pgTable('members', {
+  id: uuid('id').defaultRandom().primaryKey(),
+
+  user: uuid('user_id').references(() => users.id, {onDelete: 'cascade'}),
+
+  team: uuid('team_id').references(() => teams.id, {onDelete: 'cascade'}),
+
+  role: teamRoles('role').notNull().default('member'),
+
+  permissions: userPermissions('permissions')
+    .array()
+    .notNull()
+    .default(['read']),
+
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+
+  updatedAt: timestamp('updated_at')
+    .notNull()
+    .defaultNow()
+    .$onUpdate(() => new Date())
+})
+
 export const users = pgTable('users', {
   id: uuid('id').defaultRandom().primaryKey(),
 
