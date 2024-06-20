@@ -1,7 +1,7 @@
 import {type DrizzleD1Database, drizzle} from 'drizzle-orm/d1';
 import {type SubmissionsRepository} from 'domain/repositories';
 import {Response, Submission} from 'domain/models';
-import {type Uid} from 'domain/models/values';
+import {type Identifier} from 'domain/models/values';
 import {eq} from 'drizzle-orm';
 import {SecretsProvider} from '@/lib/secrets';
 import {objectToFormData, formDataToObject} from '@/lib/adapters';
@@ -17,7 +17,7 @@ export class SubmissionsRepositoryImplementation
     this.db = drizzle(provider.getDb());
   }
 
-  async load(uid: Uid): Promise<Response<Submission>> {
+  async load(uid: Identifier): Promise<Response<Submission>> {
     const response = await this.db
       .select()
       .from(submissions)
@@ -36,7 +36,7 @@ export class SubmissionsRepositoryImplementation
     return Response.success(submission);
   }
 
-  async loadByForm(form: Uid): Promise<Response<Submission[]>> {
+  async loadByForm(form: Identifier): Promise<Response<Submission[]>> {
     const response = await this.db
       .select()
       .from(submissions)
@@ -59,7 +59,7 @@ export class SubmissionsRepositoryImplementation
     return Response.success(result);
   }
 
-  async save(form: Uid, data: FormData): Promise<Response<Submission>> {
+  async save(form: Identifier, data: FormData): Promise<Response<Submission>> {
     const formDataObject = await formDataToObject(data);
     const formData = JSON.stringify(formDataObject);
 
@@ -83,7 +83,7 @@ export class SubmissionsRepositoryImplementation
     return Response.success(submission);
   }
 
-  async delete(uid: Uid): Promise<Response<true>> {
+  async delete(uid: Identifier): Promise<Response<true>> {
     const exists = await this.db
       .select()
       .from(submissions)

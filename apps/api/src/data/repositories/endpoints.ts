@@ -1,5 +1,5 @@
 import {type EndpointsRepository} from 'domain/repositories';
-import {type Email, type Uid} from 'domain/models/values';
+import {type Email, type Identifier} from 'domain/models/values';
 import {Response, Endpoint} from 'domain/models';
 import {type DrizzleD1Database, drizzle} from 'drizzle-orm/d1';
 import {eq} from 'drizzle-orm';
@@ -14,7 +14,7 @@ export class EndpointsRepositoryImplementation implements EndpointsRepository {
     this.db = drizzle(provider.getDb());
   }
 
-  async load(uid: Uid): Promise<Response<Endpoint>> {
+  async load(uid: Identifier): Promise<Response<Endpoint>> {
     const response = await this.db
       .select()
       .from(endpoints)
@@ -33,7 +33,7 @@ export class EndpointsRepositoryImplementation implements EndpointsRepository {
     return Response.success(endpoint);
   }
 
-  async loadByOwner(owner: Uid): Promise<Response<Endpoint[]>> {
+  async loadByOwner(owner: Identifier): Promise<Response<Endpoint[]>> {
     const response = await this.db
       .select()
       .from(endpoints)
@@ -60,7 +60,7 @@ export class EndpointsRepositoryImplementation implements EndpointsRepository {
     return Response.success(result);
   }
 
-  async save(name: string, owner: Uid): Promise<Response<Endpoint>> {
+  async save(name: string, owner: Identifier): Promise<Response<Endpoint>> {
     const ownerData = await this.db
       .select()
       .from(users)
@@ -89,24 +89,24 @@ export class EndpointsRepositoryImplementation implements EndpointsRepository {
     return Response.success(endpoint);
   }
 
-  delete(_uid: Uid): Promise<Response<void>> {
+  delete(_uid: Identifier): Promise<Response<void>> {
     throw Error('Not implemented yet.');
   }
 
-  updateEnabled(_uid: Uid, _isEnabled: boolean): Promise<Response<void>> {
+  updateEnabled(_uid: Identifier, _isEnabled: boolean): Promise<Response<void>> {
     throw Error('Not implemented yet.');
   }
 
-  updateRedirectUrl(_uid: Uid, _redirectUrl: URL): Promise<Response<void>> {
+  updateRedirectUrl(_uid: Identifier, _redirectUrl: URL): Promise<Response<void>> {
     throw Error('Not implemented yet.');
   }
 
-  updateTargetEmail(_uid: Uid, _targetEmail: Email): Promise<Response<void>> {
+  updateTargetEmail(_uid: Identifier, _targetEmail: Email): Promise<Response<void>> {
     throw Error('Not implemented yet.');
   }
 
   updateEmailNotifications(
-    _uid: Uid,
+    _uid: Identifier,
     _isEnabled: boolean
   ): Promise<Response<void>> {
     throw Error('Not implemented yet.');

@@ -1,15 +1,15 @@
 import {type Endpoint, type Response} from 'domain/models';
-import {Uid} from 'domain/models/values';
+import {Identifier} from 'domain/models/values';
 import {resolve} from '@/lib/di';
 
 export class SaveEndpoint {
   private readonly _repository = resolve('endpointsRepository');
   private readonly _name: string;
-  private readonly _owner: Uid;
+  private readonly _owner: Identifier;
 
   constructor(name: string, owner: string) {
     this._name = name;
-    this._owner = new Uid(owner);
+    this._owner = new Identifier(owner);
   }
 
   async run(): Promise<Response<Endpoint>> {

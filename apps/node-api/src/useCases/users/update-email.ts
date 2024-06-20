@@ -1,15 +1,15 @@
 import type {User, Response} from 'domain/models';
-import {Uid, Email} from 'domain/models/values';
+import {Identifier, Email} from 'domain/models/values';
 import {resolve} from '@/lib/di';
 
 export class UpdateUserEmail {
   private readonly _repository = resolve('usersRepository');
   private readonly _email: Email;
-  private readonly _uid: Uid;
+  private readonly _uid: Identifier;
 
   constructor(uid: string, newEmail: string) {
     this._email = new Email(newEmail);
-    this._uid = new Uid(uid);
+    this._uid = new Identifier(uid);
   }
 
   async run(): Promise<Response<User>> {

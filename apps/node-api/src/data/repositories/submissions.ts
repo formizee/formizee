@@ -1,11 +1,11 @@
 import type {SubmissionsRepository as Repository} from 'domain/repositories';
 import {Response, type Submission} from 'domain/models';
-import type {Uid} from 'domain/models/values';
+import type {Identifier} from 'domain/models/values';
 import {createSubmission} from '@/lib/utils';
 import {db, eq, and, submissions} from '@drizzle/db';
 
 export class SubmissionsRepository implements Repository {
-  async loadAll(endpoint: Uid): Promise<Response<Submission[]>> {
+  async loadAll(endpoint: Identifier): Promise<Response<Submission[]>> {
     const data = await db.query.submissions.findMany({
       where: eq(submissions.endpoint, endpoint.value)
     });
@@ -17,7 +17,7 @@ export class SubmissionsRepository implements Repository {
     return Response.success(response);
   }
 
-  async load(endpoint: Uid, uid: Uid): Promise<Response<Submission>> {
+  async load(endpoint: Identifier, uid: Identifier): Promise<Response<Submission>> {
     const data = await db.query.submissions.findFirst({
       where: and(
         eq(submissions.id, Number(uid.value)),
@@ -32,8 +32,8 @@ export class SubmissionsRepository implements Repository {
   }
 
   async update(
-    endpoint: Uid,
-    uid: Uid,
+    endpoint: Identifier,
+    uid: Identifier,
     isSpam: boolean
   ): Promise<Response<Submission>> {
     const submission = await db.query.submissions.findFirst({
@@ -59,7 +59,7 @@ export class SubmissionsRepository implements Repository {
     return Response.success(response);
   }
 
-  async save(endpoint: Uid, data: object): Promise<Response<Submission>> {
+  async save(endpoint: Identifier, data: object): Promise<Response<Submission>> {
     const submission = await db
       .insert(submissions)
       .values({
@@ -76,7 +76,7 @@ export class SubmissionsRepository implements Repository {
     return Response.success(response);
   }
 
-  async delete(endpoint: Uid, uid: Uid): Promise<Response<true>> {
+  async delete(endpoint: Identifier, uid: Identifier): Promise<Response<true>> {
     const data = await db.query.submissions.findFirst({
       where: and(
         eq(submissions.id, Number(uid.value)),

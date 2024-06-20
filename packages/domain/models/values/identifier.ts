@@ -1,4 +1,4 @@
-export class Uid {
+export class Identifier {
   constructor(readonly value: string) {
     this.value = value;
 

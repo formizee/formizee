@@ -1,15 +1,15 @@
 import {type Response} from 'domain/models';
-import {Uid} from 'domain/models/values';
+import {Identifier} from 'domain/models/values';
 import {resolve} from '@/lib/di';
 
 export class DeleteSubmission {
   private readonly _repository = resolve('submissionsRepository');
-  private readonly _endpoint: Uid;
-  private readonly _uid: Uid;
+  private readonly _endpoint: Identifier;
+  private readonly _uid: Identifier;
 
   constructor(endpoint: string, uid: string) {
-    this._endpoint = new Uid(endpoint);
-    this._uid = new Uid(uid);
+    this._endpoint = new Identifier(endpoint);
+    this._uid = new Identifier(uid);
   }
 
   async run(): Promise<Response<true>> {

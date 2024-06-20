@@ -1,16 +1,16 @@
 import {type Response, type Submission} from 'domain/models';
-import {Uid} from 'domain/models/values';
+import {Identifier} from 'domain/models/values';
 import {resolve} from '@/lib/di';
 
 export class UpdateSubmissionIsSpam {
   private readonly _repository = resolve('submissionsRepository');
   private readonly _isSpam: boolean;
-  private readonly _endpoint: Uid;
-  private readonly _uid: Uid;
+  private readonly _endpoint: Identifier;
+  private readonly _uid: Identifier;
 
   constructor(endpoint: string, uid: string, isSpam: boolean) {
-    this._endpoint = new Uid(endpoint);
-    this._uid = new Uid(uid);
+    this._endpoint = new Identifier(endpoint);
+    this._uid = new Identifier(uid);
     this._isSpam = isSpam;
   }
 

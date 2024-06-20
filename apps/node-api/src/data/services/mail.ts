@@ -1,7 +1,7 @@
 import {type Transporter, createTransport} from 'nodemailer';
 import type {MailService as Service} from 'domain/services';
 import {type Mail, Response} from 'domain/models';
-import type {Uid} from 'domain/models/values';
+import type {Identifier} from 'domain/models/values';
 
 export class MailService implements Service {
   private readonly smtp: Transporter;
@@ -16,7 +16,7 @@ export class MailService implements Service {
     });
   }
 
-  async send(mail: Mail): Promise<Response<Uid>> {
+  async send(mail: Mail): Promise<Response<Identifier>> {
     await this.smtp.sendMail({
       from: `${mail.name} <${mail.from}>`,
       to: mail.to,

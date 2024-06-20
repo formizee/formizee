@@ -1,5 +1,5 @@
 import {
-  type Uid,
+  type Identifier,
   type Name,
   type Email,
   type Password
@@ -20,7 +20,7 @@ export class UsersRepositoryImplementation implements UsersRepository {
     this.db = drizzle(provider.getDb());
   }
 
-  async load(uid: Uid): Promise<Response<User>> {
+  async load(uid: Identifier): Promise<Response<User>> {
     const response = await this.db
       .select()
       .from(users)
@@ -77,7 +77,7 @@ export class UsersRepositoryImplementation implements UsersRepository {
     return Response.success(user, 201);
   }
 
-  async delete(uid: Uid): Promise<Response<true>> {
+  async delete(uid: Identifier): Promise<Response<true>> {
     const userExists = await this.db
       .select()
       .from(users)
@@ -93,7 +93,7 @@ export class UsersRepositoryImplementation implements UsersRepository {
     return Response.success(true);
   }
 
-  async updateName(uid: Uid, newName: Name): Promise<Response<true>> {
+  async updateName(uid: Identifier, newName: Name): Promise<Response<true>> {
     const userExists = await this.db
       .select()
       .from(users)
@@ -110,7 +110,7 @@ export class UsersRepositoryImplementation implements UsersRepository {
     return Response.success(true);
   }
 
-  async updateEmail(uid: Uid, newEmail: Email): Promise<Response<true>> {
+  async updateEmail(uid: Identifier, newEmail: Email): Promise<Response<true>> {
     const userExists = await this.db
       .select()
       .from(users)
@@ -128,7 +128,7 @@ export class UsersRepositoryImplementation implements UsersRepository {
   }
 
   async updatePassword(
-    uid: Uid,
+    uid: Identifier,
     newPassword: Password
   ): Promise<Response<true>> {
     const userExists = await this.db
@@ -150,7 +150,7 @@ export class UsersRepositoryImplementation implements UsersRepository {
   }
 
   async updateLinkedEmails(
-    uid: Uid,
+    uid: Identifier,
     linkedEmails: Email[]
   ): Promise<Response<true>> {
     const userExists = await this.db

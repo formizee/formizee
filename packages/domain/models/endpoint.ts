@@ -1,9 +1,9 @@
-import {Uid, Email} from './values';
+import {Identifier, Email} from './values';
 
 export class Endpoint {
-  private readonly _id: Uid;
+  private readonly _id: Identifier;
   private readonly _name: string;
-  private readonly _owner: Uid;
+  private readonly _owner: Identifier;
 
   private readonly _isEnabled: boolean;
   private readonly _emailNotifications: boolean;
@@ -26,8 +26,8 @@ export class Endpoint {
     updatedAt: Date
   ) {
     this._name = name;
-    this._id = new Uid(uid);
-    this._owner = new Uid(owner);
+    this._id = new Identifier(uid);
+    this._owner = new Identifier(owner);
 
     this._isEnabled = isEnabled;
     this._emailNotifications = emailNotifications;

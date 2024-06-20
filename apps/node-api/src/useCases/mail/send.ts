@@ -1,5 +1,5 @@
 import {type Response, type Mail} from 'domain/models';
-import {type Uid} from 'domain/models/values';
+import {type Identifier} from 'domain/models/values';
 import {resolve} from '@/lib/di';
 
 export class SendMail {
@@ -10,7 +10,7 @@ export class SendMail {
     this._mail = mail;
   }
 
-  public async run(): Promise<Response<Uid>> {
+  public async run(): Promise<Response<Identifier>> {
     return await this._service.send(this._mail);
   }
 }

@@ -1,14 +1,14 @@
 import {type Response, type Submission} from 'domain/models';
-import {Uid} from 'domain/models/values';
+import {Identifier} from 'domain/models/values';
 import {resolve} from '@/lib/di';
 
 export class SaveSubmission {
   private readonly _repository = resolve('submissionsRepository');
-  private readonly _endpoint: Uid;
+  private readonly _endpoint: Identifier;
   private readonly _data: object;
 
   constructor(endpoint: string, data: object) {
-    this._endpoint = new Uid(endpoint);
+    this._endpoint = new Identifier(endpoint);
     this._data = data;
   }
 

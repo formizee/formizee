@@ -1,6 +1,6 @@
 import {type MailService} from 'domain/services';
 import {Response, type Mail} from 'domain/models';
-import {Uid} from 'domain/models/values';
+import {Identifier} from 'domain/models/values';
 import {Resend} from 'resend';
 import {SecretsProvider} from '@/lib/secrets';
 
@@ -12,7 +12,7 @@ export class MailServiceImplementation implements MailService {
     this.smtp = new Resend(apiKey);
   }
 
-  async send(mail: Mail): Promise<Response<Uid>> {
+  async send(mail: Mail): Promise<Response<Identifier>> {
     const {data, error} = await this.smtp.emails.send({
       from: `${mail.name} <${mail.from}>`,
       to: mail.to,
@@ -23,7 +23,7 @@ export class MailServiceImplementation implements MailService {
     if (error) return Response.error('Unexpected error.', 500);
     if (!data?.id) return Response.error('Unexpected error.', 500);
 
-    const response = new Uid(data.id);
+    const response = new Identifier(data.id);
     return Response.success(response, 201);
   }
 }

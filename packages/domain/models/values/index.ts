@@ -2,4 +2,4 @@ export {LinkedEmail} from './linked-email';
 export {Password} from './password';
 export {Email} from './email';
 export {Name} from './name';
-export {Uid} from './uid';
+export {Identifier} from './identifier';

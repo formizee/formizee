@@ -1,14 +1,14 @@
 import {type User, type Response} from 'domain/models';
-import {Email, Uid} from 'domain/models/values';
+import {Email, Identifier} from 'domain/models/values';
 import {resolve} from '@/lib/di';
 
 export class LoadUser {
   private readonly _service = resolve('usersRepository');
-  private readonly _identifier: Uid | Email;
+  private readonly _identifier: Identifier | Email;
 
   constructor(identifier: string) {
     try {
-      this._identifier = new Uid(identifier);
+      this._identifier = new Identifier(identifier);
     } catch {
       this._identifier = new Email(identifier);
     }

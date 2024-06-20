@@ -1,5 +1,5 @@
 import {randomInt} from 'crypto';
-import type {Uid, Email, Name, Password} from 'domain/models/values';
+import type {Identifier, Email, Name, Password} from 'domain/models/values';
 import type {AuthService as Service} from 'domain/services';
 import {Response, type User} from 'domain/models';
 import bcryptjs from 'bcryptjs';
@@ -149,7 +149,7 @@ export class AuthService implements Service {
   }
 
   async sendLinkedEmailVerification(
-    uid: Uid,
+    uid: Identifier,
     email: Email
   ): Promise<Response<true>> {
     const user = await db.query.users.findFirst({

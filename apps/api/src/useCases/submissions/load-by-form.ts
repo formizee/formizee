@@ -1,13 +1,13 @@
 import {type Response, type Submission} from 'domain/models';
-import {Uid} from 'domain/models/values';
+import {Identifier} from 'domain/models/values';
 import {resolve} from '@/lib/di';
 
 export class LoadSubmissionByForm {
   private readonly _repository = resolve('submissionsRepository');
-  private readonly _uid: Uid;
+  private readonly _uid: Identifier;
 
   constructor(form: string) {
-    this._uid = new Uid(form);
+    this._uid = new Identifier(form);
   }
 
   async run(): Promise<Response<Submission[]>> {

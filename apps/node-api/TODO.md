@@ -12,7 +12,7 @@
 
 - [ ] Implement API Keys.
  
-- [ ] Add tiny Uid for submissions and endpoints.
+- [ ] Add tiny Identifier for submissions and endpoints.
 - [ ] Update returned models and rename the utils folder to models.
 
 - [ ] Use env vars instead of urls in order to self host in a future.

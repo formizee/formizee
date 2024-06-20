@@ -1,14 +1,14 @@
 import {type Response, type Submission} from '../models';
-import {type Uid} from '../models/values';
+import {type Identifier} from '../models/values';
 
 export interface SubmissionsRepository {
-  loadAll: (endpoint: Uid) => Promise<Response<Submission[]>>;
-  load: (endpoint: Uid, uid: Uid) => Promise<Response<Submission>>;
+  loadAll: (endpoint: Identifier) => Promise<Response<Submission[]>>;
+  load: (endpoint: Identifier, uid: Identifier) => Promise<Response<Submission>>;
   update: (
-    endpoint: Uid,
-    uid: Uid,
+    endpoint: Identifier,
+    uid: Identifier,
     isSpam: boolean
   ) => Promise<Response<Submission>>;
-  save: (endpoint: Uid, data: object) => Promise<Response<Submission>>;
-  delete: (endpoint: Uid, uid: Uid) => Promise<Response<true>>;
+  save: (endpoint: Identifier, data: object) => Promise<Response<Submission>>;
+  delete: (endpoint: Identifier, uid: Identifier) => Promise<Response<true>>;
 }

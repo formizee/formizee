@@ -1,11 +1,11 @@
 import type {EndpointsRepository as Repository} from 'domain/repositories';
-import type {Uid, Email} from 'domain/models/values';
+import type {Identifier, Email} from 'domain/models/values';
 import {Response, type Endpoint} from 'domain/models';
 import {eq, db, endpoints, users} from '@drizzle/db';
 import {createEndpoint} from '@/lib/utils';
 
 export class EndpointsRepository implements Repository {
-  async loadAll(owner: Uid): Promise<Response<Endpoint[]>> {
+  async loadAll(owner: Identifier): Promise<Response<Endpoint[]>> {
     const data = await db.query.endpoints.findMany({
       where: eq(endpoints.owner, owner.value)
     });
@@ -20,7 +20,7 @@ export class EndpointsRepository implements Repository {
     return Response.success(response);
   }
 
-  async load(uid: Uid): Promise<Response<Endpoint>> {
+  async load(uid: Identifier): Promise<Response<Endpoint>> {
     const data = await db.query.endpoints.findFirst({
       where: eq(endpoints.id, uid.value)
     });
@@ -33,7 +33,7 @@ export class EndpointsRepository implements Repository {
     return Response.success(response);
   }
 
-  async save(name: string, owner: Uid): Promise<Response<Endpoint>> {
+  async save(name: string, owner: Identifier): Promise<Response<Endpoint>> {
     const user = await db.query.users.findFirst({
       where: eq(users.id, owner.value)
     });
@@ -63,7 +63,7 @@ export class EndpointsRepository implements Repository {
     return Response.success(response);
   }
 
-  async delete(uid: Uid): Promise<Response<true>> {
+  async delete(uid: Identifier): Promise<Response<true>> {
     const endpoint = await db.query.endpoints.findFirst({
       where: eq(endpoints.id, uid.value)
     });
@@ -88,7 +88,7 @@ export class EndpointsRepository implements Repository {
     return Response.success(true);
   }
 
-  async updateName(uid: Uid, name: string): Promise<Response<Endpoint>> {
+  async updateName(uid: Identifier, name: string): Promise<Response<Endpoint>> {
     const endpoint = await db.query.endpoints.findFirst({
       where: eq(endpoints.id, uid.value)
     });
@@ -110,7 +110,7 @@ export class EndpointsRepository implements Repository {
   }
 
   async updateEnabled(
-    uid: Uid,
+    uid: Identifier,
     isEnabled: boolean
   ): Promise<Response<Endpoint>> {
     const endpoint = await db.query.endpoints.findFirst({
@@ -134,7 +134,7 @@ export class EndpointsRepository implements Repository {
   }
 
   async updateRedirectUrl(
-    uid: Uid,
+    uid: Identifier,
     redirectUrl: URL
   ): Promise<Response<Endpoint>> {
     const endpoint = await db.query.endpoints.findFirst({
@@ -158,7 +158,7 @@ export class EndpointsRepository implements Repository {
   }
 
   async updateTargetEmail(
-    uid: Uid,
+    uid: Identifier,
     targetEmail: Email
   ): Promise<Response<Endpoint>> {
     const endpoint = await db.query.endpoints.findFirst({
@@ -222,7 +222,7 @@ export class EndpointsRepository implements Repository {
   }
 
   async updateEmailNotifications(
-    uid: Uid,
+    uid: Identifier,
     isEnabled: boolean
   ): Promise<Response<Endpoint>> {
     const endpoint = await db.query.endpoints.findFirst({

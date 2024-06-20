@@ -1,8 +1,8 @@
-import {Uid} from './values';
+import {Identifier} from './values';
 
 export class Submission {
-  private readonly _id: Uid;
-  private readonly _endpoint: Uid;
+  private readonly _id: Identifier;
+  private readonly _endpoint: Identifier;
 
   private readonly _data: object;
   private readonly _isSpam: boolean;
@@ -17,9 +17,9 @@ export class Submission {
     isSpam?: boolean
   ) {
     this._data = data;
-    this._id = new Uid(uid);
+    this._id = new Identifier(uid);
     this._isSpam = isSpam ?? false;
-    this._endpoint = new Uid(endpoint);
+    this._endpoint = new Identifier(endpoint);
     this._createdAt = new Date(createdAt);
   }
 

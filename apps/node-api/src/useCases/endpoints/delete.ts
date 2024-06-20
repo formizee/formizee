@@ -1,13 +1,13 @@
 import {type Response} from 'domain/models';
-import {Uid} from 'domain/models/values';
+import {Identifier} from 'domain/models/values';
 import {resolve} from '@/lib/di';
 
 export class DeleteEndpoint {
   private readonly _repository = resolve('endpointsRepository');
-  private readonly _uid: Uid;
+  private readonly _uid: Identifier;
 
   constructor(uid: string) {
-    this._uid = new Uid(uid);
+    this._uid = new Identifier(uid);
   }
 
   async run(): Promise<Response<true>> {

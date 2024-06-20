@@ -1,13 +1,13 @@
 import {type Endpoint, type Response} from 'domain/models';
-import {Uid} from 'domain/models/values';
+import {Identifier} from 'domain/models/values';
 import {resolve} from '@/lib/di';
 
 export class LoadAllEndpoints {
   private readonly _repository = resolve('endpointsRepository');
-  private readonly _uid: Uid;
+  private readonly _uid: Identifier;
 
   constructor(owner: string) {
-    this._uid = new Uid(owner);
+    this._uid = new Identifier(owner);
   }
 
   async run(): Promise<Response<Endpoint[]>> {

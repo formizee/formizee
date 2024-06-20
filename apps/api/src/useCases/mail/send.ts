@@ -1,7 +1,7 @@
 /*eslint import/no-cycle: [2, { maxDepth: 1 }] -- The depth is allowed in order to reuse cases */
 
 import {type Response, type Mail} from 'domain/models';
-import {type Uid} from 'domain/models/values';
+import {type Identifier} from 'domain/models/values';
 import {resolve} from '@/lib/di';
 
 export class MailSend {
@@ -12,7 +12,7 @@ export class MailSend {
     this._mail = mail;
   }
 
-  public async run(): Promise<Response<Uid>> {
+  public async run(): Promise<Response<Identifier>> {
     return await this._service.send(this._mail);
   }
 }

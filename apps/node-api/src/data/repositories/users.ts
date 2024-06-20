@@ -1,5 +1,5 @@
 import type {UsersRepository as Repository} from 'domain/repositories';
-import type {Uid, Email, Name, Password} from 'domain/models/values';
+import type {Identifier, Email, Name, Password} from 'domain/models/values';
 import {Response, type User} from 'domain/models';
 import bcryptjs from 'bcryptjs';
 import {db, eq, users} from '@drizzle/db';
@@ -7,7 +7,7 @@ import {createUser} from '@/lib/utils';
 import {AuthService} from '../services';
 
 export class UsersRepository implements Repository {
-  async load(uid: Uid | Email): Promise<Response<User>> {
+  async load(uid: Identifier | Email): Promise<Response<User>> {
     const data = await db.query.users.findFirst({
       where: eq(users.id, uid.value)
     });
@@ -17,7 +17,7 @@ export class UsersRepository implements Repository {
     return Response.success(user);
   }
 
-  async delete(uid: Uid, password: string): Promise<Response<true>> {
+  async delete(uid: Identifier, password: string): Promise<Response<true>> {
     const user = await db.query.users.findFirst({
       where: eq(users.id, uid.value)
     });
@@ -34,7 +34,7 @@ export class UsersRepository implements Repository {
     return Response.success(true);
   }
 
-  async updateName(uid: Uid, name: Name): Promise<Response<User>> {
+  async updateName(uid: Identifier, name: Name): Promise<Response<User>> {
     const user = await db.query.users.findFirst({
       where: eq(users.id, uid.value)
     });
@@ -60,7 +60,7 @@ export class UsersRepository implements Repository {
     return Response.success(response);
   }
 
-  async updateEmail(uid: Uid, email: Email): Promise<Response<User>> {
+  async updateEmail(uid: Identifier, email: Email): Promise<Response<User>> {
     const user = await db.query.users.findFirst({
       where: eq(users.id, uid.value)
     });
@@ -107,7 +107,7 @@ export class UsersRepository implements Repository {
     return Response.success(response);
   }
 
-  async updatePassword(uid: Uid, password: Password): Promise<Response<User>> {
+  async updatePassword(uid: Identifier, password: Password): Promise<Response<User>> {
     const user = await db.query.users.findFirst({
       where: eq(users.id, uid.value)
     });
@@ -128,7 +128,7 @@ export class UsersRepository implements Repository {
     return Response.success(response);
   }
 
-  async saveLinkedEmail(uid: Uid, linkedEmail: Email): Promise<Response<User>> {
+  async saveLinkedEmail(uid: Identifier, linkedEmail: Email): Promise<Response<User>> {
     const user = await db.query.users.findFirst({
       where: eq(users.id, uid.value)
     });
@@ -163,7 +163,7 @@ export class UsersRepository implements Repository {
   }
 
   async deleteLinkedEmail(
-    uid: Uid,
+    uid: Identifier,
     linkedEmail: Email
   ): Promise<Response<true>> {
     const user = await db.query.users.findFirst({
