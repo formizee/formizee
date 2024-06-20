@@ -1,4 +1,4 @@
-import { Identifier } from './values';
+import {Identifier} from './values';
 
 export class Submission {
   private readonly _id: Identifier;
