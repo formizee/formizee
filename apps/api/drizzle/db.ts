@@ -6,10 +6,13 @@ import '@/lib/enviroment';
 
 // Schemas
 export const users = schemas.users;
+export const teams = schemas.teams;
+export const members = schemas.members;
 export const waitlist = schemas.waitlist;
 export const endpoints = schemas.endpoints;
 export const authTokens = schemas.authTokens;
 export const submissions = schemas.submissions;
+export const linkedEmails = schemas.linkedEmails;
 
 const client = new pg.Client({
   connectionString: process.env.DATABASE_URL

@@ -38,9 +38,13 @@ export const teams = pgTable('teams', {
 export const members = pgTable('members', {
   id: uuid('id').defaultRandom().primaryKey(),
 
-  user: uuid('user_id').references(() => users.id, {onDelete: 'cascade'}),
+  user: uuid('user_id')
+    .notNull()
+    .references(() => users.id, {onDelete: 'cascade'}),
 
-  team: uuid('team_id').references(() => teams.id, {onDelete: 'cascade'}),
+  team: uuid('team_id')
+    .notNull()
+    .references(() => teams.id, {onDelete: 'cascade'}),
 
   role: teamRoles('role').notNull().default('member'),
 
