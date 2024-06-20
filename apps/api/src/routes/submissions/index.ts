@@ -31,26 +31,22 @@ submissions.get('/:endpoint', zValidator('param', GetAll), async context => {
   return context.json(response.body, response.status as StatusCode);
 });
 
-submissions.get(
-  '/:endpoint/:id',
-  zValidator('param', Param),
-  async context => {
-    const {isAuth, user} = await verifySession(context);
-    const {endpoint, id} = context.req.valid('param');
+submissions.get('/:endpoint/:id', zValidator('param', Param), async context => {
+  const {isAuth, user} = await verifySession(context);
+  const {endpoint, id} = context.req.valid('param');
 
-    if (!isAuth || !user) {
-      return context.json(
-        {error: 'Please, login first in order to do this action.'},
-        401
-      );
-    }
-
-    const service = new LoadSubmission(endpoint, id);
-    const response = await service.run();
-
-    return context.json(response.body, response.status as StatusCode);
+  if (!isAuth || !user) {
+    return context.json(
+      {error: 'Please, login first in order to do this action.'},
+      401
+    );
   }
-);
+
+  const service = new LoadSubmission(endpoint, id);
+  const response = await service.run();
+
+  return context.json(response.body, response.status as StatusCode);
+});
 
 submissions.post('/:endpoint', zValidator('param', Post), async context => {
   const contentType = context.req.header('Content-Type');
