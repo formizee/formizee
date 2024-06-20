@@ -26,7 +26,7 @@ function PrivacyPolicy(): JSX.Element {
         We operate the website{' '}
         <Link
           className="underline underline-offset-2"
-          href="http://www.formizee.com">
+          href="https://www.formizee.com">
           https://www.formizee.com
         </Link>{' '}
         (the &quot;<strong className="font-medium text-neutral-50">Site</strong>

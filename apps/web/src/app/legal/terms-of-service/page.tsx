@@ -26,8 +26,8 @@ function TermsOfService(): JSX.Element {
         We operate the website{' '}
         <Link
           className="underline underline-offset-2"
-          href="http://www.formizee.com">
-          http://www.formizee.com
+          href="https://www.formizee.com">
+          https://www.formizee.com
         </Link>{' '}
         (the &quot;<strong className="font-medium text-neutral-50">Site</strong>
         &quot;), as well as any other related products and services that refer
@@ -482,7 +482,7 @@ function TermsOfService(): JSX.Element {
         We care about data privacy and security. Please review our{' '}
         <Link
           className="underline underline-offset-2"
-          href="http://www.formizee.com/legal/privacy-policy">
+          href="https://www.formizee.com/legal/privacy-policy">
           Privacy Policy
         </Link>
         .
