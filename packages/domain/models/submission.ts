@@ -6,6 +6,7 @@ export class Submission {
 
   private readonly _data: object;
   private readonly _isSpam: boolean;
+  private readonly _isRead: boolean;
 
   private readonly _createdAt: Date;
 
@@ -13,12 +14,14 @@ export class Submission {
     id: string,
     endpoint: string,
     data: object,
-    createdAt: Date,
-    isSpam?: boolean
+    isSpam: boolean,
+    isRead: boolean,
+    createdAt: Date
   ) {
     this._data = data;
     this._id = new Identifier(id);
-    this._isSpam = isSpam ?? false;
+    this._isSpam = isSpam;
+    this._isRead = isRead;
     this._endpoint = new Identifier(endpoint);
     this._createdAt = new Date(createdAt);
   }
@@ -33,6 +36,10 @@ export class Submission {
 
   get isSpam(): boolean {
     return this._isSpam;
+  }
+
+  get isRead(): boolean {
+    return this._isRead;
   }
 
   get endpoint(): string {
