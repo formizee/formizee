@@ -17,7 +17,7 @@ router.get('/', async context => {
     );
   }
 
-  const service = new LoadEndpointsByOwner(user.uid);
+  const service = new LoadEndpointsByOwner(user.id);
   const response = await service.run();
 
   return context.json(response.body, response.status as StatusCode);
@@ -34,7 +34,7 @@ router.post('/', zValidator('json', saveSchema), async context => {
 
   const {name} = context.req.valid('json');
 
-  const service = new SaveEndpoint(name, user.uid);
+  const service = new SaveEndpoint(name, user.id);
   const response = await service.run();
 
   return context.json(response.body, response.status as StatusCode);

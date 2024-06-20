@@ -12,7 +12,7 @@ export async function createSession(
 
   const session = await encrypt(context, {
     expiresAt,
-    uid: payload.uid,
+    id: payload.id,
     name: payload.name,
     permission: payload.permission
   });
@@ -37,7 +37,7 @@ export async function verifySession(
   return {
     isAuth: true,
     user: {
-      uid: session.uid as string,
+      id: session.uid as string,
       name: session.name as string,
       permission: session.permission === 'admin' ? 'admin' : 'user'
     }

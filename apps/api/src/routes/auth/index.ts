@@ -1,6 +1,7 @@
+// @ts-ignore
+
 import {type StatusCode} from 'hono/utils/http-status';
 import {Hono} from 'hono';
-/* @ts-expect-error-next-line */
 import {zValidator} from '@hono/zod-validator';
 import type {Response, User} from 'domain/models';
 import {createSession, deleteSession} from '@/lib/auth';
@@ -35,7 +36,7 @@ auth.post('/login', zValidator('json', loginSchema), async context => {
   const {id, name, permission, isVerified} = user.body;
 
   if (isVerified) {
-    await createSession(context, {id: id, name, permission});
+    await createSession(context, {id, name, permission});
     return context.json(user.body, 200);
   }
   const verificationService = new AuthSendVerification(email);
@@ -100,7 +101,7 @@ auth.post('/verify', zValidator('json', verifyTokenSchema), async context => {
   if (!user.ok) return context.json(user.body, user.status as StatusCode);
 
   await createSession(context, {
-    uid: user.body.id,
+    id: user.body.id,
     name: user.body.name,
     permission: user.body.permission
   });

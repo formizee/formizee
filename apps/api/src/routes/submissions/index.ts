@@ -44,7 +44,7 @@ router.get('/:uid', zValidator('param', paramSchema), async context => {
     );
   }
 
-  if (endpointResponse.body.owner !== user.uid) {
+  if (endpointResponse.body.owner !== user.id) {
     return context.json(
       {error: 'You do not have permission to access this data'},
       401
@@ -78,7 +78,7 @@ router.get('/:form', zValidator('param', paramSchema), async context => {
     );
   }
 
-  if (endpointResponse.body.owner !== user.uid) {
+  if (endpointResponse.body.owner !== user.id) {
     return context.json(
       {error: 'You do not have permission to access this data'},
       401
@@ -115,7 +115,7 @@ router.post('/:form', zValidator('param', paramSchema), async context => {
     );
   }
 
-  if (endpointResponse.body.owner !== user.uid) {
+  if (endpointResponse.body.owner !== user.id) {
     return context.json(
       {error: 'You do not have permission to access this data'},
       401
@@ -163,7 +163,7 @@ router.delete('/:uid', zValidator('param', paramSchema), async context => {
     );
   }
 
-  if (endpointResponse.body.owner !== user.uid) {
+  if (endpointResponse.body.owner !== user.id) {
     return context.json(
       {error: 'You do not have permission to access this data'},
       401

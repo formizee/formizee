@@ -3,7 +3,7 @@ import {type Context} from 'hono';
 import {type Env} from '@/types';
 
 export interface SessionPayload {
-  uid: string;
+  id: string;
   name: string;
   expiresAt: Date;
   permission: 'user' | 'admin';
@@ -18,7 +18,7 @@ export async function encrypt(
   const encodedKey = new TextEncoder().encode(env.SESSION_SECRET);
 
   return new SignJWT({
-    uid: payload.uid,
+    uid: payload.id,
     name: payload.name,
     expiresAt: payload.expiresAt,
     permission: payload.permission
