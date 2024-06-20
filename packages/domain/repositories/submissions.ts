@@ -5,13 +5,13 @@ export interface SubmissionsRepository {
   loadAll: (endpoint: Identifier) => Promise<Response<Submission[]>>;
   load: (
     endpoint: Identifier,
-    uid: Identifier
+    id: Identifier
   ) => Promise<Response<Submission>>;
   update: (
     endpoint: Identifier,
-    uid: Identifier,
+    id: Identifier,
     isSpam: boolean
   ) => Promise<Response<Submission>>;
   save: (endpoint: Identifier, data: object) => Promise<Response<Submission>>;
-  delete: (endpoint: Identifier, uid: Identifier) => Promise<Response<true>>;
+  delete: (endpoint: Identifier, id: Identifier) => Promise<Response<true>>;
 }

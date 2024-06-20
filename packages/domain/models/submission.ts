@@ -1,4 +1,4 @@
-import {Identifier} from './values';
+import { Identifier } from './values';
 
 export class Submission {
   private readonly _id: Identifier;
@@ -10,14 +10,14 @@ export class Submission {
   private readonly _createdAt: Date;
 
   constructor(
-    uid: string,
+    id: string,
     endpoint: string,
     data: object,
     createdAt: Date,
     isSpam?: boolean
   ) {
     this._data = data;
-    this._id = new Identifier(uid);
+    this._id = new Identifier(id);
     this._isSpam = isSpam ?? false;
     this._endpoint = new Identifier(endpoint);
     this._createdAt = new Date(createdAt);
