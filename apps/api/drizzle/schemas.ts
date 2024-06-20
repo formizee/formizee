@@ -12,7 +12,7 @@ import {sql} from 'drizzle-orm';
 
 export const teamRoles = pgEnum('team_roles', ['owner', 'member']);
 export const apiKeyScopes = pgEnum('api_key_scopes', ['team', 'full access']);
-export const userPermissions = pgEnum('user_permissions', ['read', 'edit', 'create', 'delete']);
+export const userPermissions = pgEnum('user_permissions', ['read', 'edit', 'create', 'all']);
 export const billingPlans = pgEnum('billing_plans', ['hobby', 'professional', 'teams', 'custom']);
 
 export const teams = pgTable('teams', {
@@ -49,9 +49,8 @@ export const members = pgTable('members', {
   role: teamRoles('role').notNull().default('member'),
 
   permissions: userPermissions('permissions')
-    .array()
     .notNull()
-    .default(['read']),
+    .default('read'),
 
   createdAt: timestamp('created_at').notNull().defaultNow(),
 
