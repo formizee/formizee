@@ -241,10 +241,7 @@ export class AuthService implements Service {
     }
 
     const currentToken = await db.query.authTokens.findFirst({
-      where: and(
-        eq(authTokens.user, data.id),
-        eq(authTokens.email, data.email)
-      )
+      where: and(eq(authTokens.user, data.id), eq(authTokens.email, data.email))
     });
 
     if (!currentToken) {
