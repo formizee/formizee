@@ -1,8 +1,6 @@
 import {
   boolean,
   text,
-  serial,
-  bigserial,
   timestamp,
   uuid,
   integer,
@@ -12,9 +10,8 @@ import {
 } from 'drizzle-orm/pg-core';
 import {sql} from 'drizzle-orm';
 
-export const permissions = pgEnum('permissions', ['user', 'admin']);
-
 export const teamRoles = pgEnum('team_roles', ['owner', 'member']);
+export const apiKeyScopes = pgEnum('api_key_scopes', ['team', 'full access']);
 export const userPermissions = pgEnum('user_permissions', ['read', 'edit', 'create', 'delete']);
 export const billingPlans = pgEnum('billing_plans', ['hobby', 'professional', 'teams', 'custom']);
 
@@ -71,17 +68,6 @@ export const users = pgTable('users', {
 
   isVerified: boolean('is_verified').notNull().default(false),
 
-  permission: permissions('permissions').notNull().default('user'),
-
-  forms: uuid('forms')
-    .array()
-    .notNull()
-    .default(sql`ARRAY[]::uuid[]`),
-
-  linkedEmails: jsonb('linked_emails')
-    .notNull()
-    .$type<{email: string; isVerified: boolean}[]>(),
-
   lastAccess: timestamp('last_access').notNull().defaultNow(),
 
   createdAt: timestamp('created_at').notNull().defaultNow(),
@@ -114,15 +100,15 @@ export const endpoints = pgTable('endpoints', {
 
   name: text('name').notNull(),
 
-  owner: uuid('owner')
+  team: uuid('team_id')
     .notNull()
-    .references(() => users.id, {onDelete: 'set null'}),
+    .references(() => teams.id, {onDelete: 'set null'}),
 
-  isEnabled: boolean('form_enabled').notNull().default(true),
+  isEnabled: boolean('is_enabled').notNull().default(true),
 
-  emailNotifications: boolean('email_enabled').notNull().default(true),
+  emailNotifications: boolean('email_notifications').notNull().default(true),
 
-  targetEmail: text('target_mail').notNull(),
+  targetEmails: text('target_mail').array().notNull(),
 
   redirectUrl: text('redirect_url')
     .notNull()
@@ -137,29 +123,31 @@ export const endpoints = pgTable('endpoints', {
 });
 
 export const submissions = pgTable('submissions', {
-  id: bigserial('id', {mode: 'number'}).primaryKey(),
+  id: uuid('id').defaultRandom().primaryKey(),
 
-  endpoint: uuid('endpoint')
-    .references(() => endpoints.id, {onDelete: 'set null'})
-    .notNull(),
+  endpoint: uuid('endpoint_id')
+    .notNull()
+    .references(() => endpoints.id, {onDelete: 'set null'}),
 
   data: jsonb('data').notNull().$type<object>(),
 
   isSpam: boolean('is_spam').notNull().default(false),
 
+  isRead: boolean('is_read').notNull().default(false),
+
   createdAt: timestamp('created_at').notNull().defaultNow()
 });
 
 export const authTokens = pgTable('auth_tokens', {
-  id: serial('id').primaryKey(),
+  id: uuid('id').defaultRandom().primaryKey(),
 
-  token: integer('token').notNull(),
-
-  user: uuid('user')
+  user: uuid('user_id')
     .notNull()
     .references(() => users.id, {onDelete: 'cascade'}),
 
   email: text('email').notNull(),
+
+  token: integer('token').notNull(),
 
   createdAt: timestamp('created_at').notNull().defaultNow(),
 
@@ -168,8 +156,29 @@ export const authTokens = pgTable('auth_tokens', {
     .$default(() => new Date(Date.now() + 60 * 60 * 1000))
 });
 
+export const apiKeys = pgTable('api_keys', {
+  id: uuid('id').defaultRandom().primaryKey(),
+
+  user: uuid('user_id')
+    .notNull()
+    .references(() => users.id, {onDelete: 'cascade'}),
+
+  team: uuid('team_id')
+    .references(() => teams.id, {onDelete: 'cascade'}),
+
+  scope: apiKeyScopes('scope').notNull().default('full access'),
+
+  key: uuid('key').notNull().defaultRandom(),
+
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+
+  expiresAt: timestamp('expires_at')
+    .notNull()
+    .$default(() => new Date(Date.now() + 24 * 60 * 60 * 1000))
+})
+
 export const waitlist = pgTable('waitlist', {
-  id: serial('id').primaryKey(),
+  id: uuid('id').defaultRandom().primaryKey(),
 
   email: text('email').notNull().unique(),
 
