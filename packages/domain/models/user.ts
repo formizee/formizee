@@ -3,7 +3,7 @@ import {Uid, Email, Name, LinkedEmail} from './values';
 export type UserPermission = 'user' | 'admin';
 
 export class User {
-  private readonly _uid: Uid;
+  private readonly _id: Uid;
   private readonly _name: Name;
   private readonly _email: Email;
   private readonly _isVerified: boolean;
@@ -16,7 +16,7 @@ export class User {
   private readonly _updatedAt: Date;
 
   constructor(
-    uid: string,
+    id: string,
     name: string,
     email: string,
     isVerified: boolean,
@@ -26,7 +26,7 @@ export class User {
     forms?: string[],
     linkedEmails?: {email: string; isVerified: boolean}[]
   ) {
-    this._uid = new Uid(uid);
+    this._id = new Uid(id);
     this._name = new Name(name);
     this._email = new Email(email);
     this._isVerified = isVerified;
@@ -48,8 +48,8 @@ export class User {
     this._updatedAt = updatedAt;
   }
 
-  get uid(): string {
-    return this._uid.value;
+  get id(): string {
+    return this._id.value;
   }
 
   get name(): string {

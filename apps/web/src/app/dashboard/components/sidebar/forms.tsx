@@ -27,7 +27,7 @@ export function SidebarForms(props: SidebarFormsProps): JSX.Element {
   return (
     <div className="flex h-full flex-col items-start overflow-y-auto">
       {props.forms.map(item => (
-        <SidebarFormsItem key={item.uid}>{item.name}</SidebarFormsItem>
+        <SidebarFormsItem key={item.id}>{item.name}</SidebarFormsItem>
       ))}
     </div>
   );

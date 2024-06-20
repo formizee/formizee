@@ -1,7 +1,7 @@
 import {Uid, Email} from './values';
 
 export class Endpoint {
-  private readonly _uid: Uid;
+  private readonly _id: Uid;
   private readonly _name: string;
   private readonly _owner: Uid;
 
@@ -26,7 +26,7 @@ export class Endpoint {
     updatedAt: Date
   ) {
     this._name = name;
-    this._uid = new Uid(uid);
+    this._id = new Uid(uid);
     this._owner = new Uid(owner);
 
     this._isEnabled = isEnabled;
@@ -40,8 +40,8 @@ export class Endpoint {
     this._updatedAt = updatedAt;
   }
 
-  get uid(): string {
-    return this._uid.value;
+  get id(): string {
+    return this._id.value;
   }
 
   get name(): string {

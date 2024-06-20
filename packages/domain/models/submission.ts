@@ -1,7 +1,7 @@
 import {Uid} from './values';
 
 export class Submission {
-  private readonly _uid: Uid;
+  private readonly _id: Uid;
   private readonly _endpoint: Uid;
 
   private readonly _data: object;
@@ -17,14 +17,14 @@ export class Submission {
     isSpam?: boolean
   ) {
     this._data = data;
-    this._uid = new Uid(uid);
+    this._id = new Uid(uid);
     this._isSpam = isSpam ?? false;
     this._endpoint = new Uid(endpoint);
     this._createdAt = new Date(createdAt);
   }
 
-  get uid(): string {
-    return this._uid.value;
+  get id(): string {
+    return this._id.value;
   }
 
   get data(): unknown {

@@ -71,7 +71,7 @@ submissions.post('/:endpoint', zValidator('param', Post), async context => {
     const form = await context.req.formData();
     const submission = Object.fromEntries(form);
 
-    const service = new SaveSubmission(endpoint.body.uid, submission);
+    const service = new SaveSubmission(endpoint.body.id, submission);
     const response = await service.run();
 
     if (!response.ok) {
@@ -83,7 +83,7 @@ submissions.post('/:endpoint', zValidator('param', Post), async context => {
 
   if (isJson) {
     const submission = await context.req.json<object>();
-    const service = new SaveSubmission(endpoint.body.uid, submission);
+    const service = new SaveSubmission(endpoint.body.id, submission);
 
     const response = await service.run();
     return context.json(response.body, response.status as StatusCode);
