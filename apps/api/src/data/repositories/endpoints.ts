@@ -5,9 +5,9 @@ import {eq, db, endpoints, users} from '@drizzle/db';
 import {createEndpoint} from '@/lib/utils';
 
 export class EndpointsRepository implements Repository {
-  async loadAll(owner: Identifier): Promise<Response<Endpoint[]>> {
+  async loadAll(team: Identifier): Promise<Response<Endpoint[]>> {
     const data = await db.query.endpoints.findMany({
-      where: eq(endpoints.owner, owner.value)
+      where: eq(endpoints.owner, team.value)
     });
     if (data.length < 1) {
       return Response.error('There is no forms yet.', 404);
@@ -20,9 +20,9 @@ export class EndpointsRepository implements Repository {
     return Response.success(response);
   }
 
-  async load(uid: Identifier): Promise<Response<Endpoint>> {
+  async load(id: Identifier): Promise<Response<Endpoint>> {
     const data = await db.query.endpoints.findFirst({
-      where: eq(endpoints.id, uid.value)
+      where: eq(endpoints.id, id.value)
     });
     if (!data) {
       return Response.error('Endpoint not found.', 404);
@@ -33,9 +33,9 @@ export class EndpointsRepository implements Repository {
     return Response.success(response);
   }
 
-  async save(name: string, owner: Identifier): Promise<Response<Endpoint>> {
+  async save(name: string, team: Identifier): Promise<Response<Endpoint>> {
     const user = await db.query.users.findFirst({
-      where: eq(users.id, owner.value)
+      where: eq(users.id, team.value)
     });
     if (!user) {
       return Response.error('User not exits', 404);
@@ -45,7 +45,7 @@ export class EndpointsRepository implements Repository {
       .insert(endpoints)
       .values({
         name,
-        owner: owner.value,
+        owner: team.value,
         targetEmail: user.email
       })
       .returning();
@@ -63,9 +63,9 @@ export class EndpointsRepository implements Repository {
     return Response.success(response);
   }
 
-  async delete(uid: Identifier): Promise<Response<true>> {
+  async delete(id: Identifier): Promise<Response<true>> {
     const endpoint = await db.query.endpoints.findFirst({
-      where: eq(endpoints.id, uid.value)
+      where: eq(endpoints.id, id.value)
     });
 
     if (!endpoint) {
@@ -80,7 +80,7 @@ export class EndpointsRepository implements Repository {
       return Response.error('The endpoint does not have owner.', 404);
     }
 
-    await db.delete(endpoints).where(eq(endpoints.id, uid.value));
+    await db.delete(endpoints).where(eq(endpoints.id, id.value));
 
     const forms = user.forms.filter(form => form !== endpoint.id);
     await db.update(users).set({forms}).where(eq(users.id, user.id));
@@ -88,16 +88,16 @@ export class EndpointsRepository implements Repository {
     return Response.success(true);
   }
 
-  async updateName(uid: Identifier, name: string): Promise<Response<Endpoint>> {
+  async updateName(id: Identifier, name: string): Promise<Response<Endpoint>> {
     const endpoint = await db.query.endpoints.findFirst({
-      where: eq(endpoints.id, uid.value)
+      where: eq(endpoints.id, id.value)
     });
     if (!endpoint) return Response.error('Endpoint not found.', 404);
 
     const data = await db
       .update(endpoints)
       .set({name})
-      .where(eq(endpoints.id, uid.value))
+      .where(eq(endpoints.id, id.value))
       .returning({updatedName: endpoints.name});
     if (!data[0]) {
       return Response.error("Endpoint name can't be updated", 500);
@@ -110,18 +110,18 @@ export class EndpointsRepository implements Repository {
   }
 
   async updateEnabled(
-    uid: Identifier,
+    id: Identifier,
     isEnabled: boolean
   ): Promise<Response<Endpoint>> {
     const endpoint = await db.query.endpoints.findFirst({
-      where: eq(endpoints.id, uid.value)
+      where: eq(endpoints.id, id.value)
     });
     if (!endpoint) return Response.error('Endpoint not found.', 404);
 
     const data = await db
       .update(endpoints)
       .set({isEnabled})
-      .where(eq(endpoints.id, uid.value))
+      .where(eq(endpoints.id, id.value))
       .returning({updatedIsEnabled: endpoints.isEnabled});
     if (!data[0]) {
       return Response.error("Endpoint status can't be updated", 500);
@@ -134,18 +134,18 @@ export class EndpointsRepository implements Repository {
   }
 
   async updateRedirectUrl(
-    uid: Identifier,
+    id: Identifier,
     redirectUrl: URL
   ): Promise<Response<Endpoint>> {
     const endpoint = await db.query.endpoints.findFirst({
-      where: eq(endpoints.id, uid.value)
+      where: eq(endpoints.id, id.value)
     });
     if (!endpoint) return Response.error('Endpoint not found.', 404);
 
     const data = await db
       .update(endpoints)
       .set({redirectUrl: redirectUrl.href})
-      .where(eq(endpoints.id, uid.value))
+      .where(eq(endpoints.id, id.value))
       .returning({updatedRedirectUrl: endpoints.redirectUrl});
     if (!data[0]) {
       return Response.error("Endpoint redirectUrl can't be updated", 500);
@@ -158,11 +158,11 @@ export class EndpointsRepository implements Repository {
   }
 
   async updateTargetEmail(
-    uid: Identifier,
+    id: Identifier,
     targetEmail: Email
   ): Promise<Response<Endpoint>> {
     const endpoint = await db.query.endpoints.findFirst({
-      where: eq(endpoints.id, uid.value)
+      where: eq(endpoints.id, id.value)
     });
 
     if (!endpoint) {
@@ -209,7 +209,7 @@ export class EndpointsRepository implements Repository {
     const data = await db
       .update(endpoints)
       .set({targetEmail: targetEmail.value})
-      .where(eq(endpoints.id, uid.value))
+      .where(eq(endpoints.id, id.value))
       .returning({updatedTargetEmail: endpoints.targetEmail});
     if (!data[0]) {
       return Response.error("Endpoint targetEmail can't be updated", 500);
@@ -222,18 +222,18 @@ export class EndpointsRepository implements Repository {
   }
 
   async updateEmailNotifications(
-    uid: Identifier,
+    id: Identifier,
     isEnabled: boolean
   ): Promise<Response<Endpoint>> {
     const endpoint = await db.query.endpoints.findFirst({
-      where: eq(endpoints.id, uid.value)
+      where: eq(endpoints.id, id.value)
     });
     if (!endpoint) return Response.error('Endpoint not found.', 404);
 
     const data = await db
       .update(endpoints)
       .set({emailNotifications: isEnabled})
-      .where(eq(endpoints.id, uid.value))
+      .where(eq(endpoints.id, id.value))
       .returning({updatedEmailNotifications: endpoints.emailNotifications});
     if (!data[0]) {
       return Response.error(

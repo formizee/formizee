@@ -5,15 +5,15 @@ import {resolve} from '@/lib/di';
 export class DeleteUser {
   private readonly _repository = resolve('usersRepository');
   private readonly _password: string;
-  private readonly _uid: Identifier;
+  private readonly _id: Identifier;
 
-  constructor(uid: string, password: string) {
+  constructor(id: string, password: string) {
     this._password = password;
-    this._uid = new Identifier(uid);
+    this._id = new Identifier(id);
   }
 
   async run(): Promise<Response<true>> {
     //eslint-disable-next-line -- Drizzle eslint plugin mistake
-    return await this._repository.delete(this._uid, this._password);
+    return await this._repository.delete(this._id, this._password);
   }
 }

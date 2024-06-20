@@ -5,14 +5,14 @@ import {resolve} from '@/lib/di';
 export class UpdateUserName {
   private readonly _repository = resolve('usersRepository');
   private readonly _name: Name;
-  private readonly _uid: Identifier;
+  private readonly _id: Identifier;
 
-  constructor(uid: string, newName: string) {
+  constructor(id: string, newName: string) {
     this._name = new Name(newName);
-    this._uid = new Identifier(uid);
+    this._id = new Identifier(id);
   }
 
   async run(): Promise<Response<User>> {
-    return await this._repository.updateName(this._uid, this._name);
+    return await this._repository.updateName(this._id, this._name);
   }
 }

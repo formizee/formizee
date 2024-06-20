@@ -5,14 +5,14 @@ import {resolve} from '@/lib/di';
 export class UpdateUserPassword {
   private readonly _repository = resolve('usersRepository');
   private readonly _password: Password;
-  private readonly _uid: Identifier;
+  private readonly _id: Identifier;
 
-  constructor(uid: string, newPassword: string) {
+  constructor(id: string, newPassword: string) {
     this._password = new Password(newPassword);
-    this._uid = new Identifier(uid);
+    this._id = new Identifier(id);
   }
 
   async run(): Promise<Response<User>> {
-    return await this._repository.updatePassword(this._uid, this._password);
+    return await this._repository.updatePassword(this._id, this._password);
   }
 }

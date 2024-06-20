@@ -4,14 +4,14 @@ import {resolve} from '@/lib/di';
 
 export class DeleteEndpoint {
   private readonly _repository = resolve('endpointsRepository');
-  private readonly _uid: Identifier;
+  private readonly _id: Identifier;
 
-  constructor(uid: string) {
-    this._uid = new Identifier(uid);
+  constructor(id: string) {
+    this._id = new Identifier(id);
   }
 
   async run(): Promise<Response<true>> {
     //eslint-disable-next-line -- Drizzle eslint plugin mistake
-    return await this._repository.delete(this._uid);
+    return await this._repository.delete(this._id);
   }
 }

@@ -4,15 +4,15 @@ import {resolve} from '@/lib/di';
 
 export class UpdateEndpointName {
   private readonly service = resolve('endpointsRepository');
-  private readonly _uid: Identifier;
+  private readonly _id: Identifier;
   private readonly _name: string;
 
-  constructor(uid: string, name: string) {
-    this._uid = new Identifier(uid);
+  constructor(id: string, name: string) {
+    this._id = new Identifier(id);
     this._name = name;
   }
 
   async run(): Promise<Response<Endpoint>> {
-    return await this.service.updateName(this._uid, this._name);
+    return await this.service.updateName(this._id, this._name);
   }
 }

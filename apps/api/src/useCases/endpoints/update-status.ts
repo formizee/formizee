@@ -4,15 +4,15 @@ import {resolve} from '@/lib/di';
 
 export class UpdateEndpointStatus {
   private readonly _repository = resolve('endpointsRepository');
-  private readonly _uid: Identifier;
+  private readonly _id: Identifier;
   private readonly _isEnabled: boolean;
 
-  constructor(uid: string, isEnabled: boolean) {
-    this._uid = new Identifier(uid);
+  constructor(id: string, isEnabled: boolean) {
+    this._id = new Identifier(id);
     this._isEnabled = isEnabled;
   }
 
   async run(): Promise<Response<Endpoint>> {
-    return await this._repository.updateEnabled(this._uid, this._isEnabled);
+    return await this._repository.updateEnabled(this._id, this._isEnabled);
   }
 }

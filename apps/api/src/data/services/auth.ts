@@ -149,11 +149,11 @@ export class AuthService implements Service {
   }
 
   async sendLinkedEmailVerification(
-    uid: Identifier,
+    id: Identifier,
     email: Email
   ): Promise<Response<true>> {
     const user = await db.query.users.findFirst({
-      where: eq(users.id, uid.value)
+      where: eq(users.id, id.value)
     });
     if (!user) {
       return Response.error('The user does not exists.', 404);
@@ -190,7 +190,7 @@ export class AuthService implements Service {
       if (new Date() < token.expiresAt) {
         const jwtToken = await encrypt({
           expiresAt,
-          data: {id: uid.value, email: email.value, token: token.token}
+          data: {id: id.value, email: email.value, token: token.token}
         });
         const magicLink = `https://formizee.com/auth/linked-emails/verify?token=${jwtToken}`;
         await mailService.send(verifyLinkedEmail(token.email, magicLink));
@@ -216,7 +216,7 @@ export class AuthService implements Service {
 
     const jwtToken = await encrypt({
       expiresAt,
-      data: {id: uid.value, email: email.value, token: newTokenCode}
+      data: {id: id.value, email: email.value, token: newTokenCode}
     });
     const magicLink = `https://formizee.com/auth/linked-emails/verify?token=${jwtToken}`;
 

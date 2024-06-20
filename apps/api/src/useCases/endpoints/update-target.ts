@@ -4,17 +4,17 @@ import {resolve} from '@/lib/di';
 
 export class UpdateEndpointTargetEmail {
   private readonly _repository = resolve('endpointsRepository');
-  private readonly _uid: Identifier;
+  private readonly _id: Identifier;
   private readonly _targetEmail: Email;
 
-  constructor(uid: string, targetEmail: string) {
-    this._uid = new Identifier(uid);
+  constructor(id: string, targetEmail: string) {
+    this._id = new Identifier(id);
     this._targetEmail = new Email(targetEmail);
   }
 
   async run(): Promise<Response<Endpoint>> {
     return await this._repository.updateTargetEmail(
-      this._uid,
+      this._id,
       this._targetEmail
     );
   }

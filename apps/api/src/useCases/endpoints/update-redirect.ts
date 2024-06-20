@@ -4,17 +4,17 @@ import {resolve} from '@/lib/di';
 
 export class UpdateEndpointRedirectUrl {
   private readonly _repository = resolve('endpointsRepository');
-  private readonly _uid: Identifier;
+  private readonly _id: Identifier;
   private readonly _redirectUrl: URL;
 
-  constructor(uid: string, redirectUrl: string) {
-    this._uid = new Identifier(uid);
+  constructor(id: string, redirectUrl: string) {
+    this._id = new Identifier(id);
     this._redirectUrl = new URL(redirectUrl);
   }
 
   async run(): Promise<Response<Endpoint>> {
     return await this._repository.updateRedirectUrl(
-      this._uid,
+      this._id,
       this._redirectUrl
     );
   }

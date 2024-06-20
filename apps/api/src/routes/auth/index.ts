@@ -38,7 +38,7 @@ auth.post('/login', zValidator('json', Login), async context => {
   const {id, name, permission, isVerified} = user.body;
 
   if (isVerified) {
-    await createSession(context, {id: id, name, permission});
+    await createSession(context, {id, name, permission});
     return context.json(user.body, 200);
   }
   const verificationService = new SendVerificationAuth(email);

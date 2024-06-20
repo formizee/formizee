@@ -7,9 +7,9 @@ import {createUser} from '@/lib/utils';
 import {AuthService} from '../services';
 
 export class UsersRepository implements Repository {
-  async load(uid: Identifier | Email): Promise<Response<User>> {
+  async load(id: Identifier | Email): Promise<Response<User>> {
     const data = await db.query.users.findFirst({
-      where: eq(users.id, uid.value)
+      where: eq(users.id, id.value)
     });
     if (!data) return Response.error('User not found.', 404);
 
@@ -17,9 +17,9 @@ export class UsersRepository implements Repository {
     return Response.success(user);
   }
 
-  async delete(uid: Identifier, password: string): Promise<Response<true>> {
+  async delete(id: Identifier, password: string): Promise<Response<true>> {
     const user = await db.query.users.findFirst({
-      where: eq(users.id, uid.value)
+      where: eq(users.id, id.value)
     });
     if (!user) return Response.error('User not found.', 404);
 
@@ -29,14 +29,14 @@ export class UsersRepository implements Repository {
       return Response.error('The password does not match.', 401);
     }
 
-    await db.delete(users).where(eq(users.id, uid.value));
+    await db.delete(users).where(eq(users.id, id.value));
 
     return Response.success(true);
   }
 
-  async updateName(uid: Identifier, name: Name): Promise<Response<User>> {
+  async updateName(id: Identifier, name: Name): Promise<Response<User>> {
     const user = await db.query.users.findFirst({
-      where: eq(users.id, uid.value)
+      where: eq(users.id, id.value)
     });
     if (!user) return Response.error('User not found.', 404);
 
@@ -50,7 +50,7 @@ export class UsersRepository implements Repository {
     const data = await db
       .update(users)
       .set({name: name.value})
-      .where(eq(users.id, uid.value))
+      .where(eq(users.id, id.value))
       .returning({updatedName: users.name});
     if (!data[0]) return Response.error("User name can't be updated", 500);
 
@@ -60,9 +60,9 @@ export class UsersRepository implements Repository {
     return Response.success(response);
   }
 
-  async updateEmail(uid: Identifier, email: Email): Promise<Response<User>> {
+  async updateEmail(id: Identifier, email: Email): Promise<Response<User>> {
     const user = await db.query.users.findFirst({
-      where: eq(users.id, uid.value)
+      where: eq(users.id, id.value)
     });
     if (!user) return Response.error('User not found.', 404);
 
@@ -97,7 +97,7 @@ export class UsersRepository implements Repository {
     const data = await db
       .update(users)
       .set({email: email.value})
-      .where(eq(users.id, uid.value))
+      .where(eq(users.id, id.value))
       .returning({updatedEmail: users.email});
     if (!data[0]) return Response.error("User email can't be updated", 500);
 
@@ -108,11 +108,11 @@ export class UsersRepository implements Repository {
   }
 
   async updatePassword(
-    uid: Identifier,
+    id: Identifier,
     password: Password
   ): Promise<Response<User>> {
     const user = await db.query.users.findFirst({
-      where: eq(users.id, uid.value)
+      where: eq(users.id, id.value)
     });
     if (!user) return Response.error('User not found.', 404);
 
@@ -121,7 +121,7 @@ export class UsersRepository implements Repository {
     const data = await db
       .update(users)
       .set({password: newPassword})
-      .where(eq(users.id, uid.value))
+      .where(eq(users.id, id.value))
       .returning({updatedPassword: users.password});
     if (!data[0]) return Response.error("User password can't be updated", 500);
 
@@ -132,11 +132,11 @@ export class UsersRepository implements Repository {
   }
 
   async saveLinkedEmail(
-    uid: Identifier,
+    id: Identifier,
     linkedEmail: Email
   ): Promise<Response<User>> {
     const user = await db.query.users.findFirst({
-      where: eq(users.id, uid.value)
+      where: eq(users.id, id.value)
     });
     if (!user) return Response.error('User not found.', 404);
 
@@ -158,22 +158,22 @@ export class UsersRepository implements Repository {
     const linkedEmails = user.linkedEmails;
     linkedEmails.push({email: linkedEmail.value, isVerified: false});
 
-    await db.update(users).set({linkedEmails}).where(eq(users.id, uid.value));
+    await db.update(users).set({linkedEmails}).where(eq(users.id, id.value));
     user.linkedEmails = linkedEmails;
 
     const authService = new AuthService();
-    await authService.sendLinkedEmailVerification(uid, linkedEmail);
+    await authService.sendLinkedEmailVerification(id, linkedEmail);
 
     const response = createUser(user);
     return Response.success(response, 201);
   }
 
   async deleteLinkedEmail(
-    uid: Identifier,
+    id: Identifier,
     linkedEmail: Email
   ): Promise<Response<true>> {
     const user = await db.query.users.findFirst({
-      where: eq(users.id, uid.value)
+      where: eq(users.id, id.value)
     });
     if (!user) {
       return Response.error('User not found.', 404);
