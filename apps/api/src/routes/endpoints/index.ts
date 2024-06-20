@@ -28,7 +28,7 @@ endpoints.get('/', async context => {
     );
   }
 
-  const service = new LoadAllEndpoints(user.uid);
+  const service = new LoadAllEndpoints(user.id);
   const response = await service.run();
 
   return context.json(response.body, response.status as StatusCode);
@@ -45,7 +45,7 @@ endpoints.post('/', zValidator('json', Post), async context => {
     );
   }
 
-  const service = new SaveEndpoint(name, user.uid);
+  const service = new SaveEndpoint(name, user.id);
   const response = await service.run();
 
   return context.json(response.body, response.status as StatusCode);

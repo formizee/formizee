@@ -85,7 +85,7 @@ auth.post('/verify', zValidator('json', Verify), async context => {
   }
 
   await createSession(context, {
-    uid: user.body.id,
+    id: user.body.id,
     name: user.body.name,
     permission: user.body.permission
   });
@@ -127,7 +127,7 @@ auth.post(
       );
     }
 
-    const service = new SendLinkedEmailVerificationAuth(user.uid, email);
+    const service = new SendLinkedEmailVerificationAuth(user.id, email);
     const response = await service.run();
 
     return context.json(response.body, response.status as StatusCode);

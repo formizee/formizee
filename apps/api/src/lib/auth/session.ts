@@ -30,7 +30,7 @@ export async function verifySession(
   const session = await decrypt(cookie);
   const data = session?.data as Session;
 
-  if (!session || !data.uid) {
+  if (!session || !data.id) {
     return {isAuth: false, user: null};
   }
 

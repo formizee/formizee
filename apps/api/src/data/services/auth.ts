@@ -190,7 +190,7 @@ export class AuthService implements Service {
       if (new Date() < token.expiresAt) {
         const jwtToken = await encrypt({
           expiresAt,
-          data: {uid: uid.value, email: email.value, token: token.token}
+          data: {id: uid.value, email: email.value, token: token.token}
         });
         const magicLink = `https://formizee.com/auth/linked-emails/verify?token=${jwtToken}`;
         await mailService.send(verifyLinkedEmail(token.email, magicLink));
@@ -216,7 +216,7 @@ export class AuthService implements Service {
 
     const jwtToken = await encrypt({
       expiresAt,
-      data: {uid: uid.value, email: email.value, token: newTokenCode}
+      data: {id: uid.value, email: email.value, token: newTokenCode}
     });
     const magicLink = `https://formizee.com/auth/linked-emails/verify?token=${jwtToken}`;
 
@@ -228,12 +228,12 @@ export class AuthService implements Service {
     const token = await decrypt(jwtToken);
     const data = token?.data as LinkedEmailToken;
 
-    if (!data.token || !data.uid || !data.email) {
+    if (!data.token || !data.id || !data.email) {
       return Response.error('Invalid token.', 401);
     }
 
     const user = await db.query.users.findFirst({
-      where: eq(users.id, data.uid)
+      where: eq(users.id, data.id)
     });
 
     if (!user) {
@@ -242,7 +242,7 @@ export class AuthService implements Service {
 
     const currentToken = await db.query.authTokens.findFirst({
       where: and(
-        eq(authTokens.user, data.uid),
+        eq(authTokens.user, data.id),
         eq(authTokens.email, data.email)
       )
     });

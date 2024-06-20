@@ -26,7 +26,7 @@ profile.get('/', async context => {
     );
   }
 
-  const service = new LoadUser(user.uid);
+  const service = new LoadUser(user.id);
   const response = await service.run();
 
   return context.json(response.body, response.status as StatusCode);
@@ -45,7 +45,7 @@ profile.patch('/', zValidator('json', Patch), async context => {
   }
 
   if (request.name !== undefined) {
-    const service = new UpdateUserName(user.uid, request.name);
+    const service = new UpdateUserName(user.id, request.name);
     const response = await service.run();
 
     if (!response.ok) {
@@ -56,7 +56,7 @@ profile.patch('/', zValidator('json', Patch), async context => {
   }
 
   if (request.email !== undefined) {
-    const service = new UpdateUserEmail(user.uid, request.email);
+    const service = new UpdateUserEmail(user.id, request.email);
     const response = await service.run();
 
     if (!response.ok) {
@@ -67,7 +67,7 @@ profile.patch('/', zValidator('json', Patch), async context => {
   }
 
   if (request.password !== undefined) {
-    const service = new UpdateUserPassword(user.uid, request.password);
+    const service = new UpdateUserPassword(user.id, request.password);
     const response = await service.run();
 
     if (!response.ok) {
@@ -94,7 +94,7 @@ profile.post(
       );
     }
 
-    const service = new SaveUserLinkedEmail(user.uid, email);
+    const service = new SaveUserLinkedEmail(user.id, email);
     const response = await service.run();
 
     return context.json(response.body, response.status as StatusCode);
@@ -116,7 +116,7 @@ profile.delete(
       );
     }
 
-    const service = new DeleteUserLinkedEmail(user.uid, email);
+    const service = new DeleteUserLinkedEmail(user.id, email);
     const response = await service.run();
 
     return context.json(response.body, response.status as StatusCode);
@@ -135,7 +135,7 @@ profile.delete('/', zValidator('json', Delete), async context => {
     );
   }
 
-  const service = new DeleteUser(user.uid, password);
+  const service = new DeleteUser(user.id, password);
   const response = await service.run();
 
   return context.json(response.body, response.status as StatusCode);

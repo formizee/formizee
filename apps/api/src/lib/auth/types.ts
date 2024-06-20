@@ -4,13 +4,13 @@ export interface Payload<T> {
 }
 
 export interface LinkedEmailToken {
-  uid: string;
+  id: string;
   email: string;
   token: number;
 }
 
 export interface Session {
-  uid: string;
+  id: string;
   name: string;
   permission: 'user' | 'admin';
 }
