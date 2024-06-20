@@ -18,7 +18,7 @@ export const billingPlans = pgEnum('billing_plans', ['hobby', 'professional', 't
 export const teams = pgTable('teams', {
   id: uuid('id').defaultRandom().primaryKey(),
 
-  name: text('name').notNull(),
+  name: text('name').notNull().unique(),
 
   plan: billingPlans('plan').notNull().default('hobby'),
 
