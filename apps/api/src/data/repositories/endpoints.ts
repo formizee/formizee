@@ -93,15 +93,24 @@ export class EndpointsRepositoryImplementation implements EndpointsRepository {
     throw Error('Not implemented yet.');
   }
 
-  updateEnabled(_uid: Identifier, _isEnabled: boolean): Promise<Response<void>> {
+  updateEnabled(
+    _uid: Identifier,
+    _isEnabled: boolean
+  ): Promise<Response<void>> {
     throw Error('Not implemented yet.');
   }
 
-  updateRedirectUrl(_uid: Identifier, _redirectUrl: URL): Promise<Response<void>> {
+  updateRedirectUrl(
+    _uid: Identifier,
+    _redirectUrl: URL
+  ): Promise<Response<void>> {
     throw Error('Not implemented yet.');
   }
 
-  updateTargetEmail(_uid: Identifier, _targetEmail: Email): Promise<Response<void>> {
+  updateTargetEmail(
+    _uid: Identifier,
+    _targetEmail: Email
+  ): Promise<Response<void>> {
     throw Error('Not implemented yet.');
   }
 

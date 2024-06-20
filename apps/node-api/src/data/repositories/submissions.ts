@@ -17,7 +17,10 @@ export class SubmissionsRepository implements Repository {
     return Response.success(response);
   }
 
-  async load(endpoint: Identifier, uid: Identifier): Promise<Response<Submission>> {
+  async load(
+    endpoint: Identifier,
+    uid: Identifier
+  ): Promise<Response<Submission>> {
     const data = await db.query.submissions.findFirst({
       where: and(
         eq(submissions.id, Number(uid.value)),
@@ -59,7 +62,10 @@ export class SubmissionsRepository implements Repository {
     return Response.success(response);
   }
 
-  async save(endpoint: Identifier, data: object): Promise<Response<Submission>> {
+  async save(
+    endpoint: Identifier,
+    data: object
+  ): Promise<Response<Submission>> {
     const submission = await db
       .insert(submissions)
       .values({

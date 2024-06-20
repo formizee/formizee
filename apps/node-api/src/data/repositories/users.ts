@@ -107,7 +107,10 @@ export class UsersRepository implements Repository {
     return Response.success(response);
   }
 
-  async updatePassword(uid: Identifier, password: Password): Promise<Response<User>> {
+  async updatePassword(
+    uid: Identifier,
+    password: Password
+  ): Promise<Response<User>> {
     const user = await db.query.users.findFirst({
       where: eq(users.id, uid.value)
     });
@@ -128,7 +131,10 @@ export class UsersRepository implements Repository {
     return Response.success(response);
   }
 
-  async saveLinkedEmail(uid: Identifier, linkedEmail: Email): Promise<Response<User>> {
+  async saveLinkedEmail(
+    uid: Identifier,
+    linkedEmail: Email
+  ): Promise<Response<User>> {
     const user = await db.query.users.findFirst({
       where: eq(users.id, uid.value)
     });

@@ -7,8 +7,17 @@ export interface UsersRepository {
 
   updateName: (uid: Identifier, name: Name) => Promise<Response<User>>;
   updateEmail: (uid: Identifier, email: Email) => Promise<Response<User>>;
-  updatePassword: (uid: Identifier, password: Password) => Promise<Response<User>>;
+  updatePassword: (
+    uid: Identifier,
+    password: Password
+  ) => Promise<Response<User>>;
 
-  saveLinkedEmail: (uid: Identifier, linkedEmail: Email) => Promise<Response<User>>;
-  deleteLinkedEmail: (uid: Identifier, linkedEmail: Email) => Promise<Response<true>>;
+  saveLinkedEmail: (
+    uid: Identifier,
+    linkedEmail: Email
+  ) => Promise<Response<User>>;
+  deleteLinkedEmail: (
+    uid: Identifier,
+    linkedEmail: Email
+  ) => Promise<Response<true>>;
 }

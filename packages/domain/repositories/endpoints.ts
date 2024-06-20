@@ -8,7 +8,10 @@ export interface EndpointsRepository {
   delete: (uid: Identifier) => Promise<Response<true>>;
 
   updateName: (uid: Identifier, name: string) => Promise<Response<Endpoint>>;
-  updateEnabled: (uid: Identifier, isEnabled: boolean) => Promise<Response<Endpoint>>;
+  updateEnabled: (
+    uid: Identifier,
+    isEnabled: boolean
+  ) => Promise<Response<Endpoint>>;
   updateRedirectUrl: (
     uid: Identifier,
     redirectUrl: URL
