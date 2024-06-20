@@ -3,13 +3,13 @@ import {Identifier, Email} from './values';
 export class Endpoint {
   private readonly _id: Identifier;
   private readonly _name: string;
-  private readonly _owner: Identifier;
+  private readonly _team: Identifier;
 
   private readonly _isEnabled: boolean;
   private readonly _emailNotifications: boolean;
 
   private readonly _redirectUrl: URL;
-  private readonly _targetEmail: Email;
+  private readonly _targetEmails: Email[];
 
   private readonly _createdAt: Date;
   private readonly _updatedAt: Date;
@@ -17,8 +17,8 @@ export class Endpoint {
   constructor(
     uid: string,
     name: string,
-    owner: string,
-    targetEmail: string,
+    team: string,
+    targetEmails: string[],
     redirectUrl: string,
     isEnabled: boolean,
     emailNotifications: boolean,
@@ -27,13 +27,14 @@ export class Endpoint {
   ) {
     this._name = name;
     this._id = new Identifier(uid);
-    this._owner = new Identifier(owner);
+    this._team = new Identifier(team);
 
     this._isEnabled = isEnabled;
     this._emailNotifications = emailNotifications;
 
-    this._targetEmail = new Email(targetEmail);
-
+    this._targetEmails = targetEmails.map(email => {
+      return new Email(email);
+    });
     this._redirectUrl = new URL(redirectUrl);
 
     this._createdAt = createdAt;
@@ -48,16 +49,16 @@ export class Endpoint {
     return this._name;
   }
 
-  get owner(): string {
-    return this._owner.value;
+  get team(): string {
+    return this._team.value;
   }
 
   get isEnabled(): boolean {
     return this._isEnabled;
   }
 
-  get targetEmail(): string {
-    return this._targetEmail.value;
+  get targetEmails(): Email[] {
+    return this._targetEmails;
   }
 
   get redirectUrl(): string {

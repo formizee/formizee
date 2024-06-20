@@ -16,12 +16,15 @@ export interface EndpointsRepository {
     id: Identifier,
     redirectUrl: URL
   ) => Promise<Response<Endpoint>>;
-  updateTargetEmail: (
-    id: Identifier,
-    targetEmail: Email
-  ) => Promise<Response<Endpoint>>;
   updateEmailNotifications: (
     id: Identifier,
     isEnabled: boolean
+  ) => Promise<Response<Endpoint>>;
+
+  addTargetEmail: (id: Identifier, email: Email) => Promise<Response<Endpoint>>;
+
+  deleteTargetEmail: (
+    id: Identifier,
+    email: Email
   ) => Promise<Response<Endpoint>>;
 }
