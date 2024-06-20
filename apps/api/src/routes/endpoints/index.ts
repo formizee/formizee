@@ -51,9 +51,9 @@ endpoints.post('/', zValidator('json', Post), async context => {
   return context.json(response.body, response.status as StatusCode);
 });
 
-endpoints.get('/:uid', zValidator('param', Param), async context => {
+endpoints.get('/:id', zValidator('param', Param), async context => {
   const {isAuth, user} = await verifySession(context);
-  const {uid} = context.req.valid('param');
+  const {id} = context.req.valid('param');
 
   if (!isAuth || !user) {
     return context.json(
@@ -62,20 +62,20 @@ endpoints.get('/:uid', zValidator('param', Param), async context => {
     );
   }
 
-  const service = new LoadEndpoint(uid);
+  const service = new LoadEndpoint(id);
   const response = await service.run();
 
   return context.json(response.body, response.status as StatusCode);
 });
 
 endpoints.patch(
-  '/:uid',
+  '/:id',
   zValidator('param', Param),
   zValidator('json', Patch),
   async context => {
     const {isAuth, user} = await verifySession(context);
     const request = context.req.valid('json');
-    const {uid} = context.req.valid('param');
+    const {id} = context.req.valid('param');
     let data: Endpoint | null = null;
 
     if (!isAuth || !user) {
@@ -86,7 +86,7 @@ endpoints.patch(
     }
 
     if (request.name !== undefined) {
-      const service = new UpdateEndpointName(uid, request.name);
+      const service = new UpdateEndpointName(id, request.name);
       const response = await service.run();
 
       if (!response.ok) {
@@ -97,7 +97,7 @@ endpoints.patch(
     }
 
     if (request.isEnabled !== undefined) {
-      const service = new UpdateEndpointStatus(uid, request.isEnabled);
+      const service = new UpdateEndpointStatus(id, request.isEnabled);
       const response = await service.run();
 
       if (!response.ok) {
@@ -108,7 +108,7 @@ endpoints.patch(
     }
 
     if (request.targetEmail !== undefined) {
-      const service = new UpdateEndpointTargetEmail(uid, request.targetEmail);
+      const service = new UpdateEndpointTargetEmail(id, request.targetEmail);
       const response = await service.run();
 
       if (!response.ok) {
@@ -119,7 +119,7 @@ endpoints.patch(
     }
 
     if (request.redirectUrl !== undefined) {
-      const service = new UpdateEndpointRedirectUrl(uid, request.redirectUrl);
+      const service = new UpdateEndpointRedirectUrl(id, request.redirectUrl);
       const response = await service.run();
 
       if (!response.ok) {
@@ -131,7 +131,7 @@ endpoints.patch(
 
     if (request.emailNotifications !== undefined) {
       const service = new UpdateEndpointEmailNotifications(
-        uid,
+        id,
         request.emailNotifications
       );
       const response = await service.run();
@@ -148,9 +148,9 @@ endpoints.patch(
 );
 
 //eslint-disable-next-line -- Drizzle eslint plugin mistake
-endpoints.delete('/:uid', zValidator('param', Param), async context => {
+endpoints.delete('/:id', zValidator('param', Param), async context => {
   const {isAuth, user} = await verifySession(context);
-  const {uid} = context.req.valid('param');
+  const {id} = context.req.valid('param');
 
   if (!isAuth || !user) {
     return context.json(
@@ -159,7 +159,7 @@ endpoints.delete('/:uid', zValidator('param', Param), async context => {
     );
   }
 
-  const service = new DeleteEndpoint(uid);
+  const service = new DeleteEndpoint(id);
   const response = await service.run();
 
   return context.json(response.body, response.status as StatusCode);

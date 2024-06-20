@@ -32,11 +32,11 @@ submissions.get('/:endpoint', zValidator('param', GetAll), async context => {
 });
 
 submissions.get(
-  '/:endpoint/:uid',
+  '/:endpoint/:id',
   zValidator('param', Param),
   async context => {
     const {isAuth, user} = await verifySession(context);
-    const {endpoint, uid} = context.req.valid('param');
+    const {endpoint, id} = context.req.valid('param');
 
     if (!isAuth || !user) {
       return context.json(
@@ -45,7 +45,7 @@ submissions.get(
       );
     }
 
-    const service = new LoadSubmission(endpoint, uid);
+    const service = new LoadSubmission(endpoint, id);
     const response = await service.run();
 
     return context.json(response.body, response.status as StatusCode);
@@ -93,10 +93,10 @@ submissions.post('/:endpoint', zValidator('param', Post), async context => {
   /*
   if (isMultipartForm) {
     const formData = await context.req.formData();
-    const form = await handleFormFiles('formizee', endpoint.body.uid, formData);
+    const form = await handleFormFiles('formizee', endpoint.body.id, formData);
     const submission = Object.fromEntries(form);
 
-    const service = new SaveSubmission(endpoint.body.uid, submission);
+    const service = new SaveSubmission(endpoint.body.id, submission);
     const response = await service.run();
 
     if (!response.ok) {
@@ -109,12 +109,12 @@ submissions.post('/:endpoint', zValidator('param', Post), async context => {
 });
 
 submissions.patch(
-  '/:endpoint/:uid',
+  '/:endpoint/:id',
   zValidator('param', Param),
   zValidator('json', Patch),
   async context => {
     const {isAuth, user} = await verifySession(context);
-    const {endpoint, uid} = context.req.valid('param');
+    const {endpoint, id} = context.req.valid('param');
     const {isSpam} = context.req.valid('json');
 
     if (!isAuth || !user) {
@@ -124,7 +124,7 @@ submissions.patch(
       );
     }
 
-    const service = new UpdateSubmissionIsSpam(endpoint, uid, isSpam);
+    const service = new UpdateSubmissionIsSpam(endpoint, id, isSpam);
     const response = await service.run();
 
     return context.json(response.body, response.status as StatusCode);
@@ -133,11 +133,11 @@ submissions.patch(
 
 //eslint-disable-next-line -- Drizzle eslint plugin mistake
 submissions.delete(
-  '/:endpoint/:uid',
+  '/:endpoint/:id',
   zValidator('param', Param),
   async context => {
     const {isAuth, user} = await verifySession(context);
-    const {endpoint, uid} = context.req.valid('param');
+    const {endpoint, id} = context.req.valid('param');
 
     if (!isAuth || !user) {
       return context.json(
@@ -146,7 +146,7 @@ submissions.delete(
       );
     }
 
-    const service = new DeleteSubmission(endpoint, uid);
+    const service = new DeleteSubmission(endpoint, id);
     const response = await service.run();
 
     return context.json(response.body, response.status as StatusCode);

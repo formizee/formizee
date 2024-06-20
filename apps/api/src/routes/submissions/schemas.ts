@@ -2,7 +2,7 @@ import {z} from 'zod';
 
 export const Param = z.object({
   endpoint: z.string(),
-  uid: z.string()
+  id: z.string()
 });
 
 export const GetAll = z.object({

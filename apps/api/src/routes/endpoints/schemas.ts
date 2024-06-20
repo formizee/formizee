@@ -13,5 +13,5 @@ export const Patch = z.object({
 });
 
 export const Param = z.object({
-  uid: z.string()
+  id: z.string()
 });
