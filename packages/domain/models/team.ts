@@ -1,8 +1,11 @@
 import {Identifier, Email} from './values';
 
+export type TeamPlan = 'hobby' | 'professional' | 'teams' | 'custom';
+
 export class Team {
   private readonly _id: Identifier;
   private readonly _name: string;
+  private readonly _plan: TeamPlan;
   private readonly _availableEmails: Email[] = [];
 
   private readonly _updatedAt: Date;
@@ -11,12 +14,14 @@ export class Team {
   constructor(
     id: string,
     name: string,
+    plan: TeamPlan,
     availableEmails: string[],
     updatedAt: Date,
     createdAt: Date
   ) {
     this._id = new Identifier(id);
     this._name = name;
+    this._plan = plan;
 
     availableEmails.forEach(email => {
       this._availableEmails.push(new Email(email));
@@ -32,6 +37,10 @@ export class Team {
 
   get name(): string {
     return this._name;
+  }
+
+  get plan(): TeamPlan {
+    return this._plan;
   }
 
   get availableEmails(): Email[] {
