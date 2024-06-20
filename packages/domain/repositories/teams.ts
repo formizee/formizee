@@ -1,9 +1,12 @@
-import {Response, Team} from '../models';
-import {Email, Identifier} from '../models/values';
+import type {Response, Team} from '../models';
+import type {Email, Identifier} from '../models/values';
 
 export interface TeamsRepository {
-  save(name: string): Promise<Response<Team>>;
-  load(id: Identifier): Promise<Response<Team>>;
-  delete(id: Identifier): Promise<Response<Team>>;
-  updateAvailableEmails(availableEmails: Email[]): Promise<Response<Team>>;
+  save: (name: string) => Promise<Response<Team>>;
+  load: (id: Identifier) => Promise<Response<Team>>;
+  delete: (id: Identifier) => Promise<Response<true>>;
+  updateAvailableEmails: (
+    id: Identifier,
+    availableEmails: Email[]
+  ) => Promise<Response<Team>>;
 }
