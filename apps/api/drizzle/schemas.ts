@@ -92,6 +92,23 @@ export const users = pgTable('users', {
     .$onUpdate(() => new Date())
 });
 
+export const linkedEmails = pgTable('emails', {
+  id: uuid('id').defaultRandom().primaryKey(),
+
+  user: uuid('user_id').references(() => users.id, {onDelete: 'cascade'}),
+
+  email: text('email').notNull(),
+
+  isVerified: boolean('is_verified').notNull().default(false),
+
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+
+  updatedAt: timestamp('updated_at')
+    .notNull()
+    .defaultNow()
+    .$onUpdate(() => new Date())
+})
+
 export const endpoints = pgTable('endpoints', {
   id: uuid('id').defaultRandom().primaryKey(),
 
