@@ -13,9 +13,6 @@ export class AddEndpointTargetEmail {
   }
 
   async run(): Promise<Response<Endpoint>> {
-    return await this._repository.addTargetEmail(
-      this._id,
-      this._email
-    );
+    return await this._repository.addTargetEmail(this._id, this._email);
   }
 }

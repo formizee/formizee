@@ -13,9 +13,6 @@ export class DeleteEndpointTargetEmail {
   }
 
   async run(): Promise<Response<Endpoint>> {
-    return await this._repository.deleteTargetEmail(
-      this._id,
-      this._email
-    );
+    return await this._repository.deleteTargetEmail(this._id, this._email);
   }
 }
