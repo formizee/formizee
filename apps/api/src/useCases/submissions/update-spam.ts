@@ -15,7 +15,7 @@ export class UpdateSubmissionIsSpam {
   }
 
   async run(): Promise<Response<Submission>> {
-    return await this._repository.update(
+    return await this._repository.updateIsSpam(
       this._endpoint,
       this._id,
       this._isSpam
