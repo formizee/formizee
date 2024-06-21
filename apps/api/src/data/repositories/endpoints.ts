@@ -1,13 +1,13 @@
 import type {EndpointsRepository as Repository} from 'domain/repositories';
 import type {Identifier, Email} from 'domain/models/values';
 import {Response, type Endpoint} from 'domain/models';
-import {eq, db, endpoints, users} from '@drizzle/db';
+import {eq, db, endpoints, users, teams} from '@drizzle/db';
 import {createEndpoint} from '@/lib/utils';
 
 export class EndpointsRepository implements Repository {
   async loadAll(team: Identifier): Promise<Response<Endpoint[]>> {
     const data = await db.query.endpoints.findMany({
-      where: eq(endpoints.owner, team.value)
+      where: eq(endpoints.team, team.value)
     });
     if (data.length < 1) {
       return Response.error('There is no forms yet.', 404);
@@ -45,19 +45,14 @@ export class EndpointsRepository implements Repository {
       .insert(endpoints)
       .values({
         name,
-        owner: team.value,
-        targetEmail: user.email
+        team: team.value,
+        targetEmails: [user.email]
       })
       .returning();
 
     if (!endpoint[0]) {
       return Response.error("Endpoint can't be created.", 500);
     }
-
-    const forms = user.forms;
-    forms.push(endpoint[0].id);
-
-    await db.update(users).set({forms}).where(eq(users.id, user.id));
 
     const response = createEndpoint(endpoint[0]);
     return Response.success(response);
@@ -72,18 +67,7 @@ export class EndpointsRepository implements Repository {
       return Response.error('Endpoint not found.', 404);
     }
 
-    const user = await db.query.users.findFirst({
-      where: eq(users.id, endpoint.owner)
-    });
-
-    if (!user) {
-      return Response.error('The endpoint does not have owner.', 404);
-    }
-
     await db.delete(endpoints).where(eq(endpoints.id, id.value));
-
-    const forms = user.forms.filter(form => form !== endpoint.id);
-    await db.update(users).set({forms}).where(eq(users.id, user.id));
 
     return Response.success(true);
   }
@@ -157,70 +141,6 @@ export class EndpointsRepository implements Repository {
     return Response.success(response);
   }
 
-  async updateTargetEmail(
-    id: Identifier,
-    targetEmail: Email
-  ): Promise<Response<Endpoint>> {
-    const endpoint = await db.query.endpoints.findFirst({
-      where: eq(endpoints.id, id.value)
-    });
-
-    if (!endpoint) {
-      return Response.error('Endpoint not found.', 404);
-    }
-
-    const user = await db.query.users.findFirst({
-      where: eq(users.id, endpoint.owner)
-    });
-
-    if (!user) {
-      return Response.error('Endpoint owner not found.', 404);
-    }
-
-    const targetEmailExists = user.linkedEmails.some(
-      linkedEmail => linkedEmail.email === targetEmail.value
-    );
-    if (!targetEmailExists) {
-      return Response.error(
-        'The target email needs to be one of the owner linked emails.',
-        401
-      );
-    }
-
-    const validTargetEmail = user.linkedEmails.some(
-      linkedEmail =>
-        linkedEmail.email === targetEmail.value && linkedEmail.isVerified
-    );
-    if (!validTargetEmail) {
-      return Response.error(
-        'The target email is not verified, please verify the email before using it',
-        401
-      );
-    }
-
-    const targetEmailAlreadyUsed = targetEmail.value === endpoint.targetEmail;
-    if (targetEmailAlreadyUsed) {
-      return Response.error(
-        'The target email is already being used in this form.',
-        409
-      );
-    }
-
-    const data = await db
-      .update(endpoints)
-      .set({targetEmail: targetEmail.value})
-      .where(eq(endpoints.id, id.value))
-      .returning({updatedTargetEmail: endpoints.targetEmail});
-    if (!data[0]) {
-      return Response.error("Endpoint targetEmail can't be updated", 500);
-    }
-
-    endpoint.targetEmail = data[0].updatedTargetEmail;
-    const response = createEndpoint(endpoint);
-
-    return Response.success(response);
-  }
-
   async updateEmailNotifications(
     id: Identifier,
     isEnabled: boolean
@@ -243,6 +163,98 @@ export class EndpointsRepository implements Repository {
     }
 
     endpoint.emailNotifications = data[0].updatedEmailNotifications;
+    const response = createEndpoint(endpoint);
+
+    return Response.success(response);
+  }
+
+  async addTargetEmail(
+    id: Identifier,
+    email: Email
+  ): Promise<Response<Endpoint>> {
+    const endpoint = await db.query.endpoints.findFirst({
+      where: eq(endpoints.id, id.value)
+    });
+
+    if (!endpoint) {
+      return Response.error('Endpoint not found.', 404);
+    }
+
+    const team = await db.query.teams.findFirst({
+      where: eq(teams.id, endpoint.team)
+    });
+
+    if (!team) {
+      return Response.error('Endpoint owner not found.', 404);
+    }
+
+    const targetEmailExists = team.availableEmails.some(
+      availableEmail => availableEmail === email.value
+    );
+    if (!targetEmailExists) {
+      return Response.error(
+        'The email needs to be one of the team available emails.',
+        401
+      );
+    }
+
+    const targetEmailAlreadyUsed = endpoint.targetEmails.some(
+      targetEmail => targetEmail === email.value
+    );
+    if (targetEmailAlreadyUsed) {
+      return Response.error(
+        'The target email is already assigned to this endpoint.',
+        409
+      );
+    }
+
+    const targetEmails = endpoint.targetEmails;
+    targetEmails.push(email.value);
+
+    await db
+      .update(endpoints)
+      .set({targetEmails})
+      .where(eq(endpoints.id, id.value));
+
+    endpoint.targetEmails = targetEmails;
+    const response = createEndpoint(endpoint);
+
+    return Response.success(response);
+  }
+
+  async deleteTargetEmail(
+    id: Identifier,
+    email: Email
+  ): Promise<Response<Endpoint>> {
+    const endpoint = await db.query.endpoints.findFirst({
+      where: eq(endpoints.id, id.value)
+    });
+
+    if (!endpoint) {
+      return Response.error('Endpoint not found.', 404);
+    }
+
+    const targetEmailExists = endpoint.targetEmails.some(
+      targetEmail => targetEmail === email.value
+    );
+    if (!targetEmailExists) {
+      return Response.error('The email does not exists.', 404);
+    }
+
+    if (endpoint.targetEmails.length <= 1) {
+      return Response.error('At least one target email is needed.', 409);
+    }
+
+    const targetEmails = endpoint.targetEmails.filter(
+      targetEmail => targetEmail !== email.value
+    );
+
+    await db
+      .update(endpoints)
+      .set({targetEmails})
+      .where(eq(endpoints.id, id.value));
+
+    endpoint.targetEmails = targetEmails;
     const response = createEndpoint(endpoint);
 
     return Response.success(response);
