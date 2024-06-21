@@ -1,15 +1,10 @@
 import {Identifier, Email, Name, LinkedEmail} from './values';
 
-export type UserPermission = 'user' | 'admin';
-
 export class User {
   private readonly _id: Identifier;
   private readonly _name: Name;
   private readonly _email: Email;
   private readonly _isVerified: boolean;
-  private readonly _permission: UserPermission;
-
-  private readonly _forms: Identifier[] = [];
   private readonly _linkedEmails: LinkedEmail[] = [];
 
   private readonly _createdAt: Date;
@@ -20,30 +15,15 @@ export class User {
     name: string,
     email: string,
     isVerified: boolean,
-    permission: UserPermission,
+    linkedEmails: LinkedEmail[],
     createdAt: Date,
-    updatedAt: Date,
-    forms?: string[],
-    linkedEmails?: {email: string; isVerified: boolean}[]
+    updatedAt: Date
   ) {
     this._id = new Identifier(id);
     this._name = new Name(name);
     this._email = new Email(email);
     this._isVerified = isVerified;
-    this._permission = permission;
-
-    if (forms && forms.length > 0) {
-      forms.forEach(item => {
-        this._forms.push(new Identifier(item));
-      });
-    }
-
-    if (linkedEmails && linkedEmails.length > 0) {
-      linkedEmails.forEach(item => {
-        this._linkedEmails.push(new LinkedEmail(item.email, item.isVerified));
-      });
-    } else this._linkedEmails = [new LinkedEmail(this._email.value, true)];
-
+    this._linkedEmails = linkedEmails;
     this._createdAt = createdAt;
     this._updatedAt = updatedAt;
   }
@@ -64,16 +44,8 @@ export class User {
     return this._isVerified;
   }
 
-  get permission(): UserPermission {
-    return this._permission;
-  }
-
   get linkedEmails(): LinkedEmail[] {
     return this._linkedEmails;
-  }
-
-  get linkedForms(): Identifier[] {
-    return this._forms;
   }
 
   get createdAt(): Date {
