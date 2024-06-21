@@ -1,4 +1,4 @@
-export {LinkedEmail} from './linked-email';
+export type {LinkedEmail, TeamPlan} from './types';
 export {Password} from './password';
 export {Email} from './email';
 export {Name} from './name';
