@@ -4,8 +4,13 @@
 - [x] Implement submissions.
 
 ## Important
-- [~] Think about teams and it's permissions.
-- [~] think about pricing permissions too.
+- [x] Think about teams and it's permissions.
+- [x] think about pricing permissions too.
+
+- [ ] Create a good role/permissions system.
+- [ ] Implement permissions
+
+- [ ] Create DB indexes for members, linkedEmails, users, authTokens...
 
 ## General
 - [ ] Add cors in order to block sensitive profile and auth requests.
