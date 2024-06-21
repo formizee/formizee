@@ -10,8 +10,7 @@ import {
   UpdateEndpointEmailNotifications,
   UpdateEndpointName,
   UpdateEndpointRedirectUrl,
-  UpdateEndpointStatus,
-  UpdateEndpointTargetEmail
+  UpdateEndpointStatus
 } from '@/useCases/endpoints';
 import {verifySession} from '@/lib/auth';
 import {Post, Param, Patch} from './schemas';
@@ -98,17 +97,6 @@ endpoints.patch(
 
     if (request.isEnabled !== undefined) {
       const service = new UpdateEndpointStatus(id, request.isEnabled);
-      const response = await service.run();
-
-      if (!response.ok) {
-        return context.json(response.error, response.status as StatusCode);
-      }
-
-      data = response.body;
-    }
-
-    if (request.targetEmail !== undefined) {
-      const service = new UpdateEndpointTargetEmail(id, request.targetEmail);
       const response = await service.run();
 
       if (!response.ok) {
