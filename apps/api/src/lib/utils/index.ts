@@ -1,4 +1,5 @@
-import {Endpoint, Submission, Team, TeamPlan, User} from 'domain/models';
+import {Endpoint, Submission, Team, User} from 'domain/models';
+import {TeamPlan, LinkedEmail} from 'domain/models/values';
 
 export const createTeam = (data: {
   id: string;
@@ -69,7 +70,7 @@ export const createUser = (
     createdAt: Date;
     updatedAt: Date;
   },
-  linkedEmails: {email: string; isVerified: boolean}[]
+  linkedEmails: LinkedEmail[]
 ): User => {
   const emails = linkedEmails.map(item => {
     return {email: item.email, isVerified: item.isVerified};
