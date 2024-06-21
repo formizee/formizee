@@ -23,7 +23,7 @@ export class SubmissionsRepository implements Repository {
   ): Promise<Response<Submission>> {
     const data = await db.query.submissions.findFirst({
       where: and(
-        eq(submissions.id, Number(id.value)),
+        eq(submissions.id, id.value),
         eq(submissions.endpoint, endpoint.value)
       )
     });
@@ -34,14 +34,42 @@ export class SubmissionsRepository implements Repository {
     return Response.success(response);
   }
 
-  async update(
+  async updateIsRead(
+    endpoint: Identifier,
+    id: Identifier,
+    isRead: boolean
+  ): Promise<Response<Submission>> {
+    const submission = await db.query.submissions.findFirst({
+      where: and(
+        eq(submissions.id, id.value),
+        eq(submissions.endpoint, endpoint.value)
+      )
+    });
+    if (!submission) return Response.error('Submission not found.', 404);
+
+    const data = await db
+      .update(submissions)
+      .set({isRead})
+      .where(eq(submissions.id, id.value))
+      .returning({updatedIsRead: submissions.isRead});
+    if (!data[0]) {
+      return Response.error("Submission status can't be updated", 500);
+    }
+
+    submission.isRead = data[0].updatedIsRead;
+    const response = createSubmission(submission);
+
+    return Response.success(response);
+  }
+
+  async updateIsSpam(
     endpoint: Identifier,
     id: Identifier,
     isSpam: boolean
   ): Promise<Response<Submission>> {
     const submission = await db.query.submissions.findFirst({
       where: and(
-        eq(submissions.id, Number(id.value)),
+        eq(submissions.id, id.value),
         eq(submissions.endpoint, endpoint.value)
       )
     });
@@ -50,7 +78,7 @@ export class SubmissionsRepository implements Repository {
     const data = await db
       .update(submissions)
       .set({isSpam})
-      .where(eq(submissions.id, Number(id.value)))
+      .where(eq(submissions.id, id.value))
       .returning({updatedIsSpam: submissions.isSpam});
     if (!data[0]) {
       return Response.error("Submission status can't be updated", 500);
@@ -85,13 +113,13 @@ export class SubmissionsRepository implements Repository {
   async delete(endpoint: Identifier, id: Identifier): Promise<Response<true>> {
     const data = await db.query.submissions.findFirst({
       where: and(
-        eq(submissions.id, Number(id.value)),
+        eq(submissions.id, id.value),
         eq(submissions.endpoint, endpoint.value)
       )
     });
     if (!data) return Response.error('Submission not found.', 404);
 
-    await db.delete(submissions).where(eq(submissions.id, Number(id.value)));
+    await db.delete(submissions).where(eq(submissions.id, id.value));
 
     return Response.success(true, 201);
   }
