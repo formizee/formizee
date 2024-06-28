@@ -27,6 +27,10 @@ export const teams = pgTable('teams', {
     .notNull()
     .default(sql`ARRAY[]::text[]`),
 
+  createdBy: uuid('created_by')
+    .notNull()
+    .references(() => users.id, {onDelete: 'cascade'}),
+
   createdAt: timestamp('created_at').notNull().defaultNow(),
 
   updatedAt: timestamp('updated_at')
