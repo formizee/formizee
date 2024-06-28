@@ -5,9 +5,9 @@ import type {
   TeamRoles,
   UserPermissions
 } from 'domain/models/values';
-import {Response, type Team} from 'domain/models';
+import {type Member, Response, type Team} from 'domain/models';
 import {db, eq, and, users, teams, members} from '@drizzle/db';
-import {createTeam} from '@/lib/utils';
+import {createMember, createTeam} from '@/lib/utils';
 
 export class TeamsRepository implements Repository {
   async save(owner: Identifier, name: string): Promise<Response<Team>> {
@@ -95,6 +95,21 @@ export class TeamsRepository implements Repository {
     team.availableEmails = availableEmails;
 
     const response = createTeam(team);
+    return Response.success(response);
+  }
+
+  async loadMember(
+    id: Identifier,
+    member: Identifier
+  ): Promise<Response<Member>> {
+    const teamMember = await db.query.members.findFirst({
+      where: and(eq(members.user, member.value), eq(members.team, id.value))
+    });
+    if (!teamMember) {
+      return Response.error('Team Member not found.', 404);
+    }
+
+    const response = createMember(teamMember);
     return Response.success(response);
   }
 
