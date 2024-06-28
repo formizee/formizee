@@ -3,7 +3,7 @@ import type {Identifier, Email, Name, Password} from 'domain/models/values';
 import type {AuthService as Service} from 'domain/services';
 import {Response, type User} from 'domain/models';
 import bcryptjs from 'bcryptjs';
-import {db, eq, and, users, authTokens} from '@drizzle/db';
+import {db, eq, and, users, authTokens, linkedEmails} from '@drizzle/db';
 import {verifyEmail, verifyLinkedEmail} from '@emails/auth';
 import {createUser} from '@/lib/utils';
 import {decrypt, encrypt} from '@/lib/auth/jwt';
@@ -29,7 +29,11 @@ export class AuthService implements Service {
       .set({lastAccess: new Date()})
       .where(eq(users.id, user.id));
 
-    const response = createUser(user);
+    const emails = await db.query.linkedEmails.findMany({
+      where: eq(linkedEmails.user, user.id)
+    });
+
+    const response = createUser(user, emails);
     return Response.success(response);
   }
 
@@ -56,7 +60,6 @@ export class AuthService implements Service {
         name: name.value,
         email: email.value,
         password: passwordHash,
-        linkedEmails: [{email: email.value, isVerified: true}]
       })
       .returning();
 
@@ -64,7 +67,17 @@ export class AuthService implements Service {
       return Response.error("User can't be created", 500);
     }
 
-    const response = createUser(user[0]);
+    await db.insert(linkedEmails).values({
+      user: user[0].id,
+      email: email.value,
+      isVerified: true
+    })
+
+    const emails = await db.query.linkedEmails.findMany({
+      where: eq(linkedEmails.user, user[0].id)
+    });
+
+    const response = createUser(user[0], emails);
     return Response.success(response);
   }
 
@@ -100,8 +113,12 @@ export class AuthService implements Service {
 
     await db.update(users).set({isVerified: true}).where(eq(users.id, user.id));
 
+    const emails = await db.query.linkedEmails.findMany({
+      where: eq(linkedEmails.user, user.id)
+    });
+
     user.isVerified = true;
-    const response = createUser(user);
+    const response = createUser(user, emails);
     return Response.success(response);
   }
 
@@ -159,9 +176,9 @@ export class AuthService implements Service {
       return Response.error('The user does not exists.', 404);
     }
 
-    const emailExists = user.linkedEmails.some(
-      linkedEmail => linkedEmail.email === email.value
-    );
+    const emailExists = await db.query.linkedEmails.findFirst({
+      where: and(eq(linkedEmails.user, user.id), eq(linkedEmails.email, email.value))
+    });
     if (!emailExists) {
       return Response.error(
         'The email does not exists in the user linked emails.',
@@ -169,10 +186,7 @@ export class AuthService implements Service {
       );
     }
 
-    const isAlreadyVerified = user.linkedEmails.some(
-      linkedEmail => linkedEmail.email === email.value && linkedEmail.isVerified
-    );
-    if (isAlreadyVerified) {
+    if (emailExists.isVerified) {
       return Response.error('The email is already verified.', 401);
     }
 
@@ -259,17 +273,10 @@ export class AuthService implements Service {
 
     await db.delete(authTokens).where(eq(authTokens.id, currentToken.id));
 
-    const linkedEmails = user.linkedEmails.map(linkedEmail => {
-      if (linkedEmail.email === data.email) {
-        return {email: linkedEmail.email, isVerified: true};
-      }
-      return linkedEmail;
-    });
-
     await db
-      .update(users)
-      .set({linkedEmails})
-      .where(eq(users.id, user.id))
+      .update(linkedEmails)
+      .set({isVerified: true})
+      .where(and(eq(linkedEmails.user, user.id), eq(linkedEmails.email, data.email)))
       .returning();
 
     return Response.success(true);
