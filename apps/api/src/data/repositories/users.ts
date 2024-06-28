@@ -80,7 +80,7 @@ export class UsersRepository implements Repository {
     const emails = await db.query.linkedEmails.findMany({
       where: eq(linkedEmails.user, user.id)
     });
-    if (!emails || emails.length === 0) {
+    if (emails.length === 0) {
       return Response.error(
         'The new email needs to be one of your linked emails.',
         401
@@ -146,8 +146,9 @@ export class UsersRepository implements Repository {
       .set({password: newPassword})
       .where(eq(users.id, id.value))
       .returning({updatedPassword: users.password});
-    if (!newUser[0])
+    if (!newUser[0]) {
       return Response.error("User password can't be updated", 500);
+    }
 
     user.password = newUser[0].updatedPassword;
 
@@ -219,7 +220,7 @@ export class UsersRepository implements Repository {
     const emails = await db.query.linkedEmails.findMany({
       where: eq(linkedEmails.user, user.id)
     });
-    if (!emails || emails.length === 0) {
+    if (emails.length === 0) {
       return Response.error('User linked email not found.', 404);
     }
 
