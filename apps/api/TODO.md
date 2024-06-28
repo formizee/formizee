@@ -30,7 +30,7 @@
 - [x] Implement email sending on waitlist join.
 
 ## Submission Post
-- [~] Accepts FormData and Json and transform all to json
+- [x] Accepts FormData and Json and transform all to json
 - [ ] Send emails to the owner on submit.
-- [~] Redirect to the default url.
+- [x] Redirect to the default url.
 - [ ] Store files in a S3 bucket.
