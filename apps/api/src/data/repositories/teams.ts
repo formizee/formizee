@@ -7,7 +7,7 @@ import type {
 } from 'domain/models/values';
 import {type Member, Response, type Team} from 'domain/models';
 import {db, eq, and, users, teams, members} from '@drizzle/db';
-import {createMember, createTeam} from '@/lib/utils';
+import {createMember, createTeam} from 'src/lib/models';
 
 export class TeamsRepository implements Repository {
   async save(owner: Identifier, name: string): Promise<Response<Team>> {

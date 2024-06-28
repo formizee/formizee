@@ -5,7 +5,7 @@ import {Response, type User} from 'domain/models';
 import bcryptjs from 'bcryptjs';
 import {db, eq, and, users, authTokens, linkedEmails} from '@drizzle/db';
 import {verifyEmail, verifyLinkedEmail} from '@emails/auth';
-import {createUser} from '@/lib/utils';
+import {createUser} from 'src/lib/models';
 import {decrypt, encrypt} from '@/lib/auth/jwt';
 import type {LinkedEmailToken} from '@/lib/auth/types';
 import {MailService} from './mail';

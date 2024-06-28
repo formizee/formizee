@@ -1,7 +1,7 @@
 import type {SubmissionsRepository as Repository} from 'domain/repositories';
 import {Response, type Submission} from 'domain/models';
 import type {Identifier} from 'domain/models/values';
-import {createSubmission} from '@/lib/utils';
+import {createSubmission} from 'src/lib/models';
 import {db, eq, and, submissions} from '@drizzle/db';
 
 export class SubmissionsRepository implements Repository {

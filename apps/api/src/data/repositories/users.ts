@@ -3,7 +3,7 @@ import type {Identifier, Email, Name, Password} from 'domain/models/values';
 import {Response, type User} from 'domain/models';
 import bcryptjs from 'bcryptjs';
 import {db, eq, users, linkedEmails} from '@drizzle/db';
-import {createUser} from '@/lib/utils';
+import {createUser} from 'src/lib/models';
 import {AuthService} from '../services';
 
 export class UsersRepository implements Repository {

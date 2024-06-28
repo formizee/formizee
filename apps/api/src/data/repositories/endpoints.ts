@@ -2,7 +2,7 @@ import type {EndpointsRepository as Repository} from 'domain/repositories';
 import type {Identifier, Email} from 'domain/models/values';
 import {Response, type Endpoint} from 'domain/models';
 import {eq, db, endpoints, users, teams} from '@drizzle/db';
-import {createEndpoint} from '@/lib/utils';
+import {createEndpoint} from 'src/lib/models';
 
 export class EndpointsRepository implements Repository {
   async loadAll(team: Identifier): Promise<Response<Endpoint[]>> {
