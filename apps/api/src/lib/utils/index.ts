@@ -1,5 +1,10 @@
-import {Endpoint, Submission, Team, User} from 'domain/models';
-import {TeamPlan, LinkedEmail} from 'domain/models/values';
+import {Endpoint, Member, Submission, Team, User} from 'domain/models';
+import {
+  TeamPlan,
+  LinkedEmail,
+  UserPermissions,
+  TeamRoles
+} from 'domain/models/values';
 
 export const createTeam = (data: {
   id: string;
@@ -85,4 +90,12 @@ export const createUser = (
     data.createdAt,
     data.updatedAt
   );
+};
+
+export const createMember = (data: {
+  user: string;
+  permissions: UserPermissions;
+  role: TeamRoles;
+}): Member => {
+  return new Member(data.user, data.role, data.permissions);
 };
