@@ -12,7 +12,6 @@ export interface LinkedEmailToken {
 export interface Session {
   id: string;
   name: string;
-  permission: 'user' | 'admin';
 }
 
 export interface Verification {

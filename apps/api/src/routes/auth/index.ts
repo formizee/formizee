@@ -35,10 +35,10 @@ auth.post('/login', zValidator('json', Login), async context => {
   const user = await service.run();
 
   if (!user.ok) return context.json(user.body, user.status as StatusCode);
-  const {id, name, permission, isVerified} = user.body;
+  const {id, name, isVerified} = user.body;
 
   if (isVerified) {
-    await createSession(context, {id, name, permission});
+    await createSession(context, {id, name});
     return context.json(user.body, 200);
   }
   const verificationService = new SendVerificationAuth(email);
@@ -86,8 +86,7 @@ auth.post('/verify', zValidator('json', Verify), async context => {
 
   await createSession(context, {
     id: user.body.id,
-    name: user.body.name,
-    permission: user.body.permission
+    name: user.body.name
   });
 
   deleteVerification(context);
