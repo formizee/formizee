@@ -59,7 +59,7 @@ export class AuthService implements Service {
       .values({
         name: name.value,
         email: email.value,
-        password: passwordHash,
+        password: passwordHash
       })
       .returning();
 
@@ -71,7 +71,7 @@ export class AuthService implements Service {
       user: user[0].id,
       email: email.value,
       isVerified: true
-    })
+    });
 
     const emails = await db.query.linkedEmails.findMany({
       where: eq(linkedEmails.user, user[0].id)
@@ -177,7 +177,10 @@ export class AuthService implements Service {
     }
 
     const emailExists = await db.query.linkedEmails.findFirst({
-      where: and(eq(linkedEmails.user, user.id), eq(linkedEmails.email, email.value))
+      where: and(
+        eq(linkedEmails.user, user.id),
+        eq(linkedEmails.email, email.value)
+      )
     });
     if (!emailExists) {
       return Response.error(
@@ -276,7 +279,9 @@ export class AuthService implements Service {
     await db
       .update(linkedEmails)
       .set({isVerified: true})
-      .where(and(eq(linkedEmails.user, user.id), eq(linkedEmails.email, data.email)))
+      .where(
+        and(eq(linkedEmails.user, user.id), eq(linkedEmails.email, data.email))
+      )
       .returning();
 
     return Response.success(true);
