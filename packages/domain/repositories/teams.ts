@@ -1,4 +1,4 @@
-import type {Response, Team} from '../models';
+import type {Member, Response, Team} from '../models';
 import type {Email, Identifier} from '../models/values';
 import {TeamRoles, UserPermissions} from '../models/values';
 
@@ -7,6 +7,7 @@ export interface TeamsRepository {
   load: (id: Identifier) => Promise<Response<Team>>;
   delete: (id: Identifier) => Promise<Response<true>>;
 
+  loadMember: (id: Identifier, member: Identifier) => Promise<Response<Member>>;
   saveMember: (
     id: Identifier,
     member: Identifier,
