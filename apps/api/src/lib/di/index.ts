@@ -1,6 +1,7 @@
 import {createContainer, asClass} from 'awilix';
 import {
   UsersRepository,
+  TeamsRepository,
   EndpointsRepository,
   SubmissionsRepository
 } from '@/data/repositories';
@@ -18,6 +19,7 @@ container.register({
   /* Repositories */
   submissionsRepository: asClass(SubmissionsRepository),
   endpointsRepository: asClass(EndpointsRepository),
+  teamsRepository: asClass(TeamsRepository),
   usersRepository: asClass(UsersRepository),
 
   /* Services */

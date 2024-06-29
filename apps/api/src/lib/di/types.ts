@@ -1,5 +1,6 @@
 import {
   type UsersRepository,
+  type TeamsRepository,
   type EndpointsRepository,
   type SubmissionsRepository
 } from 'domain/repositories';
@@ -14,6 +15,7 @@ export default interface Dependencies {
   /* Repositories */
   submissionsRepository: SubmissionsRepository;
   endpointsRepository: EndpointsRepository;
+  teamsRepository: TeamsRepository;
   usersRepository: UsersRepository;
 
   /* Services */
