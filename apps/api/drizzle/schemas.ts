@@ -8,7 +8,7 @@ import {
   pgTable,
   jsonb
 } from 'drizzle-orm/pg-core';
-import {sql} from 'drizzle-orm';
+import {relations, sql} from 'drizzle-orm';
 
 export const teamRoles = pgEnum('team_roles', ['owner', 'member']);
 export const apiKeyScopes = pgEnum('api_key_scopes', ['team', 'full access']);
@@ -64,6 +64,17 @@ export const members = pgTable('members', {
     .$onUpdate(() => new Date())
 })
 
+export const membersRelations = relations(members, ({one}) => ({
+  user: one(users, {
+    fields: [members.user],
+    references: [users.id]
+  }),
+  team: one(teams, {
+    fields: [members.team],
+    references: [teams.id]
+  })
+}))
+
 export const users = pgTable('users', {
   id: uuid('id').defaultRandom().primaryKey(),
 
@@ -85,6 +96,10 @@ export const users = pgTable('users', {
     .$onUpdate(() => new Date())
 });
 
+export const usersRelations = relations(users, ({many}) => ({
+  linkedEmails: many(linkedEmails)
+}))
+
 export const linkedEmails = pgTable('emails', {
   id: uuid('id').defaultRandom().primaryKey(),
 
@@ -101,6 +116,13 @@ export const linkedEmails = pgTable('emails', {
     .defaultNow()
     .$onUpdate(() => new Date())
 })
+
+export const linkedEmailsRelations = relations(linkedEmails, ({one}) => ({
+  user: one(users, {
+    fields: [linkedEmails.user],
+    references: [users.id]
+  }),
+}))
 
 export const endpoints = pgTable('endpoints', {
   id: uuid('id').defaultRandom().primaryKey(),
