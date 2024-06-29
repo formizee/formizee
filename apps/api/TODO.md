@@ -1,13 +1,5 @@
-# TODO
-- [x] Implement endpoints.
-- [x] Implement profile.
-- [x] Implement submissions.
-
 ## Important
-- [x] Think about teams and it's permissions.
-- [x] think about pricing permissions too.
-
-- [ ] Create a good role/permissions system.
+- [ ] Auto update teams available emails when the user links a new email.
 - [ ] Implement permissions
 
 - [ ] Create DB indexes for members, linkedEmails, users, authTokens...
@@ -20,14 +12,12 @@
 - [ ] Add tiny Identifier for submissions and endpoints.
 - [ ] Update returned models and rename the utils folder to models.
 
-- [ ] Use env vars instead of urls in order to self host in a future.
+- [ ] Use env vars instead of urls in order to self-host in a future.
+
+- [ ] Improve API responses and errors (Zod validation also).
 
 ## Auth Service
-- [ ] Check if type 'account' | 'password' is necessary
 - [ ] Treat carefully send verification request and rate limits
-
-## Waitlist Post
-- [x] Implement email sending on waitlist join.
 
 ## Submission Post
 - [x] Accepts FormData and Json and transform all to json
