@@ -66,18 +66,16 @@ export const createSubmission = (data: {
   );
 };
 
-export const createUser = (
-  data: {
-    id: string;
-    name: string;
-    email: string;
-    isVerified: boolean;
-    createdAt: Date;
-    updatedAt: Date;
-  },
-  linkedEmails: LinkedEmail[]
-): User => {
-  const emails = linkedEmails.map(item => {
+export const createUser = (data: {
+  id: string;
+  name: string;
+  email: string;
+  linkedEmails: LinkedEmail[];
+  isVerified: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}): User => {
+  const emails = data.linkedEmails.map(item => {
     return {email: item.email, isVerified: item.isVerified};
   });
 
