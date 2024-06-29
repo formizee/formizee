@@ -103,11 +103,11 @@ profile.post(
 
 //eslint-disable-next-line -- Drizzle eslint plugin mistake
 profile.delete(
-  '/linked-emails/:email',
-  zValidator('param', DeleteLinkedEmails),
+  '/linked-emails',
+  zValidator('json', DeleteLinkedEmails),
   async context => {
     const {isAuth, user} = await verifySession(context);
-    const {email} = context.req.valid('param');
+    const {email} = context.req.valid('json');
 
     if (!isAuth || !user) {
       return context.json(
@@ -119,7 +119,14 @@ profile.delete(
     const service = new DeleteUserLinkedEmail(user.id, email);
     const response = await service.run();
 
-    return context.json(response.body, response.status as StatusCode);
+    if (!response.ok) {
+      return context.json(response.body, response.status as StatusCode);
+    }
+
+    return context.json(
+      'The linked email has been deleted.',
+      response.status as StatusCode
+    );
   }
 );
 
@@ -138,7 +145,14 @@ profile.delete('/', zValidator('json', Delete), async context => {
   const service = new DeleteUser(user.id, password);
   const response = await service.run();
 
-  return context.json(response.body, response.status as StatusCode);
+  if (!response.ok) {
+    return context.json(response.body, response.status as StatusCode);
+  }
+
+  return context.json(
+    'Your account has been deleted.',
+    response.status as StatusCode
+  );
 });
 
 export default profile;
