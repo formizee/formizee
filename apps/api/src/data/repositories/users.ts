@@ -1,23 +1,33 @@
 import type {UsersRepository as Repository} from 'domain/repositories';
 import type {Identifier, Email, Name, Password} from 'domain/models/values';
-import {Response, type User} from 'domain/models';
+import {Response, Team, type User} from 'domain/models';
 import bcryptjs from 'bcryptjs';
-import {db, eq, users, linkedEmails} from '@drizzle/db';
-import {createUser} from 'src/lib/models';
+import {db, eq, users, linkedEmails, members} from '@drizzle/db';
+import {createTeam, createUser} from 'src/lib/models';
 import {AuthService} from '../services';
 
 export class UsersRepository implements Repository {
   async load(id: Identifier | Email): Promise<Response<User>> {
     const user = await db.query.users.findFirst({
-      where: eq(users.id, id.value)
+      where: eq(users.id, id.value),
+      with: {linkedEmails: true}
     });
     if (!user) return Response.error('User not found.', 404);
 
-    const emails = await db.query.linkedEmails.findMany({
-      where: eq(linkedEmails.user, user.id)
-    });
+    const response = createUser(user);
+    return Response.success(response);
+  }
 
-    const response = createUser(user, emails);
+  async loadLinkedTeams(id: Identifier): Promise<Response<Team[]>> {
+    const data = await db.query.members.findMany({
+      where: eq(members.user, id.value),
+      with: {team: true}
+    });
+    if (!data[0]) return Response.error('User not found.', 404);
+
+    const response = data.map(item => {
+      return createTeam(item.team);
+    });
     return Response.success(response);
   }
 
@@ -40,7 +50,8 @@ export class UsersRepository implements Repository {
 
   async updateName(id: Identifier, name: Name): Promise<Response<User>> {
     const user = await db.query.users.findFirst({
-      where: eq(users.id, id.value)
+      where: eq(users.id, id.value),
+      with: {linkedEmails: true}
     });
     if (!user) return Response.error('User not found.', 404);
 
@@ -60,34 +71,28 @@ export class UsersRepository implements Repository {
 
     user.name = newUser[0].updatedName;
 
-    const emails = await db.query.linkedEmails.findMany({
-      where: eq(linkedEmails.user, user.id)
-    });
-
-    const response = createUser(user, emails);
+    const response = createUser(user);
 
     return Response.success(response);
   }
 
   async updateEmail(id: Identifier, email: Email): Promise<Response<User>> {
     const user = await db.query.users.findFirst({
-      where: eq(users.id, id.value)
+      where: eq(users.id, id.value),
+      with: {linkedEmails: true}
     });
     if (!user) {
       return Response.error('User not found.', 404);
     }
 
-    const emails = await db.query.linkedEmails.findMany({
-      where: eq(linkedEmails.user, user.id)
-    });
-    if (emails.length === 0) {
+    if (user.linkedEmails.length === 0) {
       return Response.error(
         'The new email needs to be one of your linked emails.',
         401
       );
     }
 
-    const emailExists = emails.some(
+    const emailExists = user.linkedEmails.some(
       linkedEmail => linkedEmail.email === email.value
     );
 
@@ -98,7 +103,7 @@ export class UsersRepository implements Repository {
       );
     }
 
-    const verifiedEmail = emails.some(
+    const verifiedEmail = user.linkedEmails.some(
       linkedEmail => linkedEmail.email === email.value && linkedEmail.isVerified
     );
     if (!verifiedEmail) {
@@ -125,7 +130,7 @@ export class UsersRepository implements Repository {
 
     user.email = newUser[0].updatedEmail;
 
-    const response = createUser(user, emails);
+    const response = createUser(user);
 
     return Response.success(response);
   }
@@ -135,7 +140,8 @@ export class UsersRepository implements Repository {
     password: Password
   ): Promise<Response<User>> {
     const user = await db.query.users.findFirst({
-      where: eq(users.id, id.value)
+      where: eq(users.id, id.value),
+      with: {linkedEmails: true}
     });
     if (!user) return Response.error('User not found.', 404);
 
@@ -152,11 +158,7 @@ export class UsersRepository implements Repository {
 
     user.password = newUser[0].updatedPassword;
 
-    const emails = await db.query.linkedEmails.findMany({
-      where: eq(linkedEmails.user, user.id)
-    });
-
-    const response = createUser(user, emails);
+    const response = createUser(user);
 
     return Response.success(response);
   }
@@ -166,15 +168,14 @@ export class UsersRepository implements Repository {
     linkedEmail: Email
   ): Promise<Response<User>> {
     const user = await db.query.users.findFirst({
-      where: eq(users.id, id.value)
+      where: eq(users.id, id.value),
+      with: {linkedEmails: true}
     });
     if (!user) return Response.error('User not found.', 404);
 
-    const emails = await db.query.linkedEmails.findMany({
-      where: eq(linkedEmails.user, user.id)
-    });
-
-    const alreadyExists = emails.some(item => item.email === linkedEmail.value);
+    const alreadyExists = user.linkedEmails.some(
+      item => item.email === linkedEmail.value
+    );
     if (alreadyExists) {
       return Response.error(
         'The user already has this email linked to it',
@@ -182,7 +183,7 @@ export class UsersRepository implements Repository {
       );
     }
 
-    const limitExceeded = emails.length >= 3;
+    const limitExceeded = user.linkedEmails.length >= 3;
     if (limitExceeded) {
       return Response.error('You cannot add more than 3 linked emails', 403);
     }
@@ -201,8 +202,8 @@ export class UsersRepository implements Repository {
     const authService = new AuthService();
     await authService.sendLinkedEmailVerification(id, linkedEmail);
 
-    emails.push(newEmail[0]);
-    const response = createUser(user, emails);
+    user.linkedEmails.push(newEmail[0]);
+    const response = createUser(user);
     return Response.success(response, 201);
   }
 
