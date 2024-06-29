@@ -16,7 +16,7 @@ waitlist.post('/join', zValidator('json', joinSchema), async context => {
     return context.json(response.error, response.status as StatusCode);
   }
 
-  return context.json(response.body, response.status as StatusCode);
+  return context.json("You're on the Waitlist!", response.status as StatusCode);
 });
 
 export default waitlist;
