@@ -20,5 +20,5 @@ export interface UsersRepository {
   deleteLinkedEmail: (
     id: Identifier,
     linkedEmail: Email
-  ) => Promise<Response<true>>;
+  ) => Promise<Response<User>>;
 }
