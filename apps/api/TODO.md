@@ -16,6 +16,10 @@
 
 - [ ] Improve API responses and errors (Zod validation also).
 
+# Endpoints
+
+- [ ] Implement folders, icons and colors.
+
 ## Auth Service
 - [ ] Treat carefully send verification request and rate limits
 
