@@ -13,6 +13,7 @@ export const createTeam = (data: {
   availableEmails: string[];
   createdAt: Date;
   updatedAt: Date;
+  createdBy: string;
 }): Team => {
   return new Team(
     data.id,
@@ -20,7 +21,8 @@ export const createTeam = (data: {
     data.plan,
     data.availableEmails,
     data.createdAt,
-    data.updatedAt
+    data.updatedAt,
+    data.createdBy
   );
 };
 
