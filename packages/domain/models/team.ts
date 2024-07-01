@@ -8,6 +8,7 @@ export class Team {
 
   private readonly _updatedAt: Date;
   private readonly _createdAt: Date;
+  private readonly _createdBy: Identifier;
 
   constructor(
     id: string,
@@ -15,7 +16,8 @@ export class Team {
     plan: TeamPlan,
     availableEmails: string[],
     updatedAt: Date,
-    createdAt: Date
+    createdAt: Date,
+    createdBy: string
   ) {
     this._id = new Identifier(id);
     this._name = name;
@@ -27,6 +29,7 @@ export class Team {
 
     this._updatedAt = updatedAt;
     this._createdAt = createdAt;
+    this._createdBy = new Identifier(createdBy);
   }
 
   get id(): string {
@@ -51,5 +54,9 @@ export class Team {
 
   get createdAt(): Date {
     return this._createdAt;
+  }
+
+  get createdBy(): string {
+    return this._createdBy.value;
   }
 }
