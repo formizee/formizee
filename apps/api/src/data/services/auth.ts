@@ -13,7 +13,8 @@ import {MailService} from './mail';
 export class AuthService implements Service {
   async login(email: Email, password: string): Promise<Response<User>> {
     const user = await db.query.users.findFirst({
-      where: eq(users.email, email.value)
+      where: eq(users.email, email.value),
+      with: {linkedEmails: true}
     });
     if (!user) {
       return Response.error('User or password not match.', 401);
@@ -29,11 +30,7 @@ export class AuthService implements Service {
       .set({lastAccess: new Date()})
       .where(eq(users.id, user.id));
 
-    const emails = await db.query.linkedEmails.findMany({
-      where: eq(linkedEmails.user, user.id)
-    });
-
-    const response = createUser(user, emails);
+    const response = createUser(user);
     return Response.success(response);
   }
 
@@ -77,13 +74,14 @@ export class AuthService implements Service {
       where: eq(linkedEmails.user, user[0].id)
     });
 
-    const response = createUser(user[0], emails);
+    const response = createUser({linkedEmails: emails, ...user[0]});
     return Response.success(response);
   }
 
   async verify(email: Email, token: string): Promise<Response<User>> {
     const user = await db.query.users.findFirst({
-      where: eq(users.email, email.value)
+      where: eq(users.email, email.value),
+      with: {linkedEmails: true}
     });
     if (!user) {
       return Response.error('User not found.', 404);
@@ -113,12 +111,8 @@ export class AuthService implements Service {
 
     await db.update(users).set({isVerified: true}).where(eq(users.id, user.id));
 
-    const emails = await db.query.linkedEmails.findMany({
-      where: eq(linkedEmails.user, user.id)
-    });
-
     user.isVerified = true;
-    const response = createUser(user, emails);
+    const response = createUser(user);
     return Response.success(response);
   }
 
