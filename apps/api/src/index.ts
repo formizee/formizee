@@ -3,6 +3,7 @@ import {timeout} from 'hono/timeout';
 import {logger} from '@/lib/logger';
 import {server} from '@/lib/server';
 import {auth} from '@/routes/auth';
+import {teams} from '@/routes/teams';
 import {profile} from '@/routes/profile';
 import {waitlist} from '@/routes/waitlist';
 import {endpoints} from '@/routes/endpoints';
@@ -13,6 +14,7 @@ router.use(timeout(30 * 1000));
 router.use(logger);
 
 router.route('/auth', auth);
+router.route('/teams', teams);
 router.route('/profile', profile);
 router.route('/waitlist', waitlist);
 router.route('/endpoints', endpoints);

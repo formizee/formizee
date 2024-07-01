@@ -6,7 +6,7 @@ import type {
   UserPermissions
 } from 'domain/models/values';
 import {type Member, Response, type Team} from 'domain/models';
-import {db, eq, and, users, teams, members} from '@drizzle/db';
+import {db, eq, and, users, teams, members, linkedEmails} from '@drizzle/db';
 import {createMember, createTeam} from 'src/lib/models';
 
 export class TeamsRepository implements Repository {
@@ -25,9 +25,20 @@ export class TeamsRepository implements Repository {
       return Response.error('The team name is not available.', 409);
     }
 
+    const emails = await db.query.linkedEmails.findMany({
+      where: and(
+        eq(linkedEmails.user, user.id),
+        eq(linkedEmails.isVerified, true)
+      )
+    });
+
+    const availableEmails = emails.map(email => {
+      return email.email;
+    });
+
     const team = await db
       .insert(teams)
-      .values({name, createdBy: user.id})
+      .values({name, availableEmails, createdBy: user.id})
       .returning();
     if (!team[0]) {
       return Response.error("Team can't be created.", 500);
@@ -78,9 +89,9 @@ export class TeamsRepository implements Repository {
     return Response.success(true);
   }
 
-  async updateAvailableEmails(
+  async saveAvailableEmail(
     id: Identifier,
-    emails: Email[]
+    email: Email
   ): Promise<Response<Team>> {
     const team = await db.query.teams.findFirst({
       where: eq(teams.id, id.value)
@@ -89,7 +100,44 @@ export class TeamsRepository implements Repository {
       return Response.error('Team not found.', 404);
     }
 
-    const availableEmails = emails.map(email => email.value);
+    const alreadyExists = team.availableEmails.some(
+      availableEmail => availableEmail === email.value
+    );
+    if (alreadyExists) {
+      return Response.error('The email is already in the list.', 409);
+    }
+
+    const availableEmails = team.availableEmails;
+    availableEmails.push(email.value);
+
+    await db.update(teams).set({availableEmails}).where(eq(teams.id, id.value));
+    team.availableEmails = availableEmails;
+
+    const response = createTeam(team);
+    return Response.success(response);
+  }
+
+  async deleteAvailableEmail(
+    id: Identifier,
+    email: Email
+  ): Promise<Response<Team>> {
+    const team = await db.query.teams.findFirst({
+      where: eq(teams.id, id.value)
+    });
+    if (!team) {
+      return Response.error('Team not found.', 404);
+    }
+
+    const emailExists = team.availableEmails.some(
+      availableEmail => availableEmail === email.value
+    );
+    if (!emailExists) {
+      return Response.error('Email not found in the list.', 404);
+    }
+
+    const availableEmails = team.availableEmails.filter(
+      availableEmail => availableEmail !== email.value
+    );
 
     await db.update(teams).set({availableEmails}).where(eq(teams.id, id.value));
     team.availableEmails = availableEmails;
@@ -110,6 +158,18 @@ export class TeamsRepository implements Repository {
     }
 
     const response = createMember(teamMember);
+    return Response.success(response);
+  }
+
+  async loadMembers(id: Identifier): Promise<Response<Member[]>> {
+    const teamMembers = await db.query.members.findMany({
+      where: eq(members.team, id.value)
+    });
+
+    const response = teamMembers.map(member => {
+      return createMember(member);
+    });
+
     return Response.success(response);
   }
 
@@ -227,7 +287,7 @@ export class TeamsRepository implements Repository {
   async deleteMember(
     id: Identifier,
     member: Identifier
-  ): Promise<Response<true>> {
+  ): Promise<Response<Team>> {
     const team = await db.query.teams.findFirst({
       where: eq(teams.id, id.value)
     });
@@ -263,6 +323,7 @@ export class TeamsRepository implements Repository {
       return Response.error("Member can't be deleted.", 500);
     }
 
-    return Response.success(true);
+    const response = createTeam(team);
+    return Response.success(response);
   }
 }
