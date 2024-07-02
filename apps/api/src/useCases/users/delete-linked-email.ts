@@ -1,4 +1,4 @@
-import type {Response} from 'domain/models';
+import type {Response, User} from 'domain/models';
 import {Identifier, Email} from 'domain/models/values';
 import {resolve} from '@/lib/di';
 
@@ -12,7 +12,7 @@ export class DeleteUserLinkedEmail {
     this._id = new Identifier(id);
   }
 
-  async run(): Promise<Response<true>> {
+  async run(): Promise<Response<User>> {
     return await this._repository.deleteLinkedEmail(this._id, this._email);
   }
 }
