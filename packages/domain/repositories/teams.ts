@@ -1,4 +1,9 @@
-import type {Email, Identifier, TeamRoles, UserPermissions} from '../models/values';
+import type {
+  Email,
+  Identifier,
+  TeamRoles,
+  UserPermissions
+} from '../models/values';
 import type {Member, Response, Team} from '../models';
 
 export interface TeamsRepository {
