@@ -1,20 +1,58 @@
-import {z} from 'zod';
+import {z} from '@hono/zod-openapi';
 
-export const Param = z.object({
-  endpoint: z.string(),
-  id: z.string()
+export const GetAllSubmissionsSchema = z.object({
+  endpointId: z.string().openapi({
+    example: 'oxLSYCTK9zEEKNd2W7sUDB'
+  })
 });
 
-export const GetAll = z.object({
-  endpoint: z.string()
+export const GetSubmissionSchema = z.object({
+  endpointId: z.string().openapi({
+    example: 'oxLSYCTK9zEEKNd2W7sUDB'
+  }),
+  submissionId: z.string().openapi({
+    example: '68xtMDHvvwCXFnMW11s9h1'
+  })
 });
 
-export const Post = z.object({
-  endpoint: z
-    .string()
-    .uuid('Endpoint not found, please review your endpoint URL.')
+export const PostSubmissionSchema = z.object({
+  endpointId: z.string().openapi({
+    example: 'oxLSYCTK9zEEKNd2W7sUDB'
+  }),
+  submissionId: z.string().openapi({
+    example: '68xtMDHvvwCXFnMW11s9h1'
+  })
 });
 
-export const Patch = z.object({
-  isSpam: z.boolean()
+export const UpdateSubmissionParamSchema = z.object({
+  endpointId: z.string().openapi({
+    example: 'oxLSYCTK9zEEKNd2W7sUDB'
+  }),
+  submissionId: z.string().openapi({
+    example: '68xtMDHvvwCXFnMW11s9h1'
+  })
+});
+
+export const UpdateSubmissionJsonSchema = z.object({
+  isSpam: z
+    .boolean()
+    .openapi({
+      example: false
+    })
+    .optional(),
+  isRead: z
+    .boolean()
+    .openapi({
+      example: false
+    })
+    .optional()
+});
+
+export const DeleteSubmissionSchema = z.object({
+  endpointId: z.string().openapi({
+    example: 'oxLSYCTK9zEEKNd2W7sUDB'
+  }),
+  submissionId: z.string().openapi({
+    example: '68xtMDHvvwCXFnMW11s9h1'
+  })
 });
