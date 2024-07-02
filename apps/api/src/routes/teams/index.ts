@@ -3,7 +3,17 @@ import {zValidator} from '@hono/zod-validator';
 import {Hono} from 'hono';
 import {verifySession} from '@/lib/auth';
 import {LoadUserLinkedTeams} from '@/useCases/users';
-
+import {
+  UpdateTeamMemberPermissions,
+  UpdateTeamMemberRole,
+  DeleteTeamMember,
+  LoadTeamMembers,
+  SaveTeamMember,
+  LoadTeamMember,
+  DeleteTeam,
+  SaveTeam,
+  LoadTeam
+} from '@/useCases/teams';
 import {
   GetTeamSchema,
   PostTeamSchema,
@@ -16,18 +26,6 @@ import {
   PatchMemberJsonSchema,
   DeleteMemberSchema
 } from './schema';
-
-import {
-  LoadTeam,
-  LoadTeamMember,
-  LoadTeamMembers,
-  SaveTeam,
-  DeleteTeam,
-  DeleteTeamMember,
-  UpdateTeamMemberPermissions,
-  UpdateTeamMemberRole
-} from '@/useCases/teams';
-import {SaveTeamMember} from '@/useCases/teams/save-member';
 
 export const teams = new Hono();
 
@@ -91,6 +89,7 @@ teams.post('/', zValidator('json', PostTeamSchema), async context => {
   return context.json(response.body, response.status as StatusCode);
 });
 
+//eslint-disable-next-line -- Drizzle eslint plugin mistake
 teams.delete(
   '/:teamId',
   zValidator('param', DeleteTeamSchema),
@@ -295,6 +294,7 @@ teams.patch(
   }
 );
 
+//eslint-disable-next-line -- Drizzle eslint plugin mistake
 teams.delete(
   '/:teamId/members/:memberId',
   zValidator('param', DeleteMemberSchema),

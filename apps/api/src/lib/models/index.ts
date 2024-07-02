@@ -1,5 +1,5 @@
 import {Endpoint, Member, Submission, Team, User} from 'domain/models';
-import {
+import type {
   TeamPlan,
   LinkedEmail,
   UserPermissions,

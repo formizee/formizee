@@ -1,4 +1,4 @@
-import type {Response} from 'domain/models';
+import type {Team, Response} from 'domain/models';
 import {Identifier} from 'domain/models/values';
 import {resolve} from '@/lib/di';
 
@@ -12,7 +12,7 @@ export class DeleteTeamMember {
     this._id = new Identifier(id);
   }
 
-  async run(): Promise<Response<true>> {
+  async run(): Promise<Response<Team>> {
     return await this._repository.deleteMember(this._id, this._member);
   }
 }

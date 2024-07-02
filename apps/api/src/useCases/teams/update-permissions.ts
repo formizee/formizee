@@ -1,5 +1,5 @@
-import {Team, type Response} from 'domain/models';
-import {Identifier, UserPermissions} from 'domain/models/values';
+import {Identifier, type UserPermissions} from 'domain/models/values';
+import type {Team, Response} from 'domain/models';
 import {resolve} from '@/lib/di';
 
 export class UpdateTeamMemberPermissions {

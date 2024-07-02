@@ -1,5 +1,9 @@
-import {Team, type Response} from 'domain/models';
-import {Identifier, TeamRoles, UserPermissions} from 'domain/models/values';
+import {
+  Identifier,
+  type TeamRoles,
+  type UserPermissions
+} from 'domain/models/values';
+import type {Team, Response} from 'domain/models';
 import {resolve} from '@/lib/di';
 
 export class SaveTeamMember {

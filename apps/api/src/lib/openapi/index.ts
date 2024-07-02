@@ -1,7 +1,7 @@
 import {apiReference} from '@scalar/hono-api-reference';
 import type {OpenAPIHono} from '@hono/zod-openapi';
 
-export const openApi = (router: OpenAPIHono) => {
+export const openApi = (router: OpenAPIHono): void => {
   router.doc('/openapi.json', {
     openapi: '3.0.0',
     info: {

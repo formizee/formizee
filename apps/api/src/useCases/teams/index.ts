@@ -5,6 +5,7 @@ export {UpdateTeamMemberRole} from './update-role';
 export {DeleteTeamMember} from './delete-member';
 export {LoadTeamMembers} from './load-members';
 export {LoadTeamMember} from './load-member';
+export {SaveTeamMember} from './save-member';
 export {DeleteTeam} from './delete';
 export {LoadTeam} from './load';
 export {SaveTeam} from './save';
