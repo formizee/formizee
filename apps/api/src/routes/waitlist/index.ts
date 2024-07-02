@@ -1,22 +1,28 @@
-import type {StatusCode} from 'hono/utils/http-status';
-import {zValidator} from '@hono/zod-validator';
-import {Hono} from 'hono';
+import {OpenAPIHono} from '@hono/zod-openapi';
+import {handleValidationErrors} from '@/lib/openapi';
 import {JoinWaitlist} from '@/useCases/waitlist';
-import {joinSchema} from './schema';
+import {postWaitlistRoute} from './routes';
 
-export const waitlist = new Hono();
+export const waitlist = new OpenAPIHono();
 
-waitlist.post('/join', zValidator('json', joinSchema), async context => {
-  const {email} = context.req.valid('json');
+waitlist.openapi(
+  postWaitlistRoute,
+  async context => {
+    const {email} = context.req.valid('json');
 
-  const service = new JoinWaitlist(email);
-  const response = await service.run();
+    const service = new JoinWaitlist(email);
+    const response = await service.run();
 
-  if (!response.ok) {
-    return context.json(response.error, response.status as StatusCode);
+    if (response.status === 500) {
+      return context.json(response.error, response.status);
+    }
+
+    return context.json("You're on the Waitlist!", 201);
+  },
+  (result, context) => {
+    if (!result.success) {
+      const error = handleValidationErrors(result.error);
+      return context.json(error, 400);
+    }
   }
-
-  return context.json("You're on the Waitlist!", response.status as StatusCode);
-});
-
-export default waitlist;
+);
