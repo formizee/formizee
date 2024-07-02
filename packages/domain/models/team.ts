@@ -1,4 +1,4 @@
-import {Identifier, Email, TeamPlan} from './values';
+import {Identifier, Email, type TeamPlan} from './values';
 
 export class Team {
   private readonly _id: Identifier;
