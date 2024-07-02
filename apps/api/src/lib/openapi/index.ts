@@ -30,13 +30,13 @@ export const openApi = (router: OpenAPIHono): void => {
       }
     ],
     tags: [
-      { name: "Health" },
-      { name: "Profile" },
-      { name: "Api Keys" },
-      { name: "Teams" },
-      { name: "Endpoints" },
-      { name: "Submissions" },
-      { name: "Waitlist" }
+      {name: 'Health'},
+      {name: 'Profile'},
+      {name: 'Api Keys'},
+      {name: 'Teams'},
+      {name: 'Endpoints'},
+      {name: 'Submissions'},
+      {name: 'Waitlist'}
     ],
     security: [
       {
@@ -45,15 +45,11 @@ export const openApi = (router: OpenAPIHono): void => {
     ]
   });
 
-  router.openAPIRegistry.registerComponent(
-    'securitySchemes',
-    'apiKey',
-    {
-      name: 'X-Formizee-Api-Key',
-      type: 'apiKey',
-      in: 'header'
-    }
-  );
+  router.openAPIRegistry.registerComponent('securitySchemes', 'apiKey', {
+    name: 'X-Formizee-Api-Key',
+    type: 'apiKey',
+    in: 'header'
+  });
 
   router.get(
     '/docs',
