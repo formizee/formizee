@@ -1,10 +1,10 @@
 import {performance} from 'perf_hooks';
 import {serve} from '@hono/node-server';
-import type {Hono} from 'hono';
+import type {OpenAPIHono} from '@hono/zod-openapi';
 import {loadedEnviroments} from '@/lib/enviroment';
 import {version} from '@/../package.json';
 
-export const server = (app: Hono): void => {
+export const server = (app: OpenAPIHono): void => {
   const startTime = performance.now();
 
   const BASE_URL = process.env.BASE_URL ?? 'http://localhost';
