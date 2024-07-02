@@ -183,9 +183,7 @@ export class AuthService implements Service {
 
     if (token) {
       if (new Date() < token.expiresAt) {
-        await mailService.send(
-          verifyEmail(token.email, token.token.toString())
-        );
+        mailService.send(verifyEmail(token.email, token.token.toString()));
         return Response.success(true, 202);
       }
       await db.delete(authTokens).where(eq(authTokens.id, token.id));
@@ -212,7 +210,7 @@ export class AuthService implements Service {
       );
     }
 
-    await mailService.send(verifyEmail(email.value, newTokenCode.toString()));
+    mailService.send(verifyEmail(email.value, newTokenCode.toString()));
     return Response.success(true, 202);
   }
 
@@ -276,7 +274,7 @@ export class AuthService implements Service {
           data: {id: id.value, email: email.value, token: token.token}
         });
         const magicLink = `https://formizee.com/auth/linked-emails/verify?token=${jwtToken}`;
-        await mailService.send(verifyLinkedEmail(token.email, magicLink));
+        mailService.send(verifyLinkedEmail(token.email, magicLink));
         return Response.success(true, 202);
       }
       await db.delete(authTokens).where(eq(authTokens.id, token.id));
@@ -309,7 +307,7 @@ export class AuthService implements Service {
     });
     const magicLink = `https://formizee.com/auth/linked-emails/verify?token=${jwtToken}`;
 
-    await mailService.send(verifyLinkedEmail(email.value, magicLink));
+    mailService.send(verifyLinkedEmail(email.value, magicLink));
     return Response.success(true, 202);
   }
 

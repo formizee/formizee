@@ -3,6 +3,15 @@ import type {MailService as Service} from 'domain/services';
 import {type Mail, Response} from 'domain/models';
 import {Identifier} from 'domain/models/values';
 
+interface MailInfo {
+  messageId: string;
+  envelope: unknown;
+  accepted: unknown[];
+  rejected: unknown[];
+  pending: unknown[];
+  response: string;
+}
+
 export class MailService implements Service {
   private readonly smtp: Transporter;
 
@@ -16,7 +25,7 @@ export class MailService implements Service {
     });
   }
 
-  async send(mail: Mail): Promise<Response<Identifier>> {
+  send(mail: Mail): Response<Identifier> {
     const data = {
       from: `${mail.name} <${mail.from}>`,
       to: mail.to,
@@ -24,7 +33,7 @@ export class MailService implements Service {
       html: mail.html
     };
 
-    this.smtp.sendMail(data, (err, info) => {
+    this.smtp.sendMail(data, (err, info: MailInfo) => {
       if (err) {
         return Response.error({
           name: err.name,

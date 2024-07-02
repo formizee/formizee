@@ -29,11 +29,11 @@ export class WaitlistService implements Service {
 
     if (supportEmail) {
       const adminEmail = joinAdminWaitlist(supportEmail);
-      await mailService.send(adminEmail);
+      mailService.send(adminEmail);
     }
 
     const userEmail = joinUserWaitlist(email.value);
-    await mailService.send(userEmail);
+    mailService.send(userEmail);
 
     return Response.success(true, 201);
   }

@@ -10,7 +10,7 @@ export class SendMail {
     this._mail = mail;
   }
 
-  public async run(): Promise<Response<Identifier>> {
-    return await this._service.send(this._mail);
+  public run(): Response<Identifier> {
+    return this._service.send(this._mail);
   }
 }
