@@ -6,4 +6,4 @@ export {
   createSubmission,
   createUUID
 } from './create';
-export {userResponse} from './response';
+export {userResponse, endpointResponse, submissionResponse} from './response';
