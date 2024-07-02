@@ -95,16 +95,20 @@ profile.openapi(patchProfileRoute, async context => {
     data = response.body;
   }
 
-  if (data === null) {
-    const service = new LoadUser(user);
-    const response = await service.run();
+  const hasEmptyValues =
+    request.name === undefined &&
+    request.email === undefined &&
+    request.password === undefined;
 
-    const error = response.status === 401 || response.status === 404;
-    if (error) {
-      return context.json(response.error, response.status);
-    }
-
-    data = response.body;
+  if (hasEmptyValues || data === null) {
+    return context.json(
+      {
+        name: 'Bad request',
+        description:
+          "At least provide one of the following fields: 'name', 'email', 'password'"
+      },
+      400
+    );
   }
 
   return context.json(userResponse(data), 200);

@@ -32,7 +32,7 @@ export const getProfileRoute = createRoute({
       }
     },
     404: {
-      description: 'Not found',
+      description: 'Profile not found',
       content: {
         'application/json': {
           schema: ErrorSchema
@@ -85,7 +85,7 @@ export const patchProfileRoute = createRoute({
       }
     },
     404: {
-      description: 'Not found',
+      description: 'Profile not found',
       content: {
         'application/json': {
           schema: ErrorSchema
@@ -147,7 +147,7 @@ export const deleteProfileRoute = createRoute({
       }
     },
     404: {
-      description: 'Not found',
+      description: 'Profile not found',
       content: {
         'application/json': {
           schema: ErrorSchema
@@ -208,7 +208,7 @@ export const postProfileLinkedEmailsRoute = createRoute({
       }
     },
     404: {
-      description: 'User not found',
+      description: 'Profile not found',
       content: {
         'application/json': {
           schema: ErrorSchema
