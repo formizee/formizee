@@ -1,7 +1,8 @@
-import type {StatusCode} from 'hono/utils/http-status';
-import {zValidator} from '@hono/zod-validator';
-import {Hono} from 'hono';
+import {OpenAPIHono} from '@hono/zod-openapi';
 import type {Endpoint} from 'domain/models';
+import {handleValidationErrors} from '@/lib/openapi';
+import {endpointResponse} from '@/lib/models';
+import {authentication} from '@/lib/auth';
 import {
   DeleteEndpoint,
   LoadAllEndpoints,
@@ -12,145 +13,203 @@ import {
   UpdateEndpointRedirectUrl,
   UpdateEndpointStatus
 } from '@/useCases/endpoints';
-import {verifySession} from '@/lib/auth';
-import {Post, Param, Patch} from './schemas';
+import {LoadTeamMember} from '@/useCases/teams';
+import {
+  deleteEndpointRoute,
+  getAllEndpointsRoute,
+  getEndpointRoute,
+  patchEndpointRoute,
+  postEndpointRoute
+} from './routes';
 
-export const endpoints = new Hono();
+export const endpoints = new OpenAPIHono({
+  defaultHook: (result, context) => {
+    if (!result.success) {
+      const error = handleValidationErrors(result.error);
+      return context.json(error, 400);
+    }
+  }
+});
 
-endpoints.get('/', async context => {
-  const {isAuth, user} = await verifySession(context);
+endpoints.use(getAllEndpointsRoute.getRoutingPath(), authentication);
+endpoints.openapi(getAllEndpointsRoute, async context => {
+  const {user} = context.env?.session as {user: string};
+  const {teamId} = context.req.valid('param');
 
-  if (!isAuth || !user) {
+  const teamService = new LoadTeamMember(teamId, user);
+  const teamResponse = await teamService.run();
+
+  if (teamResponse.status === 401 || teamResponse.status === 404) {
+    return context.json(teamResponse.error, teamResponse.status);
+  }
+
+  const service = new LoadAllEndpoints(teamId);
+  const endpointsData = await service.run();
+
+  if (endpointsData.status === 401 || endpointsData.status === 404) {
+    return context.json(endpointsData.error, endpointsData.status);
+  }
+
+  const response = endpointsData.body.map(endpoint => {
+    return endpointResponse(endpoint);
+  });
+
+  return context.json(response, 200);
+});
+
+endpoints.use(getEndpointRoute.getRoutingPath(), authentication);
+endpoints.openapi(getEndpointRoute, async context => {
+  const {user} = context.env?.session as {user: string};
+  const {teamId, endpointId} = context.req.valid('param');
+
+  const teamService = new LoadTeamMember(teamId, user);
+  const teamResponse = await teamService.run();
+
+  if (teamResponse.status === 401 || teamResponse.status === 404) {
+    return context.json(teamResponse.error, teamResponse.status);
+  }
+
+  const service = new LoadEndpoint(endpointId);
+  const endpointData = await service.run();
+
+  if (endpointData.status === 401 || endpointData.status === 404) {
+    return context.json(endpointData.error, endpointData.status);
+  }
+
+  const response = endpointResponse(endpointData.body);
+  return context.json(response, 200);
+});
+
+endpoints.use(postEndpointRoute.getRoutingPath(), authentication);
+endpoints.openapi(postEndpointRoute, async context => {
+  const {user} = context.env?.session as {user: string};
+  const {name, targetEmails} = context.req.valid('json');
+  const {teamId} = context.req.valid('param');
+
+  const teamService = new LoadTeamMember(teamId, user);
+  const teamResponse = await teamService.run();
+
+  if (teamResponse.status === 401 || teamResponse.status === 404) {
+    return context.json(teamResponse.error, teamResponse.status);
+  }
+
+  const service = new SaveEndpoint(name, teamId, targetEmails);
+  const endpointData = await service.run();
+
+  if (endpointData.status === 401 || endpointData.status === 404) {
+    return context.json(endpointData.error, endpointData.status);
+  }
+
+  const response = endpointResponse(endpointData.body);
+  return context.json(response, 201);
+});
+
+endpoints.use(patchEndpointRoute.getRoutingPath(), authentication);
+endpoints.openapi(patchEndpointRoute, async context => {
+  const {user} = context.env?.session as {user: string};
+  const {teamId, endpointId} = context.req.valid('param');
+  const request = context.req.valid('json');
+  let data: Endpoint | null = null;
+
+  const teamService = new LoadTeamMember(teamId, user);
+  const teamResponse = await teamService.run();
+
+  if (teamResponse.status === 401 || teamResponse.status === 404) {
+    return context.json(teamResponse.error, teamResponse.status);
+  }
+
+  if (request.name !== undefined) {
+    const service = new UpdateEndpointName(endpointId, request.name);
+    const response = await service.run();
+
+    const error = response.status === 401 || response.status === 404;
+    if (error) {
+      return context.json(response.error, response.status);
+    }
+
+    data = response.body;
+  }
+
+  if (request.isEnabled !== undefined) {
+    const service = new UpdateEndpointStatus(endpointId, request.isEnabled);
+    const response = await service.run();
+
+    const error = response.status === 401 || response.status === 404;
+    if (error) {
+      return context.json(response.error, response.status);
+    }
+
+    data = response.body;
+  }
+
+  if (request.emailNotifications !== undefined) {
+    const service = new UpdateEndpointEmailNotifications(
+      endpointId,
+      request.emailNotifications
+    );
+    const response = await service.run();
+
+    const error = response.status === 401 || response.status === 404;
+    if (error) {
+      return context.json(response.error, response.status);
+    }
+
+    data = response.body;
+  }
+
+  if (request.redirectUrl !== undefined) {
+    const service = new UpdateEndpointRedirectUrl(
+      endpointId,
+      request.redirectUrl
+    );
+    const response = await service.run();
+
+    const error = response.status === 401 || response.status === 404;
+    if (error) {
+      return context.json(response.error, response.status);
+    }
+
+    data = response.body;
+  }
+
+  const hasEmptyValues =
+    request.name === undefined &&
+    request.isEnabled === undefined &&
+    request.redirectUrl === undefined &&
+    request.emailNotifications === undefined;
+
+  if (hasEmptyValues || data === null) {
     return context.json(
-      {error: 'Please, login first in order to do this action.'},
-      401
+      {
+        name: 'Bad Request',
+        description:
+          "At least provide one of the following fields: 'name', 'isEnabled', 'emailNotifications', 'redirectUrl"
+      },
+      400
     );
   }
 
-  const service = new LoadAllEndpoints(user.id);
-  const response = await service.run();
-
-  return context.json(response.body, response.status as StatusCode);
+  return context.json(endpointResponse(data), 200);
 });
 
-endpoints.post('/', zValidator('json', Post), async context => {
-  const {isAuth, user} = await verifySession(context);
-  const {name} = context.req.valid('json');
+endpoints.use(deleteEndpointRoute.getRoutingPath(), authentication);
+endpoints.openapi(deleteEndpointRoute, async context => {
+  const {user} = context.env?.session as {user: string};
+  const {teamId, endpointId} = context.req.valid('param');
 
-  if (!isAuth || !user) {
-    return context.json(
-      {error: 'Please, login first in order to do this action.'},
-      401
-    );
+  const teamService = new LoadTeamMember(teamId, user);
+  const teamResponse = await teamService.run();
+
+  if (teamResponse.status === 401 || teamResponse.status === 404) {
+    return context.json(teamResponse.error, teamResponse.status);
   }
 
-  const service = new SaveEndpoint(name, user.id);
+  const service = new DeleteEndpoint(endpointId);
   const response = await service.run();
 
-  return context.json(response.body, response.status as StatusCode);
-});
-
-endpoints.get('/:id', zValidator('param', Param), async context => {
-  const {isAuth, user} = await verifySession(context);
-  const {id} = context.req.valid('param');
-
-  if (!isAuth || !user) {
-    return context.json(
-      {error: 'Please, login first in order to do this action.'},
-      401
-    );
+  if (response.status === 401 || response.status === 404) {
+    return context.json(response.error, response.status);
   }
 
-  const service = new LoadEndpoint(id);
-  const response = await service.run();
-
-  return context.json(response.body, response.status as StatusCode);
+  return context.json('The endpoint has been deleted.', 204);
 });
-
-endpoints.patch(
-  '/:id',
-  zValidator('param', Param),
-  zValidator('json', Patch),
-  async context => {
-    const {isAuth, user} = await verifySession(context);
-    const request = context.req.valid('json');
-    const {id} = context.req.valid('param');
-    let data: Endpoint | null = null;
-
-    if (!isAuth || !user) {
-      return context.json(
-        {error: 'Please, login first in order to do this action.'},
-        401
-      );
-    }
-
-    if (request.name !== undefined) {
-      const service = new UpdateEndpointName(id, request.name);
-      const response = await service.run();
-
-      if (!response.ok) {
-        return context.json(response.error, response.status as StatusCode);
-      }
-
-      data = response.body;
-    }
-
-    if (request.isEnabled !== undefined) {
-      const service = new UpdateEndpointStatus(id, request.isEnabled);
-      const response = await service.run();
-
-      if (!response.ok) {
-        return context.json(response.error, response.status as StatusCode);
-      }
-
-      data = response.body;
-    }
-
-    if (request.redirectUrl !== undefined) {
-      const service = new UpdateEndpointRedirectUrl(id, request.redirectUrl);
-      const response = await service.run();
-
-      if (!response.ok) {
-        return context.json(response.error, response.status as StatusCode);
-      }
-
-      data = response.body;
-    }
-
-    if (request.emailNotifications !== undefined) {
-      const service = new UpdateEndpointEmailNotifications(
-        id,
-        request.emailNotifications
-      );
-      const response = await service.run();
-
-      if (!response.ok) {
-        return context.json(response.error, response.status as StatusCode);
-      }
-
-      data = response.body;
-    }
-
-    return context.json(data, 200);
-  }
-);
-
-//eslint-disable-next-line -- Drizzle eslint plugin mistake
-endpoints.delete('/:id', zValidator('param', Param), async context => {
-  const {isAuth, user} = await verifySession(context);
-  const {id} = context.req.valid('param');
-
-  if (!isAuth || !user) {
-    return context.json(
-      {error: 'Please, login first in order to do this action.'},
-      401
-    );
-  }
-
-  const service = new DeleteEndpoint(id);
-  const response = await service.run();
-
-  return context.json(response.body, response.status as StatusCode);
-});
-
-export default endpoints;
