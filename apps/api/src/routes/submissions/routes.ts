@@ -5,8 +5,8 @@ import {
   GetAllSubmissionsSchema,
   GetSubmissionSchema,
   PostSubmissionSchema,
-  UpdateSubmissionJsonSchema,
-  UpdateSubmissionParamSchema
+  PatchSubmissionJsonSchema,
+  PatchSubmissionParamSchema
 } from './schemas';
 
 export const getAllSubmissionsRoute = createRoute({
@@ -163,11 +163,11 @@ export const patchSubmissionRoute = createRoute({
   operationId: 'updateSubmission',
   tags: ['Submissions'],
   request: {
-    params: UpdateSubmissionParamSchema,
+    params: PatchSubmissionParamSchema,
     body: {
       content: {
         'application/json': {
-          schema: UpdateSubmissionJsonSchema
+          schema: PatchSubmissionJsonSchema
         }
       }
     }

@@ -24,7 +24,7 @@ export const PostSubmissionSchema = z.object({
   })
 });
 
-export const UpdateSubmissionParamSchema = z.object({
+export const PatchSubmissionParamSchema = z.object({
   endpointId: z.string().openapi({
     example: 'oxLSYCTK9zEEKNd2W7sUDB'
   }),
@@ -33,7 +33,7 @@ export const UpdateSubmissionParamSchema = z.object({
   })
 });
 
-export const UpdateSubmissionJsonSchema = z.object({
+export const PatchSubmissionJsonSchema = z.object({
   isSpam: z
     .boolean()
     .openapi({
