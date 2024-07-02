@@ -1,7 +1,8 @@
 import type {User} from 'domain/models';
 import {OpenAPIHono} from '@hono/zod-openapi';
-import {authentication} from '@/lib/auth';
 import {userResponse} from '@/lib/models';
+import {authentication} from '@/lib/auth';
+import { handleValidationErrors } from '@/lib/openapi';
 import {
   DeleteUserLinkedEmail,
   SaveUserLinkedEmail,
@@ -19,7 +20,14 @@ import {
   getProfileRoute
 } from './routes';
 
-export const profile = new OpenAPIHono();
+export const profile = new OpenAPIHono({
+  defaultHook: (result, context) => {
+    if (!result.success) {
+      const error = handleValidationErrors(result.error);
+      return context.json(error, 400);
+    }
+  }
+});
 
 profile.use(getProfileRoute.getRoutingPath(), authentication);
 profile.openapi(getProfileRoute, async context => {
@@ -47,7 +55,6 @@ profile.openapi(patchProfileRoute, async context => {
     const response = await service.run();
 
     const error =
-      response.status === 400 ||
       response.status === 401 ||
       response.status === 404 ||
       response.status === 409;
@@ -63,7 +70,6 @@ profile.openapi(patchProfileRoute, async context => {
     const response = await service.run();
 
     const error =
-      response.status === 400 ||
       response.status === 401 ||
       response.status === 404 ||
       response.status === 409;
@@ -79,7 +85,6 @@ profile.openapi(patchProfileRoute, async context => {
     const response = await service.run();
 
     const error =
-      response.status === 400 ||
       response.status === 401 ||
       response.status === 404 ||
       response.status === 409;
@@ -114,7 +119,6 @@ profile.openapi(postProfileLinkedEmailsRoute, async context => {
   const response = await service.run();
 
   const error =
-    response.status === 400 ||
     response.status === 401 ||
     response.status === 403 ||
     response.status === 404 ||
@@ -135,7 +139,6 @@ profile.openapi(deleteProfileLinkedEmailsRoute, async context => {
   const response = await service.run();
 
   const error =
-    response.status === 400 ||
     response.status === 401 ||
     response.status === 404 ||
     response.status === 409;
@@ -155,7 +158,6 @@ profile.openapi(deleteProfileRoute, async context => {
   const response = await service.run();
 
   const error =
-    response.status === 400 ||
     response.status === 401 ||
     response.status === 404;
   if (error) {
