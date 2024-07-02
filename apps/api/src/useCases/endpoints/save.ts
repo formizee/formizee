@@ -1,18 +1,26 @@
 import {type Endpoint, type Response} from 'domain/models';
-import {Identifier} from 'domain/models/values';
+import {Email, Identifier} from 'domain/models/values';
 import {resolve} from '@/lib/di';
 
 export class SaveEndpoint {
   private readonly _repository = resolve('endpointsRepository');
   private readonly _name: string;
-  private readonly _owner: Identifier;
+  private readonly _team: Identifier;
+  private readonly _targetEmails: Email[] | undefined = [];
 
-  constructor(name: string, owner: string) {
+  constructor(name: string, team: string, targetEmails?: string[]) {
     this._name = name;
-    this._owner = new Identifier(owner);
+    this._team = new Identifier(team);
+    this._targetEmails = targetEmails?.map(email => {
+      return new Email(email);
+    });
   }
 
   async run(): Promise<Response<Endpoint>> {
-    return await this._repository.save(this._name, this._owner);
+    return await this._repository.save(
+      this._name,
+      this._team,
+      this._targetEmails
+    );
   }
 }

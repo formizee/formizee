@@ -39,7 +39,11 @@ export class EndpointsRepository implements Repository {
     return Response.success(response);
   }
 
-  async save(name: string, team: Identifier): Promise<Response<Endpoint>> {
+  async save(
+    name: string,
+    team: Identifier,
+    targetEmails?: Email[]
+  ): Promise<Response<Endpoint>> {
     const user = await db.query.users.findFirst({
       where: eq(users.id, team.value)
     });
@@ -53,12 +57,16 @@ export class EndpointsRepository implements Repository {
       );
     }
 
+    const emails = targetEmails?.map(email => {
+      return email.value;
+    });
+
     const endpoint = await db
       .insert(endpoints)
       .values({
         name,
         team: team.value,
-        targetEmails: [user.email]
+        targetEmails: emails ?? [user.email]
       })
       .returning();
 
