@@ -2,7 +2,7 @@ import type {SubmissionsRepository as Repository} from 'domain/repositories';
 import {Response, type Submission} from 'domain/models';
 import type {Identifier} from 'domain/models/values';
 import {createSubmission} from 'src/lib/models';
-import {db, eq, and, submissions} from '@drizzle/db';
+import {db, eq, and, submissions, endpoints} from '@drizzle/db';
 
 export class SubmissionsRepository implements Repository {
   async loadAll(endpoint: Identifier): Promise<Response<Submission[]>> {
@@ -130,6 +130,16 @@ export class SubmissionsRepository implements Repository {
     endpoint: Identifier,
     data: object
   ): Promise<Response<Submission>> {
+    const endpointExists = await db.query.endpoints.findFirst({
+      where: eq(endpoints.id, endpoint.value)
+    });
+    if (!endpointExists) {
+      return Response.error({
+        name: 'Not found',
+        description: 'Endpoint not found.'
+      });
+    }
+
     const submission = await db
       .insert(submissions)
       .values({
@@ -171,6 +181,6 @@ export class SubmissionsRepository implements Repository {
 
     await db.delete(submissions).where(eq(submissions.id, id.value));
 
-    return Response.success(true, 201);
+    return Response.success(true, 204);
   }
 }
