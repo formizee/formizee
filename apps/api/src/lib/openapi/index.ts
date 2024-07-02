@@ -29,16 +29,25 @@ export const openApi = (router: OpenAPIHono): void => {
         description: 'Development Server'
       }
     ],
+    tags: [
+      { name: "Health" },
+      { name: "Profile" },
+      { name: "Api Keys" },
+      { name: "Teams" },
+      { name: "Endpoints" },
+      { name: "Submissions" },
+      { name: "Waitlist" }
+    ],
     security: [
       {
-        session: []
+        apiKey: []
       }
     ]
   });
 
   router.openAPIRegistry.registerComponent(
     'securitySchemes',
-    'formizee api key',
+    'apiKey',
     {
       name: 'X-Formizee-Api-Key',
       type: 'apiKey',
