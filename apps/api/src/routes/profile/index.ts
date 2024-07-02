@@ -2,7 +2,7 @@ import type {User} from 'domain/models';
 import {OpenAPIHono} from '@hono/zod-openapi';
 import {userResponse} from '@/lib/models';
 import {authentication} from '@/lib/auth';
-import { handleValidationErrors } from '@/lib/openapi';
+import {handleValidationErrors} from '@/lib/openapi';
 import {
   DeleteUserLinkedEmail,
   SaveUserLinkedEmail,
@@ -157,9 +157,7 @@ profile.openapi(deleteProfileRoute, async context => {
   const service = new DeleteUser(user, password);
   const response = await service.run();
 
-  const error =
-    response.status === 401 ||
-    response.status === 404;
+  const error = response.status === 401 || response.status === 404;
   if (error) {
     return context.json(response.error, response.status);
   }
