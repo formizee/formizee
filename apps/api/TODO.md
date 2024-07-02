@@ -1,6 +1,7 @@
 ## Important
 - [ ] Auto update teams available emails when the user links a new email.
-- [ ] Implement permissions
+- [~] Implement Open Api routes.
+- [~] Implement permissions.
 
 - [ ] Create DB indexes for members, linkedEmails, users, authTokens...
 
@@ -9,15 +10,14 @@
 
 - [ ] Implement API Keys.
  
-- [ ] Add tiny Identifier for submissions and endpoints.
-- [ ] Update returned models and rename the utils folder to models.
+- [~] Add tiny Identifier for submissions and endpoints.
+- [~] Update returned models and rename the utils folder to models.
 
 - [ ] Use env vars instead of urls in order to self-host in a future.
 
-- [ ] Improve API responses and errors (Zod validation also).
+- [~] Improve API responses and errors (Zod validation also).
 
-# Endpoints
-
+## Endpoints
 - [ ] Implement folders, icons and colors.
 
 ## Auth Service
