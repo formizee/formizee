@@ -1,158 +1,168 @@
 import type {User} from 'domain/models';
-import {zValidator} from '@hono/zod-validator';
-import type {StatusCode} from 'hono/utils/http-status';
-import {Hono} from 'hono';
-import {verifySession} from '@/lib/auth';
+import {OpenAPIHono} from '@hono/zod-openapi';
+import {authentication} from '@/lib/auth';
+import {userResponse} from '@/lib/models';
 import {
-  DeleteUser,
   DeleteUserLinkedEmail,
-  LoadUser,
   SaveUserLinkedEmail,
+  UpdateUserPassword,
   UpdateUserEmail,
   UpdateUserName,
-  UpdateUserPassword
+  DeleteUser,
+  LoadUser
 } from '@/useCases/users';
-import {Patch, Delete, PostLinkedEmails, DeleteLinkedEmails} from './schemas';
+import {
+  deleteProfileLinkedEmailsRoute,
+  postProfileLinkedEmailsRoute,
+  deleteProfileRoute,
+  patchProfileRoute,
+  getProfileRoute
+} from './routes';
 
-export const profile = new Hono();
+export const profile = new OpenAPIHono();
 
-profile.get('/', async context => {
-  const {isAuth, user} = await verifySession(context);
+profile.use(getProfileRoute.getRoutingPath(), authentication);
+profile.openapi(getProfileRoute, async context => {
+  const {user} = context.env?.session as {user: string};
 
-  if (!isAuth || !user) {
-    return context.json(
-      {error: 'Please, login first in order to do this action.'},
-      401
-    );
-  }
-
-  const service = new LoadUser(user.id);
+  const service = new LoadUser(user);
   const response = await service.run();
 
-  return context.json(response.body, response.status as StatusCode);
+  const error = response.status === 401 || response.status === 404;
+  if (error) {
+    return context.json(response.error, response.status);
+  }
+
+  return context.json(userResponse(response.body), 200);
 });
 
-profile.patch('/', zValidator('json', Patch), async context => {
-  const {isAuth, user} = await verifySession(context);
+profile.use(patchProfileRoute.getRoutingPath(), authentication);
+profile.openapi(patchProfileRoute, async context => {
+  const {user} = context.env?.session as {user: string};
   const request = context.req.valid('json');
   let data: User | null = null;
 
-  if (!isAuth || !user) {
-    return context.json(
-      {error: 'Please, login first in order to do this action.'},
-      401
-    );
-  }
-
   if (request.name !== undefined) {
-    const service = new UpdateUserName(user.id, request.name);
+    const service = new UpdateUserName(user, request.name);
     const response = await service.run();
 
-    if (!response.ok) {
-      return context.json(response.error, response.status as StatusCode);
+    const error =
+      response.status === 400 ||
+      response.status === 401 ||
+      response.status === 404 ||
+      response.status === 409;
+    if (error) {
+      return context.json(response.error, response.status);
     }
 
     data = response.body;
   }
 
   if (request.email !== undefined) {
-    const service = new UpdateUserEmail(user.id, request.email);
+    const service = new UpdateUserEmail(user, request.email);
     const response = await service.run();
 
-    if (!response.ok) {
-      return context.json(response.error, response.status as StatusCode);
+    const error =
+      response.status === 400 ||
+      response.status === 401 ||
+      response.status === 404 ||
+      response.status === 409;
+    if (error) {
+      return context.json(response.error, response.status);
     }
 
     data = response.body;
   }
 
   if (request.password !== undefined) {
-    const service = new UpdateUserPassword(user.id, request.password);
+    const service = new UpdateUserPassword(user, request.password);
     const response = await service.run();
 
-    if (!response.ok) {
-      return context.json(response.error, response.status as StatusCode);
+    const error =
+      response.status === 400 ||
+      response.status === 401 ||
+      response.status === 404 ||
+      response.status === 409;
+    if (error) {
+      return context.json(response.error, response.status);
     }
 
     data = response.body;
   }
 
-  return context.json(data, 200);
+  if (data === null) {
+    const service = new LoadUser(user);
+    const response = await service.run();
+
+    const error = response.status === 401 || response.status === 404;
+    if (error) {
+      return context.json(response.error, response.status);
+    }
+
+    data = response.body;
+  }
+
+  return context.json(userResponse(data), 200);
 });
 
-profile.post(
-  '/linked-emails',
-  zValidator('json', PostLinkedEmails),
-  async context => {
-    const {isAuth, user} = await verifySession(context);
-    const {email} = context.req.valid('json');
+profile.use(postProfileLinkedEmailsRoute.getRoutingPath(), authentication);
+profile.openapi(postProfileLinkedEmailsRoute, async context => {
+  const {user} = context.env?.session as {user: string};
+  const {email} = context.req.valid('json');
 
-    if (!isAuth || !user) {
-      return context.json(
-        {error: 'Please, login first in order to do this action.'},
-        401
-      );
-    }
-
-    const service = new SaveUserLinkedEmail(user.id, email);
-    const response = await service.run();
-
-    return context.json(response.body, response.status as StatusCode);
-  }
-);
-
-//eslint-disable-next-line -- Drizzle eslint plugin mistake
-profile.delete(
-  '/linked-emails',
-  zValidator('json', DeleteLinkedEmails),
-  async context => {
-    const {isAuth, user} = await verifySession(context);
-    const {email} = context.req.valid('json');
-
-    if (!isAuth || !user) {
-      return context.json(
-        {error: 'Please, login first in order to do this action.'},
-        401
-      );
-    }
-
-    const service = new DeleteUserLinkedEmail(user.id, email);
-    const response = await service.run();
-
-    if (!response.ok) {
-      return context.json(response.body, response.status as StatusCode);
-    }
-
-    return context.json(
-      'The linked email has been deleted.',
-      response.status as StatusCode
-    );
-  }
-);
-
-//eslint-disable-next-line -- Drizzle eslint plugin mistake
-profile.delete('/', zValidator('json', Delete), async context => {
-  const {isAuth, user} = await verifySession(context);
-  const {password} = context.req.valid('json');
-
-  if (!isAuth || !user) {
-    return context.json(
-      {error: 'Please, login first in order to do this action.'},
-      401
-    );
-  }
-
-  const service = new DeleteUser(user.id, password);
+  const service = new SaveUserLinkedEmail(user, email);
   const response = await service.run();
 
-  if (!response.ok) {
-    return context.json(response.body, response.status as StatusCode);
+  const error =
+    response.status === 400 ||
+    response.status === 401 ||
+    response.status === 403 ||
+    response.status === 404 ||
+    response.status === 409;
+  if (error) {
+    return context.json(response.error, response.status);
   }
 
-  return context.json(
-    'Your account has been deleted.',
-    response.status as StatusCode
-  );
+  return context.json(userResponse(response.body), 201);
+});
+
+profile.use(deleteProfileLinkedEmailsRoute.getRoutingPath(), authentication);
+profile.openapi(deleteProfileLinkedEmailsRoute, async context => {
+  const {user} = context.env?.session as {user: string};
+  const {email} = context.req.valid('param');
+
+  const service = new DeleteUserLinkedEmail(user, email);
+  const response = await service.run();
+
+  const error =
+    response.status === 400 ||
+    response.status === 401 ||
+    response.status === 404 ||
+    response.status === 409;
+  if (error) {
+    return context.json(response.error, response.status);
+  }
+
+  return context.json(userResponse(response.body), 204);
+});
+
+profile.use(deleteProfileRoute.getRoutingPath(), authentication);
+profile.openapi(deleteProfileRoute, async context => {
+  const {user} = context.env?.session as {user: string};
+  const {password} = context.req.valid('json');
+
+  const service = new DeleteUser(user, password);
+  const response = await service.run();
+
+  const error =
+    response.status === 400 ||
+    response.status === 401 ||
+    response.status === 404;
+  if (error) {
+    return context.json(response.error, response.status);
+  }
+
+  return context.json('Your account has been deleted.', 204);
 });
 
 export default profile;

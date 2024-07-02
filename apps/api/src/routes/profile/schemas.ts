@@ -1,14 +1,6 @@
-import {z} from 'zod';
+import {z} from '@hono/zod-openapi';
 
-export const PostLinkedEmails = z.object({
-  email: z.string().email()
-});
-
-export const DeleteLinkedEmails = z.object({
-  email: z.string().email()
-});
-
-export const Patch = z
+export const PatchProfileSchema = z
   .object({
     name: z
       .string()
@@ -63,6 +55,27 @@ export const Patch = z
     }
   });
 
-export const Delete = z.object({
-  password: z.string()
+export const DeleteProfileSchema = z.object({
+  password: z.string().openapi({
+    example: 'P4sSw0rd$'
+  })
+});
+
+export const PostLinkedEmailsSchema = z.object({
+  email: z.string().email().openapi({
+    example: 'pauchiner@formizee.com'
+  })
+});
+
+export const DeleteLinkedEmailsSchema = z.object({
+  email: z
+    .string()
+    .email()
+    .openapi({
+      param: {
+        name: 'email',
+        in: 'path'
+      },
+      example: 'pauchiner@formizee.com'
+    })
 });
