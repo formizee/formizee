@@ -1,10 +1,11 @@
 import {createRoute, z} from '@hono/zod-openapi';
-import {SubmissionSchema, ErrorSchema, jsonSchema} from '@/schemas';
+import {SubmissionSchema, ErrorSchema} from '@/schemas';
 import {
   DeleteSubmissionSchema,
   GetAllSubmissionsSchema,
   GetSubmissionSchema,
-  PostSubmissionSchema,
+  PostSubmissionParamSchema,
+  PostSubmissionJsonSchema,
   PatchSubmissionJsonSchema,
   PatchSubmissionParamSchema
 } from './schemas';
@@ -110,11 +111,11 @@ export const postSubmissionRoute = createRoute({
   tags: ['Submissions'],
   security: [],
   request: {
-    params: PostSubmissionSchema,
+    params: PostSubmissionParamSchema,
     body: {
       content: {
         'application/json': {
-          schema: jsonSchema
+          schema: PostSubmissionJsonSchema
         }
       }
     }

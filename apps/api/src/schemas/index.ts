@@ -1,13 +1,5 @@
 import {z} from '@hono/zod-openapi';
 
-/* Json inference type hack */
-const literalSchema = z.union([z.string(), z.number(), z.boolean(), z.null()]);
-type Literal = z.infer<typeof literalSchema>;
-type Json = Literal | {[key: string]: Json} | Json[];
-export const jsonSchema: z.ZodType<Json> = z.lazy(() =>
-  z.union([literalSchema, z.array(jsonSchema), z.record(jsonSchema)])
-);
-
 export const TeamSchema = z
   .object({
     id: z.string().openapi({
@@ -114,9 +106,13 @@ export const SubmissionSchema = z
     endpoint: z.string().openapi({
       example: 'TjSLj5Z0r4B_H'
     }),
-    data: jsonSchema.openapi({
-      example: {name: 'pauchiner', email: 'pauchiner@formizee.com'}
-    }),
+    data: z
+      .object({})
+      .passthrough()
+      .openapi({
+        example: {name: 'example', email: 'example@formizee.com'},
+        type: 'object'
+      }),
     isSpam: z.boolean().openapi({
       example: false
     }),

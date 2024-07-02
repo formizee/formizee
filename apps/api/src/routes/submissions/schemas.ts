@@ -15,14 +15,18 @@ export const GetSubmissionSchema = z.object({
   })
 });
 
-export const PostSubmissionSchema = z.object({
+export const PostSubmissionParamSchema = z.object({
   endpointId: z.string().openapi({
     example: 'oxLSYCTK9zEEKNd2W7sUDB'
-  }),
-  submissionId: z.string().openapi({
-    example: '68xtMDHvvwCXFnMW11s9h1'
   })
 });
+
+export const PostSubmissionJsonSchema = z
+  .object({})
+  .passthrough()
+  .openapi({
+    example: {name: 'example', email: 'example@formizee.com'}
+  });
 
 export const PatchSubmissionParamSchema = z.object({
   endpointId: z.string().openapi({
