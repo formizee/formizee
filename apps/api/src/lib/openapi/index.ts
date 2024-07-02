@@ -1,5 +1,7 @@
 import {apiReference} from '@scalar/hono-api-reference';
 import type {OpenAPIHono} from '@hono/zod-openapi';
+import type {ZodError, z} from 'zod';
+import type {ErrorSchema} from '@/schemas';
 
 export const openApi = (router: OpenAPIHono): void => {
   router.doc('/openapi.json', {
@@ -54,4 +56,18 @@ export const openApi = (router: OpenAPIHono): void => {
       }
     })
   );
+};
+
+type ErrorResponse = z.infer<typeof ErrorSchema>;
+export const handleValidationErrors = (
+  error: ZodError<unknown>
+): ErrorResponse => {
+  const validationError = `${error.errors[0]?.path.toString() ?? ''} ${error.errors[0]?.message.toString() ?? ''}`;
+  return {
+    name: 'Bad request',
+    description:
+      validationError.trim() !== ''
+        ? validationError
+        : 'Please review your request and try again.'
+  };
 };
