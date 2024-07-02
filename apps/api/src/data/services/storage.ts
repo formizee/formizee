@@ -27,7 +27,13 @@ export class StorageService implements Service {
     const fileSizeLimit = 5 * 1024 * 1024;
 
     if (file.size >= fileSizeLimit) {
-      return Response.error('Maximum file size is 5 MB.', 413);
+      return Response.error(
+        {
+          name: 'Plan Limits Exceeded',
+          description: 'Maximum file size is 5 MB.'
+        },
+        413
+      );
     }
 
     const streamBuffer = await file.arrayBuffer();
@@ -48,7 +54,13 @@ export class StorageService implements Service {
 
     const response = await upload.done();
     if (!response.Key || !response.Location) {
-      return Response.error("File can't be uploaded.", 500);
+      return Response.error(
+        {
+          name: 'Internal error',
+          description: "File can't be uploaded."
+        },
+        500
+      );
     }
 
     return Response.success(new URL(response.Location), 201);

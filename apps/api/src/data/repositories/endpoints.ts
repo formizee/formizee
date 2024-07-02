@@ -10,7 +10,7 @@ export class EndpointsRepository implements Repository {
       where: eq(endpoints.team, team.value)
     });
     if (data.length < 1) {
-      return Response.error('There is no forms yet.', 404);
+      return Response.success([]);
     }
 
     const response = data.map(endpoint => {
@@ -25,7 +25,13 @@ export class EndpointsRepository implements Repository {
       where: eq(endpoints.id, id.value)
     });
     if (!data) {
-      return Response.error('Endpoint not found.', 404);
+      return Response.error(
+        {
+          name: 'Not found',
+          description: 'Endpoint not found.'
+        },
+        404
+      );
     }
 
     const response = createEndpoint(data);
@@ -38,7 +44,13 @@ export class EndpointsRepository implements Repository {
       where: eq(users.id, team.value)
     });
     if (!user) {
-      return Response.error('User not exits', 404);
+      return Response.error(
+        {
+          name: 'Not found',
+          description: 'User not found.'
+        },
+        404
+      );
     }
 
     const endpoint = await db
@@ -51,7 +63,13 @@ export class EndpointsRepository implements Repository {
       .returning();
 
     if (!endpoint[0]) {
-      return Response.error("Endpoint can't be created.", 500);
+      return Response.error(
+        {
+          name: 'Internal error',
+          description: "Endpoint can't be created."
+        },
+        500
+      );
     }
 
     const response = createEndpoint(endpoint[0]);
@@ -64,7 +82,13 @@ export class EndpointsRepository implements Repository {
     });
 
     if (!endpoint) {
-      return Response.error('Endpoint not found.', 404);
+      return Response.error(
+        {
+          name: 'Not found',
+          description: 'Endpoint not found.'
+        },
+        404
+      );
     }
 
     await db.delete(endpoints).where(eq(endpoints.id, id.value));
@@ -76,7 +100,15 @@ export class EndpointsRepository implements Repository {
     const endpoint = await db.query.endpoints.findFirst({
       where: eq(endpoints.id, id.value)
     });
-    if (!endpoint) return Response.error('Endpoint not found.', 404);
+    if (!endpoint) {
+      return Response.error(
+        {
+          name: 'Not found',
+          description: 'Endpoint not found.'
+        },
+        404
+      );
+    }
 
     const data = await db
       .update(endpoints)
@@ -84,7 +116,13 @@ export class EndpointsRepository implements Repository {
       .where(eq(endpoints.id, id.value))
       .returning({updatedName: endpoints.name});
     if (!data[0]) {
-      return Response.error("Endpoint name can't be updated", 500);
+      return Response.error(
+        {
+          name: 'Internal error',
+          description: "Endpoint name can't be updated."
+        },
+        500
+      );
     }
 
     endpoint.name = data[0].updatedName;
@@ -100,7 +138,15 @@ export class EndpointsRepository implements Repository {
     const endpoint = await db.query.endpoints.findFirst({
       where: eq(endpoints.id, id.value)
     });
-    if (!endpoint) return Response.error('Endpoint not found.', 404);
+    if (!endpoint) {
+      return Response.error(
+        {
+          name: 'Not found',
+          description: 'Endpoint not found.'
+        },
+        404
+      );
+    }
 
     const data = await db
       .update(endpoints)
@@ -108,7 +154,13 @@ export class EndpointsRepository implements Repository {
       .where(eq(endpoints.id, id.value))
       .returning({updatedIsEnabled: endpoints.isEnabled});
     if (!data[0]) {
-      return Response.error("Endpoint status can't be updated", 500);
+      return Response.error(
+        {
+          name: 'Internal error',
+          description: "Endpoint status can't be updated."
+        },
+        500
+      );
     }
 
     endpoint.isEnabled = data[0].updatedIsEnabled;
@@ -124,7 +176,15 @@ export class EndpointsRepository implements Repository {
     const endpoint = await db.query.endpoints.findFirst({
       where: eq(endpoints.id, id.value)
     });
-    if (!endpoint) return Response.error('Endpoint not found.', 404);
+    if (!endpoint) {
+      return Response.error(
+        {
+          name: 'Not found',
+          description: 'Endpoint not found.'
+        },
+        404
+      );
+    }
 
     const data = await db
       .update(endpoints)
@@ -132,7 +192,13 @@ export class EndpointsRepository implements Repository {
       .where(eq(endpoints.id, id.value))
       .returning({updatedRedirectUrl: endpoints.redirectUrl});
     if (!data[0]) {
-      return Response.error("Endpoint redirectUrl can't be updated", 500);
+      return Response.error(
+        {
+          name: 'Internal error',
+          description: "Endpoint redirect url can't be updated."
+        },
+        500
+      );
     }
 
     endpoint.redirectUrl = data[0].updatedRedirectUrl;
@@ -148,7 +214,15 @@ export class EndpointsRepository implements Repository {
     const endpoint = await db.query.endpoints.findFirst({
       where: eq(endpoints.id, id.value)
     });
-    if (!endpoint) return Response.error('Endpoint not found.', 404);
+    if (!endpoint) {
+      return Response.error(
+        {
+          name: 'Not found',
+          description: 'Endpoint not found.'
+        },
+        404
+      );
+    }
 
     const data = await db
       .update(endpoints)
@@ -157,7 +231,10 @@ export class EndpointsRepository implements Repository {
       .returning({updatedEmailNotifications: endpoints.emailNotifications});
     if (!data[0]) {
       return Response.error(
-        "Endpoint emailNotifications can't be updated",
+        {
+          name: 'Internal error',
+          description: "Endpoint email notifications can't be updated."
+        },
         500
       );
     }
@@ -177,7 +254,13 @@ export class EndpointsRepository implements Repository {
     });
 
     if (!endpoint) {
-      return Response.error('Endpoint not found.', 404);
+      return Response.error(
+        {
+          name: 'Not found',
+          description: 'Endpoint not found.'
+        },
+        404
+      );
     }
 
     const team = await db.query.teams.findFirst({
@@ -185,7 +268,13 @@ export class EndpointsRepository implements Repository {
     });
 
     if (!team) {
-      return Response.error('Endpoint owner not found.', 404);
+      return Response.error(
+        {
+          name: 'Not found',
+          description: 'Endpoint owner not found.'
+        },
+        404
+      );
     }
 
     const targetEmailExists = team.availableEmails.some(
@@ -193,7 +282,11 @@ export class EndpointsRepository implements Repository {
     );
     if (!targetEmailExists) {
       return Response.error(
-        'The email needs to be one of the team available emails.',
+        {
+          name: 'Unauthorized',
+          description:
+            'The target email needs to be one of the team available emails.'
+        },
         401
       );
     }
@@ -203,7 +296,10 @@ export class EndpointsRepository implements Repository {
     );
     if (targetEmailAlreadyUsed) {
       return Response.error(
-        'The target email is already assigned to this endpoint.',
+        {
+          name: 'Conflict',
+          description: 'The target email is already assigned to this endpoint.'
+        },
         409
       );
     }
@@ -231,18 +327,36 @@ export class EndpointsRepository implements Repository {
     });
 
     if (!endpoint) {
-      return Response.error('Endpoint not found.', 404);
+      return Response.error(
+        {
+          name: 'Not found',
+          description: 'Endpoint not found.'
+        },
+        404
+      );
     }
 
     const targetEmailExists = endpoint.targetEmails.some(
       targetEmail => targetEmail === email.value
     );
     if (!targetEmailExists) {
-      return Response.error('The email does not exists.', 404);
+      return Response.error(
+        {
+          name: 'Not found',
+          description: 'Email not found.'
+        },
+        404
+      );
     }
 
     if (endpoint.targetEmails.length <= 1) {
-      return Response.error('At least one target email is needed.', 409);
+      return Response.error(
+        {
+          name: 'Conflict',
+          description: 'At least one target email is required.'
+        },
+        409
+      );
     }
 
     const targetEmails = endpoint.targetEmails.filter(

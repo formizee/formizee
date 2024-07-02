@@ -12,7 +12,15 @@ export class UsersRepository implements Repository {
       where: eq(users.id, id.value),
       with: {linkedEmails: true}
     });
-    if (!user) return Response.error('User not found.', 404);
+    if (!user) {
+      return Response.error(
+        {
+          name: 'Not found',
+          description: 'User not found.'
+        },
+        404
+      );
+    }
 
     const response = createUser(user);
     return Response.success(response);
@@ -23,7 +31,15 @@ export class UsersRepository implements Repository {
       where: eq(members.user, id.value),
       with: {team: true}
     });
-    if (!data[0]) return Response.error('User not found.', 404);
+    if (!data[0]) {
+      return Response.error(
+        {
+          name: 'Not found',
+          description: 'User not found.'
+        },
+        404
+      );
+    }
 
     const response = data.map(item => {
       return createTeam(item.team);
@@ -35,12 +51,26 @@ export class UsersRepository implements Repository {
     const user = await db.query.users.findFirst({
       where: eq(users.id, id.value)
     });
-    if (!user) return Response.error('User not found.', 404);
+    if (!user) {
+      return Response.error(
+        {
+          name: 'Not found',
+          description: 'User not found.'
+        },
+        404
+      );
+    }
 
     const authenticated = await bcryptjs.compare(password, user.password);
 
     if (!authenticated) {
-      return Response.error('The password does not match.', 401);
+      return Response.error(
+        {
+          name: 'Unauthorized',
+          description: 'Invalid password.'
+        },
+        401
+      );
     }
 
     await db.delete(users).where(eq(users.id, id.value));
@@ -53,11 +83,22 @@ export class UsersRepository implements Repository {
       where: eq(users.id, id.value),
       with: {linkedEmails: true}
     });
-    if (!user) return Response.error('User not found.', 404);
+    if (!user) {
+      return Response.error(
+        {
+          name: 'Not found',
+          description: 'User not found.'
+        },
+        404
+      );
+    }
 
     if (user.name === name.value) {
       return Response.error(
-        'The new name is already being used in this account.',
+        {
+          name: 'Conflict',
+          description: 'The new name is already being used in this account.'
+        },
         409
       );
     }
@@ -67,7 +108,12 @@ export class UsersRepository implements Repository {
       .set({name: name.value})
       .where(eq(users.id, id.value))
       .returning({updatedName: users.name});
-    if (!newUser[0]) return Response.error("User name can't be updated", 500);
+    if (!newUser[0]) {
+      return Response.error({
+        name: 'Internal error',
+        description: "User name can't be updated"
+      });
+    }
 
     user.name = newUser[0].updatedName;
 
@@ -82,12 +128,21 @@ export class UsersRepository implements Repository {
       with: {linkedEmails: true}
     });
     if (!user) {
-      return Response.error('User not found.', 404);
+      return Response.error(
+        {
+          name: 'Not found',
+          description: 'User not found.'
+        },
+        404
+      );
     }
 
     if (user.linkedEmails.length === 0) {
       return Response.error(
-        'The new email needs to be one of your linked emails.',
+        {
+          name: 'Unauthorized',
+          description: 'The new email needs to be one of your linked emails.'
+        },
         401
       );
     }
@@ -98,7 +153,10 @@ export class UsersRepository implements Repository {
 
     if (!emailExists) {
       return Response.error(
-        'The new email needs to be one of your linked emails.',
+        {
+          name: 'Unauthorized',
+          description: 'The new email needs to be one of your linked emails.'
+        },
         401
       );
     }
@@ -108,7 +166,11 @@ export class UsersRepository implements Repository {
     );
     if (!verifiedEmail) {
       return Response.error(
-        'The new email is not verified, please verify the email before using it',
+        {
+          name: 'Unauthorized',
+          description:
+            'The new email is not verified, please verify the email before using it'
+        },
         401
       );
     }
@@ -116,7 +178,11 @@ export class UsersRepository implements Repository {
     const emailAlreadyUsed = email.value === user.email;
     if (emailAlreadyUsed) {
       return Response.error(
-        'The new email is already being used in this account as default.',
+        {
+          name: 'Conflict',
+          description:
+            'The new email is already being used in this account as primary.'
+        },
         409
       );
     }
@@ -126,7 +192,12 @@ export class UsersRepository implements Repository {
       .set({email: email.value})
       .where(eq(users.id, id.value))
       .returning({updatedEmail: users.email});
-    if (!newUser[0]) return Response.error("User email can't be updated", 500);
+    if (!newUser[0]) {
+      return Response.error({
+        name: 'Internal error',
+        description: "User email can't be updated."
+      });
+    }
 
     user.email = newUser[0].updatedEmail;
 
@@ -143,7 +214,15 @@ export class UsersRepository implements Repository {
       where: eq(users.id, id.value),
       with: {linkedEmails: true}
     });
-    if (!user) return Response.error('User not found.', 404);
+    if (!user) {
+      return Response.error(
+        {
+          name: 'Not found',
+          description: 'User not found.'
+        },
+        404
+      );
+    }
 
     const newPassword = await bcryptjs.hash(password.value, 13);
 
@@ -153,7 +232,10 @@ export class UsersRepository implements Repository {
       .where(eq(users.id, id.value))
       .returning({updatedPassword: users.password});
     if (!newUser[0]) {
-      return Response.error("User password can't be updated", 500);
+      return Response.error({
+        name: 'Internal error',
+        description: "User password can't be updated."
+      });
     }
 
     user.password = newUser[0].updatedPassword;
@@ -171,21 +253,38 @@ export class UsersRepository implements Repository {
       where: eq(users.id, id.value),
       with: {linkedEmails: true}
     });
-    if (!user) return Response.error('User not found.', 404);
+    if (!user) {
+      return Response.error(
+        {
+          name: 'Not found',
+          description: 'User not found.'
+        },
+        404
+      );
+    }
 
     const alreadyExists = user.linkedEmails.some(
       item => item.email === linkedEmail.value
     );
     if (alreadyExists) {
       return Response.error(
-        'The user already has this email linked to it',
+        {
+          name: 'Conflict',
+          description: 'The user already has this email linked to it'
+        },
         409
       );
     }
 
     const limitExceeded = user.linkedEmails.length >= 3;
     if (limitExceeded) {
-      return Response.error('You cannot add more than 3 linked emails', 403);
+      return Response.error(
+        {
+          name: 'Plan limits exceeded',
+          description: 'You cannot add more than 3 linked emails'
+        },
+        403
+      );
     }
 
     const newEmail = await db
@@ -196,7 +295,10 @@ export class UsersRepository implements Repository {
       })
       .returning();
     if (!newEmail[0]) {
-      return Response.error("The new email can't be created", 500);
+      return Response.error({
+        name: 'Internal error',
+        description: "The new email can't be created"
+      });
     }
 
     const authService = new AuthService();
@@ -210,37 +312,65 @@ export class UsersRepository implements Repository {
   async deleteLinkedEmail(
     id: Identifier,
     linkedEmail: Email
-  ): Promise<Response<true>> {
+  ): Promise<Response<User>> {
     const user = await db.query.users.findFirst({
       where: eq(users.id, id.value)
     });
     if (!user) {
-      return Response.error('User not found.', 404);
+      return Response.error(
+        {
+          name: 'Not found',
+          description: 'User not found.'
+        },
+        404
+      );
     }
 
     const emails = await db.query.linkedEmails.findMany({
       where: eq(linkedEmails.user, user.id)
     });
     if (emails.length === 0) {
-      return Response.error('User linked email not found.', 404);
+      return Response.error(
+        {
+          name: 'Not found',
+          description: 'User linked email not found.'
+        },
+        404
+      );
     }
 
     const linkedEmailExists = emails.some(
       item => item.email === linkedEmail.value
     );
     if (!linkedEmailExists) {
-      return Response.error('User linked email not found.', 404);
+      return Response.error(
+        {
+          name: 'Not found',
+          description: 'User linked email not found.'
+        },
+        404
+      );
     }
 
     const isPrimaryEmail = user.email === linkedEmail.value;
     if (isPrimaryEmail) {
-      return Response.error("You can't delete the primary email.", 401);
+      return Response.error(
+        {
+          name: 'Unauthorized',
+          description: "You can't delete the primary email."
+        },
+        401
+      );
     }
 
     await db
       .delete(linkedEmails)
       .where(eq(linkedEmails.email, linkedEmail.value));
 
-    return Response.success(true);
+    const newLinkedEmails = emails.filter(
+      email => email.email !== linkedEmail.value
+    );
+    const response = createUser({linkedEmails: newLinkedEmails, ...user});
+    return Response.success(response);
   }
 }

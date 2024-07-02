@@ -12,7 +12,11 @@ export class WaitlistService implements Service {
     });
     if (userExists) {
       return Response.error(
-        "You're already on the list! We'll keep you updated on Formizee launch.",
+        {
+          name: 'Be patient...',
+          description:
+            "You're already on the list! We'll keep you updated on Formizee launch."
+        },
         409
       );
     }

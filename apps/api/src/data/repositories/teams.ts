@@ -15,14 +15,26 @@ export class TeamsRepository implements Repository {
       where: eq(users.id, owner.value)
     });
     if (!user) {
-      return Response.error('User not found.', 404);
+      return Response.error(
+        {
+          name: 'Not found',
+          description: 'User not found.'
+        },
+        404
+      );
     }
 
     const alreadyExists = await db.query.teams.findFirst({
       where: eq(teams.name, name)
     });
     if (alreadyExists) {
-      return Response.error('The team name is not available.', 409);
+      return Response.error(
+        {
+          name: 'Not available',
+          description: 'The team name is not available.'
+        },
+        409
+      );
     }
 
     const emails = await db.query.linkedEmails.findMany({
@@ -41,7 +53,13 @@ export class TeamsRepository implements Repository {
       .values({name, availableEmails, createdBy: user.id})
       .returning();
     if (!team[0]) {
-      return Response.error("Team can't be created.", 500);
+      return Response.error(
+        {
+          name: 'Internal error',
+          description: "Team can't be created."
+        },
+        500
+      );
     }
 
     await db
@@ -63,7 +81,13 @@ export class TeamsRepository implements Repository {
       where: eq(teams.id, id.value)
     });
     if (!team) {
-      return Response.error('Team not found.', 404);
+      return Response.error(
+        {
+          name: 'Not found',
+          description: 'Team not found.'
+        },
+        404
+      );
     }
 
     const response = createTeam(team);
@@ -75,7 +99,13 @@ export class TeamsRepository implements Repository {
       where: eq(teams.id, id.value)
     });
     if (!team) {
-      return Response.error('Team not found.', 404);
+      return Response.error(
+        {
+          name: 'Not found',
+          description: 'Team not found.'
+        },
+        404
+      );
     }
 
     const deleted = await db
@@ -83,7 +113,13 @@ export class TeamsRepository implements Repository {
       .where(eq(teams.id, id.value))
       .returning();
     if (!deleted[0]) {
-      return Response.error("Team can't be deleted.", 500);
+      return Response.error(
+        {
+          name: 'Internal error',
+          description: "Team can't be deleted."
+        },
+        500
+      );
     }
 
     return Response.success(true);
@@ -97,14 +133,26 @@ export class TeamsRepository implements Repository {
       where: eq(teams.id, id.value)
     });
     if (!team) {
-      return Response.error('Team not found.', 404);
+      return Response.error(
+        {
+          name: 'Not found',
+          description: 'Team not found.'
+        },
+        404
+      );
     }
 
     const alreadyExists = team.availableEmails.some(
       availableEmail => availableEmail === email.value
     );
     if (alreadyExists) {
-      return Response.error('The email is already in the list.', 409);
+      return Response.error(
+        {
+          name: 'Conflict',
+          description: 'The email is already in the list.'
+        },
+        409
+      );
     }
 
     const availableEmails = team.availableEmails;
@@ -125,14 +173,26 @@ export class TeamsRepository implements Repository {
       where: eq(teams.id, id.value)
     });
     if (!team) {
-      return Response.error('Team not found.', 404);
+      return Response.error(
+        {
+          name: 'Not found',
+          description: 'Team not found.'
+        },
+        404
+      );
     }
 
     const emailExists = team.availableEmails.some(
       availableEmail => availableEmail === email.value
     );
     if (!emailExists) {
-      return Response.error('Email not found in the list.', 404);
+      return Response.error(
+        {
+          name: 'Not found',
+          description: 'Email not found in the list.'
+        },
+        404
+      );
     }
 
     const availableEmails = team.availableEmails.filter(
@@ -154,7 +214,13 @@ export class TeamsRepository implements Repository {
       where: and(eq(members.user, member.value), eq(members.team, id.value))
     });
     if (!teamMember) {
-      return Response.error('Team Member not found.', 404);
+      return Response.error(
+        {
+          name: 'Not found',
+          description: 'Team member not found.'
+        },
+        404
+      );
     }
 
     const response = createMember(teamMember);
@@ -183,21 +249,39 @@ export class TeamsRepository implements Repository {
       where: eq(teams.id, id.value)
     });
     if (!team) {
-      return Response.error('Team not found.', 404);
+      return Response.error(
+        {
+          name: 'Not found',
+          description: 'Team not found.'
+        },
+        404
+      );
     }
 
     const user = await db.query.users.findFirst({
       where: eq(users.id, member.value)
     });
     if (!user) {
-      return Response.error('User not found.', 404);
+      return Response.error(
+        {
+          name: 'Not found',
+          description: 'User not found.'
+        },
+        404
+      );
     }
 
     const memberAlreadyExists = await db.query.members.findFirst({
       where: and(eq(members.user, user.id), eq(members.team, team.id))
     });
     if (memberAlreadyExists) {
-      return Response.error('User already exists in the team.', 409);
+      return Response.error(
+        {
+          name: 'Conflict',
+          description: 'User already exists in the team.'
+        },
+        409
+      );
     }
 
     const newMember = await db
@@ -211,7 +295,13 @@ export class TeamsRepository implements Repository {
       .returning();
 
     if (!newMember[0]) {
-      return Response.error("The member can't be added.", 500);
+      return Response.error(
+        {
+          name: 'Internal error',
+          description: "The member can't be added."
+        },
+        500
+      );
     }
 
     const response = createTeam(team);
@@ -227,14 +317,26 @@ export class TeamsRepository implements Repository {
       where: eq(teams.id, id.value)
     });
     if (!team) {
-      return Response.error('Team not found.', 404);
+      return Response.error(
+        {
+          name: 'Not found',
+          description: 'Team not found.'
+        },
+        404
+      );
     }
 
     const user = await db.query.users.findFirst({
       where: eq(users.id, member.value)
     });
     if (!user) {
-      return Response.error('User not found.', 404);
+      return Response.error(
+        {
+          name: 'Not found',
+          description: 'User not found.'
+        },
+        404
+      );
     }
 
     const updatedMember = await db
@@ -244,7 +346,13 @@ export class TeamsRepository implements Repository {
       .returning();
 
     if (!updatedMember[0]) {
-      return Response.error("Member permissions can't be updated.", 500);
+      return Response.error(
+        {
+          name: 'Internal error',
+          description: "Member permissions can't be updated."
+        },
+        500
+      );
     }
 
     const response = createTeam(team);
@@ -260,14 +368,26 @@ export class TeamsRepository implements Repository {
       where: eq(teams.id, id.value)
     });
     if (!team) {
-      return Response.error('Team not found.', 404);
+      return Response.error(
+        {
+          name: 'Not found',
+          description: 'Team not found.'
+        },
+        404
+      );
     }
 
     const user = await db.query.users.findFirst({
       where: eq(users.id, member.value)
     });
     if (!user) {
-      return Response.error('User not found.', 404);
+      return Response.error(
+        {
+          name: 'Not found',
+          description: 'User not found.'
+        },
+        404
+      );
     }
 
     const updatedMember = await db
@@ -277,7 +397,13 @@ export class TeamsRepository implements Repository {
       .returning();
 
     if (!updatedMember[0]) {
-      return Response.error("Member role can't be updated.", 500);
+      return Response.error(
+        {
+          name: 'Internal error',
+          description: "Member role can't be updated."
+        },
+        404
+      );
     }
 
     const response = createTeam(team);
@@ -292,26 +418,50 @@ export class TeamsRepository implements Repository {
       where: eq(teams.id, id.value)
     });
     if (!team) {
-      return Response.error('Team not found.', 404);
+      return Response.error(
+        {
+          name: 'Not found',
+          description: 'Team not found.'
+        },
+        404
+      );
     }
 
     const user = await db.query.users.findFirst({
       where: eq(users.id, member.value)
     });
     if (!user) {
-      return Response.error('User not found.', 404);
+      return Response.error(
+        {
+          name: 'Not found',
+          description: 'User not found.'
+        },
+        404
+      );
     }
 
     const memberExists = await db.query.members.findFirst({
       where: and(eq(members.user, user.id), eq(members.team, team.id))
     });
     if (!memberExists) {
-      return Response.error('Member not found.', 500);
+      return Response.error(
+        {
+          name: 'Not found',
+          description: 'Member not found.'
+        },
+        404
+      );
     }
 
     const memberIsOwner = team.createdBy === user.id;
     if (memberIsOwner) {
-      return Response.error("The team owner can't be deleted.", 409);
+      return Response.error(
+        {
+          name: 'Conflict',
+          description: "The team owner can't be deleted."
+        },
+        409
+      );
     }
 
     const deletedMember = await db
@@ -320,7 +470,13 @@ export class TeamsRepository implements Repository {
       .returning();
 
     if (!deletedMember[0]) {
-      return Response.error("Member can't be deleted.", 500);
+      return Response.error(
+        {
+          name: 'Internal Error',
+          description: "Member can't be deleted."
+        },
+        500
+      );
     }
 
     const response = createTeam(team);

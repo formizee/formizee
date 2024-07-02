@@ -1,7 +1,7 @@
 import {type Transporter, createTransport} from 'nodemailer';
 import type {MailService as Service} from 'domain/services';
 import {type Mail, Response} from 'domain/models';
-import type {Identifier} from 'domain/models/values';
+import {Identifier} from 'domain/models/values';
 
 export class MailService implements Service {
   private readonly smtp: Transporter;
@@ -17,13 +17,29 @@ export class MailService implements Service {
   }
 
   async send(mail: Mail): Promise<Response<Identifier>> {
-    await this.smtp.sendMail({
+    const data = {
       from: `${mail.name} <${mail.from}>`,
       to: mail.to,
       subject: mail.subject,
       html: mail.html
+    };
+
+    this.smtp.sendMail(data, (err, info) => {
+      if (err) {
+        return Response.error({
+          name: err.name,
+          description: err.message
+        });
+      }
+
+      if (info.messageId) {
+        return Response.success(new Identifier(info.messageId));
+      }
     });
 
-    return Response.error('miau');
+    return Response.error({
+      name: 'Internal error',
+      description: "The email can't be send"
+    });
   }
 }

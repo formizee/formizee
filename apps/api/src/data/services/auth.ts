@@ -17,12 +17,24 @@ export class AuthService implements Service {
       with: {linkedEmails: true}
     });
     if (!user) {
-      return Response.error('User or password not match.', 401);
+      return Response.error(
+        {
+          name: 'Unauthorized',
+          description: 'Invalid email or password.'
+        },
+        401
+      );
     }
 
     const passwordMatch = await bcryptjs.compare(password, user.password);
     if (!passwordMatch) {
-      return Response.error('User or password not match.', 401);
+      return Response.error(
+        {
+          name: 'Unauthorized',
+          description: 'Invalid email or password.'
+        },
+        401
+      );
     }
 
     await db
@@ -44,7 +56,10 @@ export class AuthService implements Service {
     });
     if (userExists) {
       return Response.error(
-        'The email is already assigned to an account.',
+        {
+          name: 'Not available',
+          description: 'The email is already assigned to an account.'
+        },
         409
       );
     }
@@ -61,7 +76,13 @@ export class AuthService implements Service {
       .returning();
 
     if (!user[0]) {
-      return Response.error("User can't be created", 500);
+      return Response.error(
+        {
+          name: 'Internal error',
+          description: "User can't be created"
+        },
+        500
+      );
     }
 
     await db.insert(linkedEmails).values({
@@ -84,7 +105,13 @@ export class AuthService implements Service {
       with: {linkedEmails: true}
     });
     if (!user) {
-      return Response.error('User not found.', 404);
+      return Response.error(
+        {
+          name: 'Not found',
+          description: 'User not found.'
+        },
+        404
+      );
     }
 
     const currentToken = await db.query.authTokens.findFirst({
@@ -95,16 +122,34 @@ export class AuthService implements Service {
     });
 
     if (!currentToken) {
-      return Response.error('Invalid token.', 401);
+      return Response.error(
+        {
+          name: 'Unauthorized',
+          description: 'Invalid token.'
+        },
+        401
+      );
     }
 
     if (new Date() > currentToken.expiresAt) {
       await db.delete(authTokens).where(eq(authTokens.id, currentToken.id));
-      return Response.error('Expired token, please get a new one.', 401);
+      return Response.error(
+        {
+          name: 'Unauthorized',
+          description: 'Expired token, please get a new one.'
+        },
+        401
+      );
     }
 
     if (currentToken.token.toString() !== token) {
-      return Response.error('Invalid token.', 401);
+      return Response.error(
+        {
+          name: 'Unauthorized',
+          description: 'Invalid token.'
+        },
+        401
+      );
     }
 
     await db.delete(authTokens).where(eq(authTokens.id, currentToken.id));
@@ -121,7 +166,13 @@ export class AuthService implements Service {
       where: eq(users.email, email.value)
     });
     if (!user) {
-      return Response.error('The user does not exists.', 404);
+      return Response.error(
+        {
+          name: 'Not found',
+          description: 'User not found.'
+        },
+        404
+      );
     }
 
     const token = await db.query.authTokens.findFirst({
@@ -152,7 +203,13 @@ export class AuthService implements Service {
       .returning();
 
     if (!newToken[0]) {
-      return Response.error("Token can't be created.", 500);
+      return Response.error(
+        {
+          name: 'Internal error',
+          description: "Token can't be created"
+        },
+        500
+      );
     }
 
     await mailService.send(verifyEmail(email.value, newTokenCode.toString()));
@@ -167,7 +224,13 @@ export class AuthService implements Service {
       where: eq(users.id, id.value)
     });
     if (!user) {
-      return Response.error('The user does not exists.', 404);
+      return Response.error(
+        {
+          name: 'Not found',
+          description: 'User not found.'
+        },
+        404
+      );
     }
 
     const emailExists = await db.query.linkedEmails.findFirst({
@@ -178,13 +241,22 @@ export class AuthService implements Service {
     });
     if (!emailExists) {
       return Response.error(
-        'The email does not exists in the user linked emails.',
+        {
+          name: 'Not found',
+          description: 'The email does not exists in the user linked emails.'
+        },
         404
       );
     }
 
     if (emailExists.isVerified) {
-      return Response.error('The email is already verified.', 401);
+      return Response.error(
+        {
+          name: 'Unauthorized',
+          description: 'The email is already verified.'
+        },
+        401
+      );
     }
 
     const token = await db.query.authTokens.findFirst({
@@ -222,7 +294,13 @@ export class AuthService implements Service {
       .returning();
 
     if (!newToken[0]) {
-      return Response.error("Token can't be created.", 500);
+      return Response.error(
+        {
+          name: 'Internal error',
+          description: "Token can't be created"
+        },
+        500
+      );
     }
 
     const jwtToken = await encrypt({
@@ -240,7 +318,13 @@ export class AuthService implements Service {
     const data = token?.data as LinkedEmailToken;
 
     if (!data.token || !data.id || !data.email) {
-      return Response.error('Invalid token.', 401);
+      return Response.error(
+        {
+          name: 'Unauthorized',
+          description: 'Invalid token.'
+        },
+        401
+      );
     }
 
     const user = await db.query.users.findFirst({
@@ -248,7 +332,13 @@ export class AuthService implements Service {
     });
 
     if (!user) {
-      return Response.error('User not found.', 404);
+      return Response.error(
+        {
+          name: 'Not found',
+          description: 'User not found.'
+        },
+        404
+      );
     }
 
     const currentToken = await db.query.authTokens.findFirst({
@@ -256,16 +346,34 @@ export class AuthService implements Service {
     });
 
     if (!currentToken) {
-      return Response.error('Invalid token.', 401);
+      return Response.error(
+        {
+          name: 'Unauthorized',
+          description: 'Invalid token.'
+        },
+        401
+      );
     }
 
     if (new Date() > currentToken.expiresAt) {
       await db.delete(authTokens).where(eq(authTokens.id, currentToken.id));
-      return Response.error('Expired token, please get a new one.', 401);
+      return Response.error(
+        {
+          name: 'Unauthorized',
+          description: 'Expired token, please get a new one.'
+        },
+        401
+      );
     }
 
     if (currentToken.token !== data.token) {
-      return Response.error('Invalid token.', 401);
+      return Response.error(
+        {
+          name: 'Unauthorized',
+          description: 'Invalid token.'
+        },
+        401
+      );
     }
 
     await db.delete(authTokens).where(eq(authTokens.id, currentToken.id));

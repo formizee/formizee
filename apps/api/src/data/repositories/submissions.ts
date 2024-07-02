@@ -27,7 +27,15 @@ export class SubmissionsRepository implements Repository {
         eq(submissions.endpoint, endpoint.value)
       )
     });
-    if (!data) return Response.error('Submission not found.', 404);
+    if (!data) {
+      return Response.error(
+        {
+          name: 'Not found',
+          description: 'Submission not found.'
+        },
+        404
+      );
+    }
 
     const response = createSubmission(data);
 
@@ -45,7 +53,15 @@ export class SubmissionsRepository implements Repository {
         eq(submissions.endpoint, endpoint.value)
       )
     });
-    if (!submission) return Response.error('Submission not found.', 404);
+    if (!submission) {
+      return Response.error(
+        {
+          name: 'Not found',
+          description: 'Submission not found.'
+        },
+        404
+      );
+    }
 
     const data = await db
       .update(submissions)
@@ -53,7 +69,13 @@ export class SubmissionsRepository implements Repository {
       .where(eq(submissions.id, id.value))
       .returning({updatedIsRead: submissions.isRead});
     if (!data[0]) {
-      return Response.error("Submission status can't be updated", 500);
+      return Response.error(
+        {
+          name: 'Internal error',
+          description: "Submission status can't be updated"
+        },
+        500
+      );
     }
 
     submission.isRead = data[0].updatedIsRead;
@@ -73,7 +95,15 @@ export class SubmissionsRepository implements Repository {
         eq(submissions.endpoint, endpoint.value)
       )
     });
-    if (!submission) return Response.error('Submission not found.', 404);
+    if (!submission) {
+      return Response.error(
+        {
+          name: 'Not found',
+          description: 'Submission not found.'
+        },
+        404
+      );
+    }
 
     const data = await db
       .update(submissions)
@@ -81,7 +111,13 @@ export class SubmissionsRepository implements Repository {
       .where(eq(submissions.id, id.value))
       .returning({updatedIsSpam: submissions.isSpam});
     if (!data[0]) {
-      return Response.error("Submission status can't be updated", 500);
+      return Response.error(
+        {
+          name: 'Internal error',
+          description: "Submission can't be updated."
+        },
+        500
+      );
     }
 
     submission.isSpam = data[0].updatedIsSpam;
@@ -103,7 +139,13 @@ export class SubmissionsRepository implements Repository {
       .returning();
 
     if (!submission[0]) {
-      return Response.error("Submission can't be created.", 500);
+      return Response.error(
+        {
+          name: 'Internal error',
+          description: "Submission can't be created."
+        },
+        500
+      );
     }
 
     const response = createSubmission(submission[0]);
@@ -117,7 +159,15 @@ export class SubmissionsRepository implements Repository {
         eq(submissions.endpoint, endpoint.value)
       )
     });
-    if (!data) return Response.error('Submission not found.', 404);
+    if (!data) {
+      return Response.error(
+        {
+          name: 'Not found',
+          description: 'Submission not found.'
+        },
+        404
+      );
+    }
 
     await db.delete(submissions).where(eq(submissions.id, id.value));
 
