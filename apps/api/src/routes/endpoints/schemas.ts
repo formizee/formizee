@@ -56,7 +56,15 @@ export const PatchEndpointJsonSchema = z.object({
   }),
   redirectUrl: z.string().url().optional().openapi({
     example: 'https://formizee.com/thanks-you'
-  })
+  }),
+  targetEmails: z
+    .string()
+    .email()
+    .array()
+    .optional()
+    .openapi({
+      example: ['example@formizee.com', 'support@formizee.com']
+    })
 });
 
 export const DeleteEndpointSchema = z.object({
@@ -65,17 +73,5 @@ export const DeleteEndpointSchema = z.object({
   }),
   endpointId: z.string().openapi({
     example: 'oxLSYCTK9zEEKNd2W7sUDB'
-  })
-});
-
-export const PostEndpointTargetEmailsSchema = z.object({
-  email: z.string().email().openapi({
-    example: 'example@formizee.com'
-  })
-});
-
-export const DeleteEndpointTargetEmailsSchema = z.object({
-  email: z.string().email().openapi({
-    example: 'example@formizee.com'
   })
 });

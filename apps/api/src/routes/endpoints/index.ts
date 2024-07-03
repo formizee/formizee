@@ -11,7 +11,8 @@ import {
   UpdateEndpointEmailNotifications,
   UpdateEndpointName,
   UpdateEndpointRedirectUrl,
-  UpdateEndpointStatus
+  UpdateEndpointStatus,
+  UpdateEndpointTargetEmails
 } from '@/useCases/endpoints';
 import {LoadTeamMember} from '@/useCases/teams';
 import {
@@ -157,6 +158,21 @@ endpoints.openapi(patchEndpointRoute, async context => {
     data = response.body;
   }
 
+  if (request.targetEmails !== undefined) {
+    const service = new UpdateEndpointTargetEmails(
+      endpointId,
+      request.targetEmails
+    );
+    const response = await service.run();
+
+    const error = response.status === 401 || response.status === 404;
+    if (error) {
+      return context.json(response.error, response.status);
+    }
+
+    data = response.body;
+  }
+
   if (request.redirectUrl !== undefined) {
     const service = new UpdateEndpointRedirectUrl(
       endpointId,
@@ -176,6 +192,7 @@ endpoints.openapi(patchEndpointRoute, async context => {
     request.name === undefined &&
     request.isEnabled === undefined &&
     request.redirectUrl === undefined &&
+    request.targetEmails === undefined &&
     request.emailNotifications === undefined;
 
   if (hasEmptyValues || data === null) {
@@ -183,7 +200,7 @@ endpoints.openapi(patchEndpointRoute, async context => {
       {
         name: 'Bad Request',
         description:
-          "At least provide one of the following fields: 'name', 'isEnabled', 'emailNotifications', 'redirectUrl"
+          "At least provide one of the following fields: 'name', 'isEnabled', 'emailNotifications', 'redirectUrl', 'targetEmails'"
       },
       400
     );
