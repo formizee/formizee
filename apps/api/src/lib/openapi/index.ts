@@ -33,6 +33,7 @@ export const openApi = (router: OpenAPIHono): void => {
       {name: 'Health'},
       {name: 'Profile'},
       {name: 'Api Keys'},
+      {name: 'Authentication'},
       {name: 'Teams'},
       {name: 'Endpoints'},
       {name: 'Submissions'},
