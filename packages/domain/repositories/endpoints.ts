@@ -25,10 +25,5 @@ export interface EndpointsRepository {
     isEnabled: boolean
   ) => Promise<Response<Endpoint>>;
 
-  addTargetEmail: (id: Identifier, email: Email) => Promise<Response<Endpoint>>;
-
-  deleteTargetEmail: (
-    id: Identifier,
-    email: Email
-  ) => Promise<Response<Endpoint>>;
+  updateTargetEmails: (id: Identifier, targetEmails: Email[]) => Promise<Response<Endpoint>>;
 }
