@@ -1,6 +1,14 @@
-import type {StatusCode} from 'hono/utils/http-status';
-import {zValidator} from '@hono/zod-validator';
-import {Hono} from 'hono';
+import {OpenAPIHono} from '@hono/zod-openapi';
+import {handleValidationErrors} from '@/lib/openapi';
+import {userResponse} from '@/lib/models';
+import {
+  authentication,
+  createSession,
+  createVerification,
+  deleteSession,
+  deleteVerification,
+  verifyVerification
+} from '@/lib/auth';
 import {
   LoginAuth,
   RegisterAuth,
@@ -10,52 +18,58 @@ import {
   VerifyAuth
 } from '@/useCases/auth';
 import {
-  createSession,
-  createVerification,
-  deleteSession,
-  deleteVerification,
-  verifySession,
-  verifyVerification
-} from '@/lib/auth';
-import {
-  Login,
-  Register,
-  Verify,
-  SendVerification,
-  LinkedEmailsSendVerification,
-  VerifyLinkedEmails
-} from './schemas';
+  postLinkedEmailsSendVerificationRoute,
+  postLinkedEmailsVerifyRoute,
+  postLoginRoute,
+  postLogoutRoute,
+  postRegisterRoute,
+  postSendVerificationRoute,
+  postVerifyRoute
+} from './routes';
 
-export const auth = new Hono();
+export const auth = new OpenAPIHono({
+  defaultHook: (result, context) => {
+    if (!result.success) {
+      const error = handleValidationErrors(result.error);
+      return context.json(error, 400);
+    }
+  }
+});
 
-auth.post('/login', zValidator('json', Login), async context => {
+auth.openapi(postLoginRoute, async context => {
   const {email, password} = context.req.valid('json');
 
   const service = new LoginAuth(email, password);
   const user = await service.run();
 
-  if (!user.ok) return context.json(user.body, user.status as StatusCode);
+  if (user.status === 401) return context.json(user.error, user.status);
   const {id, name, isVerified} = user.body;
 
   if (isVerified) {
     await createSession(context, {id, name});
-    return context.json(user.body, 200);
+    return context.json(userResponse(user.body), 200);
   }
   const verificationService = new SendVerificationAuth(email);
   await verificationService.run();
 
   await createVerification(context, {email, type: 'account'});
-  return context.json({error: 'Please verify the user before login.'}, 403);
+  return context.json(
+    {
+      name: 'Verification Needed',
+      description: 'Please verify the user before login.'
+    },
+    403
+  );
 });
 
-auth.post('/register', zValidator('json', Register), async context => {
+auth.openapi(postRegisterRoute, async context => {
   const {name, email, password} = context.req.valid('json');
 
   const service = new RegisterAuth(name, email, password);
   const user = await service.run();
 
-  if (!user.ok) {
-    return context.json(user.body, user.status as StatusCode);
+  if (user.status === 409) {
+    return context.json(user.error, user.status);
   }
 
   const verificationService = new SendVerificationAuth(email);
@@ -63,16 +77,19 @@ auth.post('/register', zValidator('json', Register), async context => {
 
   await createVerification(context, {email, type: 'account'});
 
-  return context.text('OK', 201);
+  return context.text('Account created successfully.', 201);
 });
 
-auth.post('/verify', zValidator('json', Verify), async context => {
+auth.openapi(postVerifyRoute, async context => {
   const {isValid, data} = await verifyVerification(context);
   const {token} = context.req.valid('json');
 
   if (!isValid || !data) {
     return context.json(
-      {error: 'The validation failed, please try again.'},
+      {
+        name: 'Bad request',
+        description: 'The validation failed, please try again.'
+      },
       400
     );
   }
@@ -80,8 +97,8 @@ auth.post('/verify', zValidator('json', Verify), async context => {
   const service = new VerifyAuth(data.email, token);
   const user = await service.run();
 
-  if (!user.ok) {
-    return context.json(user.body, user.status as StatusCode);
+  if (user.status === 401 || user.status === 404) {
+    return context.json(user.error, user.status);
   }
 
   await createSession(context, {
@@ -91,64 +108,59 @@ auth.post('/verify', zValidator('json', Verify), async context => {
 
   deleteVerification(context);
 
-  return context.json(
-    {user: user.body, type: data.type},
-    user.status as StatusCode
-  );
+  return context.json({user: userResponse(user.body), type: data.type}, 200);
 });
 
-auth.post(
-  '/send-verification',
-  zValidator('json', SendVerification),
-  async context => {
-    const {email, type} = context.req.valid('json');
+auth.openapi(postSendVerificationRoute, async context => {
+  const {email, type} = context.req.valid('json');
 
-    const service = new SendVerificationAuth(email);
-    const response = await service.run();
+  const service = new SendVerificationAuth(email);
+  const response = await service.run();
 
-    await createVerification(context, {email, type});
-
-    return context.json(response.body, response.status as StatusCode);
+  if (response.status === 404) {
+    return context.json(response.error, response.status);
   }
+
+  await createVerification(context, {email, type});
+
+  return context.json('Verification sended successfully.', 202);
+});
+
+auth.use(
+  postLinkedEmailsSendVerificationRoute.getRoutingPath(),
+  authentication
 );
+auth.openapi(postLinkedEmailsSendVerificationRoute, async context => {
+  const {user} = context.env?.session as {user: string};
+  const {email} = context.req.valid('json');
 
-auth.post(
-  '/linked-emails/send-verification',
-  zValidator('json', LinkedEmailsSendVerification),
-  async context => {
-    const {isAuth, user} = await verifySession(context);
-    const {email} = context.req.valid('json');
+  const service = new SendLinkedEmailVerificationAuth(user, email);
+  const response = await service.run();
 
-    if (!isAuth || !user) {
-      return context.json(
-        {error: 'Please, login first in order to do this action.'},
-        401
-      );
-    }
-
-    const service = new SendLinkedEmailVerificationAuth(user.id, email);
-    const response = await service.run();
-
-    return context.json(response.body, response.status as StatusCode);
+  if (response.status === 401 || response.status === 404) {
+    return context.json(response.error, response.status);
   }
-);
 
-auth.post(
-  '/linked-emails/verify',
-  zValidator('query', VerifyLinkedEmails),
-  async context => {
-    const {token} = context.req.valid('query');
+  return context.json('Verification sended successfully.', 202);
+});
 
-    const service = new VerifyLinkedEmail(token);
-    const response = await service.run();
+auth.openapi(postLinkedEmailsVerifyRoute, async context => {
+  const {token} = context.req.valid('query');
 
-    return context.json(response.body, response.status as StatusCode);
+  const service = new VerifyLinkedEmail(token);
+  const response = await service.run();
+
+  if (response.status === 401 || response.status === 404) {
+    return context.json(response.error, response.status);
   }
-);
 
-auth.post('/logout', context => {
+  return context.json('Linked email successfully verified.', 200);
+});
+
+auth.use(postLogoutRoute.getRoutingPath(), authentication);
+auth.openapi(postLogoutRoute, context => {
   deleteSession(context);
-  return context.json('OK', 200);
+  return context.json('User logout successfully.', 200);
 });
 
 export default auth;

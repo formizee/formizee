@@ -1,11 +1,15 @@
-import {z} from 'zod';
+import {z} from '@hono/zod-openapi';
 
-export const Login = z.object({
-  email: z.string().email(),
-  password: z.string()
+export const PostLoginSchema = z.object({
+  email: z.string().email().openapi({
+    example: 'example@formizee.com'
+  }),
+  password: z.string().openapi({
+    example: 'vzyxXmHp2hm7!'
+  })
 });
 
-export const Register = z
+export const PostRegisterSchema = z
   .object({
     name: z
       .string()
@@ -13,12 +17,14 @@ export const Register = z
       .max(32, {message: 'Name must be between 4 and 32 characters long'})
       .regex(/^[a-z0-9.-]+$/, {
         message: 'Name must only contain lowercase letters and numbers'
-      }),
-    email: z.string().email(),
+      })
+      .openapi({example: 'pauchiner'}),
+    email: z.string().email().openapi({example: 'example@formizee.com'}),
     password: z
       .string()
       .min(8, {message: 'Password must be between 8 and 64 characters long'})
       .max(64, {message: 'Password must be between 8 and 32 characters long'})
+      .openapi({example: 'vzyxXmHp2hm7!'})
   })
   .superRefine(({password}, checkPassComplexity) => {
     const containsUppercase = (ch: string): boolean => /[A-Z]/.test(ch);
@@ -54,18 +60,28 @@ export const Register = z
     }
   });
 
-export const Verify = z.object({
-  token: z.string().length(6).regex(/^\d+$/)
+export const PostVerifySchema = z.object({
+  token: z.string().length(6).regex(/^\d+$/).openapi({
+    example: '123456'
+  })
 });
 
-export const SendVerification = z.object({
-  email: z.string().email(),
-  type: z.enum(['password', 'account'])
+export const PostSendVerificationSchema = z.object({
+  email: z.string().email().openapi({
+    example: 'example@formizee.com'
+  }),
+  type: z.enum(['password', 'account']).openapi({
+    example: 'account'
+  })
 });
 
-export const LinkedEmailsSendVerification = z.object({
-  email: z.string().email()
+export const PostLinkedEmailsSendVerificationSchema = z.object({
+  email: z.string().email().openapi({
+    example: 'example@formizee.com'
+  })
 });
-export const VerifyLinkedEmails = z.object({
-  token: z.string()
+export const PostVerifyLinkedEmailsSchema = z.object({
+  token: z.string().openapi({
+    example: '123456'
+  })
 });
