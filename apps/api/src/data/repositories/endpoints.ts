@@ -253,9 +253,9 @@ export class EndpointsRepository implements Repository {
     return Response.success(response);
   }
 
-  async addTargetEmail(
+  async updateTargetEmails(
     id: Identifier,
-    email: Email
+    emails: Email[]
   ): Promise<Response<Endpoint>> {
     const endpoint = await db.query.endpoints.findFirst({
       where: eq(endpoints.id, id.value)
@@ -285,10 +285,17 @@ export class EndpointsRepository implements Repository {
       );
     }
 
-    const targetEmailExists = team.availableEmails.some(
-      availableEmail => availableEmail === email.value
-    );
-    if (!targetEmailExists) {
+    const validEmails = (): boolean => {
+      for (const email of emails) {
+        const available = team.availableEmails.some(
+          item => item === email.value
+        );
+        if (!available) return false;
+      }
+      return true;
+    };
+
+    if (!validEmails()) {
       return Response.error(
         {
           name: 'Unauthorized',
@@ -299,84 +306,16 @@ export class EndpointsRepository implements Repository {
       );
     }
 
-    const targetEmailAlreadyUsed = endpoint.targetEmails.some(
-      targetEmail => targetEmail === email.value
-    );
-    if (targetEmailAlreadyUsed) {
-      return Response.error(
-        {
-          name: 'Conflict',
-          description: 'The target email is already assigned to this endpoint.'
-        },
-        409
-      );
-    }
-
-    const targetEmails = endpoint.targetEmails;
-    targetEmails.push(email.value);
-
-    await db
-      .update(endpoints)
-      .set({targetEmails})
-      .where(eq(endpoints.id, id.value));
-
-    endpoint.targetEmails = targetEmails;
-    const response = createEndpoint(endpoint);
-
-    return Response.success(response);
-  }
-
-  async deleteTargetEmail(
-    id: Identifier,
-    email: Email
-  ): Promise<Response<Endpoint>> {
-    const endpoint = await db.query.endpoints.findFirst({
-      where: eq(endpoints.id, id.value)
+    const newTargetEmails = emails.map(email => {
+      return email.value;
     });
 
-    if (!endpoint) {
-      return Response.error(
-        {
-          name: 'Not found',
-          description: 'Endpoint not found.'
-        },
-        404
-      );
-    }
-
-    const targetEmailExists = endpoint.targetEmails.some(
-      targetEmail => targetEmail === email.value
-    );
-    if (!targetEmailExists) {
-      return Response.error(
-        {
-          name: 'Not found',
-          description: 'Email not found.'
-        },
-        404
-      );
-    }
-
-    if (endpoint.targetEmails.length <= 1) {
-      return Response.error(
-        {
-          name: 'Conflict',
-          description: 'At least one target email is required.'
-        },
-        409
-      );
-    }
-
-    const targetEmails = endpoint.targetEmails.filter(
-      targetEmail => targetEmail !== email.value
-    );
-
     await db
       .update(endpoints)
-      .set({targetEmails})
+      .set({targetEmails: newTargetEmails})
       .where(eq(endpoints.id, id.value));
 
-    endpoint.targetEmails = targetEmails;
+    endpoint.targetEmails = newTargetEmails;
     const response = createEndpoint(endpoint);
 
     return Response.success(response);
