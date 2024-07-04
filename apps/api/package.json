@@ -15,8 +15,8 @@
     "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "3.596.0",
-    "@aws-sdk/lib-storage": "3.596.0",
+    "@aws-sdk/client-s3": "3.609.0",
+    "@aws-sdk/lib-storage": "3.609.0",
     "@formizee/eslint-config": "workspace:*",
     "@formizee/typescript-config": "workspace:*",
     "@hono/node-server": "1.12.0",
