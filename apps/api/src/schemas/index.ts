@@ -62,6 +62,33 @@ export const UserSchema = z
   })
   .openapi('User');
 
+export const MemberSchema = z
+  .object({
+    id: z.string().openapi({
+      example: 'TjSLj5Z0r4B_H'
+    }),
+    role: z.enum(['member', 'owner']).optional().openapi({
+      description: 'The owners have full permissions on the team',
+      default: 'member',
+      example: 'owner'
+    }),
+    permissions: z
+      .enum(['read', 'edit', 'create', 'all'])
+      .optional()
+      .openapi({
+        description: `
+      'read' allow the member to see all the endpoints and metrics,
+      'edit' allows to modify the endpoints, 
+      'create' allows to create new endpoints, 
+      and 'all' allows to delete endpoints also, each permission adds to the previous ones,
+      for example 'create' also gives the possibility of 'edit'
+      `,
+        default: 'read',
+        example: 'all'
+      })
+  })
+  .openapi('Member');
+
 export const EndpointSchema = z
   .object({
     id: z.string().openapi({
@@ -125,11 +152,13 @@ export const SubmissionSchema = z
   })
   .openapi('Submission');
 
-export const ErrorSchema = z.object({
-  name: z.string().openapi({
-    example: 'Not Found'
-  }),
-  description: z.string().openapi({
-    example: 'User not found.'
+export const ErrorSchema = z
+  .object({
+    name: z.string().openapi({
+      example: 'Not Found'
+    }),
+    description: z.string().openapi({
+      example: 'User not found.'
+    })
   })
-});
+  .openapi('Error');

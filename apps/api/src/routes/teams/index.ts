@@ -1,7 +1,7 @@
-import type {StatusCode} from 'hono/utils/http-status';
-import {zValidator} from '@hono/zod-validator';
-import {Hono} from 'hono';
-import {verifySession} from '@/lib/auth';
+import {OpenAPIHono} from '@hono/zod-openapi';
+import {memberResponse, teamResponse} from '@/lib/models';
+import {handleValidationErrors} from '@/lib/openapi';
+import {authentication} from '@/lib/auth';
 import {LoadUserLinkedTeams} from '@/useCases/users';
 import {
   UpdateTeamMemberPermissions,
@@ -15,321 +15,310 @@ import {
   LoadTeam
 } from '@/useCases/teams';
 import {
-  GetTeamSchema,
-  PostTeamSchema,
-  DeleteTeamSchema,
-  GetMembersSchema,
-  GetMemberSchema,
-  PostMemberParamSchema,
-  PostMemberJsonSchema,
-  PatchMemberParamSchema,
-  PatchMemberJsonSchema,
-  DeleteMemberSchema
-} from './schema';
+  deleteTeamMemberRoute,
+  deleteTeamRoute,
+  getAllTeamMembersRoute,
+  getAllTeamsRoute,
+  getTeamMemberRoute,
+  getTeamRoute,
+  patchTeamMemberRoute,
+  postTeamMemberRoute,
+  postTeamRoute
+} from './routes';
 
-export const teams = new Hono();
-
-teams.get('/', async context => {
-  const {isAuth, user} = await verifySession(context);
-
-  if (!isAuth || !user) {
-    return context.json(
-      {error: 'Please, login first in order to do perform action.'},
-      401
-    );
+export const teams = new OpenAPIHono({
+  defaultHook: (result, context) => {
+    if (!result.success) {
+      const error = handleValidationErrors(result.error);
+      return context.json(error, 400);
+    }
   }
-
-  const service = new LoadUserLinkedTeams(user.id);
-  const response = await service.run();
-
-  return context.json(response.body, response.status as StatusCode);
 });
 
-teams.get('/:teamId', zValidator('param', GetTeamSchema), async context => {
-  const {isAuth, user} = await verifySession(context);
+teams.use(getAllTeamsRoute.getRoutingPath(), authentication);
+teams.openapi(getAllTeamsRoute, async context => {
+  const {user} = context.env?.session as {user: string};
+
+  const service = new LoadUserLinkedTeams(user);
+  const teamsData = await service.run();
+
+  if (teamsData.status === 401 || teamsData.status === 404) {
+    return context.json(teamsData.error, teamsData.status);
+  }
+
+  const response = teamsData.body.map(team => {
+    return teamResponse(team);
+  });
+  return context.json(response, 200);
+});
+
+teams.use(getTeamRoute.getRoutingPath(), authentication);
+teams.openapi(getTeamRoute, async context => {
+  const {user} = context.env?.session as {user: string};
   const {teamId} = context.req.valid('param');
 
-  if (!isAuth || !user) {
+  const memberService = new LoadTeamMember(teamId, user);
+  const memberData = await memberService.run();
+
+  if (memberData.status === 401 || memberData.status === 404) {
+    return context.json(memberData.error, memberData.status);
+  }
+
+  const teamService = new LoadTeam(teamId);
+  const teamData = await teamService.run();
+
+  if (teamData.status === 401 || teamData.status === 404) {
+    return context.json(teamData.error, teamData.status);
+  }
+
+  const response = teamResponse(teamData.body);
+  return context.json(response, 200);
+});
+
+teams.use(postTeamRoute.getRoutingPath(), authentication);
+teams.openapi(postTeamRoute, async context => {
+  const {user} = context.env?.session as {user: string};
+  const {name} = context.req.valid('json');
+
+  const service = new SaveTeam(user, name);
+  const teamData = await service.run();
+
+  const error =
+    teamData.status === 401 ||
+    teamData.status === 404 ||
+    teamData.status === 409;
+  if (error) {
+    return context.json(teamData.error, teamData.status);
+  }
+
+  const response = teamResponse(teamData.body);
+  return context.json(response, 201);
+});
+
+teams.use(deleteTeamRoute.getRoutingPath(), authentication);
+teams.openapi(deleteTeamRoute, async context => {
+  const {user} = context.env?.session as {user: string};
+  const {teamId} = context.req.valid('param');
+
+  const memberService = new LoadTeamMember(teamId, user);
+  const memberData = await memberService.run();
+  const member = memberData.body;
+
+  if (memberData.status === 401 || memberData.status === 404) {
+    return context.json(memberData.error, memberData.status);
+  }
+
+  const loadTeamService = new LoadTeam(teamId);
+  const teamData = await loadTeamService.run();
+  const team = teamData.body;
+
+  if (teamData.status === 401 || teamData.status === 404) {
+    return context.json(teamData.error, teamData.status);
+  }
+
+  if (member.role !== 'owner' || member.id !== team.createdBy) {
     return context.json(
-      {error: 'Please, login first in order to perform this action.'},
+      {
+        name: 'Unauthorized',
+        description:
+          'You need to be the owner of the team to perform this action.'
+      },
       401
     );
   }
 
-  const memberService = new LoadTeamMember(teamId, user.id);
-  const memberResponse = await memberService.run();
+  const deleteTeamService = new DeleteTeam(teamId);
+  const response = await deleteTeamService.run();
 
-  if (!memberResponse.ok) {
+  if (response.status === 401 || response.status === 404) {
+    return context.json(response.error, response.status);
+  }
+
+  return context.text('The team has been deleted.', 204);
+});
+
+teams.use(getAllTeamMembersRoute.getRoutingPath(), authentication);
+teams.openapi(getAllTeamMembersRoute, async context => {
+  const {user} = context.env?.session as {user: string};
+  const {teamId} = context.req.valid('param');
+
+  const memberService = new LoadTeamMember(teamId, user);
+  const memberData = await memberService.run();
+
+  if (memberData.status === 401 || memberData.status === 404) {
+    return context.json(memberData.error, memberData.status);
+  }
+
+  const service = new LoadTeamMembers(teamId);
+  const membersData = await service.run();
+
+  if (membersData.status === 401 || membersData.status === 404) {
+    return context.json(membersData.error, membersData.status);
+  }
+
+  const response = membersData.body.map(member => {
+    return memberResponse(member);
+  });
+  return context.json(response, 200);
+});
+
+teams.use(getTeamMemberRoute.getRoutingPath(), authentication);
+teams.openapi(getTeamMemberRoute, async context => {
+  const {user} = context.env?.session as {user: string};
+  const {teamId, memberId} = context.req.valid('param');
+
+  const memberService = new LoadTeamMember(teamId, user);
+  const memberData = await memberService.run();
+
+  if (memberData.status === 401 || memberData.status === 404) {
+    return context.json(memberData.error, memberData.status);
+  }
+
+  const service = new LoadTeamMember(teamId, memberId);
+  const response = await service.run();
+
+  if (response.status === 401 || response.status === 404) {
+    return context.json(response.error, response.status);
+  }
+
+  return context.json(memberResponse(response.body), 200);
+});
+
+teams.use(postTeamMemberRoute.getRoutingPath(), authentication);
+teams.openapi(postTeamMemberRoute, async context => {
+  const {user} = context.env?.session as {user: string};
+  const {teamId} = context.req.valid('param');
+  const {userId} = context.req.valid('json');
+
+  const memberService = new LoadTeamMember(teamId, user);
+  const memberData = await memberService.run();
+  const userPerformingAction = memberData.body;
+
+  if (memberData.status === 401 || memberData.status === 404) {
+    return context.json(memberData.error, memberData.status);
+  }
+
+  if (userPerformingAction.role !== 'owner') {
     return context.json(
-      memberResponse.body,
-      memberResponse.status as StatusCode
+      {
+        name: 'Unauthorized',
+        description:
+          'You need to be the owner of the team to perform this action.'
+      },
+      401
+    );
+  }
+
+  const service = new SaveTeamMember(teamId, userId);
+  const response = await service.run();
+
+  const error =
+    response.status === 401 ||
+    response.status === 404 ||
+    response.status === 409;
+  if (error) {
+    return context.json(response.error, response.status);
+  }
+
+  return context.json(teamResponse(response.body), 201);
+});
+
+teams.use(patchTeamMemberRoute.getRoutingPath(), authentication);
+teams.openapi(patchTeamMemberRoute, async context => {
+  const {user} = context.env?.session as {user: string};
+  const {teamId, memberId} = context.req.valid('param');
+  const request = context.req.valid('json');
+
+  const memberService = new LoadTeamMember(teamId, user);
+  const memberData = await memberService.run();
+  const userPerformingAction = memberData.body;
+
+  if (memberData.status === 401 || memberData.status === 404) {
+    return context.json(memberData.error, memberData.status);
+  }
+
+  if (userPerformingAction.role !== 'owner') {
+    return context.json(
+      {
+        name: 'Unauthorized',
+        description:
+          'You need to be the owner of the team to perform this action.'
+      },
+      401
+    );
+  }
+
+  if (request.role !== undefined) {
+    const service = new UpdateTeamMemberRole(teamId, memberId, request.role);
+
+    const response = await service.run();
+
+    if (response.status === 401 || response.status === 404) {
+      return context.json(response.error, response.status);
+    }
+  }
+
+  if (request.permissions !== undefined) {
+    const service = new UpdateTeamMemberPermissions(
+      teamId,
+      memberId,
+      request.permissions
+    );
+
+    const response = await service.run();
+
+    if (response.status === 401 || response.status === 404) {
+      return context.json(response.error, response.status);
+    }
+  }
+
+  const service = new LoadTeam(teamId);
+  const response = await service.run();
+
+  if (response.status === 401 || response.status === 404) {
+    return context.json(response.error, response.status);
+  }
+
+  return context.json(teamResponse(response.body), 200);
+});
+
+teams.use(deleteTeamMemberRoute.getRoutingPath(), authentication);
+teams.openapi(deleteTeamMemberRoute, async context => {
+  const {user} = context.env?.session as {user: string};
+  const {teamId, memberId} = context.req.valid('param');
+
+  const memberService = new LoadTeamMember(teamId, user);
+  const memberData = await memberService.run();
+  const userPerformingAction = memberData.body;
+
+  if (memberData.status === 401 || memberData.status === 404) {
+    return context.json(memberData.error, memberData.status);
+  }
+
+  if (userPerformingAction.role !== 'owner') {
+    return context.json(
+      {
+        name: 'Unauthorized',
+        description:
+          'You need to be the owner of the team to perform this action.'
+      },
+      401
     );
   }
 
   const teamService = new LoadTeam(teamId);
-  const response = await teamService.run();
+  const teamData = await teamService.run();
 
-  return context.json(response.body, response.status as StatusCode);
-});
-
-teams.post('/', zValidator('json', PostTeamSchema), async context => {
-  const {isAuth, user} = await verifySession(context);
-  const {name, ownerId} = context.req.valid('json');
-
-  if (!isAuth || !user) {
-    return context.json(
-      {error: 'Please, login first in order to perform this action.'},
-      401
-    );
+  if (teamData.status === 401 || teamData.status === 404) {
+    return context.json(teamData.error, teamData.status);
   }
 
-  const service = new SaveTeam(ownerId, name);
+  const service = new DeleteTeamMember(teamId, memberId);
   const response = await service.run();
 
-  return context.json(response.body, response.status as StatusCode);
+  if (response.status === 401 || response.status === 404) {
+    return context.json(response.error, response.status);
+  }
+
+  return context.json(teamResponse(teamData.body), 204);
 });
-
-//eslint-disable-next-line -- Drizzle eslint plugin mistake
-teams.delete(
-  '/:teamId',
-  zValidator('param', DeleteTeamSchema),
-  async context => {
-    const {isAuth, user} = await verifySession(context);
-    const {teamId} = context.req.valid('param');
-
-    if (!isAuth || !user) {
-      return context.json(
-        {error: 'Please, login first in order to perform this action.'},
-        401
-      );
-    }
-
-    const memberService = new LoadTeamMember(teamId, user.id);
-    const memberResponse = await memberService.run();
-    const member = memberResponse.body;
-
-    if (!memberResponse.ok) {
-      return context.json(
-        memberResponse.body,
-        memberResponse.status as StatusCode
-      );
-    }
-
-    const loadTeamService = new LoadTeam(teamId);
-    const teamResponse = await loadTeamService.run();
-    const team = teamResponse.body;
-
-    if (member.role !== 'owner' || member.id !== team.createdBy) {
-      return context.json(
-        {error: 'You need to be the owner of the team to perform this action.'},
-        401
-      );
-    }
-
-    const deleteTeamService = new DeleteTeam(teamId);
-    const response = await deleteTeamService.run();
-
-    return context.json(
-      'The team has been deleted.',
-      response.status as StatusCode
-    );
-  }
-);
-
-teams.get(
-  '/:teamId/members',
-  zValidator('param', GetMembersSchema),
-  async context => {
-    const {isAuth, user} = await verifySession(context);
-    const {teamId} = context.req.valid('param');
-
-    if (!isAuth || !user) {
-      return context.json(
-        {error: 'Please, login first in order to perform this action.'},
-        401
-      );
-    }
-
-    const memberService = new LoadTeamMember(teamId, user.id);
-    const memberResponse = await memberService.run();
-
-    if (!memberResponse.ok) {
-      return context.json(
-        memberResponse.body,
-        memberResponse.status as StatusCode
-      );
-    }
-
-    const service = new LoadTeamMembers(teamId);
-    const response = await service.run();
-
-    return context.json(response.body, response.status as StatusCode);
-  }
-);
-
-teams.get(
-  '/:teamId/members/:memberId',
-  zValidator('param', GetMemberSchema),
-  async context => {
-    const {isAuth, user} = await verifySession(context);
-    const {teamId, memberId} = context.req.valid('param');
-
-    if (!isAuth || !user) {
-      return context.json(
-        {error: 'Please, login first in order to perform this action.'},
-        401
-      );
-    }
-
-    const memberService = new LoadTeamMember(teamId, user.id);
-    const memberResponse = await memberService.run();
-
-    if (!memberResponse.ok) {
-      return context.json(
-        memberResponse.body,
-        memberResponse.status as StatusCode
-      );
-    }
-
-    const service = new LoadTeamMember(teamId, memberId);
-    const response = await service.run();
-
-    return context.json(response.body, response.status as StatusCode);
-  }
-);
-
-teams.post(
-  '/:teamId/members',
-  zValidator('param', PostMemberParamSchema),
-  zValidator('json', PostMemberJsonSchema),
-  async context => {
-    const {isAuth, user} = await verifySession(context);
-    const {teamId} = context.req.valid('param');
-    const {userId} = context.req.valid('json');
-
-    if (!isAuth || !user) {
-      return context.json(
-        {error: 'Please, login first in order to perform this action.'},
-        401
-      );
-    }
-
-    const memberService = new LoadTeamMember(teamId, user.id);
-    const memberResponse = await memberService.run();
-    const userPerformingAction = memberResponse.body;
-
-    if (!memberResponse.ok) {
-      return context.json(
-        memberResponse.body,
-        memberResponse.status as StatusCode
-      );
-    }
-
-    if (userPerformingAction.role !== 'owner') {
-      return context.json(
-        {error: 'You need to be the owner of the team to perform this action.'},
-        401
-      );
-    }
-
-    const service = new SaveTeamMember(teamId, userId);
-    const response = await service.run();
-
-    return context.json(response.body, response.status as StatusCode);
-  }
-);
-
-teams.patch(
-  '/:teamId/members/:memberId',
-  zValidator('param', PatchMemberParamSchema),
-  zValidator('json', PatchMemberJsonSchema),
-  async context => {
-    const {isAuth, user} = await verifySession(context);
-    const {teamId, memberId} = context.req.valid('param');
-    const request = context.req.valid('json');
-
-    if (!isAuth || !user) {
-      return context.json(
-        {error: 'Please, login first in order to perform this action.'},
-        401
-      );
-    }
-
-    const memberService = new LoadTeamMember(teamId, user.id);
-    const memberResponse = await memberService.run();
-    const userPerformingAction = memberResponse.body;
-
-    if (!memberResponse.ok) {
-      return context.json(
-        memberResponse.body,
-        memberResponse.status as StatusCode
-      );
-    }
-
-    if (userPerformingAction.role !== 'owner') {
-      return context.json(
-        {error: 'You need to be the owner of the team to perform this action.'},
-        401
-      );
-    }
-
-    if (request.role !== undefined) {
-      const service = new UpdateTeamMemberRole(teamId, memberId, request.role);
-      await service.run();
-    }
-
-    if (request.permissions !== undefined) {
-      const service = new UpdateTeamMemberPermissions(
-        teamId,
-        memberId,
-        request.permissions
-      );
-      await service.run();
-    }
-
-    const service = new LoadTeam(teamId);
-    const response = await service.run();
-
-    return context.json(response.body, response.status as StatusCode);
-  }
-);
-
-//eslint-disable-next-line -- Drizzle eslint plugin mistake
-teams.delete(
-  '/:teamId/members/:memberId',
-  zValidator('param', DeleteMemberSchema),
-  async context => {
-    const {isAuth, user} = await verifySession(context);
-    const {teamId, memberId} = context.req.valid('param');
-
-    if (!isAuth || !user) {
-      return context.json(
-        {error: 'Please, login first in order to perform this action.'},
-        401
-      );
-    }
-
-    const memberService = new LoadTeamMember(teamId, user.id);
-    const memberResponse = await memberService.run();
-    const userPerformingAction = memberResponse.body;
-
-    if (!memberResponse.ok) {
-      return context.json(
-        memberResponse.body,
-        memberResponse.status as StatusCode
-      );
-    }
-
-    if (userPerformingAction.role !== 'owner') {
-      return context.json(
-        {error: 'You need to be the owner of the team to perform this action.'},
-        401
-      );
-    }
-
-    const service = new DeleteTeamMember(teamId, memberId);
-    const response = await service.run();
-
-    return context.json(response.body, response.status as StatusCode);
-  }
-);
