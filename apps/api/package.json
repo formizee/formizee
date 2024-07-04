@@ -21,7 +21,6 @@
     "@formizee/typescript-config": "workspace:*",
     "@hono/node-server": "1.11.2",
     "@hono/zod-openapi": "0.14.6",
-    "@hono/zod-validator": "0.2.2",
     "@scalar/hono-api-reference": "0.5.89",
     "awilix": "10.0.2",
     "bcryptjs": "2.4.3",
