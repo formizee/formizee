@@ -1,8 +1,8 @@
-import {Identifier, Email, type TeamPlan} from './values';
+import {Identifier, Name, Email, type TeamPlan} from './values';
 
 export class Team {
   private readonly _id: Identifier;
-  private readonly _name: string;
+  private readonly _name: Name;
   private readonly _plan: TeamPlan;
   private readonly _availableEmails: Email[] = [];
 
@@ -20,7 +20,7 @@ export class Team {
     createdBy: string
   ) {
     this._id = new Identifier(id);
-    this._name = name;
+    this._name = new Name(name);
     this._plan = plan;
 
     availableEmails.forEach(email => {
@@ -37,7 +37,7 @@ export class Team {
   }
 
   get name(): string {
-    return this._name;
+    return this._name.value;
   }
 
   get plan(): TeamPlan {
