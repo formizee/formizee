@@ -258,7 +258,11 @@ teams.openapi(patchTeamMemberRoute, async context => {
   }
 
   if (request.role !== undefined) {
-    const service = new UpdateTeamMemberRole(teamUUID, memberUUID, request.role);
+    const service = new UpdateTeamMemberRole(
+      teamUUID,
+      memberUUID,
+      request.role
+    );
 
     const response = await service.run();
 
