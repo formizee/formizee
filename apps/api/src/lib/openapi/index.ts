@@ -56,6 +56,7 @@ export const openApi = (router: OpenAPIHono): void => {
     '/docs',
     apiReference({
       pageTitle: 'Formizee API Reference',
+      hideModels: true,
       theme: 'deepSpace',
       spec: {
         url: 'openapi.json'
