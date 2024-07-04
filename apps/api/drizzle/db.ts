@@ -1,5 +1,5 @@
 import {drizzle} from 'drizzle-orm/node-postgres';
-import {eq as _eq, and as _and} from 'drizzle-orm';
+import {eq as _eq, ne as _ne, and as _and} from 'drizzle-orm';
 import pg from 'pg';
 import * as schemas from './schemas';
 import '@/lib/enviroment';
@@ -23,4 +23,5 @@ export const db = drizzle(client, {schema: schemas});
 
 // Drizzle Operators
 export const eq = _eq;
+export const ne = _ne;
 export const and = _and;
