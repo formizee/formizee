@@ -1,9 +1,17 @@
 import shortUUID from 'short-uuid';
 import type {z} from '@hono/zod-openapi';
-import type {Endpoint, Submission, User} from 'domain/models';
-import {UserSchema, EndpointSchema, SubmissionSchema} from '@/schemas';
+import type {Endpoint, Member, Submission, Team, User} from 'domain/models';
+import {
+  UserSchema,
+  EndpointSchema,
+  SubmissionSchema,
+  TeamSchema,
+  MemberSchema
+} from '@/schemas';
 
 type UserResponse = z.infer<typeof UserSchema>;
+type TeamResponse = z.infer<typeof TeamSchema>;
+type MemberResponse = z.infer<typeof MemberSchema>;
 type EndpointResponse = z.infer<typeof EndpointSchema>;
 type SubmissionResponse = z.infer<typeof SubmissionSchema>;
 
@@ -25,6 +33,37 @@ export const userResponse = (data: User): UserResponse => {
   };
 
   return UserSchema.parse(normalizedData);
+};
+
+export const teamResponse = (data: Team): TeamResponse => {
+  const id = shortUUID().fromUUID(data.id);
+
+  const availableEmails = data.availableEmails.map(email => {
+    return email.value;
+  });
+
+  const normalizedData = {
+    id,
+    name: data.name,
+    plan: data.plan,
+    availableEmails,
+    updatedAt: data.updatedAt,
+    createdAt: data.createdAt
+  };
+
+  return TeamSchema.parse(normalizedData);
+};
+
+export const memberResponse = (data: Member): MemberResponse => {
+  const id = shortUUID().fromUUID(data.id);
+
+  const normalizedData = {
+    id,
+    role: data.role,
+    permissions: data.permissions
+  };
+
+  return MemberSchema.parse(normalizedData);
 };
 
 export const endpointResponse = (data: Endpoint): EndpointResponse => {
