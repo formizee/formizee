@@ -1,7 +1,7 @@
 import {OpenAPIHono} from '@hono/zod-openapi';
 import type {Submission} from 'domain/models';
 import {handleValidationErrors} from '@/lib/openapi';
-import {submissionResponse} from '@/lib/models';
+import {createUUID, submissionResponse} from '@/lib/models';
 import {authentication} from '@/lib/auth';
 import {LoadEndpoint} from '@/useCases/endpoints';
 import {LoadTeamMember} from '@/useCases/teams';
@@ -34,8 +34,9 @@ submissions.use(getAllSubmissionsRoute.getRoutingPath(), authentication);
 submissions.openapi(getAllSubmissionsRoute, async context => {
   const {user} = context.env?.session as {user: string};
   const {endpointId} = context.req.valid('param');
+  const endpointUUID = createUUID(endpointId);
 
-  const endpointService = new LoadEndpoint(endpointId);
+  const endpointService = new LoadEndpoint(endpointUUID);
   const endpointResponse = await endpointService.run();
   const endpoint = endpointResponse.body;
 
@@ -50,7 +51,7 @@ submissions.openapi(getAllSubmissionsRoute, async context => {
     return context.json(teamResponse.error, teamResponse.status);
   }
 
-  const service = new LoadAllSubmissions(endpointId);
+  const service = new LoadAllSubmissions(endpointUUID);
   const submissionsResponse = await service.run();
 
   if (
@@ -71,8 +72,10 @@ submissions.use(getSubmissionRoute.getRoutingPath(), authentication);
 submissions.openapi(getSubmissionRoute, async context => {
   const {endpointId, submissionId} = context.req.valid('param');
   const {user} = context.env?.session as {user: string};
+  const submissionUUID = createUUID(submissionId);
+  const endpointUUID = createUUID(endpointId);
 
-  const endpointService = new LoadEndpoint(endpointId);
+  const endpointService = new LoadEndpoint(endpointUUID);
   const endpointResponse = await endpointService.run();
   const endpoint = endpointResponse.body;
 
@@ -87,7 +90,7 @@ submissions.openapi(getSubmissionRoute, async context => {
     return context.json(teamResponse.error, teamResponse.status);
   }
 
-  const service = new LoadSubmission(endpointId, submissionId);
+  const service = new LoadSubmission(endpointUUID, submissionUUID);
   const response = await service.run();
 
   if (response.status === 401 || response.status === 404) {
@@ -100,8 +103,9 @@ submissions.openapi(getSubmissionRoute, async context => {
 submissions.openapi(postSubmissionRoute, async context => {
   const contentType = context.req.header('Content-Type');
   const {endpointId} = context.req.valid('param');
+  const endpointUUID = createUUID(endpointId);
 
-  const endpointService = new LoadEndpoint(endpointId);
+  const endpointService = new LoadEndpoint(endpointUUID);
   const endpoint = await endpointService.run();
 
   const isForm = contentType?.includes('application/x-www-form-urlencoded');
@@ -164,13 +168,15 @@ submissions.openapi(postSubmissionRoute, async context => {
 submissions.use(patchSubmissionRoute.getRoutingPath(), authentication);
 submissions.openapi(patchSubmissionRoute, async context => {
   const {endpointId, submissionId} = context.req.valid('param');
+  const submissionUUID = createUUID(submissionId);
+  const endpointUUID = createUUID(endpointId);
   const request = context.req.valid('json');
   let data: Submission | null = null;
 
   if (request.isSpam !== undefined) {
     const service = new UpdateSubmissionIsSpam(
-      endpointId,
-      submissionId,
+      endpointUUID,
+      submissionUUID,
       request.isSpam
     );
     const response = await service.run();
@@ -185,8 +191,8 @@ submissions.openapi(patchSubmissionRoute, async context => {
 
   if (request.isRead !== undefined) {
     const service = new UpdateSubmissionIsRead(
-      endpointId,
-      submissionId,
+      endpointUUID,
+      submissionUUID,
       request.isRead
     );
     const response = await service.run();
@@ -220,8 +226,10 @@ submissions.use(deleteSubmissionRoute.getRoutingPath(), authentication);
 submissions.openapi(deleteSubmissionRoute, async context => {
   const {endpointId, submissionId} = context.req.valid('param');
   const {user} = context.env?.session as {user: string};
+  const submissionUUID = createUUID(submissionId);
+  const endpointUUID = createUUID(endpointId);
 
-  const endpointService = new LoadEndpoint(endpointId);
+  const endpointService = new LoadEndpoint(endpointUUID);
   const endpointResponse = await endpointService.run();
   const endpoint = endpointResponse.body;
 
@@ -236,7 +244,7 @@ submissions.openapi(deleteSubmissionRoute, async context => {
     return context.json(teamResponse.error, teamResponse.status);
   }
 
-  const service = new DeleteSubmission(endpointId, submissionId);
+  const service = new DeleteSubmission(endpointUUID, submissionUUID);
   const response = await service.run();
 
   if (response.status === 401 || response.status === 404) {
