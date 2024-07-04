@@ -51,11 +51,11 @@ importers:
         specifier: workspace:*
         version: link:../../packages/config-typescript
       '@hono/node-server':
-        specifier: 1.11.2
-        version: 1.11.2
+        specifier: 1.12.0
+        version: 1.12.0
       '@hono/zod-openapi':
-        specifier: 0.14.6
-        version: 0.14.6(hono@4.4.4)(zod@3.23.8)
+        specifier: 0.14.7
+        version: 0.14.7(hono@4.4.11)(zod@3.23.8)
       '@scalar/hono-api-reference':
         specifier: 0.5.89
         version: 0.5.89(postcss@8.4.38)(tailwindcss@3.4.3(ts-node@10.9.1(@swc/core@1.3.101(@swc/helpers@0.5.5))(@types/node@20.14.9)(typescript@5.4.5)))(typescript@5.4.5)(vitest@1.3.0(@edge-runtime/vm@3.2.0)(@types/node@20.14.9)(terser@5.31.0))
@@ -75,8 +75,8 @@ importers:
         specifier: 0.30.10
         version: 0.30.10(@cloudflare/workers-types@4.20240529.0)(@neondatabase/serverless@0.9.3)(@opentelemetry/api@1.8.0)(@types/pg@8.11.6)(@types/react@18.3.2)(@vercel/postgres@0.8.0)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1)
       hono:
-        specifier: 4.4.4
-        version: 4.4.4
+        specifier: 4.4.11
+        version: 4.4.11
       jose:
         specifier: 5.3.0
         version: 5.3.0
@@ -1279,12 +1279,12 @@ packages:
     peerDependencies:
       vue: ^3.2.0
 
-  '@hono/node-server@1.11.2':
-    resolution: {integrity: sha512-JhX0nUC66GeDxpIdMKWDRMEwtQBa64CY907iAF1sYqb4m2p2PdSU7zkbnNhAZLg/6IjSlTuj6CF307JlBXVvpg==}
+  '@hono/node-server@1.12.0':
+    resolution: {integrity: sha512-e6oHjNiErRxsZRZBmc2KucuvY3btlO/XPncIpP2X75bRdTilF9GLjm3NHvKKunpJbbJJj31/FoPTksTf8djAVw==}
     engines: {node: '>=18.14.1'}
 
-  '@hono/zod-openapi@0.14.6':
-    resolution: {integrity: sha512-JEDcMflOXL9ygzbmzZuwjgObnIEbRCTR5/hk93vX6wA8nnD/g9JBpIaCBG5fBSAzPZh59TlmcVJM+wWtGQHwsA==}
+  '@hono/zod-openapi@0.14.7':
+    resolution: {integrity: sha512-nxpph8z/wlBDX9oMH3UUcuxwzjnEujvFlyUa5a4A9pV4m8bDN4P0Ari0GpfJZ0B8V3zKdHnxqb7vk7wkoAAwdA==}
     engines: {node: '>=16.0.0'}
     peerDependencies:
       hono: '>=4.3.6'
@@ -3949,8 +3949,8 @@ packages:
   highlightjs-vue@1.0.0:
     resolution: {integrity: sha512-PDEfEF102G23vHmPhLyPboFCD+BkMGu+GuJe2d9/eH4FsCwvgBpnc9n0pGE+ffKdph38s6foEZiEjdgHdzp+IA==}
 
-  hono@4.4.4:
-    resolution: {integrity: sha512-zO5+4K8yf1iuKhBZhwmpZ/0LzPMr8Zt1RugEGM1xvOqgh9DyLb7tslOtoBks4bmm5bIcLtzLCXUpYpXOkwpABA==}
+  hono@4.4.11:
+    resolution: {integrity: sha512-R5RADpjoRsR3/VsnFovpsYNLPnC1f+FgdfsePk3qIgjb4D41Sg7uW5QCj41kzEOwXCjBg0sVvOZMvUNZ0DKB7g==}
     engines: {node: '>=16.0.0'}
 
   hookable@5.5.3:
@@ -7199,18 +7199,18 @@ snapshots:
       '@tanstack/vue-virtual': 3.8.1(vue@3.4.31(typescript@5.4.5))
       vue: 3.4.31(typescript@5.4.5)
 
-  '@hono/node-server@1.11.2': {}
+  '@hono/node-server@1.12.0': {}
 
-  '@hono/zod-openapi@0.14.6(hono@4.4.4)(zod@3.23.8)':
+  '@hono/zod-openapi@0.14.7(hono@4.4.11)(zod@3.23.8)':
     dependencies:
       '@asteasolutions/zod-to-openapi': 7.1.1(zod@3.23.8)
-      '@hono/zod-validator': 0.2.2(hono@4.4.4)(zod@3.23.8)
-      hono: 4.4.4
+      '@hono/zod-validator': 0.2.2(hono@4.4.11)(zod@3.23.8)
+      hono: 4.4.11
       zod: 3.23.8
 
-  '@hono/zod-validator@0.2.2(hono@4.4.4)(zod@3.23.8)':
+  '@hono/zod-validator@0.2.2(hono@4.4.11)(zod@3.23.8)':
     dependencies:
-      hono: 4.4.4
+      hono: 4.4.11
       zod: 3.23.8
 
   '@hookform/resolvers@3.4.0(react-hook-form@7.51.4(react@18.3.1))':
@@ -7915,7 +7915,7 @@ snapshots:
   '@scalar/hono-api-reference@0.5.89(postcss@8.4.38)(tailwindcss@3.4.3(ts-node@10.9.1(@swc/core@1.3.101(@swc/helpers@0.5.5))(@types/node@20.14.9)(typescript@5.4.5)))(typescript@5.4.5)(vitest@1.3.0(@edge-runtime/vm@3.2.0)(@types/node@20.14.9)(terser@5.31.0))':
     dependencies:
       '@scalar/api-reference': 1.24.28(postcss@8.4.38)(tailwindcss@3.4.3(ts-node@10.9.1(@swc/core@1.3.101(@swc/helpers@0.5.5))(@types/node@20.14.9)(typescript@5.4.5)))(typescript@5.4.5)(vitest@1.3.0(@edge-runtime/vm@3.2.0)(@types/node@20.14.9)(terser@5.31.0))
-      hono: 4.4.4
+      hono: 4.4.11
     transitivePeerDependencies:
       - '@jest/globals'
       - '@types/bun'
@@ -10606,7 +10606,7 @@ snapshots:
 
   highlightjs-vue@1.0.0: {}
 
-  hono@4.4.4: {}
+  hono@4.4.11: {}
 
   hookable@5.5.3: {}
 
