@@ -1,40 +1,41 @@
 import type {
   Email,
   Identifier,
+  Name,
   TeamRoles,
   UserPermissions
 } from '../models/values';
 import type {Member, Response, Team} from '../models';
 
 export interface TeamsRepository {
-  save: (owner: Identifier, name: string) => Promise<Response<Team>>;
-  load: (id: Identifier) => Promise<Response<Team>>;
-  delete: (id: Identifier) => Promise<Response<true>>;
+  save: (ownerId: Identifier, name: Name) => Promise<Response<Team>>;
+  load: (team: Name) => Promise<Response<Team>>;
+  delete: (team: Name) => Promise<Response<true>>;
 
-  saveAvailableEmail: (id: Identifier, email: Email) => Promise<Response<Team>>;
+  saveAvailableEmail: (team: Name, email: Email) => Promise<Response<Team>>;
   deleteAvailableEmail: (
-    id: Identifier,
+    team: Name,
     email: Email
   ) => Promise<Response<Team>>;
 
-  loadMember: (id: Identifier, member: Identifier) => Promise<Response<Member>>;
-  loadMembers: (id: Identifier) => Promise<Response<Member[]>>;
+  loadMember: (team: Name, memberId: Identifier) => Promise<Response<Member>>;
+  loadMembers: (team: Name) => Promise<Response<Member[]>>;
   saveMember: (
-    id: Identifier,
-    member: Identifier,
+    team: Name,
+    userId: Identifier,
     permissions?: UserPermissions,
     role?: TeamRoles
-  ) => Promise<Response<Team>>;
-  deleteMember: (id: Identifier, member: Identifier) => Promise<Response<Team>>;
+  ) => Promise<Response<Member>>;
+  deleteMember: (team: Name, memberId: Identifier) => Promise<Response<true>>;
 
   updateMemberPermissions: (
-    id: Identifier,
-    member: Identifier,
+    team: Name,
+    memberId: Identifier,
     permissions: UserPermissions
-  ) => Promise<Response<Team>>;
+  ) => Promise<Response<Member>>;
   updateMemberRole: (
-    id: Identifier,
-    member: Identifier,
+    team: Name,
+    memberId: Identifier,
     role: TeamRoles
-  ) => Promise<Response<Team>>;
+  ) => Promise<Response<Member>>;
 }
