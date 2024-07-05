@@ -98,6 +98,19 @@ endpoints.openapi(postEndpointRoute, async context => {
     return context.json(teamResponse.error, teamResponse.status);
   }
 
+  const member = teamResponse.body;
+  const permissions =
+    member.permissions === 'create' || member.permissions === 'all';
+  if (!permissions) {
+    return context.json(
+      {
+        name: 'Unauthorized',
+        description: "You don't have permissions to create new endpoints."
+      },
+      401
+    );
+  }
+
   const service = new SaveEndpoint(name, teamUUID, targetEmails);
   const endpointData = await service.run();
 
@@ -123,6 +136,18 @@ endpoints.openapi(patchEndpointRoute, async context => {
 
   if (teamResponse.status === 401 || teamResponse.status === 404) {
     return context.json(teamResponse.error, teamResponse.status);
+  }
+
+  const member = teamResponse.body;
+  const permissions = member.permissions !== 'read';
+  if (!permissions) {
+    return context.json(
+      {
+        name: 'Unauthorized',
+        description: "You don't have permissions to edit endpoints."
+      },
+      401
+    );
   }
 
   if (request.name !== undefined) {
@@ -227,6 +252,18 @@ endpoints.openapi(deleteEndpointRoute, async context => {
 
   if (teamResponse.status === 401 || teamResponse.status === 404) {
     return context.json(teamResponse.error, teamResponse.status);
+  }
+
+  const member = teamResponse.body;
+  const permissions = member.permissions !== 'all';
+  if (!permissions) {
+    return context.json(
+      {
+        name: 'Unauthorized',
+        description: "You don't have permissions to delete endpoints."
+      },
+      401
+    );
   }
 
   const service = new DeleteEndpoint(endpointUUID);
