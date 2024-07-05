@@ -4,6 +4,11 @@ interface ResponseOptions {
   status: Status;
 }
 
+interface Error {
+  name: string;
+  description: string;
+}
+
 export class Response<T> {
   private readonly _ok: boolean;
   private readonly _status: Status;
@@ -23,10 +28,7 @@ export class Response<T> {
     return new Response<T>(body, {status});
   }
 
-  static error<T>(
-    error: {name: string; description: string},
-    status: Status = 500
-  ): Response<T> {
+  static error<T>(error: Error, status: Status = 500): Response<T> {
     return new Response<T>(error, {status});
   }
 
@@ -42,7 +44,7 @@ export class Response<T> {
     return this._body as T;
   }
 
-  get error(): object {
-    return this._body as object;
+  get error(): Error {
+    return this._body as Error;
   }
 }
