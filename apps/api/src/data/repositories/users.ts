@@ -411,8 +411,10 @@ export class UsersRepository implements Repository {
 
     for (const team of linkedTeams) {
       const availableEmails = team.availableEmails.map(email => email.value);
-      const newAvailableEmails = availableEmails.filter(email => email !== linkedEmail.value);
-      if(newAvailableEmails === availableEmails) continue;
+      const newAvailableEmails = availableEmails.filter(
+        email => email !== linkedEmail.value
+      );
+      if (newAvailableEmails === availableEmails) continue;
 
       await db
         .update(teams)
