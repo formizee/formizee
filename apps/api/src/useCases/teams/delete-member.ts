@@ -1,18 +1,18 @@
-import type {Team, Response} from 'domain/models';
-import {Identifier} from 'domain/models/values';
+import {Identifier, Name} from 'domain/models/values';
+import type {Response} from 'domain/models';
 import {resolve} from '@/lib/di';
 
 export class DeleteTeamMember {
   private readonly _repository = resolve('teamsRepository');
-  private readonly _member: Identifier;
-  private readonly _id: Identifier;
+  private readonly _memberId: Identifier;
+  private readonly _team: Name;
 
-  constructor(id: string, member: string) {
-    this._member = new Identifier(member);
-    this._id = new Identifier(id);
+  constructor(id: string, memberId: string) {
+    this._memberId = new Identifier(memberId);
+    this._team = new Name(id);
   }
 
-  async run(): Promise<Response<Team>> {
-    return await this._repository.deleteMember(this._id, this._member);
+  async run(): Promise<Response<true>> {
+    return await this._repository.deleteMember(this._team, this._memberId);
   }
 }

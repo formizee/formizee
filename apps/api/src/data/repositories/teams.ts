@@ -1,6 +1,7 @@
 import type {TeamsRepository as Repository} from 'domain/repositories';
 import type {
   Identifier,
+  Name,
   Email,
   TeamRoles,
   UserPermissions
@@ -10,9 +11,9 @@ import {db, eq, and, users, teams, members, linkedEmails} from '@drizzle/db';
 import {createMember, createTeam} from 'src/lib/models';
 
 export class TeamsRepository implements Repository {
-  async save(owner: Identifier, name: string): Promise<Response<Team>> {
+  async save(ownerId: Identifier, name: Name): Promise<Response<Team>> {
     const user = await db.query.users.findFirst({
-      where: eq(users.id, owner.value)
+      where: eq(users.id, ownerId.value)
     });
     if (!user) {
       return Response.error(
@@ -25,7 +26,7 @@ export class TeamsRepository implements Repository {
     }
 
     const alreadyExists = await db.query.teams.findFirst({
-      where: eq(teams.name, name)
+      where: eq(teams.name, name.value)
     });
     if (alreadyExists) {
       return Response.error(
@@ -50,7 +51,7 @@ export class TeamsRepository implements Repository {
 
     const team = await db
       .insert(teams)
-      .values({name, availableEmails, createdBy: user.id})
+      .values({name: name.value, availableEmails, createdBy: user.id})
       .returning();
     if (!team[0]) {
       return Response.error(
@@ -76,9 +77,9 @@ export class TeamsRepository implements Repository {
     return Response.success(response, 201);
   }
 
-  async load(id: Identifier): Promise<Response<Team>> {
+  async load(teamSlug: Name): Promise<Response<Team>> {
     const team = await db.query.teams.findFirst({
-      where: eq(teams.id, id.value)
+      where: eq(teams.name, teamSlug.value)
     });
     if (!team) {
       return Response.error(
@@ -94,9 +95,9 @@ export class TeamsRepository implements Repository {
     return Response.success(response);
   }
 
-  async delete(id: Identifier): Promise<Response<true>> {
+  async delete(teamSlug: Name): Promise<Response<true>> {
     const team = await db.query.teams.findFirst({
-      where: eq(teams.id, id.value)
+      where: eq(teams.name, teamSlug.value)
     });
     if (!team) {
       return Response.error(
@@ -110,7 +111,7 @@ export class TeamsRepository implements Repository {
 
     const deleted = await db
       .delete(teams)
-      .where(eq(teams.id, id.value))
+      .where(eq(teams.id, team.id))
       .returning();
     if (!deleted[0]) {
       return Response.error(
@@ -126,11 +127,11 @@ export class TeamsRepository implements Repository {
   }
 
   async saveAvailableEmail(
-    id: Identifier,
+    teamSlug: Name,
     email: Email
   ): Promise<Response<Team>> {
     const team = await db.query.teams.findFirst({
-      where: eq(teams.id, id.value)
+      where: eq(teams.name, teamSlug.value)
     });
     if (!team) {
       return Response.error(
@@ -158,7 +159,7 @@ export class TeamsRepository implements Repository {
     const availableEmails = team.availableEmails;
     availableEmails.push(email.value);
 
-    await db.update(teams).set({availableEmails}).where(eq(teams.id, id.value));
+    await db.update(teams).set({availableEmails}).where(eq(teams.id, team.id));
     team.availableEmails = availableEmails;
 
     const response = createTeam(team);
@@ -166,11 +167,11 @@ export class TeamsRepository implements Repository {
   }
 
   async deleteAvailableEmail(
-    id: Identifier,
+    teamSlug: Name,
     email: Email
   ): Promise<Response<Team>> {
     const team = await db.query.teams.findFirst({
-      where: eq(teams.id, id.value)
+      where: eq(teams.name, teamSlug.value)
     });
     if (!team) {
       return Response.error(
@@ -199,7 +200,7 @@ export class TeamsRepository implements Repository {
       availableEmail => availableEmail !== email.value
     );
 
-    await db.update(teams).set({availableEmails}).where(eq(teams.id, id.value));
+    await db.update(teams).set({availableEmails}).where(eq(teams.id, team.id));
     team.availableEmails = availableEmails;
 
     const response = createTeam(team);
@@ -207,11 +208,17 @@ export class TeamsRepository implements Repository {
   }
 
   async loadMember(
-    id: Identifier,
-    member: Identifier
+    teamSlug: Name,
+    memberId: Identifier
   ): Promise<Response<Member>> {
+    const teamData = await this.load(teamSlug);
+    const team = teamData.body;
+    if (!teamData.ok) {
+      return Response.error(teamData.error, teamData.status);
+    }
+
     const teamMember = await db.query.members.findFirst({
-      where: and(eq(members.user, member.value), eq(members.team, id.value))
+      where: and(eq(members.user, memberId.value), eq(members.team, team.id))
     });
     if (!teamMember) {
       return Response.error(
@@ -227,9 +234,15 @@ export class TeamsRepository implements Repository {
     return Response.success(response);
   }
 
-  async loadMembers(id: Identifier): Promise<Response<Member[]>> {
+  async loadMembers(teamSlug: Name): Promise<Response<Member[]>> {
+    const teamData = await this.load(teamSlug);
+    const team = teamData.body;
+    if (!teamData.ok) {
+      return Response.error(teamData.error, teamData.status);
+    }
+
     const teamMembers = await db.query.members.findMany({
-      where: eq(members.team, id.value)
+      where: eq(members.team, team.id)
     });
 
     const response = teamMembers.map(member => {
@@ -240,26 +253,19 @@ export class TeamsRepository implements Repository {
   }
 
   async saveMember(
-    id: Identifier,
-    member: Identifier,
+    teamSlug: Name,
+    userId: Identifier,
     permissions?: UserPermissions,
     role?: TeamRoles
-  ): Promise<Response<Team>> {
-    const team = await db.query.teams.findFirst({
-      where: eq(teams.id, id.value)
-    });
-    if (!team) {
-      return Response.error(
-        {
-          name: 'Not found',
-          description: 'Team not found.'
-        },
-        404
-      );
+  ): Promise<Response<Member>> {
+    const teamData = await this.load(teamSlug);
+    const team = teamData.body;
+    if (!teamData.ok) {
+      return Response.error(teamData.error, teamData.status);
     }
 
     const user = await db.query.users.findFirst({
-      where: eq(users.id, member.value),
+      where: eq(users.id, userId.value),
       with: {linkedEmails: true}
     });
     if (!user) {
@@ -305,7 +311,7 @@ export class TeamsRepository implements Repository {
       );
     }
 
-    const newAvailableEmails = team.availableEmails;
+    const newAvailableEmails = team.availableEmails.map(email => email.value);
     user.linkedEmails.forEach(linkedEmail => {
       newAvailableEmails.push(linkedEmail.email);
     });
@@ -317,30 +323,23 @@ export class TeamsRepository implements Repository {
       })
       .where(eq(teams.id, team.id));
 
-    const response = createTeam(team);
+    const response = createMember(newMember[0]);
     return Response.success(response);
   }
 
   async updateMemberPermissions(
-    id: Identifier,
-    member: Identifier,
+    teamSlug: Name,
+    memberId: Identifier,
     permissions: UserPermissions
-  ): Promise<Response<Team>> {
-    const team = await db.query.teams.findFirst({
-      where: eq(teams.id, id.value)
-    });
-    if (!team) {
-      return Response.error(
-        {
-          name: 'Not found',
-          description: 'Team not found.'
-        },
-        404
-      );
+  ): Promise<Response<Member>> {
+    const teamData = await this.load(teamSlug);
+    const team = teamData.body;
+    if (!teamData.ok) {
+      return Response.error(teamData.error, teamData.status);
     }
 
     const user = await db.query.users.findFirst({
-      where: eq(users.id, member.value)
+      where: eq(users.id, memberId.value)
     });
     if (!user) {
       return Response.error(
@@ -368,30 +367,23 @@ export class TeamsRepository implements Repository {
       );
     }
 
-    const response = createTeam(team);
+    const response = createMember(updatedMember[0]);
     return Response.success(response);
   }
 
   async updateMemberRole(
-    id: Identifier,
-    member: Identifier,
+    teamSlug: Name,
+    memberId: Identifier,
     role: TeamRoles
-  ): Promise<Response<Team>> {
-    const team = await db.query.teams.findFirst({
-      where: eq(teams.id, id.value)
-    });
-    if (!team) {
-      return Response.error(
-        {
-          name: 'Not found',
-          description: 'Team not found.'
-        },
-        404
-      );
+  ): Promise<Response<Member>> {
+    const teamData = await this.load(teamSlug);
+    const team = teamData.body;
+    if (!teamData.ok) {
+      return Response.error(teamData.error, teamData.status);
     }
 
     const user = await db.query.users.findFirst({
-      where: eq(users.id, member.value)
+      where: eq(users.id, memberId.value)
     });
     if (!user) {
       return Response.error(
@@ -419,29 +411,22 @@ export class TeamsRepository implements Repository {
       );
     }
 
-    const response = createTeam(team);
+    const response = createMember(updatedMember[0]);
     return Response.success(response);
   }
 
   async deleteMember(
-    id: Identifier,
-    member: Identifier
-  ): Promise<Response<Team>> {
-    const team = await db.query.teams.findFirst({
-      where: eq(teams.id, id.value)
-    });
-    if (!team) {
-      return Response.error(
-        {
-          name: 'Not found',
-          description: 'Team not found.'
-        },
-        404
-      );
+    teamSlug: Name,
+    memberId: Identifier
+  ): Promise<Response<true>> {
+    const teamData = await this.load(teamSlug);
+    const team = teamData.body;
+    if (!teamData.ok) {
+      return Response.error(teamData.error, teamData.status);
     }
 
     const user = await db.query.users.findFirst({
-      where: eq(users.id, member.value),
+      where: eq(users.id, memberId.value),
       with: {linkedEmails: true}
     });
     if (!user) {
@@ -497,17 +482,16 @@ export class TeamsRepository implements Repository {
       linkedEmail => linkedEmail.email
     );
     const newAvailableEmails = team.availableEmails.filter(
-      email => !linkedEmailsData.includes(email)
+      email => !linkedEmailsData.includes(email.value)
     );
 
     await db
       .update(teams)
       .set({
-        availableEmails: newAvailableEmails
+        availableEmails: newAvailableEmails.map(email => email.value)
       })
       .where(eq(teams.id, team.id));
 
-    const response = createTeam(team);
-    return Response.success(response);
+    return Response.success(true);
   }
 }

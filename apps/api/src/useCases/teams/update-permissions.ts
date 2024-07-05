@@ -1,23 +1,23 @@
-import {Identifier, type UserPermissions} from 'domain/models/values';
-import type {Team, Response} from 'domain/models';
+import {Identifier, Name, type UserPermissions} from 'domain/models/values';
+import type {Member, Response} from 'domain/models';
 import {resolve} from '@/lib/di';
 
 export class UpdateTeamMemberPermissions {
   private readonly _repository = resolve('teamsRepository');
   private readonly _permissions: UserPermissions;
-  private readonly _member: Identifier;
-  private readonly _id: Identifier;
+  private readonly _memberId: Identifier;
+  private readonly _team: Name;
 
-  constructor(id: string, member: string, permissions: UserPermissions) {
-    this._member = new Identifier(member);
-    this._id = new Identifier(id);
+  constructor(team: string, memberId: string, permissions: UserPermissions) {
+    this._memberId = new Identifier(memberId);
+    this._team = new Name(team);
     this._permissions = permissions;
   }
 
-  async run(): Promise<Response<Team>> {
+  async run(): Promise<Response<Member>> {
     return await this._repository.updateMemberPermissions(
-      this._id,
-      this._member,
+      this._team,
+      this._memberId,
       this._permissions
     );
   }

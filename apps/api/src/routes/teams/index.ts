@@ -1,4 +1,5 @@
 import {OpenAPIHono} from '@hono/zod-openapi';
+import type {Member} from 'domain/models';
 import {createUUID, memberResponse, teamResponse} from '@/lib/models';
 import {handleValidationErrors} from '@/lib/openapi';
 import {authentication} from '@/lib/auth';
@@ -55,17 +56,16 @@ teams.openapi(getAllTeamsRoute, async context => {
 teams.use(getTeamRoute.getRoutingPath(), authentication);
 teams.openapi(getTeamRoute, async context => {
   const {user} = context.env?.session as {user: string};
-  const {teamId} = context.req.valid('param');
-  const teamUUID = createUUID(teamId);
+  const {team} = context.req.valid('param');
 
-  const memberService = new LoadTeamMember(teamUUID, user);
+  const memberService = new LoadTeamMember(team, user);
   const memberData = await memberService.run();
 
   if (memberData.status === 401 || memberData.status === 404) {
     return context.json(memberData.error, memberData.status);
   }
 
-  const teamService = new LoadTeam(teamUUID);
+  const teamService = new LoadTeam(team);
   const teamData = await teamService.run();
 
   if (teamData.status === 401 || teamData.status === 404) {
@@ -99,10 +99,9 @@ teams.openapi(postTeamRoute, async context => {
 teams.use(deleteTeamRoute.getRoutingPath(), authentication);
 teams.openapi(deleteTeamRoute, async context => {
   const {user} = context.env?.session as {user: string};
-  const {teamId} = context.req.valid('param');
-  const teamUUID = createUUID(teamId);
+  const {team} = context.req.valid('param');
 
-  const memberService = new LoadTeamMember(teamUUID, user);
+  const memberService = new LoadTeamMember(team, user);
   const memberData = await memberService.run();
   const member = memberData.body;
 
@@ -110,15 +109,14 @@ teams.openapi(deleteTeamRoute, async context => {
     return context.json(memberData.error, memberData.status);
   }
 
-  const loadTeamService = new LoadTeam(teamUUID);
+  const loadTeamService = new LoadTeam(team);
   const teamData = await loadTeamService.run();
-  const team = teamData.body;
 
   if (teamData.status === 401 || teamData.status === 404) {
     return context.json(teamData.error, teamData.status);
   }
 
-  if (member.role !== 'owner' || member.id !== team.createdBy) {
+  if (member.role !== 'owner' || member.id !== teamData.body.createdBy) {
     return context.json(
       {
         name: 'Unauthorized',
@@ -129,7 +127,7 @@ teams.openapi(deleteTeamRoute, async context => {
     );
   }
 
-  const deleteTeamService = new DeleteTeam(teamUUID);
+  const deleteTeamService = new DeleteTeam(team);
   const response = await deleteTeamService.run();
 
   if (response.status === 401 || response.status === 404) {
@@ -142,17 +140,16 @@ teams.openapi(deleteTeamRoute, async context => {
 teams.use(getAllTeamMembersRoute.getRoutingPath(), authentication);
 teams.openapi(getAllTeamMembersRoute, async context => {
   const {user} = context.env?.session as {user: string};
-  const {teamId} = context.req.valid('param');
-  const teamUUID = createUUID(teamId);
+  const {team} = context.req.valid('param');
 
-  const memberService = new LoadTeamMember(teamUUID, user);
+  const memberService = new LoadTeamMember(team, user);
   const memberData = await memberService.run();
 
   if (memberData.status === 401 || memberData.status === 404) {
     return context.json(memberData.error, memberData.status);
   }
 
-  const service = new LoadTeamMembers(teamUUID);
+  const service = new LoadTeamMembers(team);
   const membersData = await service.run();
 
   if (membersData.status === 401 || membersData.status === 404) {
@@ -168,18 +165,17 @@ teams.openapi(getAllTeamMembersRoute, async context => {
 teams.use(getTeamMemberRoute.getRoutingPath(), authentication);
 teams.openapi(getTeamMemberRoute, async context => {
   const {user} = context.env?.session as {user: string};
-  const {teamId, memberId} = context.req.valid('param');
+  const {team, memberId} = context.req.valid('param');
   const memberUUID = createUUID(memberId);
-  const teamUUID = createUUID(teamId);
 
-  const memberService = new LoadTeamMember(teamUUID, user);
+  const memberService = new LoadTeamMember(team, user);
   const memberData = await memberService.run();
 
   if (memberData.status === 401 || memberData.status === 404) {
     return context.json(memberData.error, memberData.status);
   }
 
-  const service = new LoadTeamMember(teamUUID, memberUUID);
+  const service = new LoadTeamMember(team, memberUUID);
   const response = await service.run();
 
   if (response.status === 401 || response.status === 404) {
@@ -192,12 +188,11 @@ teams.openapi(getTeamMemberRoute, async context => {
 teams.use(postTeamMemberRoute.getRoutingPath(), authentication);
 teams.openapi(postTeamMemberRoute, async context => {
   const {user} = context.env?.session as {user: string};
-  const {teamId} = context.req.valid('param');
-  const {userId} = context.req.valid('json');
+  const {team} = context.req.valid('param');
+  const {userId, role, permissions} = context.req.valid('json');
   const userUUID = createUUID(userId);
-  const teamUUID = createUUID(teamId);
 
-  const memberService = new LoadTeamMember(teamUUID, user);
+  const memberService = new LoadTeamMember(team, user);
   const memberData = await memberService.run();
   const userPerformingAction = memberData.body;
 
@@ -216,7 +211,7 @@ teams.openapi(postTeamMemberRoute, async context => {
     );
   }
 
-  const service = new SaveTeamMember(teamUUID, userUUID);
+  const service = new SaveTeamMember(team, userUUID, permissions, role);
   const response = await service.run();
 
   const error =
@@ -227,18 +222,18 @@ teams.openapi(postTeamMemberRoute, async context => {
     return context.json(response.error, response.status);
   }
 
-  return context.json(teamResponse(response.body), 201);
+  return context.json(memberResponse(response.body), 201);
 });
 
 teams.use(patchTeamMemberRoute.getRoutingPath(), authentication);
 teams.openapi(patchTeamMemberRoute, async context => {
   const {user} = context.env?.session as {user: string};
-  const {teamId, memberId} = context.req.valid('param');
+  const {team, memberId} = context.req.valid('param');
   const request = context.req.valid('json');
   const memberUUID = createUUID(memberId);
-  const teamUUID = createUUID(teamId);
+  let data: Member | null = null;
 
-  const memberService = new LoadTeamMember(teamUUID, user);
+  const memberService = new LoadTeamMember(team, user);
   const memberData = await memberService.run();
   const userPerformingAction = memberData.body;
 
@@ -258,22 +253,20 @@ teams.openapi(patchTeamMemberRoute, async context => {
   }
 
   if (request.role !== undefined) {
-    const service = new UpdateTeamMemberRole(
-      teamUUID,
-      memberUUID,
-      request.role
-    );
+    const service = new UpdateTeamMemberRole(team, memberUUID, request.role);
 
     const response = await service.run();
 
     if (response.status === 401 || response.status === 404) {
       return context.json(response.error, response.status);
     }
+
+    data = response.body;
   }
 
   if (request.permissions !== undefined) {
     const service = new UpdateTeamMemberPermissions(
-      teamUUID,
+      team,
       memberUUID,
       request.permissions
     );
@@ -283,26 +276,41 @@ teams.openapi(patchTeamMemberRoute, async context => {
     if (response.status === 401 || response.status === 404) {
       return context.json(response.error, response.status);
     }
+
+    data = response.body;
   }
 
-  const service = new LoadTeam(teamUUID);
+  const service = new LoadTeam(team);
   const response = await service.run();
 
   if (response.status === 401 || response.status === 404) {
     return context.json(response.error, response.status);
   }
 
-  return context.json(teamResponse(response.body), 200);
+  const hasEmptyValues =
+    request.role === undefined && request.permissions === undefined;
+
+  if (hasEmptyValues || data === null) {
+    return context.json(
+      {
+        name: 'Bad Request',
+        description:
+          "At least provide one of the following fields: 'role', 'permissions'"
+      },
+      400
+    );
+  }
+
+  return context.json(memberResponse(data), 200);
 });
 
 teams.use(deleteTeamMemberRoute.getRoutingPath(), authentication);
 teams.openapi(deleteTeamMemberRoute, async context => {
   const {user} = context.env?.session as {user: string};
-  const {teamId, memberId} = context.req.valid('param');
+  const {team, memberId} = context.req.valid('param');
   const memberUUID = createUUID(memberId);
-  const teamUUID = createUUID(teamId);
 
-  const memberService = new LoadTeamMember(teamUUID, user);
+  const memberService = new LoadTeamMember(team, user);
   const memberData = await memberService.run();
   const userPerformingAction = memberData.body;
 
@@ -321,14 +329,14 @@ teams.openapi(deleteTeamMemberRoute, async context => {
     );
   }
 
-  const teamService = new LoadTeam(teamUUID);
+  const teamService = new LoadTeam(team);
   const teamData = await teamService.run();
 
   if (teamData.status === 401 || teamData.status === 404) {
     return context.json(teamData.error, teamData.status);
   }
 
-  const service = new DeleteTeamMember(teamUUID, memberUUID);
+  const service = new DeleteTeamMember(team, memberUUID);
   const response = await service.run();
 
   if (
@@ -339,5 +347,5 @@ teams.openapi(deleteTeamMemberRoute, async context => {
     return context.json(response.error, response.status);
   }
 
-  return context.json(teamResponse(teamData.body), 200);
+  return context.text('Member has been deleted from the team', 200);
 });

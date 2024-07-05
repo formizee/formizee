@@ -58,9 +58,9 @@ export const getAllTeamsRoute = createRoute({
 
 export const getTeamRoute = createRoute({
   method: 'get',
-  path: '/{teamId}',
+  path: '/{team}',
   summary: 'Get team',
-  description: 'Returns the team specified on the id.',
+  description: 'Returns the team specified.',
   operationId: 'loadTeam',
   tags: ['Teams'],
   request: {
@@ -164,7 +164,7 @@ export const postTeamRoute = createRoute({
 
 export const deleteTeamRoute = createRoute({
   method: 'delete',
-  path: '/{teamId}',
+  path: '/{team}',
   summary: 'Delete team',
   description: 'Deletes the team and all its data.',
   operationId: 'deleteTeam',
@@ -211,7 +211,7 @@ export const deleteTeamRoute = createRoute({
 
 export const getAllTeamMembersRoute = createRoute({
   method: 'get',
-  path: '/{teamId}/members',
+  path: '/{team}/members',
   summary: 'Get all members',
   description: 'Returns all the members of the specified team.',
   operationId: 'loadAllTeamMembers',
@@ -257,7 +257,7 @@ export const getAllTeamMembersRoute = createRoute({
 
 export const getTeamMemberRoute = createRoute({
   method: 'get',
-  path: '/{teamId}/members/{memberId}',
+  path: '/{team}/members/{memberId}',
   summary: 'Get member',
   description: 'Returns the member of the specified team.',
   operationId: 'loadTeamMember',
@@ -303,7 +303,7 @@ export const getTeamMemberRoute = createRoute({
 
 export const postTeamMemberRoute = createRoute({
   method: 'post',
-  path: '/{teamId}/members',
+  path: '/{team}/members',
   summary: 'Add team member',
   description: 'Adds a member to the specified team.',
   operationId: 'saveTeamMember',
@@ -311,6 +311,7 @@ export const postTeamMemberRoute = createRoute({
   request: {
     params: PostMemberParamSchema,
     body: {
+      required: true,
       content: {
         'application/json': {
           schema: PostMemberJsonSchema
@@ -323,7 +324,7 @@ export const postTeamMemberRoute = createRoute({
       description: 'Member added successfully',
       content: {
         'application/json': {
-          schema: TeamSchema
+          schema: MemberSchema
         }
       }
     },
@@ -364,7 +365,7 @@ export const postTeamMemberRoute = createRoute({
 
 export const patchTeamMemberRoute = createRoute({
   method: 'patch',
-  path: '/{teamId}/members/{memberId}',
+  path: '/{team}/members/{memberId}',
   summary: 'Update member permissions',
   description: 'updates member role and permissions for the specified team.',
   operationId: 'updateTeamMember',
@@ -384,7 +385,7 @@ export const patchTeamMemberRoute = createRoute({
       description: 'Member updated successfully',
       content: {
         'application/json': {
-          schema: TeamSchema
+          schema: MemberSchema
         }
       }
     },
@@ -417,7 +418,7 @@ export const patchTeamMemberRoute = createRoute({
 
 export const deleteTeamMemberRoute = createRoute({
   method: 'delete',
-  path: '/{teamId}/members/{memberId}',
+  path: '/{team}/members/{memberId}',
   summary: 'Remove member',
   description: 'Removes the member from the specified team.',
   operationId: 'deleteTeamMember',
@@ -429,8 +430,9 @@ export const deleteTeamMemberRoute = createRoute({
     200: {
       description: 'Member removed successfully',
       content: {
-        'application/json': {
-          schema: TeamSchema
+        'text/plain': {
+          schema: z.string(),
+          example: 'Member has been deleted from the team.'
         }
       }
     },

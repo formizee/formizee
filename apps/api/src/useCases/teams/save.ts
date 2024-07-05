@@ -1,18 +1,18 @@
 import {type Team, type Response} from 'domain/models';
-import {Identifier} from 'domain/models/values';
+import {Name, Identifier} from 'domain/models/values';
 import {resolve} from '@/lib/di';
 
 export class SaveTeam {
   private readonly _repository = resolve('teamsRepository');
-  private readonly _owner: Identifier;
-  private readonly _name: string;
+  private readonly _ownerId: Identifier;
+  private readonly _name: Name;
 
-  constructor(owner: string, name: string) {
-    this._owner = new Identifier(owner);
-    this._name = name;
+  constructor(ownerId: string, name: string) {
+    this._ownerId = new Identifier(ownerId);
+    this._name = new Name(name);
   }
 
   async run(): Promise<Response<Team>> {
-    return await this._repository.save(this._owner, this._name);
+    return await this._repository.save(this._ownerId, this._name);
   }
 }

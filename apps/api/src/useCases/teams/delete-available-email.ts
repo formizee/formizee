@@ -1,18 +1,18 @@
 import {type Team, type Response} from 'domain/models';
-import {Email, Identifier} from 'domain/models/values';
+import {Email, Name} from 'domain/models/values';
 import {resolve} from '@/lib/di';
 
 export class DeleteTeamAvailableEmail {
   private readonly _repository = resolve('teamsRepository');
-  private readonly _id: Identifier;
+  private readonly _team: Name;
   private readonly _email: Email;
 
-  constructor(id: string, email: string) {
+  constructor(team: string, email: string) {
     this._email = new Email(email);
-    this._id = new Identifier(id);
+    this._team = new Name(team);
   }
 
   async run(): Promise<Response<Team>> {
-    return await this._repository.deleteAvailableEmail(this._id, this._email);
+    return await this._repository.deleteAvailableEmail(this._team, this._email);
   }
 }

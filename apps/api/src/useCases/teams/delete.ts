@@ -1,17 +1,17 @@
 import {type Response} from 'domain/models';
-import {Identifier} from 'domain/models/values';
+import {Name} from 'domain/models/values';
 import {resolve} from '@/lib/di';
 
 export class DeleteTeam {
   private readonly _repository = resolve('teamsRepository');
-  private readonly _id: Identifier;
+  private readonly _team: Name;
 
-  constructor(id: string) {
-    this._id = new Identifier(id);
+  constructor(team: string) {
+    this._team = new Name(team);
   }
 
   async run(): Promise<Response<true>> {
     //eslint-disable-next-line -- Drizzle eslint plugin mistake
-    return await this._repository.delete(this._id);
+    return await this._repository.delete(this._team);
   }
 }
