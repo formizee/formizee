@@ -3,7 +3,16 @@ import type {Identifier, Email, Name, Password} from 'domain/models/values';
 import type {AuthService as Service} from 'domain/services';
 import {Response, type User} from 'domain/models';
 import bcryptjs from 'bcryptjs';
-import {db, eq, and, users, authTokens, linkedEmails, teams, members} from '@drizzle/db';
+import {
+  db,
+  eq,
+  and,
+  users,
+  authTokens,
+  linkedEmails,
+  teams,
+  members
+} from '@drizzle/db';
 import {verifyEmail, verifyLinkedEmail} from '@emails/auth';
 import {createUser} from 'src/lib/models';
 import {decrypt, encrypt} from '@/lib/auth/jwt';
@@ -404,7 +413,6 @@ export class AuthService implements Service {
         .set({availableEmails: newAvailableEmails})
         .where(eq(teams.id, team.id));
     }
-
 
     return Response.success(true);
   }
