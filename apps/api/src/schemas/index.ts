@@ -155,10 +155,10 @@ export const SubmissionSchema = z
 export const ErrorSchema = z
   .object({
     name: z.string().openapi({
-      example: 'Not Found'
+      example: 'Error type'
     }),
     description: z.string().openapi({
-      example: 'User not found.'
+      example: 'Detailed description about it.'
     })
   })
   .openapi('Error');
