@@ -211,7 +211,7 @@ export const deleteTeamRoute = createRoute({
 
 export const getAllTeamMembersRoute = createRoute({
   method: 'get',
-  path: '{teamId}/members',
+  path: '/{teamId}/members',
   summary: 'Get all members',
   description: 'Returns all the members of the specified team.',
   operationId: 'loadAllTeamMembers',
@@ -257,7 +257,7 @@ export const getAllTeamMembersRoute = createRoute({
 
 export const getTeamMemberRoute = createRoute({
   method: 'get',
-  path: '{teamId}/members/{memberId}',
+  path: '/{teamId}/members/{memberId}',
   summary: 'Get member',
   description: 'Returns the member of the specified team.',
   operationId: 'loadTeamMember',
@@ -303,7 +303,7 @@ export const getTeamMemberRoute = createRoute({
 
 export const postTeamMemberRoute = createRoute({
   method: 'post',
-  path: '{teamId}/members',
+  path: '/{teamId}/members',
   summary: 'Add team member',
   description: 'Adds a member to the specified team.',
   operationId: 'saveTeamMember',
@@ -364,7 +364,7 @@ export const postTeamMemberRoute = createRoute({
 
 export const patchTeamMemberRoute = createRoute({
   method: 'patch',
-  path: '{teamId}/members/{memberId}',
+  path: '/{teamId}/members/{memberId}',
   summary: 'Update member permissions',
   description: 'updates member role and permissions for the specified team.',
   operationId: 'updateTeamMember',
@@ -417,7 +417,7 @@ export const patchTeamMemberRoute = createRoute({
 
 export const deleteTeamMemberRoute = createRoute({
   method: 'delete',
-  path: '{teamId}/members/{memberId}',
+  path: '/{teamId}/members/{memberId}',
   summary: 'Remove member',
   description: 'Removes the member from the specified team.',
   operationId: 'deleteTeamMember',
@@ -426,7 +426,7 @@ export const deleteTeamMemberRoute = createRoute({
     params: DeleteMemberSchema
   },
   responses: {
-    204: {
+    200: {
       description: 'Member removed successfully',
       content: {
         'application/json': {
@@ -452,6 +452,14 @@ export const deleteTeamMemberRoute = createRoute({
     },
     404: {
       description: 'Member not found',
+      content: {
+        'application/json': {
+          schema: ErrorSchema
+        }
+      }
+    },
+    409: {
+      description: 'Conflict',
       content: {
         'application/json': {
           schema: ErrorSchema

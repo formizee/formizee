@@ -331,9 +331,13 @@ teams.openapi(deleteTeamMemberRoute, async context => {
   const service = new DeleteTeamMember(teamUUID, memberUUID);
   const response = await service.run();
 
-  if (response.status === 401 || response.status === 404) {
+  if (
+    response.status === 401 ||
+    response.status === 404 ||
+    response.status === 409
+  ) {
     return context.json(response.error, response.status);
   }
 
-  return context.json(teamResponse(teamData.body), 204);
+  return context.json(teamResponse(teamData.body), 200);
 });
