@@ -21,11 +21,11 @@ export const openApi = (router: OpenAPIHono): void => {
     },
     servers: [
       {
-        url: 'https://api.formizee.com/v1',
+        url: 'https://api.formizee.com',
         description: 'Stable Release'
       },
       {
-        url: 'http://localhost:3001/v1',
+        url: 'http://localhost:3001',
         description: 'Development Server'
       }
     ],
