@@ -1,8 +1,22 @@
+import {
+  Identifier,
+  type Email,
+  type Name,
+  type Password
+} from 'domain/models/values';
 import type {UsersRepository as Repository} from 'domain/repositories';
-import type {Identifier, Email, Name, Password} from 'domain/models/values';
 import {Response, type Team, type User} from 'domain/models';
 import bcryptjs from 'bcryptjs';
-import {db, eq, users, linkedEmails, members} from '@drizzle/db';
+import {
+  db,
+  eq,
+  users,
+  linkedEmails,
+  members,
+  ne,
+  and,
+  teams
+} from '@drizzle/db';
 import {createTeam, createUser} from 'src/lib/models';
 import {AuthService} from '../services';
 
@@ -263,6 +277,22 @@ export class UsersRepository implements Repository {
       );
     }
 
+    const emailAlreadyLinked = await db.query.linkedEmails.findFirst({
+      where: and(
+        eq(linkedEmails.email, linkedEmail.value),
+        ne(linkedEmails.user, user.id)
+      )
+    });
+    if (emailAlreadyLinked) {
+      return Response.error(
+        {
+          name: 'Not available',
+          description: 'The email is already used by another account.'
+        },
+        409
+      );
+    }
+
     const alreadyExists = user.linkedEmails.some(
       item => item.email === linkedEmail.value
     );
@@ -370,6 +400,26 @@ export class UsersRepository implements Repository {
     const newLinkedEmails = emails.filter(
       email => email.email !== linkedEmail.value
     );
+
+    const linkedTeamsData = await this.loadLinkedTeams(new Identifier(user.id));
+    const linkedTeams = linkedTeamsData.body;
+
+    if (!linkedTeamsData.ok) {
+      const response = createUser({linkedEmails: newLinkedEmails, ...user});
+      return Response.success(response);
+    }
+
+    for (const team of linkedTeams) {
+      const availableEmails = team.availableEmails.map(email => email.value);
+      const newAvailableEmails = availableEmails.filter(email => email !== linkedEmail.value);
+      if(newAvailableEmails === availableEmails) continue;
+
+      await db
+        .update(teams)
+        .set({availableEmails: newAvailableEmails})
+        .where(eq(teams.id, team.id));
+    }
+
     const response = createUser({linkedEmails: newLinkedEmails, ...user});
     return Response.success(response);
   }

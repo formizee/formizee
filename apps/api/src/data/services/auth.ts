@@ -3,7 +3,7 @@ import type {Identifier, Email, Name, Password} from 'domain/models/values';
 import type {AuthService as Service} from 'domain/services';
 import {Response, type User} from 'domain/models';
 import bcryptjs from 'bcryptjs';
-import {db, eq, and, users, authTokens, linkedEmails} from '@drizzle/db';
+import {db, eq, and, users, authTokens, linkedEmails, teams, members} from '@drizzle/db';
 import {verifyEmail, verifyLinkedEmail} from '@emails/auth';
 import {createUser} from 'src/lib/models';
 import {decrypt, encrypt} from '@/lib/auth/jwt';
@@ -383,6 +383,28 @@ export class AuthService implements Service {
         and(eq(linkedEmails.user, user.id), eq(linkedEmails.email, data.email))
       )
       .returning();
+
+    const linkedTeamsData = await db.query.members.findMany({
+      where: eq(members.user, user.id),
+      with: {team: true}
+    });
+    if (!linkedTeamsData[0]) {
+      return Response.success(true);
+    }
+    const linkedTeams = linkedTeamsData.map(item => {
+      return item.team;
+    });
+
+    for (const team of linkedTeams) {
+      const newAvailableEmails = team.availableEmails;
+      newAvailableEmails.push(data.email);
+
+      await db
+        .update(teams)
+        .set({availableEmails: newAvailableEmails})
+        .where(eq(teams.id, team.id));
+    }
+
 
     return Response.success(true);
   }

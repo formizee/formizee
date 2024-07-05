@@ -259,7 +259,8 @@ export class TeamsRepository implements Repository {
     }
 
     const user = await db.query.users.findFirst({
-      where: eq(users.id, member.value)
+      where: eq(users.id, member.value),
+      with: {linkedEmails: true}
     });
     if (!user) {
       return Response.error(
@@ -303,6 +304,18 @@ export class TeamsRepository implements Repository {
         500
       );
     }
+
+    const newAvailableEmails = team.availableEmails;
+    user.linkedEmails.forEach(linkedEmail => {
+      newAvailableEmails.push(linkedEmail.email);
+    });
+
+    await db
+      .update(teams)
+      .set({
+        availableEmails: newAvailableEmails
+      })
+      .where(eq(teams.id, team.id));
 
     const response = createTeam(team);
     return Response.success(response);
@@ -428,7 +441,8 @@ export class TeamsRepository implements Repository {
     }
 
     const user = await db.query.users.findFirst({
-      where: eq(users.id, member.value)
+      where: eq(users.id, member.value),
+      with: {linkedEmails: true}
     });
     if (!user) {
       return Response.error(
@@ -478,6 +492,20 @@ export class TeamsRepository implements Repository {
         500
       );
     }
+
+    const linkedEmailsData = user.linkedEmails.map(
+      linkedEmail => linkedEmail.email
+    );
+    const newAvailableEmails = team.availableEmails.filter(
+      email => !linkedEmailsData.includes(email)
+    );
+
+    await db
+      .update(teams)
+      .set({
+        availableEmails: newAvailableEmails
+      })
+      .where(eq(teams.id, team.id));
 
     const response = createTeam(team);
     return Response.success(response);
