@@ -13,10 +13,7 @@ export interface TeamsRepository {
   delete: (team: Name) => Promise<Response<true>>;
 
   saveAvailableEmail: (team: Name, email: Email) => Promise<Response<Team>>;
-  deleteAvailableEmail: (
-    team: Name,
-    email: Email
-  ) => Promise<Response<Team>>;
+  deleteAvailableEmail: (team: Name, email: Email) => Promise<Response<Team>>;
 
   loadMember: (team: Name, memberId: Identifier) => Promise<Response<Member>>;
   loadMembers: (team: Name) => Promise<Response<Member[]>>;
