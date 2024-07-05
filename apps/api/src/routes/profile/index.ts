@@ -137,7 +137,7 @@ profile.openapi(postProfileLinkedEmailsRoute, async context => {
 profile.use(deleteProfileLinkedEmailsRoute.getRoutingPath(), authentication);
 profile.openapi(deleteProfileLinkedEmailsRoute, async context => {
   const {user} = context.env?.session as {user: string};
-  const {email} = context.req.valid('param');
+  const {email} = context.req.valid('json');
 
   const service = new DeleteUserLinkedEmail(user, email);
   const response = await service.run();
@@ -150,7 +150,7 @@ profile.openapi(deleteProfileLinkedEmailsRoute, async context => {
     return context.json(response.error, response.status);
   }
 
-  return context.json(userResponse(response.body), 204);
+  return context.json(userResponse(response.body), 200);
 });
 
 profile.use(deleteProfileRoute.getRoutingPath(), authentication);

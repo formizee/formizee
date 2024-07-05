@@ -105,7 +105,7 @@ export const patchProfileRoute = createRoute({
 
 export const deleteProfileRoute = createRoute({
   method: 'delete',
-  path: '/profile',
+  path: '/',
   summary: 'Delete Account',
   description: 'Deletes the user data (Formizee Dashboard Only).',
   operationId: 'deleteProfile',
@@ -159,7 +159,7 @@ export const deleteProfileRoute = createRoute({
 
 export const postProfileLinkedEmailsRoute = createRoute({
   method: 'post',
-  path: '/profile/linked-emails',
+  path: '/linked-emails',
   summary: 'Add linked emails',
   description: 'Adds another email to the profile linked emails.',
   operationId: 'saveProfileLinkedEmail',
@@ -228,16 +228,23 @@ export const postProfileLinkedEmailsRoute = createRoute({
 
 export const deleteProfileLinkedEmailsRoute = createRoute({
   method: 'delete',
-  path: '/profile/linked-emails/{email}',
+  path: '/linked-emails',
   summary: 'Remove linked emails',
   description: 'Deletes a email from the profile linked emails.',
   operationId: 'deleteProfileLinkedEmail',
   tags: ['Profile'],
   request: {
-    params: DeleteLinkedEmailsSchema
+    body: {
+      required: true,
+      content: {
+        'application/json': {
+          schema: DeleteLinkedEmailsSchema
+        }
+      }
+    }
   },
   responses: {
-    204: {
+    200: {
       description: 'Linked email deleted successfully',
       content: {
         'application/json': {
