@@ -6,6 +6,7 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "test": "vitest",
     "lint": "oxlint src",
     "build": "tsc --build",
     "start": "tsx src/index.ts",
@@ -35,11 +36,14 @@
     "zod": "3.23.8"
   },
   "devDependencies": {
+    "@testcontainers/postgresql": "10.10.1",
     "@types/bcryptjs": "2.4.6",
     "@types/node": "20.14.9",
     "@types/nodemailer": "6.4.15",
     "@types/pg": "8.11.6",
     "drizzle-kit": "0.21.2",
-    "tsx": "4.16.2"
+    "tsx": "4.16.2",
+    "vite-tsconfig-paths": "4.3.2",
+    "vitest": "2.0.0"
   }
 }
