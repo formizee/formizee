@@ -13,7 +13,7 @@ waitlist.openapi(
     const service = new JoinWaitlist(email);
     const response = await service.run();
 
-    if (response.status === 500) {
+    if (response.status === 409) {
       return context.json(response.error, response.status);
     }
 

@@ -38,8 +38,8 @@ export const postWaitlistRoute = createRoute({
         }
       }
     },
-    500: {
-      description: 'Internal error',
+    409: {
+      description: 'Conflict',
       content: {
         'application/json': {
           schema: ErrorSchema
