@@ -1,1 +1,13 @@
-{"version": "6", "dialect": "postgresql", "entries": []}
+{
+  "version": "6",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1720467896865,
+      "tag": "0000_aromatic_the_twelve",
+      "breakpoints": true
+    }
+  ]
+}
