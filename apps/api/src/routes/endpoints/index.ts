@@ -35,17 +35,16 @@ export const endpoints = new OpenAPIHono({
 endpoints.use(getAllEndpointsRoute.getRoutingPath(), authentication);
 endpoints.openapi(getAllEndpointsRoute, async context => {
   const {user} = context.env?.session as {user: string};
-  const {teamId} = context.req.valid('param');
-  const teamUUID = createUUID(teamId);
+  const {team} = context.req.valid('param');
 
-  const teamService = new LoadTeamMember(teamUUID, user);
+  const teamService = new LoadTeamMember(team, user);
   const teamResponse = await teamService.run();
 
   if (teamResponse.status === 401 || teamResponse.status === 404) {
     return context.json(teamResponse.error, teamResponse.status);
   }
 
-  const service = new LoadAllEndpoints(teamUUID);
+  const service = new LoadAllEndpoints(team);
   const endpointsData = await service.run();
 
   if (endpointsData.status === 401 || endpointsData.status === 404) {
@@ -62,11 +61,10 @@ endpoints.openapi(getAllEndpointsRoute, async context => {
 endpoints.use(getEndpointRoute.getRoutingPath(), authentication);
 endpoints.openapi(getEndpointRoute, async context => {
   const {user} = context.env?.session as {user: string};
-  const {teamId, endpointId} = context.req.valid('param');
+  const {team, endpointId} = context.req.valid('param');
   const endpointUUID = createUUID(endpointId);
-  const teamUUID = createUUID(teamId);
 
-  const teamService = new LoadTeamMember(teamUUID, user);
+  const teamService = new LoadTeamMember(team, user);
   const teamResponse = await teamService.run();
 
   if (teamResponse.status === 401 || teamResponse.status === 404) {
@@ -88,10 +86,9 @@ endpoints.use(postEndpointRoute.getRoutingPath(), authentication);
 endpoints.openapi(postEndpointRoute, async context => {
   const {user} = context.env?.session as {user: string};
   const {name, targetEmails} = context.req.valid('json');
-  const {teamId} = context.req.valid('param');
-  const teamUUID = createUUID(teamId);
+  const {team} = context.req.valid('param');
 
-  const teamService = new LoadTeamMember(teamUUID, user);
+  const teamService = new LoadTeamMember(team, user);
   const teamResponse = await teamService.run();
 
   if (teamResponse.status === 401 || teamResponse.status === 404) {
@@ -111,7 +108,7 @@ endpoints.openapi(postEndpointRoute, async context => {
     );
   }
 
-  const service = new SaveEndpoint(name, teamUUID, targetEmails);
+  const service = new SaveEndpoint(name, team, targetEmails);
   const endpointData = await service.run();
 
   if (endpointData.status === 401 || endpointData.status === 404) {
@@ -125,13 +122,12 @@ endpoints.openapi(postEndpointRoute, async context => {
 endpoints.use(patchEndpointRoute.getRoutingPath(), authentication);
 endpoints.openapi(patchEndpointRoute, async context => {
   const {user} = context.env?.session as {user: string};
-  const {teamId, endpointId} = context.req.valid('param');
+  const {team, endpointId} = context.req.valid('param');
   const endpointUUID = createUUID(endpointId);
   const request = context.req.valid('json');
-  const teamUUID = createUUID(teamId);
   let data: Endpoint | null = null;
 
-  const teamService = new LoadTeamMember(teamUUID, user);
+  const teamService = new LoadTeamMember(team, user);
   const teamResponse = await teamService.run();
 
   if (teamResponse.status === 401 || teamResponse.status === 404) {
@@ -243,11 +239,10 @@ endpoints.openapi(patchEndpointRoute, async context => {
 endpoints.use(deleteEndpointRoute.getRoutingPath(), authentication);
 endpoints.openapi(deleteEndpointRoute, async context => {
   const {user} = context.env?.session as {user: string};
-  const {teamId, endpointId} = context.req.valid('param');
+  const {team, endpointId} = context.req.valid('param');
   const endpointUUID = createUUID(endpointId);
-  const teamUUID = createUUID(teamId);
 
-  const teamService = new LoadTeamMember(teamUUID, user);
+  const teamService = new LoadTeamMember(team, user);
   const teamResponse = await teamService.run();
 
   if (teamResponse.status === 401 || teamResponse.status === 404) {
@@ -255,7 +250,7 @@ endpoints.openapi(deleteEndpointRoute, async context => {
   }
 
   const member = teamResponse.body;
-  const permissions = member.permissions !== 'all';
+  const permissions = member.permissions === 'all';
   if (!permissions) {
     return context.json(
       {
@@ -273,5 +268,5 @@ endpoints.openapi(deleteEndpointRoute, async context => {
     return context.json(response.error, response.status);
   }
 
-  return context.json('The endpoint has been deleted.', 204);
+  return context.json('The endpoint has been deleted.', 200);
 });

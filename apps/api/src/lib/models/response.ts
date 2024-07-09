@@ -70,6 +70,8 @@ export const endpointResponse = (data: Endpoint): EndpointResponse => {
   const id = shortUUID().fromUUID(data.id);
   const team = shortUUID().fromUUID(data.team);
 
+  const targetEmails = data.targetEmails.map(email => email.value);
+
   const normalizedData = {
     id,
     name: data.name,
@@ -77,7 +79,7 @@ export const endpointResponse = (data: Endpoint): EndpointResponse => {
     isEnabled: data.isEnabled,
     emailNotifications: data.emailNotifications,
     redirectUrl: data.redirectUrl,
-    targetEmails: data.targetEmails,
+    targetEmails,
     updatedAt: data.updatedAt,
     createdAt: data.createdAt
   };

@@ -1,24 +1,27 @@
 import {z} from '@hono/zod-openapi';
 
-export const GetAllEndpointsSchema = z.object({
-  teamId: z.string().openapi({
-    example: 'viCw9Drs7fJJNq42pPq1fH'
+const nameSchema = z
+  .string()
+  .min(4, {message: 'Name must be between 4 and 32 characters long'})
+  .max(32, {message: 'Name must be between 4 and 32 characters long'})
+  .regex(/^[a-z0-9.-]+$/, {
+    message: 'Name must only contain lowercase letters and numbers'
   })
+  .openapi({example: 'formizee'});
+
+export const GetAllEndpointsSchema = z.object({
+  team: nameSchema
 });
 
 export const GetEndpointSchema = z.object({
-  teamId: z.string().openapi({
-    example: 'viCw9Drs7fJJNq42pPq1fH'
-  }),
+  team: nameSchema,
   endpointId: z.string().openapi({
     example: 'oxLSYCTK9zEEKNd2W7sUDB'
   })
 });
 
 export const PostEndpointParamSchema = z.object({
-  teamId: z.string().openapi({
-    example: 'viCw9Drs7fJJNq42pPq1fH'
-  })
+  team: nameSchema
 });
 
 export const PostEndpointJsonSchema = z.object({
@@ -29,16 +32,13 @@ export const PostEndpointJsonSchema = z.object({
     .string()
     .email()
     .array()
-    .optional()
     .openapi({
       example: ['example@formizee.com']
     })
 });
 
 export const PatchEndpointParamSchema = z.object({
-  teamId: z.string().openapi({
-    example: 'viCw9Drs7fJJNq42pPq1fH'
-  }),
+  team: nameSchema,
   endpointId: z.string().openapi({
     example: 'oxLSYCTK9zEEKNd2W7sUDB'
   })
@@ -68,9 +68,7 @@ export const PatchEndpointJsonSchema = z.object({
 });
 
 export const DeleteEndpointSchema = z.object({
-  teamId: z.string().openapi({
-    example: 'viCw9Drs7fJJNq42pPq1fH'
-  }),
+  team: nameSchema,
   endpointId: z.string().openapi({
     example: 'oxLSYCTK9zEEKNd2W7sUDB'
   })

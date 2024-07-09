@@ -1,17 +1,17 @@
 import {type Endpoint, type Response} from 'domain/models';
-import {Email, Identifier} from 'domain/models/values';
+import {Email, Name} from 'domain/models/values';
 import {resolve} from '@/lib/di';
 
 export class SaveEndpoint {
   private readonly _repository = resolve('endpointsRepository');
   private readonly _name: string;
-  private readonly _team: Identifier;
-  private readonly _targetEmails: Email[] | undefined = [];
+  private readonly _team: Name;
+  private readonly _targetEmails: Email[];
 
-  constructor(name: string, team: string, targetEmails?: string[]) {
+  constructor(name: string, team: string, targetEmails: string[]) {
     this._name = name;
-    this._team = new Identifier(team);
-    this._targetEmails = targetEmails?.map(email => {
+    this._team = new Name(team);
+    this._targetEmails = targetEmails.map(email => {
       return new Email(email);
     });
   }

@@ -12,7 +12,7 @@ import {
 
 export const getAllEndpointsRoute = createRoute({
   method: 'get',
-  path: '/{teamId}',
+  path: '/{team}',
   summary: 'Get all endpoints',
   description: 'Returns all endpoints owned by the given team.',
   operationId: 'loadAllEndpoints',
@@ -58,7 +58,7 @@ export const getAllEndpointsRoute = createRoute({
 
 export const getEndpointRoute = createRoute({
   method: 'get',
-  path: '/{teamId}/{endpointId}',
+  path: '/{team}/{endpointId}',
   summary: 'Get endpoint',
   description: 'Returns the endpoint specified on the id.',
   operationId: 'loadEndpoint',
@@ -104,7 +104,7 @@ export const getEndpointRoute = createRoute({
 
 export const postEndpointRoute = createRoute({
   method: 'post',
-  path: '/{teamId}',
+  path: '/{team}',
   summary: 'Create endpoint',
   description: 'Creates a new endpoint with the given name.',
   operationId: 'saveEndpoint',
@@ -158,7 +158,7 @@ export const postEndpointRoute = createRoute({
 
 export const patchEndpointRoute = createRoute({
   method: 'patch',
-  path: '/{teamId}/{endpointId}',
+  path: '/{team}/{endpointId}',
   summary: 'Update endpoint data',
   description: 'Updates the endpoint specified on the id.',
   operationId: 'updateEndpoint',
@@ -211,7 +211,7 @@ export const patchEndpointRoute = createRoute({
 
 export const deleteEndpointRoute = createRoute({
   method: 'delete',
-  path: '/{teamId}/{endpointId}',
+  path: '/{team}/{endpointId}',
   summary: 'Delete endpoint',
   description: 'Deletes the endpoint specified on the id.',
   operationId: 'deleteEndpoint',
@@ -220,7 +220,7 @@ export const deleteEndpointRoute = createRoute({
     params: DeleteEndpointSchema
   },
   responses: {
-    204: {
+    200: {
       description: 'Endpoint Deleted Successfully',
       content: {
         'text/plain': {

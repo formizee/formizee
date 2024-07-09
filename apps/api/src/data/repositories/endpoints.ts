@@ -66,6 +66,14 @@ export class EndpointsRepository implements Repository {
 
     const emails = targetEmails.map(email => email.value);
 
+    const emailsExists = emails.every(email => team.availableEmails.includes(email));
+    if(!emailsExists) {
+      return Response.error({
+        name: "Unauthorized",
+        description: "All the target emails needs to be available in the current team"
+      }, 401)
+    }
+
     const endpoint = await db
       .insert(endpoints)
       .values({
@@ -290,26 +298,14 @@ export class EndpointsRepository implements Repository {
       );
     }
 
-    const validEmails = (): boolean => {
-      for (const email of emails) {
-        const available = team.availableEmails.some(
-          item => item === email.value
-        );
-        if (!available) return false;
-      }
-      return true;
-    };
-
-    if (!validEmails()) {
-      return Response.error(
-        {
-          name: 'Unauthorized',
-          description:
-            'The target email needs to be one of the team available emails.'
-        },
-        401
-      );
+    const emailsExists = emails.every(email => team.availableEmails.includes(email.value));
+    if(!emailsExists) {
+      return Response.error({
+        name: "Unauthorized",
+        description: "All the target emails needs to be available in the current team"
+      }, 401)
     }
+
 
     const newTargetEmails = emails.map(email => {
       return email.value;
