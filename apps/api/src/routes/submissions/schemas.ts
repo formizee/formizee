@@ -1,5 +1,5 @@
 import {z} from '@hono/zod-openapi';
-import { UuidSchema } from '@/schemas';
+import {UuidSchema} from '@/schemas';
 
 export const GetAllSubmissionsSchema = z.object({
   endpointId: UuidSchema
@@ -11,7 +11,7 @@ export const GetSubmissionSchema = z.object({
 });
 
 export const PostSubmissionParamSchema = z.object({
-  endpointId: UuidSchema,
+  endpointId: UuidSchema
 });
 
 export const PostSubmissionJsonSchema = z
@@ -23,7 +23,7 @@ export const PostSubmissionJsonSchema = z
 
 export const PatchSubmissionParamSchema = z.object({
   endpointId: UuidSchema,
-  submissionId: UuidSchema,
+  submissionId: UuidSchema
 });
 
 export const PatchSubmissionJsonSchema = z.object({
@@ -43,5 +43,5 @@ export const PatchSubmissionJsonSchema = z.object({
 
 export const DeleteSubmissionSchema = z.object({
   endpointId: UuidSchema,
-  submissionId: UuidSchema,
+  submissionId: UuidSchema
 });

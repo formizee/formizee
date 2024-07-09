@@ -4,7 +4,7 @@ export const UuidSchema = z
   .string()
   .length(22)
   .regex(/^[a-zA-Z0-9-]+$/)
-  .openapi({example: "oxLSYCTK9zEEKNd2W7sUDB"})
+  .openapi({example: 'oxLSYCTK9zEEKNd2W7sUDB'});
 
 export const TeamSchema = z
   .object({

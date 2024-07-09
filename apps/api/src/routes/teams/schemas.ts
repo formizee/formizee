@@ -1,5 +1,5 @@
 import {z} from '@hono/zod-openapi';
-import { UuidSchema } from '@/schemas';
+import {UuidSchema} from '@/schemas';
 
 const nameSchema = z
   .string()
@@ -60,7 +60,7 @@ export const PostMemberJsonSchema = z.object({
 
 export const PatchMemberParamSchema = z.object({
   team: nameSchema,
-  memberId: UuidSchema,
+  memberId: UuidSchema
 });
 
 export const PatchMemberJsonSchema = z.object({
@@ -87,5 +87,5 @@ export const PatchMemberJsonSchema = z.object({
 
 export const DeleteMemberSchema = z.object({
   team: nameSchema,
-  memberId: UuidSchema,
+  memberId: UuidSchema
 });
