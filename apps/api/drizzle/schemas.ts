@@ -10,7 +10,10 @@ import {
   uniqueIndex
 } from 'drizzle-orm/pg-core';
 import { relations, sql } from 'drizzle-orm';
+import { ColorEnum, IconEnum } from 'domain/models/values';
 
+export const icons = pgEnum('icons', IconEnum);
+export const colors = pgEnum('colors', ColorEnum);
 export const teamRoles = pgEnum('team_roles', ['owner', 'member']);
 export const apiKeyScopes = pgEnum('api_key_scopes', ['team', 'full access']);
 export const userPermissions = pgEnum('user_permissions', ['read', 'edit', 'create', 'all']);
@@ -151,6 +154,10 @@ export const endpoints = pgTable('endpoints', {
   redirectUrl: text('redirect_url')
     .notNull()
     .default('https://formizee.com/thanks-you'),
+
+  color: colors('color').notNull().default('gray'),
+
+  icon: icons('icon').notNull().default('file'),
 
   createdAt: timestamp('created_at').notNull().defaultNow(),
 
