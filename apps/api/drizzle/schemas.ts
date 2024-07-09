@@ -6,9 +6,10 @@ import {
   integer,
   pgEnum,
   pgTable,
-  jsonb
+  jsonb,
+  uniqueIndex
 } from 'drizzle-orm/pg-core';
-import {relations, sql} from 'drizzle-orm';
+import { relations, sql } from 'drizzle-orm';
 
 export const teamRoles = pgEnum('team_roles', ['owner', 'member']);
 export const apiKeyScopes = pgEnum('api_key_scopes', ['team', 'full access']);
@@ -29,7 +30,7 @@ export const teams = pgTable('teams', {
 
   createdBy: uuid('created_by')
     .notNull()
-    .references(() => users.id, {onDelete: 'cascade'}),
+    .references(() => users.id, { onDelete: 'cascade' }),
 
   createdAt: timestamp('created_at').notNull().defaultNow(),
 
@@ -37,18 +38,22 @@ export const teams = pgTable('teams', {
     .notNull()
     .defaultNow()
     .$onUpdate(() => new Date())
-})
+}, table => {
+  return {
+    nameIndex: uniqueIndex("name_index").on(table.name)
+  }
+});
 
 export const members = pgTable('members', {
   id: uuid('id').defaultRandom().primaryKey(),
 
   user: uuid('user_id')
     .notNull()
-    .references(() => users.id, {onDelete: 'cascade'}),
+    .references(() => users.id, { onDelete: 'cascade' }),
 
   team: uuid('team_id')
     .notNull()
-    .references(() => teams.id, {onDelete: 'cascade'}),
+    .references(() => teams.id, { onDelete: 'cascade' }),
 
   role: teamRoles('role').notNull().default('member'),
 
@@ -64,7 +69,7 @@ export const members = pgTable('members', {
     .$onUpdate(() => new Date())
 })
 
-export const membersRelations = relations(members, ({one}) => ({
+export const membersRelations = relations(members, ({ one }) => ({
   user: one(users, {
     fields: [members.user],
     references: [users.id]
@@ -94,16 +99,20 @@ export const users = pgTable('users', {
     .notNull()
     .defaultNow()
     .$onUpdate(() => new Date())
+}, table => {
+  return {
+    emailIndex: uniqueIndex("email_index").on(table.email)
+  }
 });
 
-export const usersRelations = relations(users, ({many}) => ({
+export const usersRelations = relations(users, ({ many }) => ({
   linkedEmails: many(linkedEmails)
 }))
 
 export const linkedEmails = pgTable('emails', {
   id: uuid('id').defaultRandom().primaryKey(),
 
-  user: uuid('user_id').references(() => users.id, {onDelete: 'cascade'}),
+  user: uuid('user_id').references(() => users.id, { onDelete: 'cascade' }),
 
   email: text('email').notNull(),
 
@@ -117,7 +126,7 @@ export const linkedEmails = pgTable('emails', {
     .$onUpdate(() => new Date())
 })
 
-export const linkedEmailsRelations = relations(linkedEmails, ({one}) => ({
+export const linkedEmailsRelations = relations(linkedEmails, ({ one }) => ({
   user: one(users, {
     fields: [linkedEmails.user],
     references: [users.id]
@@ -131,7 +140,7 @@ export const endpoints = pgTable('endpoints', {
 
   team: uuid('team_id')
     .notNull()
-    .references(() => teams.id, {onDelete: 'set null'}),
+    .references(() => teams.id, { onDelete: 'set null' }),
 
   isEnabled: boolean('is_enabled').notNull().default(true),
 
@@ -156,7 +165,7 @@ export const submissions = pgTable('submissions', {
 
   endpoint: uuid('endpoint_id')
     .notNull()
-    .references(() => endpoints.id, {onDelete: 'set null'}),
+    .references(() => endpoints.id, { onDelete: 'set null' }),
 
   data: jsonb('data').notNull().$type<object>(),
 
@@ -172,7 +181,7 @@ export const authTokens = pgTable('auth_tokens', {
 
   user: uuid('user_id')
     .notNull()
-    .references(() => users.id, {onDelete: 'cascade'}),
+    .references(() => users.id, { onDelete: 'cascade' }),
 
   email: text('email').notNull(),
 
@@ -190,10 +199,10 @@ export const apiKeys = pgTable('api_keys', {
 
   user: uuid('user_id')
     .notNull()
-    .references(() => users.id, {onDelete: 'cascade'}),
+    .references(() => users.id, { onDelete: 'cascade' }),
 
   team: uuid('team_id')
-    .references(() => teams.id, {onDelete: 'cascade'}),
+    .references(() => teams.id, { onDelete: 'cascade' }),
 
   scope: apiKeyScopes('scope').notNull().default('full access'),
 
