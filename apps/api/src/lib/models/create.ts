@@ -4,7 +4,9 @@ import type {
   TeamPlan,
   LinkedEmail,
   UserPermissions,
-  TeamRoles
+  TeamRoles,
+  Color,
+  Icon
 } from 'domain/models/values';
 
 export const createUser = (data: {
@@ -67,6 +69,8 @@ export const createEndpoint = (data: {
   redirectUrl: string;
   isEnabled: boolean;
   emailNotifications: boolean;
+  color: Color;
+  icon: Icon;
   createdAt: Date;
   updatedAt: Date;
 }): Endpoint => {
@@ -78,6 +82,8 @@ export const createEndpoint = (data: {
     data.redirectUrl,
     data.isEnabled,
     data.emailNotifications,
+    data.color,
+    data.icon,
     data.createdAt,
     data.updatedAt
   );

@@ -1,3 +1,4 @@
+import {ColorEnum, IconEnum} from 'domain/models/values';
 import {z} from '@hono/zod-openapi';
 import {UuidSchema} from '@/schemas';
 
@@ -33,7 +34,9 @@ export const PostEndpointJsonSchema = z.object({
     .array()
     .openapi({
       example: ['example@formizee.com']
-    })
+    }),
+  color: z.enum(ColorEnum).optional().openapi({example: 'amber'}),
+  icon: z.enum(IconEnum).optional().openapi({example: 'bolt'})
 });
 
 export const PatchEndpointParamSchema = z.object({
@@ -61,7 +64,9 @@ export const PatchEndpointJsonSchema = z.object({
     .optional()
     .openapi({
       example: ['example@formizee.com', 'support@formizee.com']
-    })
+    }),
+  color: z.enum(ColorEnum).optional().openapi({example: 'amber'}),
+  icon: z.enum(IconEnum).optional().openapi({example: 'bolt'})
 });
 
 export const DeleteEndpointSchema = z.object({

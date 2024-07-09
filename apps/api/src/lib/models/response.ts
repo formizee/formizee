@@ -80,6 +80,8 @@ export const endpointResponse = (data: Endpoint): EndpointResponse => {
     emailNotifications: data.emailNotifications,
     redirectUrl: data.redirectUrl,
     targetEmails,
+    color: data.color,
+    icon: data.icon,
     updatedAt: data.updatedAt,
     createdAt: data.createdAt
   };

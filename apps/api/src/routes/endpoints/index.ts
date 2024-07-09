@@ -8,7 +8,9 @@ import {
   LoadAllEndpoints,
   LoadEndpoint,
   SaveEndpoint,
+  UpdateEndpointColor,
   UpdateEndpointEmailNotifications,
+  UpdateEndpointIcon,
   UpdateEndpointName,
   UpdateEndpointRedirectUrl,
   UpdateEndpointStatus,
@@ -85,7 +87,7 @@ endpoints.openapi(getEndpointRoute, async context => {
 endpoints.use(postEndpointRoute.getRoutingPath(), authentication);
 endpoints.openapi(postEndpointRoute, async context => {
   const {user} = context.env?.session as {user: string};
-  const {name, targetEmails} = context.req.valid('json');
+  const {name, targetEmails, color, icon} = context.req.valid('json');
   const {team} = context.req.valid('param');
 
   const teamService = new LoadTeamMember(team, user);
@@ -108,7 +110,7 @@ endpoints.openapi(postEndpointRoute, async context => {
     );
   }
 
-  const service = new SaveEndpoint(name, team, targetEmails);
+  const service = new SaveEndpoint(name, team, targetEmails, color, icon);
   const endpointData = await service.run();
 
   if (endpointData.status === 401 || endpointData.status === 404) {
@@ -215,8 +217,34 @@ endpoints.openapi(patchEndpointRoute, async context => {
     data = response.body;
   }
 
+  if (request.color !== undefined) {
+    const service = new UpdateEndpointColor(endpointUUID, request.color);
+    const response = await service.run();
+
+    const error = response.status === 401 || response.status === 404;
+    if (error) {
+      return context.json(response.error, response.status);
+    }
+
+    data = response.body;
+  }
+
+  if (request.icon !== undefined) {
+    const service = new UpdateEndpointIcon(endpointUUID, request.icon);
+    const response = await service.run();
+
+    const error = response.status === 401 || response.status === 404;
+    if (error) {
+      return context.json(response.error, response.status);
+    }
+
+    data = response.body;
+  }
+
   const hasEmptyValues =
     request.name === undefined &&
+    request.icon === undefined &&
+    request.color === undefined &&
     request.isEnabled === undefined &&
     request.redirectUrl === undefined &&
     request.targetEmails === undefined &&
@@ -226,8 +254,9 @@ endpoints.openapi(patchEndpointRoute, async context => {
     return context.json(
       {
         name: 'Bad Request',
-        description:
-          "At least provide one of the following fields: 'name', 'isEnabled', 'emailNotifications', 'redirectUrl', 'targetEmails'"
+        description: `At least provide one of the following fields:
+        'name', 'icon', 'color', 'isEnabled', 'redirectUrl',
+        'targetEmails', 'emailNotifications'.`
       },
       400
     );

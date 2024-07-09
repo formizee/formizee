@@ -1,5 +1,5 @@
 import type {EndpointsRepository as Repository} from 'domain/repositories';
-import type {Name, Identifier, Email} from 'domain/models/values';
+import type {Name, Identifier, Email, Color, Icon} from 'domain/models/values';
 import {Response, type Endpoint} from 'domain/models';
 import {eq, db, endpoints, teams} from '@drizzle/db';
 import {createEndpoint} from 'src/lib/models';
@@ -52,7 +52,9 @@ export class EndpointsRepository implements Repository {
   async save(
     name: string,
     teamSlug: Name,
-    targetEmails: Email[]
+    targetEmails: Email[],
+    color?: Color,
+    icon?: Icon
   ): Promise<Response<Endpoint>> {
     const team = await db.query.teams.findFirst({
       where: eq(teams.name, teamSlug.value)
@@ -85,7 +87,9 @@ export class EndpointsRepository implements Repository {
       .values({
         name,
         team: team.id,
-        targetEmails: emails
+        targetEmails: emails,
+        color,
+        icon
       })
       .returning();
 
@@ -328,6 +332,76 @@ export class EndpointsRepository implements Repository {
       .where(eq(endpoints.id, id.value));
 
     endpoint.targetEmails = newTargetEmails;
+    const response = createEndpoint(endpoint);
+
+    return Response.success(response);
+  }
+
+  async updateColor(id: Identifier, color: Color): Promise<Response<Endpoint>> {
+    const endpoint = await db.query.endpoints.findFirst({
+      where: eq(endpoints.id, id.value)
+    });
+    if (!endpoint) {
+      return Response.error(
+        {
+          name: 'Not found',
+          description: 'Endpoint not found.'
+        },
+        404
+      );
+    }
+
+    const data = await db
+      .update(endpoints)
+      .set({color})
+      .where(eq(endpoints.id, id.value))
+      .returning({updatedColor: endpoints.color});
+    if (!data[0]) {
+      return Response.error(
+        {
+          name: 'Internal error',
+          description: "Endpoint status can't be updated."
+        },
+        500
+      );
+    }
+
+    endpoint.color = data[0].updatedColor;
+    const response = createEndpoint(endpoint);
+
+    return Response.success(response);
+  }
+
+  async updateIcon(id: Identifier, icon: Icon): Promise<Response<Endpoint>> {
+    const endpoint = await db.query.endpoints.findFirst({
+      where: eq(endpoints.id, id.value)
+    });
+    if (!endpoint) {
+      return Response.error(
+        {
+          name: 'Not found',
+          description: 'Endpoint not found.'
+        },
+        404
+      );
+    }
+
+    const data = await db
+      .update(endpoints)
+      .set({icon})
+      .where(eq(endpoints.id, id.value))
+      .returning({updatedIcon: endpoints.icon});
+    if (!data[0]) {
+      return Response.error(
+        {
+          name: 'Internal error',
+          description: "Endpoint status can't be updated."
+        },
+        500
+      );
+    }
+
+    endpoint.icon = data[0].updatedIcon;
     const response = createEndpoint(endpoint);
 
     return Response.success(response);

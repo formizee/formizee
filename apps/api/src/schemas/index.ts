@@ -1,4 +1,5 @@
 import {z} from '@hono/zod-openapi';
+import {ColorEnum, IconEnum} from 'domain/models/values';
 
 export const UuidSchema = z
   .string()
@@ -122,6 +123,8 @@ export const EndpointSchema = z
       .openapi({
         example: ['pauchiner@formizee.com', 'contact@formizee.com']
       }),
+    color: z.enum(ColorEnum),
+    icon: z.enum(IconEnum),
     createdAt: z.date().openapi({
       example: '2024-06-30T17:33:32.125Z'
     }),
