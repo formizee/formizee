@@ -1,4 +1,4 @@
-import {Identifier, Email} from './values';
+import {Identifier, Email, type Color, type Icon} from './values';
 
 export class Endpoint {
   private readonly _id: Identifier;
@@ -11,6 +11,9 @@ export class Endpoint {
   private readonly _redirectUrl: URL;
   private readonly _targetEmails: Email[];
 
+  private readonly _color: Color = 'gray';
+  private readonly _icon: Icon = 'file';
+
   private readonly _createdAt: Date;
   private readonly _updatedAt: Date;
 
@@ -22,6 +25,8 @@ export class Endpoint {
     redirectUrl: string,
     isEnabled: boolean,
     emailNotifications: boolean,
+    color: Color,
+    icon: Icon,
     createdAt: Date,
     updatedAt: Date
   ) {
@@ -36,6 +41,9 @@ export class Endpoint {
       return new Email(email);
     });
     this._redirectUrl = new URL(redirectUrl);
+
+    this._color = color;
+    this._icon = icon;
 
     this._createdAt = createdAt;
     this._updatedAt = updatedAt;
@@ -67,6 +75,14 @@ export class Endpoint {
 
   get emailNotifications(): boolean {
     return this._emailNotifications;
+  }
+
+  get color(): Color {
+    return this._color;
+  }
+
+  get icon(): Icon {
+    return this._icon;
   }
 
   get createdAt(): Date {

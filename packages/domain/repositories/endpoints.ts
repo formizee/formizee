@@ -1,5 +1,5 @@
 import type {Endpoint, Response} from '../models';
-import type {Identifier, Email, Name} from '../models/values';
+import type {Identifier, Email, Name, Color, Icon} from '../models/values';
 
 export interface EndpointsRepository {
   load: (endpointId: Identifier) => Promise<Response<Endpoint>>;
@@ -7,7 +7,9 @@ export interface EndpointsRepository {
   save: (
     name: string,
     team: Name,
-    targetEmails: Email[]
+    targetEmails: Email[],
+    color?: Color,
+    icon?: Icon
   ) => Promise<Response<Endpoint>>;
   delete: (endpointId: Identifier) => Promise<Response<true>>;
 
@@ -31,5 +33,15 @@ export interface EndpointsRepository {
   updateTargetEmails: (
     endpointId: Identifier,
     targetEmails: Email[]
+  ) => Promise<Response<Endpoint>>;
+
+  updateColor: (
+    endpointId: Identifier,
+    color: Color
+  ) => Promise<Response<Endpoint>>;
+
+  updateIcon: (
+    endpointId: Identifier,
+    icon: Icon
   ) => Promise<Response<Endpoint>>;
 }
