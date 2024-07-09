@@ -173,7 +173,7 @@ export const deleteTeamRoute = createRoute({
     params: DeleteTeamSchema
   },
   responses: {
-    204: {
+    200: {
       description: 'Team deleted successfully',
       content: {
         'text/plain': {

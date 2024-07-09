@@ -134,7 +134,7 @@ teams.openapi(deleteTeamRoute, async context => {
     return context.json(response.error, response.status);
   }
 
-  return context.text('The team has been deleted.', 204);
+  return context.text('The team has been deleted.', 200);
 });
 
 teams.use(getAllTeamMembersRoute.getRoutingPath(), authentication);
