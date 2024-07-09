@@ -1,13 +1,23 @@
 import type {EndpointsRepository as Repository} from 'domain/repositories';
-import type {Identifier, Email} from 'domain/models/values';
+import type {Name, Identifier, Email} from 'domain/models/values';
 import {Response, type Endpoint} from 'domain/models';
-import {eq, db, endpoints, users, teams} from '@drizzle/db';
+import {eq, db, endpoints, teams} from '@drizzle/db';
 import {createEndpoint} from 'src/lib/models';
 
 export class EndpointsRepository implements Repository {
-  async loadAll(team: Identifier): Promise<Response<Endpoint[]>> {
+  async loadAll(teamSlug: Name): Promise<Response<Endpoint[]>> {
+    const team = await db.query.teams.findFirst({
+      where: eq(teams.name, teamSlug.value)
+    });
+    if (!team) {
+      return Response.error({
+        name: 'Not found',
+        description: 'Team not found.'
+      });
+    }
+
     const data = await db.query.endpoints.findMany({
-      where: eq(endpoints.team, team.value)
+      where: eq(endpoints.team, team.id)
     });
     if (data.length < 1) {
       return Response.success([]);
@@ -41,32 +51,27 @@ export class EndpointsRepository implements Repository {
 
   async save(
     name: string,
-    team: Identifier,
-    targetEmails?: Email[]
+    teamSlug: Name,
+    targetEmails: Email[]
   ): Promise<Response<Endpoint>> {
-    const user = await db.query.users.findFirst({
-      where: eq(users.id, team.value)
+    const team = await db.query.teams.findFirst({
+      where: eq(teams.name, teamSlug.value)
     });
-    if (!user) {
-      return Response.error(
-        {
-          name: 'Not found',
-          description: 'User not found.'
-        },
-        404
-      );
+    if (!team) {
+      return Response.error({
+        name: 'Not found',
+        description: 'Team not found.'
+      });
     }
 
-    const emails = targetEmails?.map(email => {
-      return email.value;
-    });
+    const emails = targetEmails.map(email => email.value);
 
     const endpoint = await db
       .insert(endpoints)
       .values({
         name,
-        team: team.value,
-        targetEmails: emails ?? [user.email]
+        team: team.id,
+        targetEmails: emails
       })
       .returning();
 

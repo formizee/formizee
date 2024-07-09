@@ -2,23 +2,23 @@ import type {Identifier, Name, Email, Password} from '../models/values';
 import type {User, Team, Response} from '../models';
 
 export interface UsersRepository {
-  load: (id: Identifier | Email) => Promise<Response<User>>;
-  loadLinkedTeams: (id: Identifier) => Promise<Response<Team[]>>;
-  delete: (id: Identifier, password: string) => Promise<Response<true>>;
+  load: (userId: Identifier | Email) => Promise<Response<User>>;
+  loadLinkedTeams: (userId: Identifier) => Promise<Response<Team[]>>;
+  delete: (userId: Identifier, password: string) => Promise<Response<true>>;
 
-  updateName: (id: Identifier, name: Name) => Promise<Response<User>>;
-  updateEmail: (id: Identifier, email: Email) => Promise<Response<User>>;
+  updateName: (userId: Identifier, name: Name) => Promise<Response<User>>;
+  updateEmail: (userId: Identifier, email: Email) => Promise<Response<User>>;
   updatePassword: (
-    id: Identifier,
+    userId: Identifier,
     password: Password
   ) => Promise<Response<User>>;
 
   saveLinkedEmail: (
-    id: Identifier,
+    userId: Identifier,
     linkedEmail: Email
   ) => Promise<Response<User>>;
   deleteLinkedEmail: (
-    id: Identifier,
+    userId: Identifier,
     linkedEmail: Email
   ) => Promise<Response<User>>;
 }
