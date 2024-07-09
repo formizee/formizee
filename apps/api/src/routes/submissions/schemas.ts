@@ -1,24 +1,17 @@
 import {z} from '@hono/zod-openapi';
+import { UuidSchema } from '@/schemas';
 
 export const GetAllSubmissionsSchema = z.object({
-  endpointId: z.string().openapi({
-    example: 'oxLSYCTK9zEEKNd2W7sUDB'
-  })
+  endpointId: UuidSchema
 });
 
 export const GetSubmissionSchema = z.object({
-  endpointId: z.string().openapi({
-    example: 'oxLSYCTK9zEEKNd2W7sUDB'
-  }),
-  submissionId: z.string().openapi({
-    example: '68xtMDHvvwCXFnMW11s9h1'
-  })
+  endpointId: UuidSchema,
+  submissionId: UuidSchema
 });
 
 export const PostSubmissionParamSchema = z.object({
-  endpointId: z.string().openapi({
-    example: 'oxLSYCTK9zEEKNd2W7sUDB'
-  })
+  endpointId: UuidSchema,
 });
 
 export const PostSubmissionJsonSchema = z
@@ -29,12 +22,8 @@ export const PostSubmissionJsonSchema = z
   });
 
 export const PatchSubmissionParamSchema = z.object({
-  endpointId: z.string().openapi({
-    example: 'oxLSYCTK9zEEKNd2W7sUDB'
-  }),
-  submissionId: z.string().openapi({
-    example: '68xtMDHvvwCXFnMW11s9h1'
-  })
+  endpointId: UuidSchema,
+  submissionId: UuidSchema,
 });
 
 export const PatchSubmissionJsonSchema = z.object({
@@ -53,10 +42,6 @@ export const PatchSubmissionJsonSchema = z.object({
 });
 
 export const DeleteSubmissionSchema = z.object({
-  endpointId: z.string().openapi({
-    example: 'oxLSYCTK9zEEKNd2W7sUDB'
-  }),
-  submissionId: z.string().openapi({
-    example: '68xtMDHvvwCXFnMW11s9h1'
-  })
+  endpointId: UuidSchema,
+  submissionId: UuidSchema,
 });

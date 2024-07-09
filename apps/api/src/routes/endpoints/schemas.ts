@@ -1,4 +1,5 @@
 import {z} from '@hono/zod-openapi';
+import { UuidSchema } from '@/schemas';
 
 const nameSchema = z
   .string()
@@ -15,9 +16,7 @@ export const GetAllEndpointsSchema = z.object({
 
 export const GetEndpointSchema = z.object({
   team: nameSchema,
-  endpointId: z.string().openapi({
-    example: 'oxLSYCTK9zEEKNd2W7sUDB'
-  })
+  endpointId: UuidSchema
 });
 
 export const PostEndpointParamSchema = z.object({
@@ -39,9 +38,7 @@ export const PostEndpointJsonSchema = z.object({
 
 export const PatchEndpointParamSchema = z.object({
   team: nameSchema,
-  endpointId: z.string().openapi({
-    example: 'oxLSYCTK9zEEKNd2W7sUDB'
-  })
+  endpointId: UuidSchema
 });
 
 export const PatchEndpointJsonSchema = z.object({
@@ -69,7 +66,5 @@ export const PatchEndpointJsonSchema = z.object({
 
 export const DeleteEndpointSchema = z.object({
   team: nameSchema,
-  endpointId: z.string().openapi({
-    example: 'oxLSYCTK9zEEKNd2W7sUDB'
-  })
+  endpointId: UuidSchema
 });

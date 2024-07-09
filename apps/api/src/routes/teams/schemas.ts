@@ -1,4 +1,5 @@
 import {z} from '@hono/zod-openapi';
+import { UuidSchema } from '@/schemas';
 
 const nameSchema = z
   .string()
@@ -27,9 +28,7 @@ export const GetMembersSchema = z.object({
 
 export const GetMemberSchema = z.object({
   team: nameSchema,
-  memberId: z.string().openapi({
-    example: '8DsZkwb2CvBZATQoAoyonu'
-  })
+  memberId: UuidSchema
 });
 
 export const PostMemberParamSchema = z.object({
@@ -37,9 +36,7 @@ export const PostMemberParamSchema = z.object({
 });
 
 export const PostMemberJsonSchema = z.object({
-  userId: z.string().openapi({
-    example: '8DsZkwb2CvBZATQoAoyonu'
-  }),
+  userId: UuidSchema,
   role: z.enum(['member', 'owner']).optional().openapi({
     description: 'The owners have full permissions on the team',
     default: 'member',
@@ -63,9 +60,7 @@ export const PostMemberJsonSchema = z.object({
 
 export const PatchMemberParamSchema = z.object({
   team: nameSchema,
-  memberId: z.string().openapi({
-    example: '8DsZkwb2CvBZATQoAoyonu'
-  })
+  memberId: UuidSchema,
 });
 
 export const PatchMemberJsonSchema = z.object({
@@ -92,7 +87,5 @@ export const PatchMemberJsonSchema = z.object({
 
 export const DeleteMemberSchema = z.object({
   team: nameSchema,
-  memberId: z.string().openapi({
-    example: '8DsZkwb2CvBZATQoAoyonu'
-  })
+  memberId: UuidSchema,
 });
