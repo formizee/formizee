@@ -41,11 +41,11 @@ export class UsersRepository implements Repository {
   }
 
   async loadLinkedTeams(id: Identifier): Promise<Response<Team[]>> {
-    const data = await db.query.members.findMany({
-      where: eq(members.user, id.value),
-      with: {team: true}
+    const user = await db.query.users.findFirst({
+      where: eq(users.id, id.value),
+      with: {linkedEmails: true}
     });
-    if (!data[0]) {
+    if (!user) {
       return Response.error(
         {
           name: 'Not found',
@@ -53,6 +53,14 @@ export class UsersRepository implements Repository {
         },
         404
       );
+    }
+
+    const data = await db.query.members.findMany({
+      where: eq(members.user, id.value),
+      with: {team: true}
+    });
+    if (!data[0]) {
+      return Response.success([]);
     }
 
     const response = data.map(item => {
