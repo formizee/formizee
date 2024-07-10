@@ -1,6 +1,5 @@
-import fs from 'node:fs';
-import path from 'node:path';
 import * as dotenv from 'dotenv';
+import {findUp} from 'find-up';
 
 const envFiles = [
   '.env.local',
@@ -10,14 +9,16 @@ const envFiles = [
 ];
 
 export const loadedEnviroments: string[] = [];
+export const enviromentsToLoad: string[] = [];
 
-envFiles.forEach(file => {
-  const envPath = path.resolve(process.cwd(), file);
-  if (fs.existsSync(envPath)) {
+for (const file of envFiles) {
+  const envPath = await findUp(file);
+  if (envPath !== undefined) {
     loadedEnviroments.push(file);
+    enviromentsToLoad.push(envPath);
   }
-});
+}
 
 dotenv.config({
-  path: envFiles
+  path: enviromentsToLoad
 });

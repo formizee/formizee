@@ -28,6 +28,7 @@
     "domain": "workspace:*",
     "dotenv": "16.4.5",
     "drizzle-orm": "0.30.10",
+    "find-up": "7.0.0",
     "hono": "4.4.11",
     "jose": "5.6.3",
     "nodemailer": "6.9.14",

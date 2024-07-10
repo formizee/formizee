@@ -7,8 +7,8 @@ import {version} from '@/../package.json';
 export const server = (app: OpenAPIHono): void => {
   const startTime = performance.now();
 
-  const BASE_URL = process.env.BASE_URL ?? 'http://localhost';
-  const PORT = Number(process.env.PORT ?? 3000);
+  const BASE_URL = new URL(process.env.API_URL ?? 'http://localhost:3001');
+  const PORT = Number(BASE_URL.port);
 
   let enviroments = '';
   loadedEnviroments.forEach((file, index) => {
@@ -19,9 +19,7 @@ export const server = (app: OpenAPIHono): void => {
   });
 
   console.info(`\x1b[1m ▲ Formizee API ${version}\x1b[0m`);
-  console.info(
-    ` - Local:        \x1b[33m\x1b[4m${BASE_URL}:${PORT.toString()}\x1b[0m`
-  );
+  console.info(` - Local:        \x1b[33m\x1b[4m${BASE_URL.href}\x1b[0m`);
   console.info(` - Enviroments:  ${enviroments}\n`);
   console.info(`\x1b[32m ✓ \x1b[0m Starting...`);
 
