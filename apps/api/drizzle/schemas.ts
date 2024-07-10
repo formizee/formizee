@@ -11,6 +11,13 @@ import {
 } from 'drizzle-orm/pg-core';
 import { relations, sql } from 'drizzle-orm';
 import { ColorEnum, IconEnum } from 'domain/models/values';
+import "@/lib/enviroment";
+
+const getWebUrl = (): string => {
+  const url = process.env.WEB_URL; 
+  if(!url) throw new Error("WEB_URL enviroment variable is not defined.");
+  return url;
+}
 
 export const icons = pgEnum('icons', IconEnum);
 export const colors = pgEnum('colors', ColorEnum);
@@ -153,7 +160,7 @@ export const endpoints = pgTable('endpoints', {
 
   redirectUrl: text('redirect_url')
     .notNull()
-    .default('https://formizee.com/thanks-you'),
+    .default(`${getWebUrl()}/thanks-you`),
 
   color: colors('color').notNull().default('gray'),
 

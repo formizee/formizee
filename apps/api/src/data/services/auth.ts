@@ -282,7 +282,9 @@ export class AuthService implements Service {
           expiresAt,
           data: {id: id.value, email: email.value, token: token.token}
         });
-        const magicLink = `https://formizee.com/auth/linked-emails/verify?token=${jwtToken}`;
+        if (!process.env.WEB_URL)
+          throw new Error('WEB_URL enviroment variable is not defined.');
+        const magicLink = `${process.env.WEB_URL}/auth/linked-emails/verify?token=${jwtToken}`;
         mailService.send(verifyLinkedEmail(token.email, magicLink));
         return Response.success(true, 202);
       }
@@ -314,7 +316,10 @@ export class AuthService implements Service {
       expiresAt,
       data: {id: id.value, email: email.value, token: newTokenCode}
     });
-    const magicLink = `https://formizee.com/auth/linked-emails/verify?token=${jwtToken}`;
+
+    if (!process.env.WEB_URL)
+      throw new Error('WEB_URL enviroment variable is not defined.');
+    const magicLink = `${process.env.WEB_URL}/auth/linked-emails/verify?token=${jwtToken}`;
 
     mailService.send(verifyLinkedEmail(email.value, magicLink));
     return Response.success(true, 202);

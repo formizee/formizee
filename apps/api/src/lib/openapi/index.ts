@@ -3,6 +3,9 @@ import type {ZodError, z} from 'zod';
 import type {ErrorSchema} from '@/schemas';
 
 export const openApi = (router: OpenAPIHono): void => {
+  if (!process.env.API_URL)
+    throw new Error('API_URL enviroment variable is not defined.');
+
   router.doc('/openapi.json', {
     openapi: '3.0.0',
     info: {
@@ -20,12 +23,8 @@ export const openApi = (router: OpenAPIHono): void => {
     },
     servers: [
       {
-        url: 'https://api.formizee.com',
+        url: process.env.API_URL,
         description: 'Stable Release'
-      },
-      {
-        url: 'http://localhost:3001',
-        description: 'Development Server'
       }
     ],
     tags: [

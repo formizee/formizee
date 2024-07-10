@@ -7,7 +7,10 @@ import {version} from '@/../package.json';
 export const server = (app: OpenAPIHono): void => {
   const startTime = performance.now();
 
-  const BASE_URL = new URL(process.env.API_URL ?? 'http://localhost:3001');
+  if (!process.env.API_URL)
+    throw new Error('API_URL enviroment variable is not defined.');
+
+  const BASE_URL = new URL(process.env.API_URL);
   const PORT = Number(BASE_URL.port);
 
   let enviroments = '';
