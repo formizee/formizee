@@ -43,10 +43,10 @@ auth.openapi(postLoginRoute, async context => {
   const user = await service.run();
 
   if (user.status === 401) return context.json(user.error, user.status);
-  const {id, name, isVerified} = user.body;
+  const {id, isVerified} = user.body;
 
   if (isVerified) {
-    await createSession(context, {id, name});
+    await createSession(context, {id});
     return context.json(userResponse(user.body), 200);
   }
   const verificationService = new SendVerificationAuth(email);
@@ -101,10 +101,7 @@ auth.openapi(postVerifyRoute, async context => {
     return context.json(user.error, user.status);
   }
 
-  await createSession(context, {
-    id: user.body.id,
-    name: user.body.name
-  });
+  await createSession(context, { id: user.body.id });
 
   deleteVerification(context);
 

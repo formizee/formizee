@@ -11,7 +11,6 @@ export interface LinkedEmailToken {
 
 export interface Session {
   id: string;
-  name: string;
 }
 
 export interface Verification {
