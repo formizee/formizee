@@ -1,5 +1,5 @@
 import * as dotenv from 'dotenv';
-import {findUp} from 'find-up';
+import {findUpSync} from 'find-up';
 
 const envFiles = [
   '.env.local',
@@ -11,13 +11,13 @@ const envFiles = [
 export const loadedEnviroments: string[] = [];
 export const enviromentsToLoad: string[] = [];
 
-for (const file of envFiles) {
-  const envPath = await findUp(file);
+envFiles.forEach(file => {
+  const envPath = findUpSync(file);
   if (envPath !== undefined) {
     loadedEnviroments.push(file);
     enviromentsToLoad.push(envPath);
   }
-}
+});
 
 dotenv.config({
   path: enviromentsToLoad
