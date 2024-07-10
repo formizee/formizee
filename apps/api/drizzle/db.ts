@@ -1,8 +1,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import {drizzle} from 'drizzle-orm/node-postgres';
-import {PostgreSqlContainer} from '@testcontainers/postgresql'
-import {eq as _eq, ne as _ne, and as _and} from 'drizzle-orm';
+import { drizzle } from 'drizzle-orm/node-postgres';
+import { PostgreSqlContainer } from '@testcontainers/postgresql'
+import { eq as _eq, ne as _ne, and as _and } from 'drizzle-orm';
 import pg from 'pg';
 import * as schemas from './schemas';
 import '@/lib/enviroment';
@@ -21,7 +21,7 @@ const createTables = async (pgClient: pg.Client): Promise<void> => {
   const migrationsDir = path.join(process.cwd(), 'drizzle', 'migrations');
   const migrationFiles = fs.readdirSync(migrationsDir).filter(file => file.includes('.sql'));
 
- for (const file of migrationFiles) {
+  for (const file of migrationFiles) {
     const filePath = path.join(migrationsDir, file);
     const sql = fs.readFileSync(filePath, 'utf8');
     await pgClient.query(sql)
@@ -31,14 +31,14 @@ const createTables = async (pgClient: pg.Client): Promise<void> => {
 const getClientInstance = async (): Promise<pg.Client> => {
   let client: pg.Client | null = null;
 
-  if(process.env.NODE_ENV === 'test') {
-    const testingPgContainer = await new PostgreSqlContainer().start(); 
-    client = new pg.Client({connectionString: testingPgContainer.getConnectionUri()});
+  if (process.env.NODE_ENV === 'test') {
+    const testingPgContainer = await new PostgreSqlContainer().start();
+    client = new pg.Client({ connectionString: testingPgContainer.getConnectionUri() });
     await client.connect();
     await createTables(client);
   }
   else {
-    client = new pg.Client({connectionString: process.env.DATABASE_URL});
+    client = new pg.Client({ connectionString: process.env.DATABASE_URL });
     await client.connect();
   }
   return client;
@@ -46,7 +46,7 @@ const getClientInstance = async (): Promise<pg.Client> => {
 
 const client = await getClientInstance();
 
-export const db = drizzle(client, {schema: schemas});
+export const db = drizzle(client, { schema: schemas });
 
 // Drizzle Operators
 export const eq = _eq;
