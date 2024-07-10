@@ -94,8 +94,8 @@ importers:
         version: 3.23.8
     devDependencies:
       '@testcontainers/postgresql':
-        specifier: 10.10.1
-        version: 10.10.1
+        specifier: 10.10.3
+        version: 10.10.3
       '@types/bcryptjs':
         specifier: 2.4.6
         version: 2.4.6
@@ -2130,8 +2130,8 @@ packages:
   '@swc/types@0.1.9':
     resolution: {integrity: sha512-qKnCno++jzcJ4lM4NTfYifm1EFSCeIfKiAHAfkENZAV5Kl9PjJIyd2yeeVv6c/2CckuLyv2NmRC5pv6pm2WQBg==}
 
-  '@testcontainers/postgresql@10.10.1':
-    resolution: {integrity: sha512-Wsc/OGT9vcwLJ34PPJ9lMngQY4SkyJaRePSXaFzXVzZS39TZdUUXiPAhdrZw36MQJsslZluqiwl95EsXJIIsuA==}
+  '@testcontainers/postgresql@10.10.3':
+    resolution: {integrity: sha512-k887VJjbbSyHr4eTRVhoBit9A+7WDYx/EU8XdwJ0swuECB1hOjMuvpCX/AlXLk+bD6dNrE/0lvKW6SwqFTXo1A==}
 
   '@tsconfig/node10@1.0.11':
     resolution: {integrity: sha512-DcRjDCujK/kCk/cUe8Xz8ZSpm8mS3mNNpta+jGCA6USEDfktlNvm1+IuZ9eTcDbNk41BHwpHHeW+N1lKCz4zOw==}
@@ -3607,6 +3607,7 @@ packages:
 
   inflight@1.0.6:
     resolution: {integrity: sha512-k92I/b08q4wvFscXCLvqfsHCrjrF7yiXsQuIVvVE7N82W3+aqpzuUdBbfhWcy/FZR3/4IgflMgKLOsvPDrGCJA==}
+    deprecated: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
 
   inherits@2.0.4:
     resolution: {integrity: sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==}
@@ -4926,8 +4927,8 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
-  testcontainers@10.10.1:
-    resolution: {integrity: sha512-bw86BLq2/ljJ/gLg3PBsyhYOoDBkyo87/MnpWLavYTAyWR7feGFnAA87qRLq2SSCOSFLHsgCA8+u7Eg+opSmTQ==}
+  testcontainers@10.10.3:
+    resolution: {integrity: sha512-QuHKgGbMo+rM+AvrHNzQFAu8/D37Od1sQCW8lNR5+KvGM82mDJndTkpPXiUaFpVIZ99wNQfhZbZwSTBULerUiQ==}
 
   text-decoder@1.1.1:
     resolution: {integrity: sha512-8zll7REEv4GDD3x4/0pW+ppIxSNs7H1J10IKFZsuOMscumCdM2a+toDGLPA3T+1+fLBql4zbt5z83GEQGGV5VA==}
@@ -7458,9 +7459,9 @@ snapshots:
       '@swc/counter': 0.1.3
     optional: true
 
-  '@testcontainers/postgresql@10.10.1':
+  '@testcontainers/postgresql@10.10.3':
     dependencies:
-      testcontainers: 10.10.1
+      testcontainers: 10.10.3
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -10685,7 +10686,7 @@ snapshots:
       source-map-support: 0.5.21
     optional: true
 
-  testcontainers@10.10.1:
+  testcontainers@10.10.3:
     dependencies:
       '@balena/dockerignore': 1.0.2
       '@types/dockerode': 3.3.29
