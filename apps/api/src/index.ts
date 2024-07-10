@@ -1,7 +1,6 @@
 import {OpenAPIHono} from '@hono/zod-openapi';
-import {timeout} from 'hono/timeout';
+import {security} from '@/lib/middlewares';
 import {openApi} from '@/lib/openapi';
-import {logger} from '@/lib/logger';
 import {server} from '@/lib/server';
 import {auth} from '@/routes/auth';
 import {teams} from '@/routes/teams';
@@ -12,10 +11,8 @@ import {endpoints} from '@/routes/endpoints';
 import {submissions} from '@/routes/submissions';
 
 const router = new OpenAPIHono().basePath('/v1');
+security(router);
 openApi(router);
-
-router.use(timeout(30 * 1000));
-router.use(logger);
 
 router.route('/auth', auth);
 router.route('/teams', teams);
