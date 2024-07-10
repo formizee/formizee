@@ -101,7 +101,7 @@ auth.openapi(postVerifyRoute, async context => {
     return context.json(user.error, user.status);
   }
 
-  await createSession(context, { id: user.body.id });
+  await createSession(context, {id: user.body.id});
 
   deleteVerification(context);
 
