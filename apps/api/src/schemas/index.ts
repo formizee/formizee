@@ -1,5 +1,5 @@
 import {z} from '@hono/zod-openapi';
-import {ColorEnum, IconEnum} from 'domain/models/values';
+import {ColorEnum, IconEnum, APIKeyScopeEnum} from 'domain/models/values';
 
 export const UuidSchema = z
   .string()
@@ -160,6 +160,35 @@ export const SubmissionSchema = z
     })
   })
   .openapi('Submission');
+
+export const APIKeySchema = z
+  .object({
+    id: z.string().openapi({
+      example: 'TjSLj5Z0r4BsH'
+    }),
+    scope: z.enum(APIKeyScopeEnum).openapi({
+      example: 'full-access'
+    }),
+    userId: z.string().openapi({
+      example: 'TjSLj5Z0r4BsH'
+    }),
+    teamId: z.string().optional().openapi({
+      example: 'TjSLj5Z0r4BsH'
+    }),
+    lastAccess: z.date().openapi({
+      example: '2024-06-30T17:33:32.125Z'
+    }),
+    expiresAt: z
+      .date()
+      .or(z.enum(['never']))
+      .openapi({
+        example: '2024-06-30T17:33:32.125Z'
+      }),
+    createdAt: z.date().openapi({
+      example: '2024-06-30T17:33:32.125Z'
+    })
+  })
+  .openapi('API Key');
 
 export const ErrorSchema = z
   .object({

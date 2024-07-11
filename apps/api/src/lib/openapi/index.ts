@@ -3,8 +3,9 @@ import type {ZodError, z} from 'zod';
 import type {ErrorSchema} from '@/schemas';
 
 export const openApi = (router: OpenAPIHono): void => {
-  if (!process.env.API_URL)
+  if (!process.env.API_URL) {
     throw new Error('API_URL enviroment variable is not defined.');
+  }
 
   router.doc('/openapi.json', {
     openapi: '3.0.0',
@@ -30,7 +31,7 @@ export const openApi = (router: OpenAPIHono): void => {
     tags: [
       {name: 'Health'},
       {name: 'Profile'},
-      {name: 'Api Keys'},
+      {name: 'API Keys'},
       {name: 'Authentication'},
       {name: 'Teams'},
       {name: 'Endpoints'},
