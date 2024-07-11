@@ -15,7 +15,8 @@ const limiter = rateLimiter({
 });
 
 export const security = (router: OpenAPIHono): void => {
-  if(!process.env.WEB_URL) throw new Error("WEB_URL enviroment variable is not defined.")
+  if (!process.env.WEB_URL)
+    throw new Error('WEB_URL enviroment variable is not defined.');
 
   router.use(secureHeaders());
   router.use(bodyLimit);
@@ -23,9 +24,11 @@ export const security = (router: OpenAPIHono): void => {
   router.use(timeout);
   router.use(logger);
   router.use(csrf());
-  router.use(cors({
-    origin: process.env.WEB_URL,
-    allowMethods: ['GET', 'POST', 'PATCH', 'DELETE'],
-    credentials: true
-  }))
+  router.use(
+    cors({
+      origin: process.env.WEB_URL,
+      allowMethods: ['GET', 'POST', 'PATCH', 'DELETE'],
+      credentials: true
+    })
+  );
 };
