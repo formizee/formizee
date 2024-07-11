@@ -1,11 +1,23 @@
 DO $$ BEGIN
- CREATE TYPE "public"."api_key_scopes" AS ENUM('team', 'full access');
+ CREATE TYPE "public"."api_key_scopes" AS ENUM('full-access', 'team');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  CREATE TYPE "public"."billing_plans" AS ENUM('hobby', 'professional', 'teams', 'custom');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ CREATE TYPE "public"."colors" AS ENUM('gray', 'amber', 'red', 'lime', 'teal', 'cyan', 'indigo', 'violet', 'pink');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ CREATE TYPE "public"."icons" AS ENUM('file', 'file-chart', 'start', 'bookmark', 'heart', 'flag', 'bolt', 'bell', 'lightbulb', 'credit-card', 'stack', 'cube', 'database', 'server', 'inbox', 'calendar', 'mail', 'checkcircle', 'book', 'chat', 'user-group', 'console', 'tools', 'grid', 'moon', 'sun', 'cloud', 'cart', 'gift', 'music', 'beaker', 'video', 'code', 'maps', 'face-smile', 'face-frown', 'paint', 'bug', 'school', 'rocket');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -26,8 +38,9 @@ CREATE TABLE IF NOT EXISTS "api_keys" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"user_id" uuid NOT NULL,
 	"team_id" uuid,
-	"scope" "api_key_scopes" DEFAULT 'full access' NOT NULL,
-	"key" uuid DEFAULT gen_random_uuid() NOT NULL,
+	"scope" "api_key_scopes" DEFAULT 'full-access' NOT NULL,
+	"key" text NOT NULL,
+	"last_access" timestamp DEFAULT now() NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"expires_at" timestamp NOT NULL
 );
@@ -48,7 +61,9 @@ CREATE TABLE IF NOT EXISTS "endpoints" (
 	"is_enabled" boolean DEFAULT true NOT NULL,
 	"email_notifications" boolean DEFAULT true NOT NULL,
 	"target_mail" text[] NOT NULL,
-	"redirect_url" text DEFAULT 'https://formizee.com/thanks-you' NOT NULL,
+	"redirect_url" text DEFAULT 'http://formizee.com/thanks-you' NOT NULL,
+	"color" "colors" DEFAULT 'gray' NOT NULL,
+	"icon" "icons" DEFAULT 'file' NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
@@ -164,3 +179,7 @@ DO $$ BEGIN
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
+--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "key_index" ON "api_keys" USING btree ("key");--> statement-breakpoint
+CREATE UNIQUE INDEX IF NOT EXISTS "name_index" ON "teams" USING btree ("name");--> statement-breakpoint
+CREATE UNIQUE INDEX IF NOT EXISTS "email_index" ON "users" USING btree ("email");

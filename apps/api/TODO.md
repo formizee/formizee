@@ -1,32 +1,27 @@
-## Important
-- [ ] Auto update teams available emails when the user links a new email.
-- [x] Implement Open Api routes.
-- [ ] Remove unnecessary packages (zValidator, zod?).
-- [~] Implement permissions.
+## API Keys
+- [~] Implement API Keys.
 
-- [ ] Create DB indexes for members, linkedEmails, users, authTokens...
+## Billing
+- [ ] Implement plans limits
 
-## General
-- [ ] Add cors in order to block sensitive profile and auth requests.
-
-- [ ] Implement API Keys.
- 
-- [x] Add tiny Identifier for submissions and endpoints.
-- [~] Update returned models and rename the utils folder to models.
-- [ ] Remove name from jwt session.
-
-- [ ] Use env vars instead of urls in order to self-host in a future.
-
-- [x] Improve API responses and errors (Zod validation also).
-
-## Endpoints
-- [ ] Implement folders, icons and colors.
-
-## Auth Service
-- [ ] Treat carefully send verification request and rate limits
-
-## Submission Post
+## Submissions
 - [x] Accepts FormData and Json and transform all to json
 - [ ] Send emails to the owner on submit.
 - [x] Redirect to the default url.
 - [ ] Store files in a S3 bucket.
+
+## Endpoints
+- [ ] Export data
+
+## Optional things
+- [ ] Use prefixed id's internally
+    - Teams = team_
+    - Api Keys = api_
+    - Endpoints = enp_
+    - Submissions = sub_
+
+- [ ] Create unique slug identifier for the endpoints
+
+## Testing
+- [~] Add Integration tests
+- [ ] Test all current api calls in the webpage.

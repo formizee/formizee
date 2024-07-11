@@ -7,10 +7,11 @@ import {
   pgEnum,
   pgTable,
   jsonb,
-  uniqueIndex
+  uniqueIndex,
+  index
 } from 'drizzle-orm/pg-core';
 import { relations, sql } from 'drizzle-orm';
-import { ColorEnum, IconEnum } from 'domain/models/values';
+import { ColorEnum, IconEnum, APIKeyScopeEnum } from 'domain/models/values';
 import "@/lib/enviroment";
 
 const getWebUrl = (): string => {
@@ -22,7 +23,7 @@ const getWebUrl = (): string => {
 export const icons = pgEnum('icons', IconEnum);
 export const colors = pgEnum('colors', ColorEnum);
 export const teamRoles = pgEnum('team_roles', ['owner', 'member']);
-export const apiKeyScopes = pgEnum('api_key_scopes', ['team', 'full access']);
+export const apiKeyScopes = pgEnum('api_key_scopes', APIKeyScopeEnum);
 export const userPermissions = pgEnum('user_permissions', ['read', 'edit', 'create', 'all']);
 export const billingPlans = pgEnum('billing_plans', ['hobby', 'professional', 'teams', 'custom']);
 
@@ -218,15 +219,21 @@ export const apiKeys = pgTable('api_keys', {
   team: uuid('team_id')
     .references(() => teams.id, { onDelete: 'cascade' }),
 
-  scope: apiKeyScopes('scope').notNull().default('full access'),
+  scope: apiKeyScopes('scope').notNull().default('full-access'),
 
-  key: uuid('key').notNull().defaultRandom(),
+  key: text("key").notNull(),
+
+  lastAccess: timestamp('last_access').notNull().defaultNow(),
 
   createdAt: timestamp('created_at').notNull().defaultNow(),
 
   expiresAt: timestamp('expires_at')
     .notNull()
     .$default(() => new Date(Date.now() + 24 * 60 * 60 * 1000))
+}, table => {
+  return {
+    keyIndex: index("key_index").on(table.key)
+  }
 })
 
 export const waitlist = pgTable('waitlist', {

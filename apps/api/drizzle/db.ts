@@ -11,6 +11,7 @@ import '@/lib/enviroment';
 export const users = schemas.users;
 export const teams = schemas.teams;
 export const members = schemas.members;
+export const apiKeys = schemas.apiKeys;
 export const waitlist = schemas.waitlist;
 export const endpoints = schemas.endpoints;
 export const authTokens = schemas.authTokens;
