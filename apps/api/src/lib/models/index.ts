@@ -1,6 +1,7 @@
 export {
   createUser,
   createTeam,
+  createAPIKey,
   createMember,
   createEndpoint,
   createSubmission,
@@ -10,6 +11,7 @@ export {
   userResponse,
   teamResponse,
   memberResponse,
+  apiKeyResponse,
   endpointResponse,
   submissionResponse
 } from './response';

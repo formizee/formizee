@@ -1,16 +1,25 @@
 import shortUUID from 'short-uuid';
 import type {z} from '@hono/zod-openapi';
-import type {Endpoint, Member, Submission, Team, User} from 'domain/models';
+import type {
+  APIKey,
+  Endpoint,
+  Member,
+  Submission,
+  Team,
+  User
+} from 'domain/models';
 import {
   UserSchema,
   EndpointSchema,
   SubmissionSchema,
   TeamSchema,
-  MemberSchema
+  MemberSchema,
+  APIKeySchema
 } from '@/schemas';
 
 type UserResponse = z.infer<typeof UserSchema>;
 type TeamResponse = z.infer<typeof TeamSchema>;
+type APIKeyResponse = z.infer<typeof APIKeySchema>;
 type MemberResponse = z.infer<typeof MemberSchema>;
 type EndpointResponse = z.infer<typeof EndpointSchema>;
 type SubmissionResponse = z.infer<typeof SubmissionSchema>;
@@ -91,11 +100,11 @@ export const endpointResponse = (data: Endpoint): EndpointResponse => {
 
 export const submissionResponse = (data: Submission): SubmissionResponse => {
   const id = shortUUID().fromUUID(data.id);
-  const endpoint = shortUUID().fromUUID(data.endpoint);
+  const endpointId = shortUUID().fromUUID(data.endpoint);
 
   const normalizedData = {
     id,
-    endpoint,
+    endpointId,
     data: data.data,
     isSpam: data.isSpam,
     isRead: data.isRead,
@@ -103,4 +112,26 @@ export const submissionResponse = (data: Submission): SubmissionResponse => {
   };
 
   return SubmissionSchema.parse(normalizedData);
+};
+
+export const apiKeyResponse = (data: APIKey): APIKeyResponse => {
+  const id = shortUUID().fromUUID(data.id);
+  const userId = shortUUID().fromUUID(data.userId);
+  let expiresAt: string | Date = data.expiresAt;
+  if (data.expiresAt.getFullYear() === 3333) expiresAt = 'never';
+  const normalizedData = {
+    id,
+    scope: data.scope,
+    userId,
+    lastAccess: data.lastAccess,
+    createdAt: data.createdAt,
+    expiresAt
+  };
+
+  if (data.teamId !== '')
+    return APIKeySchema.parse({
+      teamId: shortUUID().fromUUID(data.teamId),
+      ...normalizedData
+    });
+  return APIKeySchema.parse(normalizedData);
 };

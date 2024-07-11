@@ -1,12 +1,13 @@
 import shortUUID from 'short-uuid';
-import {Endpoint, Member, Submission, Team, User} from 'domain/models';
+import {APIKey, Endpoint, Member, Submission, Team, User} from 'domain/models';
 import type {
   TeamPlan,
   LinkedEmail,
   UserPermissions,
   TeamRoles,
   Color,
-  Icon
+  Icon,
+  APIKeyScope
 } from 'domain/models/values';
 
 export const createUser = (data: {
@@ -104,6 +105,26 @@ export const createSubmission = (data: {
     data.isSpam,
     data.isRead,
     data.createdAt
+  );
+};
+
+export const createAPIKey = (data: {
+  id: string;
+  user: string;
+  team: string | null;
+  scope: APIKeyScope;
+  lastAccess: Date;
+  expiresAt: Date;
+  createdAt: Date;
+}): APIKey => {
+  return new APIKey(
+    data.id,
+    data.scope,
+    data.user,
+    data.lastAccess,
+    data.expiresAt,
+    data.createdAt,
+    data.team ?? undefined
   );
 };
 
