@@ -1,5 +1,6 @@
 import {OpenAPIHono} from '@hono/zod-openapi';
 import {handleValidationErrors} from '@/lib/openapi';
+import {rateLimiter} from '@/lib/middlewares';
 import {userResponse} from '@/lib/models';
 import {
   authentication,
@@ -108,6 +109,7 @@ auth.openapi(postVerifyRoute, async context => {
   return context.json({user: userResponse(user.body), type: data.type}, 200);
 });
 
+auth.use(postSendVerificationRoute.getRoutingPath(), rateLimiter(1));
 auth.openapi(postSendVerificationRoute, async context => {
   const {email, type} = context.req.valid('json');
 
@@ -125,7 +127,8 @@ auth.openapi(postSendVerificationRoute, async context => {
 
 auth.use(
   postLinkedEmailsSendVerificationRoute.getRoutingPath(),
-  authentication
+  authentication(),
+  rateLimiter(1)
 );
 auth.openapi(postLinkedEmailsSendVerificationRoute, async context => {
   const {user} = context.env?.session as {user: string};
@@ -154,7 +157,7 @@ auth.openapi(postLinkedEmailsVerifyRoute, async context => {
   return context.json('Linked email successfully verified.', 200);
 });
 
-auth.use(postLogoutRoute.getRoutingPath(), authentication);
+auth.use(postLogoutRoute.getRoutingPath(), authentication());
 auth.openapi(postLogoutRoute, context => {
   deleteSession(context);
   return context.json('User logout successfully.', 200);
