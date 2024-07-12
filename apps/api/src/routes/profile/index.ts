@@ -1,7 +1,7 @@
 import type {User} from 'domain/models';
 import {OpenAPIHono} from '@hono/zod-openapi';
 import {userResponse} from '@/lib/models';
-import {authentication} from '@/lib/auth';
+import {authentication, getAuthentication} from '@/lib/auth';
 import {handleValidationErrors} from '@/lib/openapi';
 import {
   DeleteUserLinkedEmail,
@@ -29,11 +29,12 @@ export const profile = new OpenAPIHono({
   }
 });
 
-profile.use(getProfileRoute.getRoutingPath(), authentication);
-profile.openapi(getProfileRoute, async context => {
-  const {user} = context.env?.session as {user: string};
+profile.use(authentication());
 
-  const service = new LoadUser(user);
+profile.openapi(getProfileRoute, async context => {
+  const {userId} = getAuthentication(context);
+
+  const service = new LoadUser(userId);
   const response = await service.run();
 
   const error = response.status === 401 || response.status === 404;
@@ -44,14 +45,13 @@ profile.openapi(getProfileRoute, async context => {
   return context.json(userResponse(response.body), 200);
 });
 
-profile.use(patchProfileRoute.getRoutingPath(), authentication);
 profile.openapi(patchProfileRoute, async context => {
-  const {user} = context.env?.session as {user: string};
+  const {userId} = getAuthentication(context);
   const request = context.req.valid('json');
   let data: User | null = null;
 
   if (request.name !== undefined) {
-    const service = new UpdateUserName(user, request.name);
+    const service = new UpdateUserName(userId, request.name);
     const response = await service.run();
 
     const error =
@@ -66,7 +66,7 @@ profile.openapi(patchProfileRoute, async context => {
   }
 
   if (request.email !== undefined) {
-    const service = new UpdateUserEmail(user, request.email);
+    const service = new UpdateUserEmail(userId, request.email);
     const response = await service.run();
 
     const error =
@@ -81,7 +81,7 @@ profile.openapi(patchProfileRoute, async context => {
   }
 
   if (request.password !== undefined) {
-    const service = new UpdateUserPassword(user, request.password);
+    const service = new UpdateUserPassword(userId, request.password);
     const response = await service.run();
 
     const error =
@@ -114,12 +114,11 @@ profile.openapi(patchProfileRoute, async context => {
   return context.json(userResponse(data), 200);
 });
 
-profile.use(postProfileLinkedEmailsRoute.getRoutingPath(), authentication);
 profile.openapi(postProfileLinkedEmailsRoute, async context => {
-  const {user} = context.env?.session as {user: string};
+  const {userId} = getAuthentication(context);
   const {email} = context.req.valid('json');
 
-  const service = new SaveUserLinkedEmail(user, email);
+  const service = new SaveUserLinkedEmail(userId, email);
   const response = await service.run();
 
   const error =
@@ -134,12 +133,11 @@ profile.openapi(postProfileLinkedEmailsRoute, async context => {
   return context.json(userResponse(response.body), 201);
 });
 
-profile.use(deleteProfileLinkedEmailsRoute.getRoutingPath(), authentication);
 profile.openapi(deleteProfileLinkedEmailsRoute, async context => {
-  const {user} = context.env?.session as {user: string};
+  const {userId} = getAuthentication(context);
   const {email} = context.req.valid('json');
 
-  const service = new DeleteUserLinkedEmail(user, email);
+  const service = new DeleteUserLinkedEmail(userId, email);
   const response = await service.run();
 
   const error =
@@ -153,12 +151,11 @@ profile.openapi(deleteProfileLinkedEmailsRoute, async context => {
   return context.json(userResponse(response.body), 200);
 });
 
-profile.use(deleteProfileRoute.getRoutingPath(), authentication);
 profile.openapi(deleteProfileRoute, async context => {
-  const {user} = context.env?.session as {user: string};
+  const {userId} = getAuthentication(context);
   const {password} = context.req.valid('json');
 
-  const service = new DeleteUser(user, password);
+  const service = new DeleteUser(userId, password);
   const response = await service.run();
 
   const error = response.status === 401 || response.status === 404;

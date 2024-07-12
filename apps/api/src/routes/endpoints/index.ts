@@ -2,7 +2,7 @@ import {OpenAPIHono} from '@hono/zod-openapi';
 import type {Endpoint} from 'domain/models';
 import {handleValidationErrors} from '@/lib/openapi';
 import {createUUID, endpointResponse} from '@/lib/models';
-import {authentication} from '@/lib/auth';
+import {authentication, getAuthentication} from '@/lib/auth';
 import {
   DeleteEndpoint,
   LoadAllEndpoints,
@@ -34,12 +34,13 @@ export const endpoints = new OpenAPIHono({
   }
 });
 
-endpoints.use(getAllEndpointsRoute.getRoutingPath(), authentication);
+endpoints.use(authentication());
+
 endpoints.openapi(getAllEndpointsRoute, async context => {
-  const {user} = context.env?.session as {user: string};
+  const {userId} = getAuthentication(context);
   const {team} = context.req.valid('param');
 
-  const teamService = new LoadTeamMember(team, user);
+  const teamService = new LoadTeamMember(team, userId);
   const teamResponse = await teamService.run();
 
   if (teamResponse.status === 401 || teamResponse.status === 404) {
@@ -60,13 +61,12 @@ endpoints.openapi(getAllEndpointsRoute, async context => {
   return context.json(response, 200);
 });
 
-endpoints.use(getEndpointRoute.getRoutingPath(), authentication);
 endpoints.openapi(getEndpointRoute, async context => {
-  const {user} = context.env?.session as {user: string};
+  const {userId} = getAuthentication(context);
   const {team, endpointId} = context.req.valid('param');
   const endpointUUID = createUUID(endpointId);
 
-  const teamService = new LoadTeamMember(team, user);
+  const teamService = new LoadTeamMember(team, userId);
   const teamResponse = await teamService.run();
 
   if (teamResponse.status === 401 || teamResponse.status === 404) {
@@ -84,13 +84,12 @@ endpoints.openapi(getEndpointRoute, async context => {
   return context.json(response, 200);
 });
 
-endpoints.use(postEndpointRoute.getRoutingPath(), authentication);
 endpoints.openapi(postEndpointRoute, async context => {
-  const {user} = context.env?.session as {user: string};
+  const {userId} = getAuthentication(context);
   const {name, targetEmails, color, icon} = context.req.valid('json');
   const {team} = context.req.valid('param');
 
-  const teamService = new LoadTeamMember(team, user);
+  const teamService = new LoadTeamMember(team, userId);
   const teamResponse = await teamService.run();
 
   if (teamResponse.status === 401 || teamResponse.status === 404) {
@@ -121,15 +120,14 @@ endpoints.openapi(postEndpointRoute, async context => {
   return context.json(response, 201);
 });
 
-endpoints.use(patchEndpointRoute.getRoutingPath(), authentication);
 endpoints.openapi(patchEndpointRoute, async context => {
-  const {user} = context.env?.session as {user: string};
+  const {userId} = getAuthentication(context);
   const {team, endpointId} = context.req.valid('param');
   const endpointUUID = createUUID(endpointId);
   const request = context.req.valid('json');
   let data: Endpoint | null = null;
 
-  const teamService = new LoadTeamMember(team, user);
+  const teamService = new LoadTeamMember(team, userId);
   const teamResponse = await teamService.run();
 
   if (teamResponse.status === 401 || teamResponse.status === 404) {
@@ -265,13 +263,12 @@ endpoints.openapi(patchEndpointRoute, async context => {
   return context.json(endpointResponse(data), 200);
 });
 
-endpoints.use(deleteEndpointRoute.getRoutingPath(), authentication);
 endpoints.openapi(deleteEndpointRoute, async context => {
-  const {user} = context.env?.session as {user: string};
+  const {userId} = getAuthentication(context);
   const {team, endpointId} = context.req.valid('param');
   const endpointUUID = createUUID(endpointId);
 
-  const teamService = new LoadTeamMember(team, user);
+  const teamService = new LoadTeamMember(team, userId);
   const teamResponse = await teamService.run();
 
   if (teamResponse.status === 401 || teamResponse.status === 404) {

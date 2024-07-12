@@ -1,6 +1,6 @@
+import {createHash} from 'crypto';
 import type {APIKeyExpirationDate} from 'domain/models/values';
 import shortUUID from 'short-uuid';
-import bcryptjs from 'bcryptjs';
 
 export const generateAPIKey = (): {apiKey: string; hash: string} => {
   const uuid = crypto.randomUUID();
@@ -10,7 +10,7 @@ export const generateAPIKey = (): {apiKey: string; hash: string} => {
 };
 
 export const getAPIKeyHash = (apiKey: string): string => {
-  return bcryptjs.hashSync(apiKey, 13);
+  return createHash('sha256').update(apiKey).digest('hex');
 };
 
 export const generateExpirationDate = (value: APIKeyExpirationDate): Date => {

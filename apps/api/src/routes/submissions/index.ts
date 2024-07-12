@@ -2,7 +2,7 @@ import {OpenAPIHono} from '@hono/zod-openapi';
 import type {Submission} from 'domain/models';
 import {handleValidationErrors} from '@/lib/openapi';
 import {createUUID, submissionResponse} from '@/lib/models';
-import {authentication} from '@/lib/auth';
+import {authentication, getAuthentication} from '@/lib/auth';
 import {LoadEndpoint} from '@/useCases/endpoints';
 import {LoadTeamMember} from '@/useCases/teams';
 import {
@@ -30,9 +30,9 @@ export const submissions = new OpenAPIHono({
   }
 });
 
-submissions.use(getAllSubmissionsRoute.getRoutingPath(), authentication);
+submissions.use(getAllSubmissionsRoute.getRoutingPath(), authentication());
 submissions.openapi(getAllSubmissionsRoute, async context => {
-  const {user} = context.env?.session as {user: string};
+  const {userId} = getAuthentication(context);
   const {endpointId} = context.req.valid('param');
   const endpointUUID = createUUID(endpointId);
 
@@ -44,7 +44,7 @@ submissions.openapi(getAllSubmissionsRoute, async context => {
     return context.json(endpointResponse.error, endpointResponse.status);
   }
 
-  const teamService = new LoadTeamMember(endpoint.id, user);
+  const teamService = new LoadTeamMember(endpoint.id, userId);
   const teamResponse = await teamService.run();
 
   if (teamResponse.status === 401 || teamResponse.status === 404) {
@@ -68,10 +68,10 @@ submissions.openapi(getAllSubmissionsRoute, async context => {
   return context.json(response, 200);
 });
 
-submissions.use(getSubmissionRoute.getRoutingPath(), authentication);
+submissions.use(getSubmissionRoute.getRoutingPath(), authentication());
 submissions.openapi(getSubmissionRoute, async context => {
+  const {userId} = getAuthentication(context);
   const {endpointId, submissionId} = context.req.valid('param');
-  const {user} = context.env?.session as {user: string};
   const submissionUUID = createUUID(submissionId);
   const endpointUUID = createUUID(endpointId);
 
@@ -83,7 +83,7 @@ submissions.openapi(getSubmissionRoute, async context => {
     return context.json(endpointResponse.error, endpointResponse.status);
   }
 
-  const teamService = new LoadTeamMember(endpoint.id, user);
+  const teamService = new LoadTeamMember(endpoint.id, userId);
   const teamResponse = await teamService.run();
 
   if (teamResponse.status === 401 || teamResponse.status === 404) {
@@ -165,7 +165,8 @@ submissions.openapi(postSubmissionRoute, async context => {
   );
 });
 
-submissions.use(patchSubmissionRoute.getRoutingPath(), authentication);
+// Secure this method
+submissions.use(patchSubmissionRoute.getRoutingPath(), authentication());
 submissions.openapi(patchSubmissionRoute, async context => {
   const {endpointId, submissionId} = context.req.valid('param');
   const submissionUUID = createUUID(submissionId);
@@ -222,10 +223,11 @@ submissions.openapi(patchSubmissionRoute, async context => {
   return context.json(submissionResponse(data), 200);
 });
 
-submissions.use(deleteSubmissionRoute.getRoutingPath(), authentication);
+submissions.use(deleteSubmissionRoute.getRoutingPath(), authentication());
 submissions.openapi(deleteSubmissionRoute, async context => {
   const {endpointId, submissionId} = context.req.valid('param');
-  const {user} = context.env?.session as {user: string};
+  const {userId} = getAuthentication(context);
+
   const submissionUUID = createUUID(submissionId);
   const endpointUUID = createUUID(endpointId);
 
@@ -237,7 +239,7 @@ submissions.openapi(deleteSubmissionRoute, async context => {
     return context.json(endpointResponse.error, endpointResponse.status);
   }
 
-  const teamService = new LoadTeamMember(endpoint.id, user);
+  const teamService = new LoadTeamMember(endpoint.id, userId);
   const teamResponse = await teamService.run();
 
   if (teamResponse.status === 401 || teamResponse.status === 404) {

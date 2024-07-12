@@ -1,7 +1,7 @@
 import {OpenAPIHono} from '@hono/zod-openapi';
 import {handleValidationErrors} from '@/lib/openapi';
 import {apiKeyResponse, createUUID} from '@/lib/models';
-import {authentication} from '@/lib/auth';
+import {authentication, getAuthentication} from '@/lib/auth';
 import {DeleteAPIKey, LoadAllAPIKeys, SaveAPIKey} from '@/useCases/api-keys';
 import {deleteAPIKeyRoute, getAllAPIKeysRoute, postAPIKeyRoute} from './routes';
 
@@ -14,12 +14,12 @@ export const apiKeys = new OpenAPIHono({
   }
 });
 
-apiKeys.use(authentication);
+apiKeys.use(authentication({dashboardOnly: true}));
 
 apiKeys.openapi(getAllAPIKeysRoute, async context => {
-  const {user} = context.env?.session as {user: string};
+  const {userId} = getAuthentication(context);
 
-  const service = new LoadAllAPIKeys(user);
+  const service = new LoadAllAPIKeys(userId);
   const data = await service.run();
 
   const error = data.status === 401 || data.status === 404;
@@ -32,7 +32,7 @@ apiKeys.openapi(getAllAPIKeysRoute, async context => {
 });
 
 apiKeys.openapi(postAPIKeyRoute, async context => {
-  const {user} = context.env?.session as {user: string};
+  const {userId} = getAuthentication(context);
   const {scope, expirationDate, team} = context.req.valid('json');
 
   if (scope === 'team' && team === undefined) {
@@ -45,7 +45,7 @@ apiKeys.openapi(postAPIKeyRoute, async context => {
     );
   }
 
-  const service = new SaveAPIKey(user, scope, expirationDate, team);
+  const service = new SaveAPIKey(userId, scope, expirationDate, team);
   const data = await service.run();
 
   const error = data.status === 401 || data.status === 404;
@@ -57,11 +57,11 @@ apiKeys.openapi(postAPIKeyRoute, async context => {
 });
 
 apiKeys.openapi(deleteAPIKeyRoute, async context => {
-  const {user} = context.env?.session as {user: string};
+  const {userId} = getAuthentication(context);
   const {apiKeyId} = context.req.valid('param');
   const apiKeyUUID = createUUID(apiKeyId);
 
-  const service = new DeleteAPIKey(apiKeyUUID, user);
+  const service = new DeleteAPIKey(apiKeyUUID, userId);
   const data = await service.run();
 
   const error = data.status === 401 || data.status === 404;

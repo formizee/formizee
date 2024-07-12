@@ -2,7 +2,7 @@ import {OpenAPIHono} from '@hono/zod-openapi';
 import type {Member} from 'domain/models';
 import {createUUID, memberResponse, teamResponse} from '@/lib/models';
 import {handleValidationErrors} from '@/lib/openapi';
-import {authentication} from '@/lib/auth';
+import {authentication, getAuthentication} from '@/lib/auth';
 import {LoadUserLinkedTeams} from '@/useCases/users';
 import {
   UpdateTeamMemberPermissions,
@@ -36,11 +36,12 @@ export const teams = new OpenAPIHono({
   }
 });
 
-teams.use(getAllTeamsRoute.getRoutingPath(), authentication);
-teams.openapi(getAllTeamsRoute, async context => {
-  const {user} = context.env?.session as {user: string};
+teams.use(authentication());
 
-  const service = new LoadUserLinkedTeams(user);
+teams.openapi(getAllTeamsRoute, async context => {
+  const {userId} = getAuthentication(context);
+
+  const service = new LoadUserLinkedTeams(userId);
   const teamsData = await service.run();
 
   if (teamsData.status === 401 || teamsData.status === 404) {
@@ -53,12 +54,11 @@ teams.openapi(getAllTeamsRoute, async context => {
   return context.json(response, 200);
 });
 
-teams.use(getTeamRoute.getRoutingPath(), authentication);
 teams.openapi(getTeamRoute, async context => {
-  const {user} = context.env?.session as {user: string};
+  const {userId} = getAuthentication(context);
   const {team} = context.req.valid('param');
 
-  const memberService = new LoadTeamMember(team, user);
+  const memberService = new LoadTeamMember(team, userId);
   const memberData = await memberService.run();
 
   if (memberData.status === 401 || memberData.status === 404) {
@@ -76,12 +76,11 @@ teams.openapi(getTeamRoute, async context => {
   return context.json(response, 200);
 });
 
-teams.use(postTeamRoute.getRoutingPath(), authentication);
 teams.openapi(postTeamRoute, async context => {
-  const {user} = context.env?.session as {user: string};
+  const {userId} = getAuthentication(context);
   const {name} = context.req.valid('json');
 
-  const service = new SaveTeam(user, name);
+  const service = new SaveTeam(userId, name);
   const teamData = await service.run();
 
   const error =
@@ -96,12 +95,11 @@ teams.openapi(postTeamRoute, async context => {
   return context.json(response, 201);
 });
 
-teams.use(deleteTeamRoute.getRoutingPath(), authentication);
 teams.openapi(deleteTeamRoute, async context => {
-  const {user} = context.env?.session as {user: string};
+  const {userId} = getAuthentication(context);
   const {team} = context.req.valid('param');
 
-  const memberService = new LoadTeamMember(team, user);
+  const memberService = new LoadTeamMember(team, userId);
   const memberData = await memberService.run();
   const member = memberData.body;
 
@@ -137,12 +135,11 @@ teams.openapi(deleteTeamRoute, async context => {
   return context.text('The team has been deleted.', 200);
 });
 
-teams.use(getAllTeamMembersRoute.getRoutingPath(), authentication);
 teams.openapi(getAllTeamMembersRoute, async context => {
-  const {user} = context.env?.session as {user: string};
+  const {userId} = getAuthentication(context);
   const {team} = context.req.valid('param');
 
-  const memberService = new LoadTeamMember(team, user);
+  const memberService = new LoadTeamMember(team, userId);
   const memberData = await memberService.run();
 
   if (memberData.status === 401 || memberData.status === 404) {
@@ -162,13 +159,12 @@ teams.openapi(getAllTeamMembersRoute, async context => {
   return context.json(response, 200);
 });
 
-teams.use(getTeamMemberRoute.getRoutingPath(), authentication);
 teams.openapi(getTeamMemberRoute, async context => {
-  const {user} = context.env?.session as {user: string};
+  const {userId} = getAuthentication(context);
   const {team, memberId} = context.req.valid('param');
   const memberUUID = createUUID(memberId);
 
-  const memberService = new LoadTeamMember(team, user);
+  const memberService = new LoadTeamMember(team, userId);
   const memberData = await memberService.run();
 
   if (memberData.status === 401 || memberData.status === 404) {
@@ -185,14 +181,13 @@ teams.openapi(getTeamMemberRoute, async context => {
   return context.json(memberResponse(response.body), 200);
 });
 
-teams.use(postTeamMemberRoute.getRoutingPath(), authentication);
 teams.openapi(postTeamMemberRoute, async context => {
-  const {user} = context.env?.session as {user: string};
+  const auth = getAuthentication(context);
   const {team} = context.req.valid('param');
   const {userId, role, permissions} = context.req.valid('json');
   const userUUID = createUUID(userId);
 
-  const memberService = new LoadTeamMember(team, user);
+  const memberService = new LoadTeamMember(team, auth.userId);
   const memberData = await memberService.run();
   const userPerformingAction = memberData.body;
 
@@ -225,15 +220,14 @@ teams.openapi(postTeamMemberRoute, async context => {
   return context.json(memberResponse(response.body), 201);
 });
 
-teams.use(patchTeamMemberRoute.getRoutingPath(), authentication);
 teams.openapi(patchTeamMemberRoute, async context => {
-  const {user} = context.env?.session as {user: string};
+  const {userId} = getAuthentication(context);
   const {team, memberId} = context.req.valid('param');
   const request = context.req.valid('json');
   const memberUUID = createUUID(memberId);
   let data: Member | null = null;
 
-  const memberService = new LoadTeamMember(team, user);
+  const memberService = new LoadTeamMember(team, userId);
   const memberData = await memberService.run();
   const userPerformingAction = memberData.body;
 
@@ -304,13 +298,12 @@ teams.openapi(patchTeamMemberRoute, async context => {
   return context.json(memberResponse(data), 200);
 });
 
-teams.use(deleteTeamMemberRoute.getRoutingPath(), authentication);
 teams.openapi(deleteTeamMemberRoute, async context => {
-  const {user} = context.env?.session as {user: string};
+  const {userId} = getAuthentication(context);
   const {team, memberId} = context.req.valid('param');
   const memberUUID = createUUID(memberId);
 
-  const memberService = new LoadTeamMember(team, user);
+  const memberService = new LoadTeamMember(team, userId);
   const memberData = await memberService.run();
   const userPerformingAction = memberData.body;
 
