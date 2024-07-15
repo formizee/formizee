@@ -96,7 +96,10 @@ const validateSession = async (context: Context): Promise<boolean> => {
   return true;
 };
 
-const validateAPIKey = async (context: Context, options?: AuthOptions): Promise<boolean> => {
+const validateAPIKey = async (
+  context: Context,
+  options?: AuthOptions
+): Promise<boolean> => {
   const authorization = context.req.header('Authorization');
   if (authorization === undefined) {
     throwError();
@@ -138,11 +141,12 @@ const validateAPIKey = async (context: Context, options?: AuthOptions): Promise<
     scope: data.scope
   });
 
-  if(data.scope !== 'full-access' && options?.needsFullScope === true) {
+  if (data.scope !== 'full-access' && options?.needsFullScope === true) {
     throwError({
-      name: "Unauthorized",
-      description: "Your API Key does not allow you to do this action, use one with full access instead."
-    })
+      name: 'Unauthorized',
+      description:
+        'Your API Key does not allow you to do this action, use one with full access instead.'
+    });
   }
 
   return true;
