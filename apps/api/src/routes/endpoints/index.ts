@@ -16,7 +16,7 @@ import {
   UpdateEndpointStatus,
   UpdateEndpointTargetEmails
 } from '@/useCases/endpoints';
-import {LoadTeamMember} from '@/useCases/teams';
+import {LoadTeam, LoadTeamMember} from '@/useCases/teams';
 import {
   deleteEndpointRoute,
   getAllEndpointsRoute,
@@ -37,14 +37,32 @@ export const endpoints = new OpenAPIHono({
 endpoints.use(authentication());
 
 endpoints.openapi(getAllEndpointsRoute, async context => {
-  const {userId} = getAuthentication(context);
+  const {userId, scope, teamId} = getAuthentication(context);
   const {team} = context.req.valid('param');
 
-  const teamService = new LoadTeamMember(team, userId);
-  const teamResponse = await teamService.run();
+  const teamService = new LoadTeam(team);
+  const teamData = await teamService.run();
 
-  if (teamResponse.status === 401 || teamResponse.status === 404) {
-    return context.json(teamResponse.error, teamResponse.status);
+  if (teamData.status === 401 || teamData.status === 404) {
+    return context.json(teamData.error, teamData.status);
+  }
+
+  if (scope === 'team' && teamData.body.id !== teamId) {
+    return context.json(
+      {
+        name: 'Unauthorized',
+        description:
+          'Your API Key scope does not allow you to do this action, create a new one with scope for this team or use one with full access instead.'
+      },
+      401
+    );
+  }
+
+  const membersService = new LoadTeamMember(team, userId);
+  const memberResponse = await membersService.run();
+
+  if (memberResponse.status === 401 || memberResponse.status === 404) {
+    return context.json(memberResponse.error, memberResponse.status);
   }
 
   const service = new LoadAllEndpoints(team);
@@ -62,15 +80,33 @@ endpoints.openapi(getAllEndpointsRoute, async context => {
 });
 
 endpoints.openapi(getEndpointRoute, async context => {
-  const {userId} = getAuthentication(context);
+  const {userId, scope, teamId} = getAuthentication(context);
   const {team, endpointId} = context.req.valid('param');
   const endpointUUID = createUUID(endpointId);
 
-  const teamService = new LoadTeamMember(team, userId);
-  const teamResponse = await teamService.run();
+  const teamService = new LoadTeam(team);
+  const teamData = await teamService.run();
 
-  if (teamResponse.status === 401 || teamResponse.status === 404) {
-    return context.json(teamResponse.error, teamResponse.status);
+  if (teamData.status === 401 || teamData.status === 404) {
+    return context.json(teamData.error, teamData.status);
+  }
+
+  if (scope === 'team' && teamData.body.id !== teamId) {
+    return context.json(
+      {
+        name: 'Unauthorized',
+        description:
+          'Your API Key scope does not allow you to do this action, create a new one with scope for this team or use one with full access instead.'
+      },
+      401
+    );
+  }
+
+  const membersService = new LoadTeamMember(team, userId);
+  const memberResponse = await membersService.run();
+
+  if (memberResponse.status === 401 || memberResponse.status === 404) {
+    return context.json(memberResponse.error, memberResponse.status);
   }
 
   const service = new LoadEndpoint(endpointUUID);
@@ -85,18 +121,36 @@ endpoints.openapi(getEndpointRoute, async context => {
 });
 
 endpoints.openapi(postEndpointRoute, async context => {
-  const {userId} = getAuthentication(context);
+  const {userId, scope, teamId} = getAuthentication(context);
   const {name, targetEmails, color, icon} = context.req.valid('json');
   const {team} = context.req.valid('param');
 
-  const teamService = new LoadTeamMember(team, userId);
-  const teamResponse = await teamService.run();
+  const teamService = new LoadTeam(team);
+  const teamData = await teamService.run();
 
-  if (teamResponse.status === 401 || teamResponse.status === 404) {
-    return context.json(teamResponse.error, teamResponse.status);
+  if (teamData.status === 401 || teamData.status === 404) {
+    return context.json(teamData.error, teamData.status);
   }
 
-  const member = teamResponse.body;
+  if (scope === 'team' && teamData.body.id !== teamId) {
+    return context.json(
+      {
+        name: 'Unauthorized',
+        description:
+          'Your API Key scope does not allow you to do this action, create a new one with scope for this team or use one with full access instead.'
+      },
+      401
+    );
+  }
+  
+  const membersService = new LoadTeamMember(team, userId);
+  const memberResponse = await membersService.run();
+
+  if (memberResponse.status === 401 || memberResponse.status === 404) {
+    return context.json(memberResponse.error, memberResponse.status);
+  }
+
+  const member = memberResponse.body;
   const permissions =
     member.permissions === 'create' || member.permissions === 'all';
   if (!permissions) {
@@ -121,20 +175,38 @@ endpoints.openapi(postEndpointRoute, async context => {
 });
 
 endpoints.openapi(patchEndpointRoute, async context => {
-  const {userId} = getAuthentication(context);
+  const {userId, scope, teamId} = getAuthentication(context);
   const {team, endpointId} = context.req.valid('param');
   const endpointUUID = createUUID(endpointId);
   const request = context.req.valid('json');
   let data: Endpoint | null = null;
 
-  const teamService = new LoadTeamMember(team, userId);
-  const teamResponse = await teamService.run();
+  const teamService = new LoadTeam(team);
+  const teamData = await teamService.run();
 
-  if (teamResponse.status === 401 || teamResponse.status === 404) {
-    return context.json(teamResponse.error, teamResponse.status);
+  if (teamData.status === 401 || teamData.status === 404) {
+    return context.json(teamData.error, teamData.status);
   }
 
-  const member = teamResponse.body;
+  if (scope === 'team' && teamData.body.id !== teamId) {
+    return context.json(
+      {
+        name: 'Unauthorized',
+        description:
+          'Your API Key scope does not allow you to do this action, create a new one with scope for this team or use one with full access instead.'
+      },
+      401
+    );
+  }
+
+  const membersService = new LoadTeamMember(team, userId);
+  const memberResponse = await membersService.run();
+
+  if (memberResponse.status === 401 || memberResponse.status === 404) {
+    return context.json(memberResponse.error, memberResponse.status);
+  }
+
+  const member = memberResponse.body;
   const permissions = member.permissions !== 'read';
   if (!permissions) {
     return context.json(
@@ -264,18 +336,36 @@ endpoints.openapi(patchEndpointRoute, async context => {
 });
 
 endpoints.openapi(deleteEndpointRoute, async context => {
-  const {userId} = getAuthentication(context);
+  const {userId, scope, teamId} = getAuthentication(context);
   const {team, endpointId} = context.req.valid('param');
   const endpointUUID = createUUID(endpointId);
 
-  const teamService = new LoadTeamMember(team, userId);
-  const teamResponse = await teamService.run();
+  const teamService = new LoadTeam(team);
+  const teamData = await teamService.run();
 
-  if (teamResponse.status === 401 || teamResponse.status === 404) {
-    return context.json(teamResponse.error, teamResponse.status);
+  if (teamData.status === 401 || teamData.status === 404) {
+    return context.json(teamData.error, teamData.status);
   }
 
-  const member = teamResponse.body;
+  if (scope === 'team' && teamData.body.id !== teamId) {
+    return context.json(
+      {
+        name: 'Unauthorized',
+        description:
+          'Your API Key scope does not allow you to do this action, create a new one with scope for this team or use one with full access instead.'
+      },
+      401
+    );
+  }
+
+  const membersService = new LoadTeamMember(team, userId);
+  const memberResponse = await membersService.run();
+
+  if (memberResponse.status === 401 || memberResponse.status === 404) {
+    return context.json(memberResponse.error, memberResponse.status);
+  }
+
+  const member = memberResponse.body;
   const permissions = member.permissions === 'all';
   if (!permissions) {
     return context.json(
