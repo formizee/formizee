@@ -25,7 +25,7 @@
   },
   "devDependencies": {
     "@formizee/eslint": "workspace:*",
-    "@formizee/tailwind-config": "workspace:*",
+    "@formizee/tailwind": "workspace:*",
     "@formizee/tsconfig": "workspace:*",
     "@types/node": "20.12.12",
     "@types/react": "18.3.2",
