@@ -13,7 +13,7 @@
     "format": "prettier -w ."
   },
   "devDependencies": {
-    "@formizee/eslint-config": "workspace:*",
+    "@formizee/eslint": "workspace:*",
     "@formizee/tsconfig": "workspace:*",
     "typescript": "5.4.5"
   }

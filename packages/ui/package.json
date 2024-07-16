@@ -52,7 +52,7 @@
     "tailwind-merge": "2.3.0"
   },
   "devDependencies": {
-    "@formizee/eslint-config": "workspace:*",
+    "@formizee/eslint": "workspace:*",
     "@formizee/tailwind-config": "workspace:*",
     "@formizee/tsconfig": "workspace:*",
     "@types/react": "18.3.2",
