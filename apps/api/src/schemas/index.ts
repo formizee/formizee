@@ -9,9 +9,7 @@ export const UuidSchema = z
 
 export const TeamSchema = z
   .object({
-    id: z.string().openapi({
-      example: 'TjSLj5Z0r4B_H'
-    }),
+    id: UuidSchema,
     name: z.string().openapi({
       example: 'formizee'
     }),
@@ -36,9 +34,7 @@ export const TeamSchema = z
 
 export const UserSchema = z
   .object({
-    id: z.string().openapi({
-      example: 'TjSLj5Z0r4B_H'
-    }),
+    id: UuidSchema,
     name: z.string().openapi({
       example: 'pauchiner'
     }),
@@ -71,9 +67,7 @@ export const UserSchema = z
 
 export const MemberSchema = z
   .object({
-    id: z.string().openapi({
-      example: 'TjSLj5Z0r4B_H'
-    }),
+    id: UuidSchema,
     role: z.enum(['member', 'owner']).optional().openapi({
       description: 'The owners have full permissions on the team',
       default: 'member',
@@ -98,14 +92,12 @@ export const MemberSchema = z
 
 export const EndpointSchema = z
   .object({
-    id: z.string().openapi({
-      example: 'TjSLj5Z0r4B_H'
-    }),
+    id: UuidSchema,
     name: z.string().openapi({
-      example: 'My Endpoint'
+      example: 'endpoint'
     }),
     team: z.string().openapi({
-      example: 'TjSLj5Z0r4B_H'
+      example: 'acme'
     }),
     isEnabled: z.boolean().openapi({
       example: true
@@ -136,12 +128,8 @@ export const EndpointSchema = z
 
 export const SubmissionSchema = z
   .object({
-    id: z.string().openapi({
-      example: 'TjSLj5Z0r4B_H'
-    }),
-    endpoint: z.string().openapi({
-      example: 'TjSLj5Z0r4B_H'
-    }),
+    id: UuidSchema,
+    endpointId: UuidSchema,
     data: z
       .object({})
       .passthrough()
@@ -163,18 +151,12 @@ export const SubmissionSchema = z
 
 export const APIKeySchema = z
   .object({
-    id: z.string().openapi({
-      example: 'TjSLj5Z0r4BsH'
-    }),
+    id: UuidSchema,
     scope: z.enum(APIKeyScopeEnum).openapi({
       example: 'full-access'
     }),
-    userId: z.string().openapi({
-      example: 'TjSLj5Z0r4BsH'
-    }),
-    teamId: z.string().optional().openapi({
-      example: 'TjSLj5Z0r4BsH'
-    }),
+    userId: UuidSchema,
+    teamId: UuidSchema,
     lastAccess: z.date().openapi({
       example: '2024-06-30T17:33:32.125Z'
     }),

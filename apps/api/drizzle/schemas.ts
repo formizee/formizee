@@ -149,9 +149,9 @@ export const endpoints = pgTable('endpoints', {
 
   name: text('name').notNull(),
 
-  team: uuid('team_id')
+  team: text('team')
     .notNull()
-    .references(() => teams.id, { onDelete: 'set null' }),
+    .references(() => teams.name, { onDelete: 'set null' }),
 
   isEnabled: boolean('is_enabled').notNull().default(true),
 

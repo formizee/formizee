@@ -86,7 +86,7 @@ export class EndpointsRepository implements Repository {
       .insert(endpoints)
       .values({
         name,
-        team: team.id,
+        team: team.name,
         targetEmails: emails,
         color,
         icon

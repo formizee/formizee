@@ -77,20 +77,19 @@ export const memberResponse = (data: Member): MemberResponse => {
 
 export const endpointResponse = (data: Endpoint): EndpointResponse => {
   const id = shortUUID().fromUUID(data.id);
-  const team = shortUUID().fromUUID(data.team);
 
   const targetEmails = data.targetEmails.map(email => email.value);
 
   const normalizedData = {
     id,
     name: data.name,
-    team,
+    team: data.team,
     isEnabled: data.isEnabled,
     emailNotifications: data.emailNotifications,
     redirectUrl: data.redirectUrl,
-    targetEmails,
     color: data.color,
     icon: data.icon,
+    targetEmails,
     updatedAt: data.updatedAt,
     createdAt: data.createdAt
   };
@@ -99,6 +98,8 @@ export const endpointResponse = (data: Endpoint): EndpointResponse => {
 };
 
 export const submissionResponse = (data: Submission): SubmissionResponse => {
+  console.log('RAW DATA: ', data);
+
   const id = shortUUID().fromUUID(data.id);
   const endpointId = shortUUID().fromUUID(data.endpoint);
 
@@ -110,6 +111,8 @@ export const submissionResponse = (data: Submission): SubmissionResponse => {
     isRead: data.isRead,
     createdAt: data.createdAt
   };
+
+  console.log('PRETTIFIED DATA: ', normalizedData);
 
   return SubmissionSchema.parse(normalizedData);
 };
@@ -128,10 +131,11 @@ export const apiKeyResponse = (data: APIKey): APIKeyResponse => {
     expiresAt
   };
 
-  if (data.teamId !== '')
+  if (data.teamId !== '') {
     return APIKeySchema.parse({
       teamId: shortUUID().fromUUID(data.teamId),
       ...normalizedData
     });
+  }
   return APIKeySchema.parse(normalizedData);
 };
