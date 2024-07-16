@@ -142,7 +142,7 @@ endpoints.openapi(postEndpointRoute, async context => {
       401
     );
   }
-  
+
   const membersService = new LoadTeamMember(team, userId);
   const memberResponse = await membersService.run();
 

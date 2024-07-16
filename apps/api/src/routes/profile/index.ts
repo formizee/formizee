@@ -29,7 +29,7 @@ export const profile = new OpenAPIHono({
   }
 });
 
-profile.use(authentication());
+profile.use(authentication({dashboardOnly: true}));
 
 profile.openapi(getProfileRoute, async context => {
   const {userId} = getAuthentication(context);
