@@ -46,7 +46,7 @@ export const authentication = (options?: AuthOptions): MiddlewareHandler => {
       throwError({
         name: 'Unauthorized',
         description:
-          'This enpoint is only accessible from the Formizee Dashboard.'
+          'This endpoint is only accessible from the Formizee Dashboard.'
       });
       return;
     }
