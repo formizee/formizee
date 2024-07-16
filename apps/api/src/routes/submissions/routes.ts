@@ -171,6 +171,14 @@ export const postSubmissionRoute = createRoute({
         }
       }
     },
+    403: {
+      description: 'Submission Denied',
+      content: {
+        'application/json': {
+          schema: ErrorSchema
+        }
+      }
+    },
     404: {
       description: 'Endpoint not found',
       content: {

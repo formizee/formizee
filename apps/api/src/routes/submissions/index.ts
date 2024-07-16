@@ -143,7 +143,23 @@ submissions.openapi(postSubmissionRoute, async context => {
   const endpointUUID = createUUID(endpointId);
 
   const endpointService = new LoadEndpoint(endpointUUID);
-  const endpoint = await endpointService.run();
+  const endpointResponse = await endpointService.run();
+  const endpoint = endpointResponse.body;
+
+  if (endpointResponse.status === 401 || endpointResponse.status === 404) {
+    return context.json(endpointResponse.error, endpointResponse.status);
+  }
+
+  if (!endpoint.isEnabled) {
+    return context.json(
+      {
+        name: 'Submission Denied',
+        description:
+          'The endpoint is currently no longer accepting submissions.'
+      },
+      403
+    );
+  }
 
   const isForm = contentType?.includes('application/x-www-form-urlencoded');
   const isJson = contentType?.includes('application/json');
@@ -154,7 +170,7 @@ submissions.openapi(postSubmissionRoute, async context => {
       const form = await context.req.formData();
       const submission = Object.fromEntries(form);
 
-      const service = new SaveSubmission(endpoint.body.id, submission);
+      const service = new SaveSubmission(endpoint.id, submission);
       const response = await service.run();
 
       if (response.status === 404) {
@@ -173,7 +189,7 @@ submissions.openapi(postSubmissionRoute, async context => {
   if (isJson) {
     try {
       const submission = await context.req.json<object>();
-      const service = new SaveSubmission(endpoint.body.id, submission);
+      const service = new SaveSubmission(endpoint.id, submission);
 
       const response = await service.run();
 
@@ -255,6 +271,18 @@ submissions.openapi(patchSubmissionRoute, async context => {
 
   if (memberResponse.status === 401 || memberResponse.status === 404) {
     return context.json(memberResponse.error, memberResponse.status);
+  }
+
+  const member = memberResponse.body;
+  const permissions = member.permissions !== 'read';
+  if (!permissions) {
+    return context.json(
+      {
+        name: 'Unauthorized',
+        description: "You don't have permissions to edit submissions."
+      },
+      401
+    );
   }
 
   if (request.isSpam !== undefined) {
@@ -344,6 +372,18 @@ submissions.openapi(deleteSubmissionRoute, async context => {
 
   if (memberResponse.status === 401 || memberResponse.status === 404) {
     return context.json(memberResponse.error, memberResponse.status);
+  }
+
+  const member = memberResponse.body;
+  const permissions = member.permissions === 'all';
+  if (!permissions) {
+    return context.json(
+      {
+        name: 'Unauthorized',
+        description: "You don't have permissions to delete submissions."
+      },
+      401
+    );
   }
 
   const service = new DeleteSubmission(endpointUUID, submissionUUID);
