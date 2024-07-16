@@ -9,6 +9,8 @@ import type {Session} from './types';
 import {decrypt} from './jwt';
 import {getAPIKeyHash} from './api-keys';
 
+type Method = 'GET' | 'POST' | 'PATCH' | 'DELETE';
+
 interface AuthOptions {
   /*
    * Disable API Key authentication.
@@ -18,6 +20,8 @@ interface AuthOptions {
    * When using API Keys if the api key scope is not full-access it returns a 401.
    */
   needsFullScope?: boolean;
+
+  excludedMethods?: Method[];
 }
 
 interface Authorization {
@@ -28,6 +32,12 @@ interface Authorization {
 
 export const authentication = (options?: AuthOptions): MiddlewareHandler => {
   return async function auth(context, next) {
+    const excludedMethods = options?.excludedMethods ?? [];
+    if (excludedMethods.some(method => method === context.req.method)) {
+      await next();
+      return;
+    }
+
     const isAPIKeyAuthEnabled =
       options?.dashboardOnly === false || options?.dashboardOnly === undefined;
     const isAPIKeyAuthPresent =
