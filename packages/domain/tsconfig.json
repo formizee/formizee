@@ -1,5 +1,5 @@
 {
-  "extends": "@formizee/typescript-config/base.json",
+  "extends": "@formizee/tsconfig/base.json",
   "include": ["**/*.ts"],
   "exclude": ["node_modules"]
 }

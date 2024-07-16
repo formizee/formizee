@@ -1,5 +1,5 @@
 {
-  "extends": "@formizee/typescript-config/base.json",
+  "extends": "@formizee/tsconfig/base.json",
   "compilerOptions": {
     "jsx": "react",
     "skipLibCheck": true

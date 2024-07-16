@@ -1,5 +1,5 @@
 {
-  "extends": "@formizee/typescript-config/api.json",
+  "extends": "@formizee/tsconfig/api.json",
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {

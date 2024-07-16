@@ -54,7 +54,7 @@
   "devDependencies": {
     "@formizee/eslint-config": "workspace:*",
     "@formizee/tailwind-config": "workspace:*",
-    "@formizee/typescript-config": "workspace:*",
+    "@formizee/tsconfig": "workspace:*",
     "@types/react": "18.3.2",
     "@types/react-dom": "18.3.0",
     "autoprefixer": "10.4.19",

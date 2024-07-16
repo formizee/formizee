@@ -1,5 +1,5 @@
 {
-  "name": "@formizee/typescript-config",
+  "name": "@formizee/tsconfig",
   "version": "1.0.0",
   "license": "MIT",
   "private": true
