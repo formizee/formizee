@@ -1,7 +1,6 @@
 import type {OpenAPIHono} from '@hono/zod-openapi';
 import {secureHeaders} from 'hono/secure-headers';
 import {cors} from 'hono/cors';
-import {csrf} from 'hono/csrf';
 import {rateLimiter} from './rate-limiter';
 import {bodyLimit} from './body-limit';
 import {timeout} from './timeout';
@@ -20,7 +19,6 @@ export const security = (router: OpenAPIHono): void => {
   router.use(bodyLimit);
   router.use(timeout);
   router.use(logger);
-  router.use(csrf());
   router.use(
     cors({
       origin: process.env.WEB_URL,
