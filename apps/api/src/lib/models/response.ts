@@ -98,8 +98,6 @@ export const endpointResponse = (data: Endpoint): EndpointResponse => {
 };
 
 export const submissionResponse = (data: Submission): SubmissionResponse => {
-  console.log('RAW DATA: ', data);
-
   const id = shortUUID().fromUUID(data.id);
   const endpointId = shortUUID().fromUUID(data.endpoint);
 
@@ -111,8 +109,6 @@ export const submissionResponse = (data: Submission): SubmissionResponse => {
     isRead: data.isRead,
     createdAt: data.createdAt
   };
-
-  console.log('PRETTIFIED DATA: ', normalizedData);
 
   return SubmissionSchema.parse(normalizedData);
 };
