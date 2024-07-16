@@ -30,7 +30,8 @@ export const submissions = new OpenAPIHono({
   }
 });
 
-submissions.use(getAllSubmissionsRoute.getRoutingPath(), authentication());
+submissions.use(authentication({excludedMethods: ['POST']}));
+
 submissions.openapi(getAllSubmissionsRoute, async context => {
   const {userId} = getAuthentication(context);
   const {endpointId} = context.req.valid('param');
@@ -44,7 +45,7 @@ submissions.openapi(getAllSubmissionsRoute, async context => {
     return context.json(endpointResponse.error, endpointResponse.status);
   }
 
-  const teamService = new LoadTeamMember(endpoint.id, userId);
+  const teamService = new LoadTeamMember(endpoint.team, userId);
   const teamResponse = await teamService.run();
 
   if (teamResponse.status === 401 || teamResponse.status === 404) {
@@ -68,7 +69,6 @@ submissions.openapi(getAllSubmissionsRoute, async context => {
   return context.json(response, 200);
 });
 
-submissions.use(getSubmissionRoute.getRoutingPath(), authentication());
 submissions.openapi(getSubmissionRoute, async context => {
   const {userId} = getAuthentication(context);
   const {endpointId, submissionId} = context.req.valid('param');
@@ -83,7 +83,7 @@ submissions.openapi(getSubmissionRoute, async context => {
     return context.json(endpointResponse.error, endpointResponse.status);
   }
 
-  const teamService = new LoadTeamMember(endpoint.id, userId);
+  const teamService = new LoadTeamMember(endpoint.team, userId);
   const teamResponse = await teamService.run();
 
   if (teamResponse.status === 401 || teamResponse.status === 404) {
@@ -102,6 +102,7 @@ submissions.openapi(getSubmissionRoute, async context => {
 
 submissions.openapi(postSubmissionRoute, async context => {
   const contentType = context.req.header('Content-Type');
+
   const {endpointId} = context.req.valid('param');
   const endpointUUID = createUUID(endpointId);
 
@@ -113,30 +114,44 @@ submissions.openapi(postSubmissionRoute, async context => {
   // const isMultipartForm = contentType?.includes('multipart/form-data');
 
   if (isForm) {
-    const form = await context.req.formData();
-    const submission = Object.fromEntries(form);
+    try {
+      const form = await context.req.formData();
+      const submission = Object.fromEntries(form);
 
-    const service = new SaveSubmission(endpoint.body.id, submission);
-    const response = await service.run();
+      const service = new SaveSubmission(endpoint.body.id, submission);
+      const response = await service.run();
 
-    if (response.status === 404) {
-      return context.json(response.error, response.status);
+      if (response.status === 404) {
+        return context.json(response.error, response.status);
+      }
+
+      return context.json(submissionResponse(response.body), 201);
+    } catch (error) {
+      return context.json(
+        {name: 'Bad request', description: 'Malformed Form request.'},
+        400
+      );
     }
-
-    return context.json(submissionResponse(response.body), 201);
   }
 
   if (isJson) {
-    const submission = await context.req.json<object>();
-    const service = new SaveSubmission(endpoint.body.id, submission);
+    try {
+      const submission = await context.req.json<object>();
+      const service = new SaveSubmission(endpoint.body.id, submission);
 
-    const response = await service.run();
+      const response = await service.run();
 
-    if (response.status === 404) {
-      return context.json(response.error, response.status);
+      if (response.status === 404) {
+        return context.json(response.error, response.status);
+      }
+
+      return context.json(submissionResponse(response.body), 201);
+    } catch (error) {
+      return context.json(
+        {name: 'Bad request', description: 'Malformed JSON request.'},
+        400
+      );
     }
-
-    return context.json(submissionResponse(response.body), 201);
   }
 
   /*
@@ -165,14 +180,28 @@ submissions.openapi(postSubmissionRoute, async context => {
   );
 });
 
-// Secure this method
-submissions.use(patchSubmissionRoute.getRoutingPath(), authentication());
 submissions.openapi(patchSubmissionRoute, async context => {
+  const {userId} = getAuthentication(context);
   const {endpointId, submissionId} = context.req.valid('param');
   const submissionUUID = createUUID(submissionId);
   const endpointUUID = createUUID(endpointId);
   const request = context.req.valid('json');
   let data: Submission | null = null;
+
+  const endpointService = new LoadEndpoint(endpointUUID);
+  const endpointResponse = await endpointService.run();
+  const endpoint = endpointResponse.body;
+
+  if (endpointResponse.status === 401 || endpointResponse.status === 404) {
+    return context.json(endpointResponse.error, endpointResponse.status);
+  }
+
+  const teamService = new LoadTeamMember(endpoint.team, userId);
+  const teamResponse = await teamService.run();
+
+  if (teamResponse.status === 401 || teamResponse.status === 404) {
+    return context.json(teamResponse.error, teamResponse.status);
+  }
 
   if (request.isSpam !== undefined) {
     const service = new UpdateSubmissionIsSpam(
@@ -223,7 +252,6 @@ submissions.openapi(patchSubmissionRoute, async context => {
   return context.json(submissionResponse(data), 200);
 });
 
-submissions.use(deleteSubmissionRoute.getRoutingPath(), authentication());
 submissions.openapi(deleteSubmissionRoute, async context => {
   const {endpointId, submissionId} = context.req.valid('param');
   const {userId} = getAuthentication(context);
@@ -239,7 +267,7 @@ submissions.openapi(deleteSubmissionRoute, async context => {
     return context.json(endpointResponse.error, endpointResponse.status);
   }
 
-  const teamService = new LoadTeamMember(endpoint.id, userId);
+  const teamService = new LoadTeamMember(endpoint.team, userId);
   const teamResponse = await teamService.run();
 
   if (teamResponse.status === 401 || teamResponse.status === 404) {
@@ -253,5 +281,5 @@ submissions.openapi(deleteSubmissionRoute, async context => {
     return context.json(response.error, response.status);
   }
 
-  return context.json('The submission has been deleted.', 204);
+  return context.json('The submission has been deleted.', 200);
 });

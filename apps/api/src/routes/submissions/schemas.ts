@@ -14,13 +14,6 @@ export const PostSubmissionParamSchema = z.object({
   endpointId: UuidSchema
 });
 
-export const PostSubmissionJsonSchema = z
-  .object({})
-  .passthrough()
-  .openapi({
-    example: {name: 'example', email: 'example@formizee.com'}
-  });
-
 export const PatchSubmissionParamSchema = z.object({
   endpointId: UuidSchema,
   submissionId: UuidSchema

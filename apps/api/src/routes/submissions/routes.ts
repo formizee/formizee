@@ -5,7 +5,6 @@ import {
   GetAllSubmissionsSchema,
   GetSubmissionSchema,
   PostSubmissionParamSchema,
-  PostSubmissionJsonSchema,
   PatchSubmissionJsonSchema,
   PatchSubmissionParamSchema
 } from './schemas';
@@ -110,14 +109,41 @@ export const postSubmissionRoute = createRoute({
   operationId: 'saveSubmission',
   tags: ['Submissions'],
   security: [],
+  requestBody: {
+    content: {
+      'application/x-www-form-urlencoded': {
+        schema: {
+          type: 'object',
+          additionalProperties: true
+        }
+      }
+    }
+  },
   request: {
     params: PostSubmissionParamSchema,
     body: {
       content: {
         'application/json': {
-          schema: PostSubmissionJsonSchema
+          schema: {
+            type: 'object',
+            additionalProperties: true,
+            example: {name: 'example', email: 'example@formizee.com'}
+          }
+        },
+        'multipart/form-data': {
+          schema: {
+            type: 'object',
+            additionalProperties: true
+          }
+        },
+        'application/x-www-form-urlencoded': {
+          schema: {
+            type: 'object',
+            additionalProperties: true
+          }
         }
-      }
+      },
+      required: true
     }
   },
   responses: {
@@ -220,7 +246,7 @@ export const deleteSubmissionRoute = createRoute({
     params: DeleteSubmissionSchema
   },
   responses: {
-    204: {
+    200: {
       description: 'Submission Deleted Successfully',
       content: {
         'text/plain': {
