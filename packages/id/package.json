@@ -1,0 +1,18 @@
+{
+  "name": "@formizee/id",
+  "author": "Pau García Chiner",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "test": "vitest",
+    "lint": "biome lint ."
+  },
+  "devDependencies": {
+    "@formizee/tsconfig": "workspace:*",
+    "@types/node": "20.14.10",
+    "vitest": "2.0.1"
+  },
+  "dependencies": {
+    "base-x": "5.0.0"
+  }
+}
