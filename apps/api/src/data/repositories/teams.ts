@@ -312,9 +312,9 @@ export class TeamsRepository implements Repository {
     }
 
     const newAvailableEmails = team.availableEmails.map(email => email.value);
-    user.linkedEmails.forEach(linkedEmail => {
+    for (const linkedEmail of user.linkedEmails) {
       newAvailableEmails.push(linkedEmail.email);
-    });
+    }
 
     await db
       .update(teams)

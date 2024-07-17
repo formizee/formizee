@@ -20,7 +20,9 @@ export class SaveAPIKey {
     expiresAt: APIKeyExpirationDate,
     teamSlug?: string
   ) {
-    if (teamSlug) this._team = new Name(teamSlug);
+    if (teamSlug) {
+      this._team = new Name(teamSlug);
+    }
     this._user = new Identifier(userId);
     this._expiresAt = expiresAt;
     this._scope = scope;

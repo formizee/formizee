@@ -4,7 +4,7 @@ import {Transition} from '@/components';
 import {Button} from '@formizee/ui';
 import Image from 'next/image';
 
-export default function Error({
+export default function ErrorPage({
   error,
   reset
 }: {

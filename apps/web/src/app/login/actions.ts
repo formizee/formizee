@@ -48,6 +48,9 @@ export const login = async (
     };
   }
 
-  if (response.status === 403) redirect('/auth/verify');
-  else redirect('/dashboard');
+  if (response.status === 403) {
+    redirect('/auth/verify');
+  } else {
+    redirect('/dashboard');
+  }
 };

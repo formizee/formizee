@@ -43,7 +43,9 @@ auth.openapi(postLoginRoute, async context => {
   const service = new LoginAuth(email, password);
   const user = await service.run();
 
-  if (user.status === 401) return context.json(user.error, user.status);
+  if (user.status === 401) {
+    return context.json(user.error, user.status);
+  }
   const {id, isVerified} = user.body;
 
   if (isVerified) {

@@ -30,7 +30,6 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
-    "lint": "biome lint .",
     "dev:styles": "tailwindcss -i ./src/styles/globals.css -o ./dist/index.css --watch",
     "build:styles": "tailwindcss -i ./src/styles/globals.css -o ./dist/index.css --minify"
   },

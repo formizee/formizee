@@ -24,7 +24,10 @@ export class APIKey {
     this._scope = scope;
 
     this._userId = new Identifier(userId);
-    if (teamId) this._teamId = new Identifier(teamId);
+
+    if (teamId) {
+      this._teamId = new Identifier(teamId);
+    }
 
     this._lastAccess = lastAccess;
     this._expiresAt = expiresAt;

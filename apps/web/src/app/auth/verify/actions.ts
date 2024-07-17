@@ -47,6 +47,9 @@ export const verifyToken = async (
     };
   }
 
-  if (data.type === 'password') redirect('/auth/update-password');
-  else redirect('/dashboard');
+  if (data.type === 'password') {
+    redirect('/auth/update-password');
+  } else {
+    redirect('/dashboard');
+  }
 };

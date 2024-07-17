@@ -41,10 +41,15 @@ export const PostRegisterSchema = z
 
     for (let i = 0; i < password.length; i++) {
       const ch = password.charAt(i);
-      if (!Number.isNaN(Number(ch))) countOfNumbers++;
-      else if (containsUppercase(ch)) countOfUpperCase++;
-      else if (containsLowercase(ch)) countOfLowerCase++;
-      else if (containsSpecialChar(ch)) countOfSpecialChar++;
+      if (!Number.isNaN(Number(ch))) {
+        countOfNumbers++;
+      } else if (containsUppercase(ch)) {
+        countOfUpperCase++;
+      } else if (containsLowercase(ch)) {
+        countOfLowerCase++;
+      } else if (containsSpecialChar(ch)) {
+        countOfSpecialChar++;
+      }
     }
     if (
       countOfLowerCase < 1 ||

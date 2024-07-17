@@ -11,12 +11,12 @@ const envFiles = [
 
 export const loadedEnviroments: string[] = [];
 
-envFiles.forEach(file => {
+for (const file of envFiles) {
   const envPath = path.resolve(process.cwd(), file);
   if (fs.existsSync(envPath)) {
     loadedEnviroments.push(file);
   }
-});
+}
 
 dotenv.config({
   path: envFiles

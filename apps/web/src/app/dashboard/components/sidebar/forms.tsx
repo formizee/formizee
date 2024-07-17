@@ -23,7 +23,9 @@ function SidebarFormsItem(props: SidebarFormsItemProps): JSX.Element {
 }
 
 export function SidebarForms(props: SidebarFormsProps): JSX.Element {
-  if (props.forms.length === 0) return <div />;
+  if (props.forms.length === 0) {
+    return <div />;
+  }
 
   return (
     <div className="flex h-full flex-col items-start overflow-y-auto">

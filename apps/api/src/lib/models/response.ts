@@ -117,7 +117,9 @@ export const apiKeyResponse = (data: APIKey): APIKeyResponse => {
   const id = shortUUID().fromUUID(data.id);
   const userId = shortUUID().fromUUID(data.userId);
   let expiresAt: string | Date = data.expiresAt;
-  if (data.expiresAt.getFullYear() === 3333) expiresAt = 'never';
+  if (data.expiresAt.getFullYear() === 3333) {
+    expiresAt = 'never';
+  }
   const normalizedData = {
     id,
     scope: data.scope,

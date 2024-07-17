@@ -8,7 +8,9 @@ import {useEffect, useState} from 'react';
 function NavbarLogo(): JSX.Element {
   const pathname = usePathname();
 
-  if (pathname === '/') return <Logo />;
+  if (pathname === '/') {
+    return <Logo />;
+  }
 
   return (
     <Link href="/">

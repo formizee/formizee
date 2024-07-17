@@ -3,12 +3,12 @@
 import type {ActionState} from '@/types';
 import {toast} from '@formizee/ui';
 import {useCallback, useEffect} from 'react';
-/* eslint-disable -- External Library */
 import type {FieldValues, UseFormProps} from 'react-hook-form';
 import {useForm} from 'react-hook-form';
 
 type UseFormActionProps<
   TFieldValues extends FieldValues = FieldValues,
+  /* biome-ignore lint: External Library */
   TContext = any
 > = UseFormProps<TFieldValues, TContext> & {
   state: ActionState | unknown;
@@ -17,6 +17,7 @@ type UseFormActionProps<
 
 export function useFormAction<
   TFieldValues extends FieldValues = FieldValues,
+  /* biome-ignore lint: External Library */
   TContext = any
 >({state, onSuccess, ...props}: UseFormActionProps<TFieldValues, TContext>) {
   const form = useForm({
@@ -28,6 +29,7 @@ export function useFormAction<
   }, []);
 
   useEffect(() => {
+    /* biome-ignore lint: External Library */
     if (!hasState(state)) return;
     form.clearErrors();
 
@@ -43,7 +45,9 @@ export function useFormAction<
       }
       case 'VALIDATION_ERROR': {
         const {fieldErrors} = state;
+        /* biome-ignore lint: External Library */
         Object.keys(fieldErrors).forEach(key => {
+          /* biome-ignore lint: External Library */
           form.setError(key as any, {
             message: fieldErrors[key]?.flat().join(' ')
           });
@@ -79,6 +83,7 @@ export function useFormAction<
 }
 
 const hasState = (state: ActionState | unknown): state is ActionState => {
+  /* biome-ignore lint: External Library */
   if (!state || typeof state !== 'object') return false;
 
   return 'code' in state;

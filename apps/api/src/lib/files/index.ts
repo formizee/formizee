@@ -33,7 +33,9 @@ export const handleFormFiles = async (
   const files = getFiles(formData);
   const responseForm = formData;
 
-  if (files.length === 0) return formData;
+  if (files.length === 0) {
+    return formData;
+  }
 
   const basePath = `${teamName}/uploads/${endpointId}`;
 

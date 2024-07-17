@@ -7,8 +7,9 @@ import type {OpenAPIHono} from '@hono/zod-openapi';
 export const server = (app: OpenAPIHono): void => {
   const startTime = performance.now();
 
-  if (!process.env.API_URL)
+  if (!process.env.API_URL) {
     throw new Error('API_URL enviroment variable is not defined.');
+  }
 
   const BASE_URL = new URL(process.env.API_URL);
   const PORT = Number(BASE_URL.port);

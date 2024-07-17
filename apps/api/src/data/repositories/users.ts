@@ -422,7 +422,9 @@ export class UsersRepository implements Repository {
       const newAvailableEmails = availableEmails.filter(
         email => email !== linkedEmail.value
       );
-      if (newAvailableEmails === availableEmails) continue;
+      if (newAvailableEmails === availableEmails) {
+        continue;
+      }
 
       await db
         .update(teams)

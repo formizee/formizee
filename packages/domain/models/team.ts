@@ -23,9 +23,9 @@ export class Team {
     this._name = new Name(name);
     this._plan = plan;
 
-    availableEmails.forEach(email => {
+    for (const email of availableEmails) {
       this._availableEmails.push(new Email(email));
-    });
+    }
 
     this._updatedAt = updatedAt;
     this._createdAt = createdAt;
