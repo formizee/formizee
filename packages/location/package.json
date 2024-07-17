@@ -3,9 +3,13 @@
   "author": "Pau García Chiner",
   "version": "1.0.0",
   "license": "MIT",
+  "scripts": {
+    "test": "vitest"
+  },
   "devDependencies": {
     "@formizee/tsconfig": "workspace:*",
-    "@types/node": "20.14.10"
+    "@types/node": "20.14.10",
+    "vitest": "2.0.1"
   },
   "peerDependencies": {
     "@hono/node-server": "1.12.0",
