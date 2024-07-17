@@ -1,0 +1,35 @@
+{
+  "name": "@formizee/emails",
+  "author": "Pau García Chiner",
+  "version": "1.0.0",
+  "license": "MIT",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts",
+      "require": "./src/index.ts"
+    },
+    "./templates": {
+      "types": "./emails/index.ts",
+      "import": "./emails/index.ts",
+      "require": "./emails/index.ts"
+    }
+  },
+  "scripts": {
+    "dev": "email dev"
+  },
+  "devDependencies": {
+    "@formizee/tsconfig": "workspace:*",
+    "@types/node": "20.14.11",
+    "@types/react": "18.3.2",
+    "react": "18.3.1"
+  },
+  "dependencies": {
+    "@react-email/components": "0.0.21",
+    "@t3-oss/env-core": "0.10.1",
+    "@types/nodemailer": "6.4.15",
+    "nodemailer": "6.9.14",
+    "react-email": "2.1.5",
+    "zod": "3.23.8"
+  }
+}
