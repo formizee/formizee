@@ -1,0 +1,23 @@
+{
+  "name": "@formizee/db",
+  "author": "Pau García Chiner",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "migrate": "drizzle-kit push",
+    "studio": "drizzle-kit studio"
+  },
+  "devDependencies": {
+    "@formizee/tsconfig": "workspace:*",
+    "@types/node": "20.14.11",
+    "@types/pg": "8.11.6",
+    "drizzle-kit": "0.23.0"
+  },
+  "dependencies": {
+    "@formizee/id": "workspace:*",
+    "@t3-oss/env-core": "0.10.1",
+    "drizzle-orm": "0.32.0",
+    "pg": "8.12.0",
+    "zod": "3.23.8"
+  }
+}
