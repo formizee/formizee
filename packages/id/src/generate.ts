@@ -3,12 +3,16 @@ import baseX from 'base-x';
 const b58 = baseX('123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz');
 
 const prefixes = {
-  api: 'fz',
-  key: 'api',
+  key: 'fz',
+  api: 'api',
   user: 'id',
   test: 'test',
+  auth: 'auth',
   team: 'team',
+  member: 'mbr',
+  email: 'mail',
   endpoint: 'enp',
+  waitlist: 'wlt',
   submission: 'sub'
 } as const;
 
