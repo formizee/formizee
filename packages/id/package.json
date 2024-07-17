@@ -9,8 +9,8 @@
   },
   "devDependencies": {
     "@formizee/tsconfig": "workspace:*",
-    "@types/node": "20.14.10",
-    "vitest": "2.0.1"
+    "@types/node": "20.14.11",
+    "vitest": "2.0.3"
   },
   "dependencies": {
     "base-x": "5.0.0"

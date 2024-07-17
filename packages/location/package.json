@@ -4,12 +4,13 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "test": "vitest"
+    "test": "vitest",
+    "lint": "biome lint ."
   },
   "devDependencies": {
     "@formizee/tsconfig": "workspace:*",
-    "@types/node": "20.14.10",
-    "vitest": "2.0.1"
+    "@types/node": "20.14.11",
+    "vitest": "2.0.3"
   },
   "peerDependencies": {
     "@hono/node-server": "1.12.0",
