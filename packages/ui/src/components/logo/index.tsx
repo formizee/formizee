@@ -33,7 +33,8 @@ const Logo = React.forwardRef<HTMLHeadingElement, LogoProps>(
       <Comp
         className={cn(logoVariants({size, className}))}
         ref={ref}
-        {...props}>
+        {...props}
+      >
         Formizee.
       </Comp>
     );

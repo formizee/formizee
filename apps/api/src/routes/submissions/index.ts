@@ -1,10 +1,7 @@
-import {OpenAPIHono} from '@hono/zod-openapi';
-import type {Submission} from 'domain/models';
-import {handleValidationErrors} from '@/lib/openapi';
-import {createUUID, submissionResponse} from '@/lib/models';
 import {authentication, getAuthentication} from '@/lib/auth';
+import {createUUID, submissionResponse} from '@/lib/models';
+import {handleValidationErrors} from '@/lib/openapi';
 import {LoadEndpoint} from '@/useCases/endpoints';
-import {LoadTeam, LoadTeamMember} from '@/useCases/teams';
 import {
   DeleteSubmission,
   LoadAllSubmissions,
@@ -13,6 +10,9 @@ import {
   UpdateSubmissionIsRead,
   UpdateSubmissionIsSpam
 } from '@/useCases/submissions';
+import {LoadTeam, LoadTeamMember} from '@/useCases/teams';
+import {OpenAPIHono} from '@hono/zod-openapi';
+import type {Submission} from 'domain/models';
 import {
   deleteSubmissionRoute,
   getAllSubmissionsRoute,
@@ -178,7 +178,7 @@ submissions.openapi(postSubmissionRoute, async context => {
       }
 
       return context.json(submissionResponse(response.body), 201);
-    } catch (error) {
+    } catch (_error) {
       return context.json(
         {name: 'Bad request', description: 'Malformed Form request.'},
         400
@@ -198,7 +198,7 @@ submissions.openapi(postSubmissionRoute, async context => {
       }
 
       return context.json(submissionResponse(response.body), 201);
-    } catch (error) {
+    } catch (_error) {
       return context.json(
         {name: 'Bad request', description: 'Malformed JSON request.'},
         400

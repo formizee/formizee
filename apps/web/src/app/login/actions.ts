@@ -1,7 +1,7 @@
+import type {ActionState} from '@/types';
 import {Email} from 'domain/models/values';
 import {redirect} from 'next/navigation';
 import {z} from 'zod';
-import type {ActionState} from '@/types';
 
 const formSchema = z.object({
   email: z.string().email(),

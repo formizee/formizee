@@ -34,7 +34,8 @@ export function ClipboardButton(props: ClipboardButtonProps): JSX.Element {
           aria-label={props.tooltip}
           className={props.className}
           variant="outline"
-          size="icon">
+          size="icon"
+        >
           {onClipboard ? (
             <CheckIcon className="fill-amber-400" />
           ) : (

@@ -1,13 +1,13 @@
-import type {TeamsRepository as Repository} from 'domain/repositories';
+import {and, db, eq, linkedEmails, members, teams, users} from '@drizzle/db';
+import {type Member, Response, type Team} from 'domain/models';
 import type {
+  Email,
   Identifier,
   Name,
-  Email,
   TeamRoles,
   UserPermissions
 } from 'domain/models/values';
-import {type Member, Response, type Team} from 'domain/models';
-import {db, eq, and, users, teams, members, linkedEmails} from '@drizzle/db';
+import type {TeamsRepository as Repository} from 'domain/repositories';
 import {createMember, createTeam} from 'src/lib/models';
 
 export class TeamsRepository implements Repository {

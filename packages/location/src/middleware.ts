@@ -1,6 +1,6 @@
 import {getConnInfo} from '@hono/node-server/conninfo';
 import {lookup} from 'fast-geoip';
-import {Context} from 'hono';
+import type {Context} from 'hono';
 
 const LOOPBACK = '127.0.0.1';
 

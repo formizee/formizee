@@ -34,14 +34,14 @@ export const PostRegisterSchema = z
     const containsSpecialChar = (ch: string): boolean =>
       /[`!@#$%^&*()_\-+=[\]{};':"|,.<>/?~ ]/.test(ch);
 
-    let countOfUpperCase = 0,
-      countOfLowerCase = 0,
-      countOfNumbers = 0,
-      countOfSpecialChar = 0;
+    let countOfUpperCase = 0;
+    let countOfLowerCase = 0;
+    let countOfNumbers = 0;
+    let countOfSpecialChar = 0;
 
     for (let i = 0; i < password.length; i++) {
       const ch = password.charAt(i);
-      if (!isNaN(Number(ch))) countOfNumbers++;
+      if (!Number.isNaN(Number(ch))) countOfNumbers++;
       else if (containsUppercase(ch)) countOfUpperCase++;
       else if (containsLowercase(ch)) countOfLowerCase++;
       else if (containsSpecialChar(ch)) countOfSpecialChar++;

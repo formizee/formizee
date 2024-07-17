@@ -1,11 +1,11 @@
+import {resolve} from '@/lib/di';
+import type {Response} from 'domain/models';
 import {
+  type APIKeyExpirationDate,
   type APIKeyScope,
   Identifier,
-  Name,
-  type APIKeyExpirationDate
+  Name
 } from 'domain/models/values';
-import {type Response} from 'domain/models';
-import {resolve} from '@/lib/di';
 
 export class SaveAPIKey {
   private readonly _service = resolve('apiKeysRepository');

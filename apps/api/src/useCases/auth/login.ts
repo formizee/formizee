@@ -1,6 +1,6 @@
-import {type Response, type User} from 'domain/models';
-import {Email} from 'domain/models/values';
 import {resolve} from '@/lib/di';
+import type {Response, User} from 'domain/models';
+import {Email} from 'domain/models/values';
 
 export class LoginAuth {
   private readonly _service = resolve('authService');

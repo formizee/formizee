@@ -1,9 +1,7 @@
 'use client';
 
-/* eslint-disable-next-line import/named -- Currently useFormState and useFormStatus are experimental */
-import {useFormState, useFormStatus} from 'react-dom';
-import {useFormContext} from 'react-hook-form';
-import Link from 'next/link';
+import {useFormAction} from '@/hooks';
+import {Button, Input} from '@formizee/ui';
 import {
   Form,
   FormControl,
@@ -11,10 +9,12 @@ import {
   FormItem,
   FormMessage
 } from '@formizee/ui/form';
-import {Button, Input} from '@formizee/ui';
 import {LoadingIcon, MailIcon} from '@formizee/ui/icons';
-import {useFormAction} from '@/hooks';
-import {joinWaitlist, type JoinWaitlistFormValues} from '../../actions';
+import Link from 'next/link';
+/* eslint-disable-next-line import/named -- Currently useFormState and useFormStatus are experimental */
+import {useFormState, useFormStatus} from 'react-dom';
+import {useFormContext} from 'react-hook-form';
+import {type JoinWaitlistFormValues, joinWaitlist} from '../../actions';
 
 export function WaitlistForm(): JSX.Element {
   const [state, formAction] = useFormState(joinWaitlist, null);
@@ -65,17 +65,19 @@ function FormFields(): JSX.Element {
           <span>Join The Waitlist</span>
         </Button>
       </div>
-      <p className="mb-3 mt-3 text-start text-xs text-neutral-400">
+      <p className="mt-3 mb-3 text-start text-neutral-400 text-xs">
         {'By joining, you agree to our '}
         <Link
           className="whitespace-nowrap underline underline-offset-2 transition-colors hover:text-neutral-50"
-          href="/legal/terms-of-service">
+          href="/legal/terms-of-service"
+        >
           Terms of Service
         </Link>
         {' and '}{' '}
         <Link
           className="whitespace-nowrap underline underline-offset-2 transition-colors hover:text-neutral-50"
-          href="/legal/privacy-policy">
+          href="/legal/privacy-policy"
+        >
           Privacy Policy
         </Link>
         .

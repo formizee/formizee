@@ -1,4 +1,4 @@
-import {Identifier, type UserPermissions, type TeamRoles} from './values';
+import {Identifier, type TeamRoles, type UserPermissions} from './values';
 
 export class Member {
   private readonly _id: Identifier;

@@ -1,8 +1,8 @@
-import type {WaitlistService as Service} from 'domain/services';
-import type {Email} from 'domain/models/values';
-import {Response} from 'domain/models';
 import {db, eq, waitlist} from '@drizzle/db';
 import {joinAdminWaitlist, joinUserWaitlist} from '@emails/waitlist';
+import {Response} from 'domain/models';
+import type {Email} from 'domain/models/values';
+import type {WaitlistService as Service} from 'domain/services';
 import {MailService} from './mail';
 
 export class WaitlistService implements Service {

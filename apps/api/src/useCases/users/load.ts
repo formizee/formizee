@@ -1,6 +1,6 @@
-import {type User, type Response} from 'domain/models';
-import {Email, Identifier} from 'domain/models/values';
 import {resolve} from '@/lib/di';
+import type {Response, User} from 'domain/models';
+import {Email, Identifier} from 'domain/models/values';
 
 export class LoadUser {
   private readonly _service = resolve('usersRepository');

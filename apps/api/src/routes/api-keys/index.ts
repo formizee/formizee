@@ -1,8 +1,8 @@
-import {OpenAPIHono} from '@hono/zod-openapi';
-import {handleValidationErrors} from '@/lib/openapi';
-import {apiKeyResponse, createUUID} from '@/lib/models';
 import {authentication, getAuthentication} from '@/lib/auth';
+import {apiKeyResponse, createUUID} from '@/lib/models';
+import {handleValidationErrors} from '@/lib/openapi';
 import {DeleteAPIKey, LoadAllAPIKeys, SaveAPIKey} from '@/useCases/api-keys';
+import {OpenAPIHono} from '@hono/zod-openapi';
 import {deleteAPIKeyRoute, getAllAPIKeysRoute, postAPIKeyRoute} from './routes';
 
 export const apiKeys = new OpenAPIHono({

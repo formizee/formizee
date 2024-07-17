@@ -1,7 +1,7 @@
-import type {StorageService as Service} from 'domain/services';
-import {Response} from 'domain/models';
 import {S3Client} from '@aws-sdk/client-s3';
 import {Upload} from '@aws-sdk/lib-storage';
+import {Response} from 'domain/models';
+import type {StorageService as Service} from 'domain/services';
 
 export class StorageService implements Service {
   private readonly client: S3Client;

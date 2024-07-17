@@ -1,13 +1,13 @@
-import type {APIKeyScope} from 'domain/models/values';
-import type {Context, MiddlewareHandler} from 'hono';
-import {HTTPException} from 'hono/http-exception';
-import {getCookie} from 'hono/cookie';
-import {eq} from 'drizzle-orm';
-import {apiKeys} from '@drizzle/schemas';
 import {db} from '@drizzle/db';
-import type {Session} from './types';
-import {decrypt} from './jwt';
+import {apiKeys} from '@drizzle/schemas';
+import type {APIKeyScope} from 'domain/models/values';
+import {eq} from 'drizzle-orm';
+import type {Context, MiddlewareHandler} from 'hono';
+import {getCookie} from 'hono/cookie';
+import {HTTPException} from 'hono/http-exception';
 import {getAPIKeyHash} from './api-keys';
+import {decrypt} from './jwt';
+import type {Session} from './types';
 
 type Method = 'GET' | 'POST' | 'PATCH' | 'DELETE';
 

@@ -1,12 +1,12 @@
 import type {OpenAPIHono} from '@hono/zod-openapi';
-import {secureHeaders} from 'hono/secure-headers';
 import {cors} from 'hono/cors';
-import {rateLimiter} from './rate-limiter';
-import {bodyLimit} from './body-limit';
-import {timeout} from './timeout';
-import {logger} from './logger';
 import {prettyJSON} from 'hono/pretty-json';
+import {secureHeaders} from 'hono/secure-headers';
 import {trimTrailingSlash} from 'hono/trailing-slash';
+import {bodyLimit} from './body-limit';
+import {logger} from './logger';
+import {rateLimiter} from './rate-limiter';
+import {timeout} from './timeout';
 
 export const security = (router: OpenAPIHono): void => {
   if (!process.env.WEB_URL) {

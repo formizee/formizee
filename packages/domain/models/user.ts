@@ -1,4 +1,4 @@
-import {Identifier, Email, Name, type LinkedEmail} from './values';
+import {Email, Identifier, type LinkedEmail, Name} from './values';
 
 export class User {
   private readonly _id: Identifier;

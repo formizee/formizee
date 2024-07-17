@@ -1,6 +1,6 @@
-import type {User, Response} from 'domain/models';
-import {Identifier, Name} from 'domain/models/values';
 import {resolve} from '@/lib/di';
+import type {Response, User} from 'domain/models';
+import {Identifier, Name} from 'domain/models/values';
 
 export class UpdateUserName {
   private readonly _repository = resolve('usersRepository');

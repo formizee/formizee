@@ -1,23 +1,23 @@
-import type {User} from 'domain/models';
-import {OpenAPIHono} from '@hono/zod-openapi';
-import {userResponse} from '@/lib/models';
 import {authentication, getAuthentication} from '@/lib/auth';
+import {userResponse} from '@/lib/models';
 import {handleValidationErrors} from '@/lib/openapi';
 import {
+  DeleteUser,
   DeleteUserLinkedEmail,
+  LoadUser,
   SaveUserLinkedEmail,
-  UpdateUserPassword,
   UpdateUserEmail,
   UpdateUserName,
-  DeleteUser,
-  LoadUser
+  UpdateUserPassword
 } from '@/useCases/users';
+import {OpenAPIHono} from '@hono/zod-openapi';
+import type {User} from 'domain/models';
 import {
   deleteProfileLinkedEmailsRoute,
-  postProfileLinkedEmailsRoute,
   deleteProfileRoute,
+  getProfileRoute,
   patchProfileRoute,
-  getProfileRoute
+  postProfileLinkedEmailsRoute
 } from './routes';
 
 export const profile = new OpenAPIHono({

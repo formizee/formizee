@@ -1,6 +1,6 @@
-import {type Response} from 'domain/models';
-import {Email, Identifier} from 'domain/models/values';
 import {resolve} from '@/lib/di';
+import type {Response} from 'domain/models';
+import {Email, Identifier} from 'domain/models/values';
 
 export class SendLinkedEmailVerificationAuth {
   private readonly _service = resolve('authService');

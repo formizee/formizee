@@ -1,6 +1,6 @@
+import type {Config} from 'tailwindcss';
 import defaultTheme from 'tailwindcss/defaultTheme';
 import plugin from 'tailwindcss/plugin';
-import type {Config} from 'tailwindcss';
 
 // We want each package to be responsible for its own content.
 const config: Omit<Config, 'content'> = {

@@ -1,5 +1,5 @@
-import {createRoute, z} from '@hono/zod-openapi';
 import {APIKeySchema, ErrorSchema} from '@/schemas';
+import {createRoute, z} from '@hono/zod-openapi';
 import {DeleteAPIKeySchema, PostAPIKeySchema} from './schemas';
 
 export const getAllAPIKeysRoute = createRoute({

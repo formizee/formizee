@@ -1,4 +1,4 @@
-import {Identifier, type APIKeyScope} from './values';
+import {type APIKeyScope, Identifier} from './values';
 
 export class APIKey {
   private readonly _id: Identifier;

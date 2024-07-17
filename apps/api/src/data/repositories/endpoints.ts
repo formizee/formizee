@@ -1,7 +1,7 @@
+import {db, endpoints, eq, teams} from '@drizzle/db';
+import {type Endpoint, Response} from 'domain/models';
+import type {Color, Email, Icon, Identifier, Name} from 'domain/models/values';
 import type {EndpointsRepository as Repository} from 'domain/repositories';
-import type {Name, Identifier, Email, Color, Icon} from 'domain/models/values';
-import {Response, type Endpoint} from 'domain/models';
-import {eq, db, endpoints, teams} from '@drizzle/db';
 import {createEndpoint} from 'src/lib/models';
 
 export class EndpointsRepository implements Repository {

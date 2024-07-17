@@ -1,6 +1,6 @@
-import {Identifier, Name, type UserPermissions} from 'domain/models/values';
-import type {Member, Response} from 'domain/models';
 import {resolve} from '@/lib/di';
+import type {Member, Response} from 'domain/models';
+import {Identifier, Name, type UserPermissions} from 'domain/models/values';
 
 export class UpdateTeamMemberPermissions {
   private readonly _repository = resolve('teamsRepository');

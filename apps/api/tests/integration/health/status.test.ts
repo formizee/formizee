@@ -1,5 +1,5 @@
-import {it, expect, describe} from 'vitest';
 import {health} from '@/routes/health';
+import {describe, expect, it} from 'vitest';
 
 describe('Health /status integration', () => {
   it('Should return 200', async () => {

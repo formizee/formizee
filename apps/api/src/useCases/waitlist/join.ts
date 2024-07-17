@@ -1,6 +1,6 @@
-import {Email} from 'domain/models/values';
-import {type Response} from 'domain/models';
 import {resolve} from '@/lib/di';
+import type {Response} from 'domain/models';
+import {Email} from 'domain/models/values';
 
 export class JoinWaitlist {
   private readonly _service = resolve('waitlistService');

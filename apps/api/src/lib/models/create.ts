@@ -1,14 +1,14 @@
-import shortUUID from 'short-uuid';
 import {APIKey, Endpoint, Member, Submission, Team, User} from 'domain/models';
 import type {
-  TeamPlan,
-  LinkedEmail,
-  UserPermissions,
-  TeamRoles,
+  APIKeyScope,
   Color,
   Icon,
-  APIKeyScope
+  LinkedEmail,
+  TeamPlan,
+  TeamRoles,
+  UserPermissions
 } from 'domain/models/values';
+import shortUUID from 'short-uuid';
 
 export const createUser = (data: {
   id: string;

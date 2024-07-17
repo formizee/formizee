@@ -1,76 +1,88 @@
+import {APIKeyScopeEnum, ColorEnum, IconEnum} from 'domain/models/values';
+import {relations, sql} from 'drizzle-orm';
 import {
   boolean,
-  text,
-  timestamp,
-  uuid,
+  index,
   integer,
+  jsonb,
   pgEnum,
   pgTable,
-  jsonb,
+  text,
+  timestamp,
   uniqueIndex,
-  index
+  uuid
 } from 'drizzle-orm/pg-core';
-import { relations, sql } from 'drizzle-orm';
-import { ColorEnum, IconEnum, APIKeyScopeEnum } from 'domain/models/values';
-import "@/lib/enviroment";
+import '@/lib/enviroment';
 
 const getWebUrl = (): string => {
-  const url = process.env.WEB_URL; 
-  if(!url) throw new Error("WEB_URL enviroment variable is not defined.");
+  const url = process.env.WEB_URL;
+  if (!url) throw new Error('WEB_URL enviroment variable is not defined.');
   return url;
-}
+};
 
 export const icons = pgEnum('icons', IconEnum);
 export const colors = pgEnum('colors', ColorEnum);
 export const teamRoles = pgEnum('team_roles', ['owner', 'member']);
 export const apiKeyScopes = pgEnum('api_key_scopes', APIKeyScopeEnum);
-export const userPermissions = pgEnum('user_permissions', ['read', 'edit', 'create', 'all']);
-export const billingPlans = pgEnum('billing_plans', ['hobby', 'professional', 'teams', 'custom']);
+export const userPermissions = pgEnum('user_permissions', [
+  'read',
+  'edit',
+  'create',
+  'all'
+]);
+export const billingPlans = pgEnum('billing_plans', [
+  'hobby',
+  'professional',
+  'teams',
+  'custom'
+]);
 
-export const teams = pgTable('teams', {
-  id: uuid('id').defaultRandom().primaryKey(),
+export const teams = pgTable(
+  'teams',
+  {
+    id: uuid('id').defaultRandom().primaryKey(),
 
-  name: text('name').notNull().unique(),
+    name: text('name').notNull().unique(),
 
-  plan: billingPlans('plan').notNull().default('hobby'),
+    plan: billingPlans('plan').notNull().default('hobby'),
 
-  availableEmails: text('available_emails')
-    .array()
-    .notNull()
-    .default(sql`ARRAY[]::text[]`),
+    availableEmails: text('available_emails')
+      .array()
+      .notNull()
+      .default(sql`ARRAY[]::text[]`),
 
-  createdBy: uuid('created_by')
-    .notNull()
-    .references(() => users.id, { onDelete: 'cascade' }),
+    createdBy: uuid('created_by')
+      .notNull()
+      .references(() => users.id, {onDelete: 'cascade'}),
 
-  createdAt: timestamp('created_at').notNull().defaultNow(),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
 
-  updatedAt: timestamp('updated_at')
-    .notNull()
-    .defaultNow()
-    .$onUpdate(() => new Date())
-}, table => {
-  return {
-    nameIndex: uniqueIndex("name_index").on(table.name)
+    updatedAt: timestamp('updated_at')
+      .notNull()
+      .defaultNow()
+      .$onUpdate(() => new Date())
+  },
+  table => {
+    return {
+      nameIndex: uniqueIndex('name_index').on(table.name)
+    };
   }
-});
+);
 
 export const members = pgTable('members', {
   id: uuid('id').defaultRandom().primaryKey(),
 
   user: uuid('user_id')
     .notNull()
-    .references(() => users.id, { onDelete: 'cascade' }),
+    .references(() => users.id, {onDelete: 'cascade'}),
 
   team: uuid('team_id')
     .notNull()
-    .references(() => teams.id, { onDelete: 'cascade' }),
+    .references(() => teams.id, {onDelete: 'cascade'}),
 
   role: teamRoles('role').notNull().default('member'),
 
-  permissions: userPermissions('permissions')
-    .notNull()
-    .default('read'),
+  permissions: userPermissions('permissions').notNull().default('read'),
 
   createdAt: timestamp('created_at').notNull().defaultNow(),
 
@@ -78,9 +90,9 @@ export const members = pgTable('members', {
     .notNull()
     .defaultNow()
     .$onUpdate(() => new Date())
-})
+});
 
-export const membersRelations = relations(members, ({ one }) => ({
+export const membersRelations = relations(members, ({one}) => ({
   user: one(users, {
     fields: [members.user],
     references: [users.id]
@@ -89,41 +101,45 @@ export const membersRelations = relations(members, ({ one }) => ({
     fields: [members.team],
     references: [teams.id]
   })
-}))
+}));
 
-export const users = pgTable('users', {
-  id: uuid('id').defaultRandom().primaryKey(),
+export const users = pgTable(
+  'users',
+  {
+    id: uuid('id').defaultRandom().primaryKey(),
 
-  name: text('name').notNull(),
+    name: text('name').notNull(),
 
-  password: text('password').notNull(),
+    password: text('password').notNull(),
 
-  email: text('email').notNull().unique(),
+    email: text('email').notNull().unique(),
 
-  isVerified: boolean('is_verified').notNull().default(false),
+    isVerified: boolean('is_verified').notNull().default(false),
 
-  lastAccess: timestamp('last_access').notNull().defaultNow(),
+    lastAccess: timestamp('last_access').notNull().defaultNow(),
 
-  createdAt: timestamp('created_at').notNull().defaultNow(),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
 
-  updatedAt: timestamp('updated_at')
-    .notNull()
-    .defaultNow()
-    .$onUpdate(() => new Date())
-}, table => {
-  return {
-    emailIndex: uniqueIndex("email_index").on(table.email)
+    updatedAt: timestamp('updated_at')
+      .notNull()
+      .defaultNow()
+      .$onUpdate(() => new Date())
+  },
+  table => {
+    return {
+      emailIndex: uniqueIndex('email_index').on(table.email)
+    };
   }
-});
+);
 
-export const usersRelations = relations(users, ({ many }) => ({
+export const usersRelations = relations(users, ({many}) => ({
   linkedEmails: many(linkedEmails)
-}))
+}));
 
 export const linkedEmails = pgTable('emails', {
   id: uuid('id').defaultRandom().primaryKey(),
 
-  user: uuid('user_id').references(() => users.id, { onDelete: 'cascade' }),
+  user: uuid('user_id').references(() => users.id, {onDelete: 'cascade'}),
 
   email: text('email').notNull(),
 
@@ -135,14 +151,14 @@ export const linkedEmails = pgTable('emails', {
     .notNull()
     .defaultNow()
     .$onUpdate(() => new Date())
-})
+});
 
-export const linkedEmailsRelations = relations(linkedEmails, ({ one }) => ({
+export const linkedEmailsRelations = relations(linkedEmails, ({one}) => ({
   user: one(users, {
     fields: [linkedEmails.user],
     references: [users.id]
-  }),
-}))
+  })
+}));
 
 export const endpoints = pgTable('endpoints', {
   id: uuid('id').defaultRandom().primaryKey(),
@@ -151,7 +167,7 @@ export const endpoints = pgTable('endpoints', {
 
   team: text('team')
     .notNull()
-    .references(() => teams.name, { onDelete: 'set null' }),
+    .references(() => teams.name, {onDelete: 'set null'}),
 
   isEnabled: boolean('is_enabled').notNull().default(true),
 
@@ -180,7 +196,7 @@ export const submissions = pgTable('submissions', {
 
   endpoint: uuid('endpoint_id')
     .notNull()
-    .references(() => endpoints.id, { onDelete: 'set null' }),
+    .references(() => endpoints.id, {onDelete: 'set null'}),
 
   data: jsonb('data').notNull().$type<object>(),
 
@@ -196,7 +212,7 @@ export const authTokens = pgTable('auth_tokens', {
 
   user: uuid('user_id')
     .notNull()
-    .references(() => users.id, { onDelete: 'cascade' }),
+    .references(() => users.id, {onDelete: 'cascade'}),
 
   email: text('email').notNull(),
 
@@ -209,32 +225,35 @@ export const authTokens = pgTable('auth_tokens', {
     .$default(() => new Date(Date.now() + 60 * 60 * 1000))
 });
 
-export const apiKeys = pgTable('api_keys', {
-  id: uuid('id').defaultRandom().primaryKey(),
+export const apiKeys = pgTable(
+  'api_keys',
+  {
+    id: uuid('id').defaultRandom().primaryKey(),
 
-  user: uuid('user_id')
-    .notNull()
-    .references(() => users.id, { onDelete: 'cascade' }),
+    user: uuid('user_id')
+      .notNull()
+      .references(() => users.id, {onDelete: 'cascade'}),
 
-  team: uuid('team_id')
-    .references(() => teams.id, { onDelete: 'cascade' }),
+    team: uuid('team_id').references(() => teams.id, {onDelete: 'cascade'}),
 
-  scope: apiKeyScopes('scope').notNull().default('full-access'),
+    scope: apiKeyScopes('scope').notNull().default('full-access'),
 
-  key: text("key").notNull(),
+    key: text('key').notNull(),
 
-  lastAccess: timestamp('last_access').notNull().defaultNow(),
+    lastAccess: timestamp('last_access').notNull().defaultNow(),
 
-  createdAt: timestamp('created_at').notNull().defaultNow(),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
 
-  expiresAt: timestamp('expires_at')
-    .notNull()
-    .$default(() => new Date(Date.now() + 24 * 60 * 60 * 1000))
-}, table => {
-  return {
-    keyIndex: index("key_index").on(table.key)
+    expiresAt: timestamp('expires_at')
+      .notNull()
+      .$default(() => new Date(Date.now() + 24 * 60 * 60 * 1000))
+  },
+  table => {
+    return {
+      keyIndex: index('key_index').on(table.key)
+    };
   }
-})
+);
 
 export const waitlist = pgTable('waitlist', {
   id: uuid('id').defaultRandom().primaryKey(),

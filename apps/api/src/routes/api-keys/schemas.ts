@@ -1,6 +1,6 @@
-import {APIKeyExpirationDateEnum} from 'domain/models/values';
-import {z} from '@hono/zod-openapi';
 import {UuidSchema} from '@/schemas';
+import {z} from '@hono/zod-openapi';
+import {APIKeyExpirationDateEnum} from 'domain/models/values';
 
 export const PostAPIKeySchema = z.object({
   expirationDate: z.enum(APIKeyExpirationDateEnum),

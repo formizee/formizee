@@ -1,7 +1,7 @@
-import {deleteCookie, getCookie, setCookie} from 'hono/cookie';
 import type {Context} from 'hono';
+import {deleteCookie, getCookie, setCookie} from 'hono/cookie';
+import {decrypt, encrypt} from './jwt';
 import type {Verification} from './types';
-import {encrypt, decrypt} from './jwt';
 
 export async function createVerification(
   context: Context,

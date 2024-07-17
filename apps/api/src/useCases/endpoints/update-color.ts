@@ -1,6 +1,6 @@
+import {resolve} from '@/lib/di';
 import type {Endpoint, Response} from 'domain/models';
 import {type Color, Identifier} from 'domain/models/values';
-import {resolve} from '@/lib/di';
 
 export class UpdateEndpointColor {
   private readonly service = resolve('endpointsRepository');

@@ -1,5 +1,5 @@
-import {it, expect, describe} from 'vitest';
 import {waitlist} from '@/routes/waitlist';
+import {describe, expect, it} from 'vitest';
 
 describe('Waitlist /join integration', () => {
   it('Should return 200', async () => {

@@ -1,8 +1,8 @@
-import {performance} from 'perf_hooks';
+import {performance} from 'node:perf_hooks';
+import {version} from '@/../package.json';
+import {loadedEnviroments} from '@/lib/enviroment';
 import {serve} from '@hono/node-server';
 import type {OpenAPIHono} from '@hono/zod-openapi';
-import {loadedEnviroments} from '@/lib/enviroment';
-import {version} from '@/../package.json';
 
 export const server = (app: OpenAPIHono): void => {
   const startTime = performance.now();
@@ -24,7 +24,7 @@ export const server = (app: OpenAPIHono): void => {
   console.info(`\x1b[1m ▲ Formizee API ${version}\x1b[0m`);
   console.info(` - Local:        \x1b[33m\x1b[4m${BASE_URL.href}\x1b[0m`);
   console.info(` - Enviroments:  ${enviroments}\n`);
-  console.info(`\x1b[32m ✓ \x1b[0m Starting...`);
+  console.info('\x1b[32m ✓ \x1b[0m Starting...');
 
   serve({
     fetch: app.fetch,

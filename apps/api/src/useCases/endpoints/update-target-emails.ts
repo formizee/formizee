@@ -1,6 +1,6 @@
-import {type Endpoint, type Response} from 'domain/models';
-import {Email, Identifier} from 'domain/models/values';
 import {resolve} from '@/lib/di';
+import type {Endpoint, Response} from 'domain/models';
+import {Email, Identifier} from 'domain/models/values';
 
 export class UpdateEndpointTargetEmails {
   private readonly _repository = resolve('endpointsRepository');

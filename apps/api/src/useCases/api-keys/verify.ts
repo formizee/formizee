@@ -1,5 +1,5 @@
-import {type Response, type APIKey} from 'domain/models';
 import {resolve} from '@/lib/di';
+import type {APIKey, Response} from 'domain/models';
 
 export class VerifyAPIKey {
   private readonly _service = resolve('apiKeysRepository');

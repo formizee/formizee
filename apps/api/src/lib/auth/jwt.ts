@@ -1,5 +1,5 @@
 import {type JWTPayload, SignJWT, jwtVerify} from 'jose';
-import type {Payload, Data} from './types';
+import type {Data, Payload} from './types';
 
 export async function encrypt(payload: Payload<Data>): Promise<string> {
   const encodedKey = new TextEncoder().encode(process.env.JWT_SECRET);
@@ -21,7 +21,7 @@ export async function decrypt(
       algorithms: ['HS256']
     });
     return payload;
-  } catch (error) {
+  } catch (_error) {
     console.error('Failed on decrypt JWT data:', data);
     return null;
   }

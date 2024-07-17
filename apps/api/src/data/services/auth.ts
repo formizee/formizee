@@ -1,22 +1,22 @@
-import {randomInt} from 'crypto';
-import type {Identifier, Email, Name, Password} from 'domain/models/values';
-import type {AuthService as Service} from 'domain/services';
-import {Response, type User} from 'domain/models';
-import bcryptjs from 'bcryptjs';
-import {
-  db,
-  eq,
-  and,
-  users,
-  authTokens,
-  linkedEmails,
-  teams,
-  members
-} from '@drizzle/db';
-import {verifyEmail, verifyLinkedEmail} from '@emails/auth';
-import {createUser} from 'src/lib/models';
+import {randomInt} from 'node:crypto';
 import {decrypt, encrypt} from '@/lib/auth/jwt';
 import type {LinkedEmailToken} from '@/lib/auth/types';
+import {
+  and,
+  authTokens,
+  db,
+  eq,
+  linkedEmails,
+  members,
+  teams,
+  users
+} from '@drizzle/db';
+import {verifyEmail, verifyLinkedEmail} from '@emails/auth';
+import bcryptjs from 'bcryptjs';
+import {Response, type User} from 'domain/models';
+import type {Email, Identifier, Name, Password} from 'domain/models/values';
+import type {AuthService as Service} from 'domain/services';
+import {createUser} from 'src/lib/models';
 import {MailService} from './mail';
 
 export class AuthService implements Service {

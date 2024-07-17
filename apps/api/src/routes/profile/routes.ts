@@ -1,10 +1,10 @@
-import {createRoute, z} from '@hono/zod-openapi';
 import {ErrorSchema, UserSchema} from '@/schemas';
+import {createRoute, z} from '@hono/zod-openapi';
 import {
+  DeleteLinkedEmailsSchema,
   DeleteProfileSchema,
   PatchProfileSchema,
-  PostLinkedEmailsSchema,
-  DeleteLinkedEmailsSchema
+  PostLinkedEmailsSchema
 } from './schemas';
 
 export const getProfileRoute = createRoute({

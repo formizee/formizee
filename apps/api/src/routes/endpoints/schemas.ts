@@ -1,6 +1,6 @@
-import {ColorEnum, IconEnum} from 'domain/models/values';
-import {z} from '@hono/zod-openapi';
 import {UuidSchema} from '@/schemas';
+import {z} from '@hono/zod-openapi';
+import {ColorEnum, IconEnum} from 'domain/models/values';
 
 const nameSchema = z
   .string()

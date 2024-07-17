@@ -1,7 +1,3 @@
-import {OpenAPIHono} from '@hono/zod-openapi';
-import {handleValidationErrors} from '@/lib/openapi';
-import {rateLimiter} from '@/lib/middlewares';
-import {userResponse} from '@/lib/models';
 import {
   authentication,
   createSession,
@@ -10,14 +6,18 @@ import {
   deleteVerification,
   verifyVerification
 } from '@/lib/auth';
+import {rateLimiter} from '@/lib/middlewares';
+import {userResponse} from '@/lib/models';
+import {handleValidationErrors} from '@/lib/openapi';
 import {
   LoginAuth,
   RegisterAuth,
-  VerifyLinkedEmail,
   SendLinkedEmailVerificationAuth,
   SendVerificationAuth,
-  VerifyAuth
+  VerifyAuth,
+  VerifyLinkedEmail
 } from '@/useCases/auth';
+import {OpenAPIHono} from '@hono/zod-openapi';
 import {
   postLinkedEmailsSendVerificationRoute,
   postLinkedEmailsVerifyRoute,

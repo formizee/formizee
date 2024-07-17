@@ -1,8 +1,6 @@
-import {OpenAPIHono} from '@hono/zod-openapi';
-import type {Endpoint} from 'domain/models';
-import {handleValidationErrors} from '@/lib/openapi';
-import {createUUID, endpointResponse} from '@/lib/models';
 import {authentication, getAuthentication} from '@/lib/auth';
+import {createUUID, endpointResponse} from '@/lib/models';
+import {handleValidationErrors} from '@/lib/openapi';
 import {
   DeleteEndpoint,
   LoadAllEndpoints,
@@ -17,6 +15,8 @@ import {
   UpdateEndpointTargetEmails
 } from '@/useCases/endpoints';
 import {LoadTeam, LoadTeamMember} from '@/useCases/teams';
+import {OpenAPIHono} from '@hono/zod-openapi';
+import type {Endpoint} from 'domain/models';
 import {
   deleteEndpointRoute,
   getAllEndpointsRoute,

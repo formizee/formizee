@@ -1,5 +1,5 @@
-import {type Response, type Submission} from '../models';
-import {type Identifier} from '../models/values';
+import type {Response, Submission} from '../models';
+import type {Identifier} from '../models/values';
 
 export interface SubmissionsRepository {
   loadAll: (endpointId: Identifier) => Promise<Response<Submission[]>>;

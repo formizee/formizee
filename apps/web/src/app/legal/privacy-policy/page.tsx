@@ -3,10 +3,10 @@ import Link from 'next/link';
 function PrivacyPolicy(): JSX.Element {
   return (
     <div className="flex flex-col gap-y-4 text-neutral-400">
-      <h1 className="bg-gradient-to-b from-white to-neutral-400 bg-clip-text py-2 text-4xl font-medium text-transparent sm:text-5xl">
+      <h1 className="bg-gradient-to-b from-white to-neutral-400 bg-clip-text py-2 font-medium text-4xl text-transparent sm:text-5xl">
         Privacy Policy
       </h1>
-      <h2 className="mt-8 text-2xl font-semibold text-neutral-50">
+      <h2 className="mt-8 font-semibold text-2xl text-neutral-50">
         1. Introduction
       </h2>
       <p>
@@ -26,7 +26,8 @@ function PrivacyPolicy(): JSX.Element {
         We operate the website{' '}
         <Link
           className="underline underline-offset-2"
-          href="https://www.formizee.com">
+          href="https://www.formizee.com"
+        >
           https://www.formizee.com
         </Link>{' '}
         (the &quot;<strong className="font-medium text-neutral-50">Site</strong>
@@ -48,14 +49,15 @@ function PrivacyPolicy(): JSX.Element {
         may not use the Service, but please let us know by emailing at{' '}
         <Link
           className="underline underline-offset-2"
-          href="mailto:support@formizee.com">
+          href="mailto:support@formizee.com"
+        >
           support@formizee.com
         </Link>{' '}
         so we can try to find a solution. These Terms apply to all visitors,
         users and others who wish to access or use Service.
       </p>
       <p>Thank you for being responsible.</p>
-      <h2 className="mt-8 text-2xl font-semibold text-neutral-50">
+      <h2 className="mt-8 font-semibold text-2xl text-neutral-50">
         2. What Information Do We Collect?
       </h2>
       <strong className="font-medium text-neutral-50">
@@ -97,7 +99,8 @@ function PrivacyPolicy(): JSX.Element {
         data, visit his{' '}
         <Link
           className="underline underline-offset-2"
-          href="https://stripe.com/us/privacy">
+          href="https://stripe.com/us/privacy"
+        >
           Privacy Policy
         </Link>
         .
@@ -157,7 +160,7 @@ function PrivacyPolicy(): JSX.Element {
           (sometimes called &quot;crash dumps&quot;), and hardware settings).
         </p>
       </ul>
-      <h2 className="mt-8 text-2xl font-semibold text-neutral-50">
+      <h2 className="mt-8 font-semibold text-2xl text-neutral-50">
         3. How Do We Process Your Information?
       </h2>
       <strong className="font-medium text-neutral-50">
@@ -188,7 +191,7 @@ function PrivacyPolicy(): JSX.Element {
           individual&rsquo;s vital interest, such as to prevent harm.
         </li>
       </ul>
-      <h2 className="mt-8 text-2xl font-semibold text-neutral-50">
+      <h2 className="mt-8 font-semibold text-2xl text-neutral-50">
         4. What Legal Bases Do We Rely On To Process Your Information?
       </h2>
       <p>
@@ -298,7 +301,7 @@ function PrivacyPolicy(): JSX.Element {
           regulations
         </li>
       </ul>
-      <h2 className="mt-8 text-2xl font-semibold text-neutral-50">
+      <h2 className="mt-8 font-semibold text-2xl text-neutral-50">
         5. When And With Whom Do We Share Your Personal Information?
       </h2>
       <p>
@@ -316,8 +319,9 @@ function PrivacyPolicy(): JSX.Element {
         </li>
       </ul>
       <h2
-        className="mt-8 text-2xl font-semibold text-neutral-50"
-        id="sociallogins">
+        className="mt-8 font-semibold text-2xl text-neutral-50"
+        id="sociallogins"
+      >
         6. How Do We Handle Your Social Logins?
       </h2>
       <p>
@@ -340,7 +344,7 @@ function PrivacyPolicy(): JSX.Element {
         personal information, and how you can set your privacy preferences on
         their sites and apps.
       </p>
-      <h2 className="mt-8 text-2xl font-semibold text-neutral-50">
+      <h2 className="mt-8 font-semibold text-2xl text-neutral-50">
         7. Is Your Information Transferred Internationally?
       </h2>
       <p>
@@ -375,7 +379,7 @@ function PrivacyPolicy(): JSX.Element {
         implemented similar appropriate safeguards with our third-party service
         providers and partners and further details can be provided upon request.
       </p>
-      <h2 className="mt-8 text-2xl font-semibold text-neutral-50">
+      <h2 className="mt-8 font-semibold text-2xl text-neutral-50">
         8. How Long Do We Keep Your Information?
       </h2>
       <p>
@@ -394,7 +398,7 @@ function PrivacyPolicy(): JSX.Element {
         securely store your personal information and isolate it from any further
         processing until deletion is possible.
       </p>
-      <h2 className="mt-8 text-2xl font-semibold text-neutral-50">
+      <h2 className="mt-8 font-semibold text-2xl text-neutral-50">
         9. How Do We Keep Your Information Safe?
       </h2>
       <p>
@@ -416,7 +420,7 @@ function PrivacyPolicy(): JSX.Element {
         own risk. You should only access the Services within a secure
         environment.
       </p>
-      <h2 className="mt-8 text-2xl font-semibold text-neutral-50">
+      <h2 className="mt-8 font-semibold text-2xl text-neutral-50">
         10. Do We Collect Information From Minors?
       </h2>
       <p>
@@ -432,7 +436,7 @@ function PrivacyPolicy(): JSX.Element {
         you become aware of any data we may have collected from children under
         age 18, please contact us at support@formizee.com.
       </p>
-      <h2 className="mt-8 text-2xl font-semibold text-neutral-50">
+      <h2 className="mt-8 font-semibold text-2xl text-neutral-50">
         11. What Are Your Privacy Rights?
       </h2>
       <p>
@@ -455,13 +459,15 @@ function PrivacyPolicy(): JSX.Element {
         complain to your{' '}
         <Link
           className="underline underline-offset-2"
-          href="https://ec.europa.eu/justice/data-protection/bodies/authorities/index_en.htm">
+          href="https://ec.europa.eu/justice/data-protection/bodies/authorities/index_en.htm"
+        >
           Member State data protection authority
         </Link>{' '}
         or&nbsp;
         <Link
           className="underline underline-offset-2"
-          href="https://ico.org.uk/make-a-complaint/data-protection-complaints/data-protection-complaints/">
+          href="https://ico.org.uk/make-a-complaint/data-protection-complaints/data-protection-complaints/"
+        >
           UK data protection authority
         </Link>
         .
@@ -470,7 +476,8 @@ function PrivacyPolicy(): JSX.Element {
         If you are located in Switzerland, you may contact the{' '}
         <Link
           className="underline underline-offset-2"
-          href="https://www.edoeb.admin.ch/edoeb/en/home.html">
+          href="https://www.edoeb.admin.ch/edoeb/en/home.html"
+        >
           Federal Data Protection and Information Commissioner
         </Link>
         .
@@ -510,7 +517,7 @@ function PrivacyPolicy(): JSX.Element {
         If you have questions or comments about your privacy rights, you may
         email us at support@formizee.com.
       </p>
-      <h2 className="mt-8 text-2xl font-semibold text-neutral-50">
+      <h2 className="mt-8 font-semibold text-2xl text-neutral-50">
         12. Controls For Do-Not-Track Features
       </h2>
       <p>
@@ -530,7 +537,7 @@ function PrivacyPolicy(): JSX.Element {
         future, we will inform you about that practice in a revised version of
         this privacy notice.
       </p>
-      <h2 className="mt-8 text-2xl font-semibold text-neutral-50">
+      <h2 className="mt-8 font-semibold text-2xl text-neutral-50">
         13. Do United States Residents Have Specific Privacy Rights?
       </h2>
       <strong className="font-medium text-neutral-50">
@@ -727,7 +734,8 @@ function PrivacyPolicy(): JSX.Element {
           We will honor your opt-out preferences if you enact the{' '}
           <Link
             className="underline underline-offset-2"
-            href="https://globalprivacycontrol.org/">
+            href="https://globalprivacycontrol.org/"
+          >
             Global Privacy Control
           </Link>{' '}
           opt-out signal on your browser.
@@ -882,12 +890,13 @@ function PrivacyPolicy(): JSX.Element {
         you may contact the{' '}
         <Link
           className="underline underline-offset-2"
-          href="https://www.oag.state.va.us/consumer-protection/index.php/file-a-complaint">
+          href="https://www.oag.state.va.us/consumer-protection/index.php/file-a-complaint"
+        >
           Attorney General to submit a complaint
         </Link>
         .
       </p>
-      <h2 className="mt-8 text-2xl font-semibold text-neutral-50">
+      <h2 className="mt-8 font-semibold text-2xl text-neutral-50">
         14. Do Other Regions Have Specific Privacy Rights?
       </h2>
       <strong className="font-medium text-neutral-50">
@@ -921,7 +930,8 @@ function PrivacyPolicy(): JSX.Element {
         Australian Privacy Principles to the{' '}
         <Link
           className="underline underline-offset-2"
-          href="https://www.oaic.gov.au/privacy/privacy-complaints/lodge-a-privacy-complaint-with-us">
+          href="https://www.oaic.gov.au/privacy/privacy-complaints/lodge-a-privacy-complaint-with-us"
+        >
           Office of the Australian Information Commissioner
         </Link>
         .
@@ -930,7 +940,8 @@ function PrivacyPolicy(): JSX.Element {
         And a breach of New Zealand&apos;s Privacy Principles to the{' '}
         <Link
           className="underline underline-offset-2"
-          href="https://www.privacy.org.nz/your-rights/making-a-complaint/">
+          href="https://www.privacy.org.nz/your-rights/making-a-complaint/"
+        >
           Office of New Zealand Privacy Commissioner
         </Link>
         .
@@ -945,26 +956,30 @@ function PrivacyPolicy(): JSX.Element {
       </p>
       <Link
         className="underline underline-offset-2"
-        href="https://inforegulator.org.za/">
+        href="https://inforegulator.org.za/"
+      >
         The Information Regulator (South Africa)
       </Link>
       <Link
         className="underline underline-offset-2"
-        href="mailto:enquiries@inforegulator.org.za">
+        href="mailto:enquiries@inforegulator.org.za"
+      >
         enquiries@inforegulator.org.za
       </Link>
       <p>Complaints (complete POPIA/PAIA form 5):</p>
       <Link
         className="underline underline-offset-2"
-        href="mailto:PAIAComplaints@inforegulator.org.za">
+        href="mailto:PAIAComplaints@inforegulator.org.za"
+      >
         PAIAComplaints@inforegulator.org.za
       </Link>
       <Link
         className="underline underline-offset-2"
-        href="mailto:POPIAComplaints@inforegulator.org.za">
+        href="mailto:POPIAComplaints@inforegulator.org.za"
+      >
         POPIAComplaints@inforegulator.org.za
       </Link>
-      <h2 className="mt-8 text-2xl font-semibold text-neutral-50">
+      <h2 className="mt-8 font-semibold text-2xl text-neutral-50">
         15. Do We Make Updates To This Notice?
       </h2>
       <p>
@@ -976,14 +991,15 @@ function PrivacyPolicy(): JSX.Element {
         a notification. We encourage you to review this privacy notice
         frequently to be informed of how we are protecting your information.
       </p>
-      <h2 className="mt-8 text-2xl font-semibold text-neutral-50">
+      <h2 className="mt-8 font-semibold text-2xl text-neutral-50">
         16. How Can You Contact Us?
       </h2>
       <p>
         If you have questions or comments about this notice, you may email us at{' '}
         <Link
           className="underline underline-offset-2"
-          href="mailto:support@formizee.com">
+          href="mailto:support@formizee.com"
+        >
           support@formizee.com
         </Link>
       </p>

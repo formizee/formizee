@@ -1,5 +1,5 @@
 import {z} from '@hono/zod-openapi';
-import {ColorEnum, IconEnum, APIKeyScopeEnum} from 'domain/models/values';
+import {APIKeyScopeEnum, ColorEnum, IconEnum} from 'domain/models/values';
 
 export const UuidSchema = z
   .string()

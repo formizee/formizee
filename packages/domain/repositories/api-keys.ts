@@ -1,11 +1,11 @@
-import type {
-  Identifier,
-  APIKeyScope,
-  Name,
-  APIKeyExpirationDate
-} from '../models/values';
-import type {APIKey} from '../models/api-key';
 import type {Response} from '../models';
+import type {APIKey} from '../models/api-key';
+import type {
+  APIKeyExpirationDate,
+  APIKeyScope,
+  Identifier,
+  Name
+} from '../models/values';
 
 export interface APIKeysRepository {
   save: (

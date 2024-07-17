@@ -1,6 +1,6 @@
-import {type Color, Email, type Icon, Name} from 'domain/models/values';
-import {type Endpoint, type Response} from 'domain/models';
 import {resolve} from '@/lib/di';
+import type {Endpoint, Response} from 'domain/models';
+import {type Color, Email, type Icon, Name} from 'domain/models/values';
 
 export class SaveEndpoint {
   private readonly _repository = resolve('endpointsRepository');

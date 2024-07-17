@@ -1,6 +1,6 @@
-import {type Response, type Mail} from 'domain/models';
-import {type Identifier} from 'domain/models/values';
 import {resolve} from '@/lib/di';
+import type {Mail, Response} from 'domain/models';
+import type {Identifier} from 'domain/models/values';
 
 export class SendMail {
   private readonly _service = resolve('mailService');

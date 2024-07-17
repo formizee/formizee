@@ -1,5 +1,5 @@
-import {rateLimiter as honoRateLimiter} from 'hono-rate-limiter';
 import type {MiddlewareHandler} from 'hono';
+import {rateLimiter as honoRateLimiter} from 'hono-rate-limiter';
 
 export const rateLimiter = (requestLimitPerMinute = 60): MiddlewareHandler =>
   honoRateLimiter({

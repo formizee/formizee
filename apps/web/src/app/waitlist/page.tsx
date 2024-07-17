@@ -1,6 +1,6 @@
+import {Button} from '@formizee/ui';
 import Image from 'next/image';
 import Link from 'next/link';
-import {Button} from '@formizee/ui';
 
 function WaitlistPage(): JSX.Element {
   return (
@@ -13,7 +13,7 @@ function WaitlistPage(): JSX.Element {
           src="/logo.svg"
           width={64}
         />
-        <h1 className="bg-gradient-to-b from-white to-neutral-400 bg-clip-text text-xl font-bold text-transparent">
+        <h1 className="bg-gradient-to-b from-white to-neutral-400 bg-clip-text font-bold text-transparent text-xl">
           You&apos;re In Waitlist
         </h1>
         <p className="max-w-96 text-balance text-center sm:text-wrap sm:text-start">

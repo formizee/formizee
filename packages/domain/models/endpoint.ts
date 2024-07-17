@@ -1,4 +1,4 @@
-import {Identifier, Email, type Color, type Icon} from './values';
+import {type Color, Email, type Icon, Identifier} from './values';
 
 export class Endpoint {
   private readonly _id: Identifier;

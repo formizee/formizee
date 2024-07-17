@@ -1,22 +1,22 @@
 import {
-  Identifier,
+  and,
+  db,
+  eq,
+  linkedEmails,
+  members,
+  ne,
+  teams,
+  users
+} from '@drizzle/db';
+import bcryptjs from 'bcryptjs';
+import {Response, type Team, type User} from 'domain/models';
+import {
   type Email,
+  Identifier,
   type Name,
   type Password
 } from 'domain/models/values';
 import type {UsersRepository as Repository} from 'domain/repositories';
-import {Response, type Team, type User} from 'domain/models';
-import bcryptjs from 'bcryptjs';
-import {
-  db,
-  eq,
-  users,
-  linkedEmails,
-  members,
-  ne,
-  and,
-  teams
-} from '@drizzle/db';
 import {createTeam, createUser} from 'src/lib/models';
 import {AuthService} from '../services';
 

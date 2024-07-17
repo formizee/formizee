@@ -1,5 +1,5 @@
 import type {Endpoint, Response} from '../models';
-import type {Identifier, Email, Name, Color, Icon} from '../models/values';
+import type {Color, Email, Icon, Identifier, Name} from '../models/values';
 
 export interface EndpointsRepository {
   load: (endpointId: Identifier) => Promise<Response<Endpoint>>;

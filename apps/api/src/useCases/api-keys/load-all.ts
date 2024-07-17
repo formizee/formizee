@@ -1,6 +1,6 @@
-import {type Response, type APIKey} from 'domain/models';
-import {Identifier} from 'domain/models/values';
 import {resolve} from '@/lib/di';
+import type {APIKey, Response} from 'domain/models';
+import {Identifier} from 'domain/models/values';
 
 export class LoadAllAPIKeys {
   private readonly _service = resolve('apiKeysRepository');

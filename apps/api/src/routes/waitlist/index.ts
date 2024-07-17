@@ -1,6 +1,6 @@
-import {OpenAPIHono} from '@hono/zod-openapi';
 import {handleValidationErrors} from '@/lib/openapi';
 import {JoinWaitlist} from '@/useCases/waitlist';
+import {OpenAPIHono} from '@hono/zod-openapi';
 import {postWaitlistRoute} from './routes';
 
 export const waitlist = new OpenAPIHono();

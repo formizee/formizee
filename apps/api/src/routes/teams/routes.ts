@@ -1,5 +1,5 @@
-import {createRoute, z} from '@hono/zod-openapi';
 import {ErrorSchema, MemberSchema, TeamSchema} from '@/schemas';
+import {createRoute, z} from '@hono/zod-openapi';
 import {
   DeleteMemberSchema,
   DeleteTeamSchema,

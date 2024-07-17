@@ -1,6 +1,6 @@
+import type {ErrorSchema} from '@/schemas';
 import type {OpenAPIHono} from '@hono/zod-openapi';
 import type {ZodError, z} from 'zod';
-import type {ErrorSchema} from '@/schemas';
 
 export const openApi = (router: OpenAPIHono): void => {
   if (!process.env.API_URL) {

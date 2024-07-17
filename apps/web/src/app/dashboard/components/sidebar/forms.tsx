@@ -1,6 +1,6 @@
-import type {Endpoint} from 'domain/models';
 import {Button} from '@formizee/ui';
 import {DocumentIcon} from '@formizee/ui/icons';
+import type {Endpoint} from 'domain/models';
 
 interface SidebarFormsItemProps {
   children: string;
@@ -14,7 +14,8 @@ function SidebarFormsItem(props: SidebarFormsItemProps): JSX.Element {
   return (
     <Button
       className="mx-0.5 my-1.5 w-48 items-center justify-start"
-      variant="ghost">
+      variant="ghost"
+    >
       <DocumentIcon className="max-h-4 min-h-4 min-w-4 max-w-4" />
       <span className="truncate">{props.children}</span>
     </Button>

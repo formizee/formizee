@@ -1,11 +1,11 @@
+import {resolve} from '@/lib/di';
+import type {Member, Response} from 'domain/models';
 import {
-  Name,
   Identifier,
+  Name,
   type TeamRoles,
   type UserPermissions
 } from 'domain/models/values';
-import type {Response, Member} from 'domain/models';
-import {resolve} from '@/lib/di';
 
 export class SaveTeamMember {
   private readonly _repository = resolve('teamsRepository');

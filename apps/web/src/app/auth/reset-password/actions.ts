@@ -1,6 +1,6 @@
+import type {ActionState} from '@/types';
 import {redirect} from 'next/navigation';
 import {z} from 'zod';
-import {type ActionState} from '@/types';
 
 const sendVerificationSchema = z.object({
   email: z.string().email()
@@ -42,5 +42,5 @@ export const resetPassword = async (
     };
   }
 
-  redirect(`/auth/verify`);
+  redirect('/auth/verify');
 };

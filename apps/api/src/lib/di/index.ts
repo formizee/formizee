@@ -1,10 +1,9 @@
-import {createContainer, asClass} from 'awilix';
 import {
-  UsersRepository,
-  TeamsRepository,
   APIKeysRepository,
   EndpointsRepository,
-  SubmissionsRepository
+  SubmissionsRepository,
+  TeamsRepository,
+  UsersRepository
 } from '@/data/repositories';
 import {
   AuthService,
@@ -12,6 +11,7 @@ import {
   StorageService,
   WaitlistService
 } from '@/data/services';
+import {asClass, createContainer} from 'awilix';
 import type Dependencies from './types';
 
 const container = createContainer<Dependencies>();

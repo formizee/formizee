@@ -1,7 +1,7 @@
-import {type Transporter, createTransport} from 'nodemailer';
-import type {MailService as Service} from 'domain/services';
 import {type Mail, Response} from 'domain/models';
 import {Identifier} from 'domain/models/values';
+import type {MailService as Service} from 'domain/services';
+import {type Transporter, createTransport} from 'nodemailer';
 
 interface MailInfo {
   messageId: string;

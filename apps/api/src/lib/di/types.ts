@@ -1,15 +1,15 @@
-import {
-  type UsersRepository,
-  type TeamsRepository,
-  type APIKeysRepository,
-  type EndpointsRepository,
-  type SubmissionsRepository
+import type {
+  APIKeysRepository,
+  EndpointsRepository,
+  SubmissionsRepository,
+  TeamsRepository,
+  UsersRepository
 } from 'domain/repositories';
-import {
-  type AuthService,
-  type MailService,
-  type StorageService,
-  type WaitlistService
+import type {
+  AuthService,
+  MailService,
+  StorageService,
+  WaitlistService
 } from 'domain/services';
 
 export default interface Dependencies {

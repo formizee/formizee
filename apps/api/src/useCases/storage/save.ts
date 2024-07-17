@@ -1,5 +1,5 @@
-import {type Response} from 'domain/models';
 import {resolve} from '@/lib/di';
+import type {Response} from 'domain/models';
 
 export class SaveStorageFile {
   private readonly _service = resolve('storageService');

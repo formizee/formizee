@@ -1,6 +1,6 @@
-import {Identifier, Name} from 'domain/models/values';
-import type {Response} from 'domain/models';
 import {resolve} from '@/lib/di';
+import type {Response} from 'domain/models';
+import {Identifier, Name} from 'domain/models/values';
 
 export class DeleteTeamMember {
   private readonly _repository = resolve('teamsRepository');

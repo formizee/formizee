@@ -1,5 +1,5 @@
-import {createRoute, z} from '@hono/zod-openapi';
 import {ErrorSchema} from '@/schemas';
+import {createRoute, z} from '@hono/zod-openapi';
 import {PostWaitlistSchema} from './schemas';
 
 export const postWaitlistRoute = createRoute({

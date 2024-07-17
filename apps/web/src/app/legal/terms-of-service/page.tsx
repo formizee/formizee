@@ -3,10 +3,10 @@ import Link from 'next/link';
 function TermsOfService(): JSX.Element {
   return (
     <div className="flex flex-col gap-y-4 text-neutral-400">
-      <h1 className="bg-gradient-to-b from-white to-neutral-400 bg-clip-text py-2 text-4xl font-medium text-transparent sm:text-5xl">
+      <h1 className="bg-gradient-to-b from-white to-neutral-400 bg-clip-text py-2 font-medium text-4xl text-transparent sm:text-5xl">
         Terms Of Service
       </h1>
-      <h2 className="mt-8 text-2xl font-semibold text-neutral-50">
+      <h2 className="mt-8 font-semibold text-2xl text-neutral-50">
         1. Introduction
       </h2>
       <p>
@@ -26,7 +26,8 @@ function TermsOfService(): JSX.Element {
         We operate the website{' '}
         <Link
           className="underline underline-offset-2"
-          href="https://www.formizee.com">
+          href="https://www.formizee.com"
+        >
           https://www.formizee.com
         </Link>{' '}
         (the &quot;<strong className="font-medium text-neutral-50">Site</strong>
@@ -49,14 +50,15 @@ function TermsOfService(): JSX.Element {
         may not use the Service, but please let us know by emailing at{' '}
         <Link
           className="underline underline-offset-2"
-          href="mailto:support@formizee.com">
+          href="mailto:support@formizee.com"
+        >
           support@formizee.com
         </Link>{' '}
         so we can try to find a solution. These Terms apply to all visitors,
         users and others who wish to access or use Service.
       </p>
       <p>Thank you for being responsible.</p>
-      <h2 className="mt-8 text-2xl font-semibold text-neutral-50">
+      <h2 className="mt-8 font-semibold text-2xl text-neutral-50">
         2. Our Services
       </h2>
       <p>
@@ -83,7 +85,7 @@ function TermsOfService(): JSX.Element {
         You may not use the Services in a way that would violate the
         Gramm-Leach-Bliley Act (GLBA).
       </p>
-      <h2 className="mt-8 text-2xl font-semibold text-neutral-50">
+      <h2 className="mt-8 font-semibold text-2xl text-neutral-50">
         3. Intellectual Property
       </h2>
       <p>
@@ -94,7 +96,7 @@ function TermsOfService(): JSX.Element {
         Our trademarks and trade dress may not be used in connection with any
         product or service without the prior written consent of Formizee S.L.
       </p>
-      <h2 className="mt-8 text-2xl font-semibold text-neutral-50">
+      <h2 className="mt-8 font-semibold text-2xl text-neutral-50">
         4. User Representations
       </h2>
       <p>
@@ -117,7 +119,7 @@ function TermsOfService(): JSX.Element {
         and refuse any and all current or future use of the Services (or any
         portion thereof).
       </p>
-      <h2 className="mt-8 text-2xl font-semibold text-neutral-50">
+      <h2 className="mt-8 font-semibold text-2xl text-neutral-50">
         5. User Registration
       </h2>
       <p>
@@ -127,7 +129,7 @@ function TermsOfService(): JSX.Element {
         a username you select if we determine, in our sole discretion, that such
         username is inappropriate, obscene, or otherwise objectionable.
       </p>
-      <h2 className="mt-8 text-2xl font-semibold text-neutral-50">
+      <h2 className="mt-8 font-semibold text-2xl text-neutral-50">
         6. Pucharses And Payments
       </h2>
       <p>
@@ -155,7 +157,7 @@ function TermsOfService(): JSX.Element {
         reserve the right to limit or prohibit orders that, in our sole
         judgment, appear to be placed by dealers, resellers, or distributors.
       </p>
-      <h2 className="mt-8 text-2xl font-semibold text-neutral-50">
+      <h2 className="mt-8 font-semibold text-2xl text-neutral-50">
         7. Subscriptions
       </h2>
       <strong className="font-medium text-neutral-50">
@@ -180,7 +182,7 @@ function TermsOfService(): JSX.Element {
         We may, from time to time, make changes to the subscription fee and will
         communicate any price changes to you in accordance with applicable law.
       </p>
-      <h2 className="mt-8 text-2xl font-semibold text-neutral-50">
+      <h2 className="mt-8 font-semibold text-2xl text-neutral-50">
         8. Prohibited Activities
       </h2>
       <p>
@@ -298,7 +300,7 @@ function TermsOfService(): JSX.Element {
           endeavor or commercial enterprise.
         </li>
       </ul>
-      <h2 className="mt-8 text-2xl font-semibold text-neutral-50">
+      <h2 className="mt-8 font-semibold text-2xl text-neutral-50">
         9. User Generated Contributions
       </h2>
       <p>
@@ -388,7 +390,7 @@ function TermsOfService(): JSX.Element {
         Legal Terms and may result in, among other things, termination or
         suspension of your rights to use the Services.
       </p>
-      <h2 className="mt-8 text-2xl font-semibold text-neutral-50">
+      <h2 className="mt-8 font-semibold text-2xl text-neutral-50">
         10. Contribution License
       </h2>
       <p>
@@ -433,7 +435,7 @@ function TermsOfService(): JSX.Element {
         and for any reason, without notice. We have no obligation to monitor
         your Contributions.
       </p>
-      <h2 className="mt-8 text-2xl font-semibold text-neutral-50">
+      <h2 className="mt-8 font-semibold text-2xl text-neutral-50">
         11. Links To Other Web Sites
       </h2>
       <p>
@@ -457,7 +459,7 @@ function TermsOfService(): JSX.Element {
         WE STRONGLY ADVISE YOU TO READ THE TERMS OF SERVICE AND PRIVACY POLICIES
         OF ANY THIRD PARTY WEB SITES OR SERVICES THAT YOU VISIT.
       </p>
-      <h2 className="mt-8 text-2xl font-semibold text-neutral-50">
+      <h2 className="mt-8 font-semibold text-2xl text-neutral-50">
         12. Service Management
       </h2>
       <p>
@@ -475,14 +477,15 @@ function TermsOfService(): JSX.Element {
         Services in a manner designed to protect our rights and property and to
         facilitate the proper functioning of the Services.
       </p>
-      <h2 className="mt-8 text-2xl font-semibold text-neutral-50">
+      <h2 className="mt-8 font-semibold text-2xl text-neutral-50">
         13. Privacy Policy
       </h2>
       <p className="mb-4">
         We care about data privacy and security. Please review our{' '}
         <Link
           className="underline underline-offset-2"
-          href="https://www.formizee.com/legal/privacy-policy">
+          href="https://www.formizee.com/legal/privacy-policy"
+        >
           Privacy Policy
         </Link>
         .
@@ -498,7 +501,7 @@ function TermsOfService(): JSX.Element {
         Germany and United States, and you expressly consent to have your data
         transferred to and processed in Germany and United States.
       </p>
-      <h2 className="mt-8 text-2xl font-semibold text-neutral-50">
+      <h2 className="mt-8 font-semibold text-2xl text-neutral-50">
         14. Copyright Infringements
       </h2>
       <p>
@@ -513,7 +516,7 @@ function TermsOfService(): JSX.Element {
         that material located on or linked to by the Services infringes your
         copyright, you should consider first contacting an attorney.
       </p>
-      <h2 className="mt-8 text-2xl font-semibold text-neutral-50">
+      <h2 className="mt-8 font-semibold text-2xl text-neutral-50">
         15. Terms And Termination
       </h2>
       <p>
@@ -537,7 +540,7 @@ function TermsOfService(): JSX.Element {
         action, including without limitation pursuing civil, criminal, and
         injunctive redress.
       </p>
-      <h2 className="mt-8 text-2xl font-semibold text-neutral-50">
+      <h2 className="mt-8 font-semibold text-2xl text-neutral-50">
         16. Modifications And Interruptions
       </h2>
       <p>
@@ -561,7 +564,7 @@ function TermsOfService(): JSX.Element {
         construed to obligate us to maintain and support the Services or to
         supply any corrections, updates, or releases in connection therewith.
       </p>
-      <h2 className="mt-8 text-2xl font-semibold text-neutral-50">
+      <h2 className="mt-8 font-semibold text-2xl text-neutral-50">
         17. Governing Law
       </h2>
       <p>
@@ -576,7 +579,7 @@ function TermsOfService(): JSX.Element {
         rights in regards to these Legal Terms in Spain, or in the EU country in
         which you reside.
       </p>
-      <h2 className="mt-8 text-2xl font-semibold text-neutral-50">
+      <h2 className="mt-8 font-semibold text-2xl text-neutral-50">
         18. Dispute Resolution
       </h2>
       <strong className="font-medium text-neutral-50">
@@ -635,7 +638,7 @@ function TermsOfService(): JSX.Element {
         jurisdiction within the courts listed for jurisdiction above, and the
         Parties agree to submit to the personal jurisdiction of that court.
       </p>
-      <h2 className="mt-8 text-2xl font-semibold text-neutral-50">
+      <h2 className="mt-8 font-semibold text-2xl text-neutral-50">
         19. Corrections
       </h2>
       <p>
@@ -645,7 +648,7 @@ function TermsOfService(): JSX.Element {
         correct any errors, inaccuracies, or omissions and to change or update
         the information on the Services at any time, without prior notice.
       </p>
-      <h2 className="mt-8 text-2xl font-semibold text-neutral-50">
+      <h2 className="mt-8 font-semibold text-2xl text-neutral-50">
         20. Disclaimer
       </h2>
       <p>
@@ -678,7 +681,7 @@ function TermsOfService(): JSX.Element {
         PRODUCT OR SERVICE THROUGH ANY MEDIUM OR IN ANY ENVIRONMENT, YOU SHOULD
         USE YOUR BEST JUDGMENT AND EXERCISE CAUTION WHERE APPROPRIATE.
       </p>
-      <h2 className="mt-8 text-2xl font-semibold text-neutral-50">
+      <h2 className="mt-8 font-semibold text-2xl text-neutral-50">
         21. Limitations Of Liability
       </h2>
       <p>
@@ -689,7 +692,7 @@ function TermsOfService(): JSX.Element {
         USE OF THE SERVICES, EVEN IF WE HAVE BEEN ADVISED OF THE POSSIBILITY OF
         SUCH DAMAGES.
       </p>
-      <h2 className="mt-8 text-2xl font-semibold text-neutral-50">
+      <h2 className="mt-8 font-semibold text-2xl text-neutral-50">
         22. Indemnification
       </h2>
       <p>
@@ -711,7 +714,7 @@ function TermsOfService(): JSX.Element {
         proceeding which is subject to this indemnification upon becoming aware
         of it.
       </p>
-      <h2 className="mt-8 text-2xl font-semibold text-neutral-50">
+      <h2 className="mt-8 font-semibold text-2xl text-neutral-50">
         23. User Data
       </h2>
       <p>
@@ -724,7 +727,7 @@ function TermsOfService(): JSX.Element {
         loss or corruption of any such data, and you hereby waive any right of
         action against us arising from any such loss or corruption of such data.
       </p>
-      <h2 className="mt-8 text-2xl font-semibold text-neutral-50">
+      <h2 className="mt-8 font-semibold text-2xl text-neutral-50">
         24. Electronic Communications, Transactions, And Signatures
       </h2>
       <p>
@@ -742,7 +745,7 @@ function TermsOfService(): JSX.Element {
         retention of non-electronic records, or to payments or the granting of
         credits by any means other than electronic means.
       </p>
-      <h2 className="mt-8 text-2xl font-semibold text-neutral-50">
+      <h2 className="mt-8 font-semibold text-2xl text-neutral-50">
         25. California Users And Residents
       </h2>
       <p>
@@ -752,7 +755,7 @@ function TermsOfService(): JSX.Element {
         Market Blvd., Suite N 112, Sacramento, California 95834 or by telephone
         at (800) 952-5210 or (916) 445-1254.
       </p>
-      <h2 className="mt-8 text-2xl font-semibold text-neutral-50">
+      <h2 className="mt-8 font-semibold text-2xl text-neutral-50">
         26. Miscellaneous
       </h2>
       <p>
@@ -776,7 +779,7 @@ function TermsOfService(): JSX.Element {
         have based on the electronic form of these Legal Terms and the lack of
         signing by the parties hereto to execute these Legal Terms.
       </p>
-      <h2 className="mt-8 text-2xl font-semibold text-neutral-50">
+      <h2 className="mt-8 font-semibold text-2xl text-neutral-50">
         27. Contact Us
       </h2>
       <p>
@@ -784,7 +787,8 @@ function TermsOfService(): JSX.Element {
         email:{' '}
         <Link
           className="font-medium underline underline-offset-2"
-          href="mailto:support@formizee.com">
+          href="mailto:support@formizee.com"
+        >
           support@formizee.com
         </Link>
       </p>

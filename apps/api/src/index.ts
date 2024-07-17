@@ -1,15 +1,15 @@
-import {OpenAPIHono} from '@hono/zod-openapi';
 import {security} from '@/lib/middlewares';
 import {openApi} from '@/lib/openapi';
 import {server} from '@/lib/server';
+import {apiKeys} from '@/routes/api-keys';
 import {auth} from '@/routes/auth';
-import {teams} from '@/routes/teams';
+import {endpoints} from '@/routes/endpoints';
 import {health} from '@/routes/health';
 import {profile} from '@/routes/profile';
-import {apiKeys} from '@/routes/api-keys';
-import {waitlist} from '@/routes/waitlist';
-import {endpoints} from '@/routes/endpoints';
 import {submissions} from '@/routes/submissions';
+import {teams} from '@/routes/teams';
+import {waitlist} from '@/routes/waitlist';
+import {OpenAPIHono} from '@hono/zod-openapi';
 
 const router = new OpenAPIHono().basePath('/v1');
 security(router);

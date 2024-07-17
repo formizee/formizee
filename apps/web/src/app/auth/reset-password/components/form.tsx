@@ -1,9 +1,6 @@
 'use client';
 
-/* eslint-disable-next-line import/named -- Currently useFormState and useFormStatus are experimental */
-import {useFormState, useFormStatus} from 'react-dom';
-import {useFormContext} from 'react-hook-form';
-import Link from 'next/link';
+import {useFormAction} from '@/hooks';
 import {Button, Input} from '@formizee/ui';
 import {
   Form,
@@ -13,8 +10,11 @@ import {
   FormMessage
 } from '@formizee/ui/form';
 import {LoadingIcon} from '@formizee/ui/icons';
-import {useFormAction} from '@/hooks';
-import {resetPassword, type ResetPasswordFormValues} from '../actions';
+import Link from 'next/link';
+/* eslint-disable-next-line import/named -- Currently useFormState and useFormStatus are experimental */
+import {useFormState, useFormStatus} from 'react-dom';
+import {useFormContext} from 'react-hook-form';
+import {type ResetPasswordFormValues, resetPassword} from '../actions';
 
 export function ResetPasswordForm(): JSX.Element {
   const [state, formAction] = useFormState(resetPassword, null);

@@ -1,6 +1,6 @@
-import type {User, Response} from 'domain/models';
-import {Identifier, Email} from 'domain/models/values';
 import {resolve} from '@/lib/di';
+import type {Response, User} from 'domain/models';
+import {Email, Identifier} from 'domain/models/values';
 
 export class SaveUserLinkedEmail {
   private readonly _repository = resolve('usersRepository');

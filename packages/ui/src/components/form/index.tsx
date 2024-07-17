@@ -155,7 +155,8 @@ const FormMessage = React.forwardRef<
       )}
       id={formMessageId}
       ref={ref}
-      {...props}>
+      {...props}
+    >
       {body}
     </p>
   );

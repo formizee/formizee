@@ -1,3 +1,4 @@
+import type {Member, Response, Team} from '../models';
 import type {
   Email,
   Identifier,
@@ -5,7 +6,6 @@ import type {
   TeamRoles,
   UserPermissions
 } from '../models/values';
-import type {Member, Response, Team} from '../models';
 
 export interface TeamsRepository {
   save: (ownerId: Identifier, name: Name) => Promise<Response<Team>>;

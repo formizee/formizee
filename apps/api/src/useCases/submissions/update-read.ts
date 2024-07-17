@@ -1,6 +1,6 @@
-import {type Response, type Submission} from 'domain/models';
-import {Identifier} from 'domain/models/values';
 import {resolve} from '@/lib/di';
+import type {Response, Submission} from 'domain/models';
+import {Identifier} from 'domain/models/values';
 
 export class UpdateSubmissionIsRead {
   private readonly _repository = resolve('submissionsRepository');

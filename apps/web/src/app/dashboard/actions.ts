@@ -1,8 +1,8 @@
 'use server';
 
+import type {ActionState} from '@/types';
 import {cookies} from 'next/headers';
 import {redirect} from 'next/navigation';
-import {type ActionState} from '@/types';
 
 export const logout = async (): Promise<ActionState> => {
   if (!process.env.WEB_URL)

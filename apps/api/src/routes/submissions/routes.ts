@@ -1,12 +1,12 @@
+import {ErrorSchema, SubmissionSchema} from '@/schemas';
 import {createRoute, z} from '@hono/zod-openapi';
-import {SubmissionSchema, ErrorSchema} from '@/schemas';
 import {
   DeleteSubmissionSchema,
   GetAllSubmissionsSchema,
   GetSubmissionSchema,
-  PostSubmissionParamSchema,
   PatchSubmissionJsonSchema,
-  PatchSubmissionParamSchema
+  PatchSubmissionParamSchema,
+  PostSubmissionParamSchema
 } from './schemas';
 
 export const getAllSubmissionsRoute = createRoute({

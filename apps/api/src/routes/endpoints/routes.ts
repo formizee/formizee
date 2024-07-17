@@ -1,13 +1,13 @@
-import {createRoute, z} from '@hono/zod-openapi';
 import {EndpointSchema, ErrorSchema} from '@/schemas';
+import {createRoute, z} from '@hono/zod-openapi';
 import {
   DeleteEndpointSchema,
   GetAllEndpointsSchema,
   GetEndpointSchema,
-  PostEndpointParamSchema,
-  PostEndpointJsonSchema,
+  PatchEndpointJsonSchema,
   PatchEndpointParamSchema,
-  PatchEndpointJsonSchema
+  PostEndpointJsonSchema,
+  PostEndpointParamSchema
 } from './schemas';
 
 export const getAllEndpointsRoute = createRoute({

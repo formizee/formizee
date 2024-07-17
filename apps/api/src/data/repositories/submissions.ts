@@ -1,8 +1,8 @@
-import type {SubmissionsRepository as Repository} from 'domain/repositories';
+import {and, db, endpoints, eq, submissions} from '@drizzle/db';
 import {Response, type Submission} from 'domain/models';
 import type {Identifier} from 'domain/models/values';
+import type {SubmissionsRepository as Repository} from 'domain/repositories';
 import {createSubmission} from 'src/lib/models';
-import {db, eq, and, submissions, endpoints} from '@drizzle/db';
 
 export class SubmissionsRepository implements Repository {
   async loadAll(endpoint: Identifier): Promise<Response<Submission[]>> {

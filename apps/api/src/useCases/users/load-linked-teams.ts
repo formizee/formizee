@@ -1,6 +1,6 @@
-import {type Team, type Response} from 'domain/models';
-import {Identifier} from 'domain/models/values';
 import {resolve} from '@/lib/di';
+import type {Response, Team} from 'domain/models';
+import {Identifier} from 'domain/models/values';
 
 export class LoadUserLinkedTeams {
   private readonly _service = resolve('usersRepository');

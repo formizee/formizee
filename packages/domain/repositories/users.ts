@@ -1,5 +1,5 @@
-import type {Identifier, Name, Email, Password} from '../models/values';
-import type {User, Team, Response} from '../models';
+import type {Response, Team, User} from '../models';
+import type {Email, Identifier, Name, Password} from '../models/values';
 
 export interface UsersRepository {
   load: (userId: Identifier | Email) => Promise<Response<User>>;

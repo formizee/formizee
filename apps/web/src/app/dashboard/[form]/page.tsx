@@ -1,5 +1,6 @@
 'use client';
 
+import {ClipboardButton} from '@/components';
 import {
   Badge,
   Button,
@@ -17,7 +18,6 @@ import {
   PluginIcon,
   SettingsIcon
 } from '@formizee/ui/icons';
-import {ClipboardButton} from '@/components';
 
 export default function Page({params}: {params: {form: string}}): JSX.Element {
   const form = {
@@ -27,7 +27,7 @@ export default function Page({params}: {params: {form: string}}): JSX.Element {
   return (
     <div className="container flex h-full flex-col px-16 py-10">
       <div className="flex items-center gap-x-4">
-        <h1 className="bg-gradient-to-b from-white to-slate-400 bg-clip-text text-4xl font-bold text-transparent no-underline">
+        <h1 className="bg-gradient-to-b from-white to-slate-400 bg-clip-text font-bold text-4xl text-transparent no-underline">
           {form.name}
         </h1>
         <Badge variant="success" className="mt-1">
@@ -56,7 +56,7 @@ export default function Page({params}: {params: {form: string}}): JSX.Element {
         <TabsContent value="overview">
           <div className="flex w-full flex-col rounded-md border border-neutral-700">
             <div className="flex flex-col gap-2 p-6">
-              <h2 className="text-2xl font-semibold">Form URL</h2>
+              <h2 className="font-semibold text-2xl">Form URL</h2>
               <p>Used when interacting with the Formizee API.</p>
               <div className="flex gap-x-2">
                 <Input
@@ -70,12 +70,13 @@ export default function Page({params}: {params: {form: string}}): JSX.Element {
                 />
               </div>
             </div>
-            <div className="flex justify-between border-t border-neutral-700 p-6">
+            <div className="flex justify-between border-neutral-700 border-t p-6">
               <span className="flex items-center gap-x-2">
                 Learn more about{' '}
                 <a
                   href="https://formizee.com/docs"
-                  className="flex items-center gap-x-1 text-amber-400">
+                  className="flex items-center gap-x-1 text-amber-400"
+                >
                   Form URL
                   <LinkIcon />
                 </a>

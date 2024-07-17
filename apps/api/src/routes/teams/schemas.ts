@@ -1,5 +1,5 @@
-import {z} from '@hono/zod-openapi';
 import {UuidSchema} from '@/schemas';
+import {z} from '@hono/zod-openapi';
 
 const nameSchema = z
   .string()
