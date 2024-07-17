@@ -7,10 +7,9 @@
   "private": true,
   "scripts": {
     "test": "vitest",
-    "lint": "oxlint src",
     "build": "tsc --build",
+    "lint": "biome lint src",
     "start": "tsx src/index.ts",
-    "format": "prettier -w src",
     "db:push": "drizzle-kit push",
     "dev": "tsx watch src/index.ts",
     "db:studio": "drizzle-kit studio"
@@ -18,7 +17,6 @@
   "dependencies": {
     "@aws-sdk/client-s3": "3.613.0",
     "@aws-sdk/lib-storage": "3.613.0",
-    "@formizee/eslint": "workspace:*",
     "@formizee/tsconfig": "workspace:*",
     "@hono/node-server": "1.12.0",
     "@hono/zod-openapi": "0.14.8",

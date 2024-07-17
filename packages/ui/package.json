@@ -29,8 +29,8 @@
   },
   "scripts": {
     "build": "tsup",
-    "lint": "oxlint \"**/*.{ts,tsx}\"",
     "dev": "tsup --watch",
+    "lint": "biome lint .",
     "dev:styles": "tailwindcss -i ./src/styles/globals.css -o ./dist/index.css --watch",
     "build:styles": "tailwindcss -i ./src/styles/globals.css -o ./dist/index.css --minify"
   },
@@ -52,7 +52,6 @@
     "tailwind-merge": "2.3.0"
   },
   "devDependencies": {
-    "@formizee/eslint": "workspace:*",
     "@formizee/tailwind": "workspace:*",
     "@formizee/tsconfig": "workspace:*",
     "@types/react": "18.3.2",
