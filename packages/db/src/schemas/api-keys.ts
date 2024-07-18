@@ -3,7 +3,17 @@ import {newId} from '@formizee/id';
 import {teams} from './teams';
 import {users} from './users';
 
-export const scopes = pgEnum('api_key_scopes', ['full-access', 'team']);
+export const apiKeyScopes = pgEnum('api_key_scopes', ['full-access', 'team']);
+export const apiKeyExpirationDate = pgEnum('api_key_expiration_date', [
+  '1-day',
+  '7-days',
+  '30-days',
+  '60-days',
+  '90-days',
+  '180-days',
+  '1-year',
+  'never'
+]);
 
 export const apiKeys = pgTable(
   'api_keys',
@@ -18,7 +28,7 @@ export const apiKeys = pgTable(
 
     team: text('team_id').references(() => teams.id, {onDelete: 'cascade'}),
 
-    scope: scopes('scope').notNull().default('full-access'),
+    scope: apiKeyScopes('scope').notNull().default('full-access'),
 
     key: text('key').notNull(),
 
