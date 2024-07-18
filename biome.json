@@ -4,6 +4,7 @@
     "ignore": [
       "drizzle/migrations",
       "node_modules/**",
+      "coverage/**",
       ".vercel/**",
       ".github/**",
       ".turbo/**",
