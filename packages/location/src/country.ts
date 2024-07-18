@@ -1,10 +1,10 @@
 import {getConnInfo} from '@hono/node-server/conninfo';
-import {lookup} from 'fast-geoip';
+import {lookup} from 'geoip-lite';
 import type {Context} from 'hono';
 
 const LOOPBACK = '127.0.0.1';
 
-export const getOriginCountry = async (context: Context): Promise<string> => {
+export const getOriginCountry = (context: Context): string => {
   try {
     const connectionInfo = getConnInfo(context);
     const requestAddress = connectionInfo.remote.address;
@@ -13,7 +13,7 @@ export const getOriginCountry = async (context: Context): Promise<string> => {
       return 'Unknown';
     }
 
-    const info = await lookup(requestAddress);
+    const info = lookup(requestAddress);
     if (info === null) {
       return 'Unknown';
     }
