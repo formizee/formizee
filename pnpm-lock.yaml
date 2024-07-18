@@ -173,6 +173,28 @@ importers:
         specifier: 5.4.5
         version: 5.4.5
 
+  packages/auth:
+    dependencies:
+      '@hono/node-server':
+        specifier: 1.12.0
+        version: 1.12.0
+      fast-geoip:
+        specifier: 1.1.88
+        version: 1.1.88
+      hono:
+        specifier: 4.4.12
+        version: 4.4.12
+    devDependencies:
+      '@formizee/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      '@types/node':
+        specifier: 20.14.11
+        version: 20.14.11
+      vitest:
+        specifier: 2.0.3
+        version: 2.0.3(@edge-runtime/vm@4.0.0)(@types/node@20.14.11)(terser@5.31.2)
+
   packages/billing:
     dependencies:
       '@formizee/db':
@@ -188,9 +210,6 @@ importers:
       '@types/node':
         specifier: 20.14.11
         version: 20.14.11
-      vitest:
-        specifier: 2.0.3
-        version: 2.0.3(@edge-runtime/vm@4.0.0)(@types/node@20.14.11)(terser@5.31.2)
 
   packages/db:
     dependencies:
@@ -266,6 +285,37 @@ importers:
         specifier: 18.3.1
         version: 18.3.1
 
+  packages/encoding:
+    devDependencies:
+      '@formizee/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      '@types/node':
+        specifier: 20.14.11
+        version: 20.14.11
+      vitest:
+        specifier: 2.0.3
+        version: 2.0.3(@edge-runtime/vm@4.0.0)(@types/node@20.14.11)(terser@5.31.2)
+
+  packages/encryption:
+    dependencies:
+      '@formizee/encoding':
+        specifier: workspace:*
+        version: link:../encoding
+      '@formizee/error':
+        specifier: workspace:*
+        version: link:../error
+    devDependencies:
+      '@formizee/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      '@types/node':
+        specifier: 20.14.11
+        version: 20.14.11
+      vitest:
+        specifier: 2.0.3
+        version: 2.0.3(@edge-runtime/vm@4.0.0)(@types/node@20.14.11)(terser@5.31.2)
+
   packages/error:
     dependencies:
       zod:
@@ -279,8 +329,46 @@ importers:
         specifier: 20.14.11
         version: 20.14.11
 
+  packages/hashing:
+    dependencies:
+      '@formizee/encoding':
+        specifier: workspace:*
+        version: link:../encoding
+    devDependencies:
+      '@formizee/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      '@types/node':
+        specifier: 20.14.11
+        version: 20.14.11
+      vitest:
+        specifier: 2.0.3
+        version: 2.0.3(@edge-runtime/vm@4.0.0)(@types/node@20.14.11)(terser@5.31.2)
+
   packages/id:
     dependencies:
+      base-x:
+        specifier: 5.0.0
+        version: 5.0.0
+    devDependencies:
+      '@formizee/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      '@types/node':
+        specifier: 20.14.11
+        version: 20.14.11
+      vitest:
+        specifier: 2.0.3
+        version: 2.0.3(@edge-runtime/vm@4.0.0)(@types/node@20.14.11)(terser@5.31.2)
+
+  packages/keys:
+    dependencies:
+      '@formizee/db':
+        specifier: workspace:*
+        version: link:../db
+      '@formizee/id':
+        specifier: workspace:*
+        version: link:../id
       base-x:
         specifier: 5.0.0
         version: 5.0.0
