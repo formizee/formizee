@@ -11,9 +11,9 @@ import {users} from './users';
 
 export const billingPlans = pgEnum('billing_plans', [
   'hobby',
-  'professional',
+  'pro',
   'teams',
-  'custom'
+  'company'
 ]);
 
 export const teams = pgTable(
@@ -26,6 +26,14 @@ export const teams = pgTable(
     name: text('name').notNull().unique(),
 
     plan: billingPlans('plan').notNull().default('hobby'),
+
+    stripeId: text('stripe_id').unique(),
+
+    subscriptionId: text('subscription_id'),
+
+    endsAt: timestamp('ends_at'),
+
+    paidUntil: timestamp('paid_until'),
 
     availableEmails: text('available_emails')
       .array()

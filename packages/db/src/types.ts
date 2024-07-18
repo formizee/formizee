@@ -1,6 +1,8 @@
 import type {InferSelectModel} from 'drizzle-orm';
 import type * as schema from './schemas';
 
+export type BillingPlan = (typeof schema.billingPlans.enumValues)[number];
+
 export type ApiKey = Omit<InferSelectModel<typeof schema.apiKeys>, 'key'>;
 export type AuthToken = InferSelectModel<typeof schema.authTokens>;
 export type Email = InferSelectModel<typeof schema.emails>;
