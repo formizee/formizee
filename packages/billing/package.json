@@ -1,0 +1,19 @@
+{
+  "name": "@formizee/billing",
+  "author": "Pau García Chiner",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "lint": "biome lint ."
+  },
+  "devDependencies": {
+    "@formizee/tsconfig": "workspace:*",
+    "@types/node": "20.14.11"
+  },
+  "dependencies": {
+    "@formizee/db": "workspace:*",
+    "zod": "3.23.8"
+  }
+}
