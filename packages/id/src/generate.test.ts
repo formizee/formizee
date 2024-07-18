@@ -4,9 +4,11 @@ import {assert, expect, test, vi} from 'vitest';
 import {newId} from './generate';
 
 beforeEach(() => {
+  /* v8 ignore next 2 */
   vi.useFakeTimers();
 });
 afterEach(() => {
+  /* v8 ignore next 2 */
   vi.useRealTimers();
 });
 describe('ids are k-sorted by time', () => {
@@ -42,6 +44,7 @@ test('suffix length is between 26-28 characters long', () => {
     vi.setSystemTime(new Date(randomInt(281474976710655)));
 
     const suffix = newId('test').split('_')[1];
+    /* v8 ignore next 4 */
     if (suffix === undefined) {
       assert('id suffix is not valid');
       return;
