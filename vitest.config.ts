@@ -16,8 +16,15 @@ export default defineConfig({
         './packages/db/**',
         './packages/ui/**',
         '**/index.ts/**',
-        './apps/api/**',
+        // Check this later
+        './apps/api/src/useCases/**',
+        './apps/api/src/routes/v0**',
+        './apps/api/src/data/**',
+        './apps/api/drizzle/**',
+        './apps/api/drizzle.config.ts',
+        //'./apps/api/**',
         './apps/web/**',
+        '**/coverage/**',
         '**/.vercel/**',
         '**/emails/**',
         '**/env.ts'
