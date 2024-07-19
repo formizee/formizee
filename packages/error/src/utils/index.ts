@@ -43,6 +43,7 @@ export function codeToStatus(code: ErrorCode): number {
       return 422;
     case 'INTERNAL_SERVER_ERROR':
       return 500;
+    /* v8 ignore next 2 */
     default:
       return 500;
   }

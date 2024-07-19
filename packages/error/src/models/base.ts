@@ -40,7 +40,9 @@ export abstract class BaseError<
   }
 
   // get docs(): string {
-  //   if (!this.code) return "https://example.com/docs/errors"
-  //   return `https://example.com/docs/errors/${this.code}`;
+  //   if (!this.code) {
+  //     return "https://formizee.com/docs/errors"
+  //   }
+  //   return `https://formizee.com/docs/errors/${this.code}`;
   // }
 }

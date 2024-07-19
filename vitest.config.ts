@@ -18,7 +18,9 @@ export default defineConfig({
         '**/index.ts/**',
         './apps/api/**',
         './apps/web/**',
-        '**/.vercel/**'
+        '**/.vercel/**',
+        '**/emails/**',
+        '**/env.ts'
       ]
     }
   }
