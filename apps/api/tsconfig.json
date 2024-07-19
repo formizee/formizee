@@ -5,7 +5,8 @@
     "paths": {
       "@/*": ["src/*"],
       "@emails/*": ["emails/*"],
-      "@drizzle/*": ["drizzle/*"]
+      "@drizzle/*": ["drizzle/*"],
+      "@enviroment": ["./env.ts"]
     }
   }
 }

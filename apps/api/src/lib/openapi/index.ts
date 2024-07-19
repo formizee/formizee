@@ -1,5 +1,6 @@
 import type {ErrorSchema} from '@/schemas';
 import type {OpenAPIHono} from '@hono/zod-openapi';
+import {apiReference} from '@scalar/hono-api-reference';
 import type {ZodError, z} from 'zod';
 
 export const openApi = (router: OpenAPIHono): void => {
@@ -50,6 +51,17 @@ export const openApi = (router: OpenAPIHono): void => {
     type: 'apiKey',
     in: 'header'
   });
+
+  router.get(
+    '/docs',
+    apiReference({
+      pageTitle: 'Formizee API Reference',
+      hideModels: true,
+      spec: {
+        url: '/openapi.json'
+      }
+    })
+  );
 };
 
 type ErrorResponse = z.infer<typeof ErrorSchema>;
