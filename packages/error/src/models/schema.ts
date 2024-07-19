@@ -1,4 +1,5 @@
-import {type ErrorCode, parseZodErrorIssues} from '../utils';
+import type {ErrorCode} from '../utils/codes';
+import {parseZodErrorIssues} from '../utils';
 import type {ZodError} from 'zod';
 import {BaseError} from './base';
 

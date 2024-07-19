@@ -1,4 +1,4 @@
-import type {ErrorCode} from '../utils';
+import type {ErrorCode} from '../utils/codes';
 
 type ErrorContext = Record<string, unknown>;
 

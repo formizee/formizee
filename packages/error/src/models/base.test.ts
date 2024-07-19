@@ -1,5 +1,5 @@
+import {ErrorCodeEnum} from '../utils/codes';
 import {describe, it, expect} from 'vitest';
-import {ErrorCodeEnum} from '../utils';
 import {BaseError} from './base';
 
 // Define a concrete implementation of BaseError for testing purposes

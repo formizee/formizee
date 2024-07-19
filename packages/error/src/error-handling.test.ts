@@ -1,8 +1,8 @@
 // errorHandling.test.ts
 import {Ok, Err, wrap, type Result} from './error-handling';
 import {describe, it, expect} from 'vitest';
+import {ErrorCodeEnum} from './utils/codes';
 import {BaseError} from './models/base';
-import {ErrorCodeEnum} from './utils';
 
 // Define a concrete implementation of BaseError for testing purposes
 class TestError extends BaseError {

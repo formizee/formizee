@@ -1,4 +1,4 @@
-import {z} from 'zod';
+import {z} from '@hono/zod-openapi';
 
 export const ErrorCodeEnum = z.enum([
   'BAD_REQUEST',
