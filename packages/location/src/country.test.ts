@@ -1,68 +1,57 @@
-// getOriginCountry.test.ts
-import {describe, it, expect, vi, beforeEach} from 'vitest';
-import {getOriginCountry} from './country';
 import {getConnInfo} from '@hono/node-server/conninfo';
-import {lookup} from 'geoip-lite';
+import {describe, it, expect, vi} from 'vitest';
+import {getOriginCountry} from './country';
 import type {Context} from 'hono';
 
-// Mock the external dependencies
 vi.mock('@hono/node-server/conninfo', () => ({
   getConnInfo: vi.fn()
 }));
 
-vi.mock('geoip-lite', () => ({
-  lookup: vi.fn()
-}));
-
 describe('getOriginCountry', () => {
-  // biome-ignore lint:
-  const mockContext: Context = {} as any;
+  it('Should return country when fetch is successful and response is valid', async () => {
+    // Arrange
+    const mockAddress = '8.8.8.8';
+    // biome-ignore lint:
+    const context: Context = {} as any;
 
-  beforeEach(() => {
-    vi.clearAllMocks();
+    // Mock getConnInfo to return the desired address
+    (getConnInfo as vi.Mock).mockReturnValue({remote: {address: mockAddress}});
+
+    // Act
+    const result = await getOriginCountry(context);
+
+    // Assert
+    expect(result).toBe('United States');
   });
 
-  it('should return "Unknown" for loopback address', () => {
-    (getConnInfo as vi.Mock).mockReturnValue({remote: {address: '127.0.0.1'}});
+  it('Should return "Unknown" when address is not provided', async () => {
+    // Arrange
+    // biome-ignore lint:
+    const context = {} as any; // Mock context object
 
-    const result = getOriginCountry(mockContext);
-
-    expect(result).toBe('Unknown');
-  });
-
-  it('should return "Unknown" for undefined address', () => {
+    // Mock getConnInfo to return an empty address
     (getConnInfo as vi.Mock).mockReturnValue({remote: {address: undefined}});
 
-    const result = getOriginCountry(mockContext);
+    // Act
+    const result = await getOriginCountry(context);
 
+    // Assert
     expect(result).toBe('Unknown');
   });
 
-  it('should return "Unknown" for address with no geo info', () => {
-    (getConnInfo as vi.Mock).mockReturnValue({remote: {address: '8.8.8.8'}});
-    (lookup as vi.Mock).mockReturnValue(null);
+  it('Should return "Unknown" when response JSON does not have country', async () => {
+    // Arrange
+    const mockAddress = '127.0.0.1';
+    // biome-ignore lint:
+    const context = {} as any; // Mock context object
 
-    const result = getOriginCountry(mockContext);
+    // Mock getConnInfo to return the desired address
+    (getConnInfo as vi.Mock).mockReturnValue({remote: {address: mockAddress}});
 
-    expect(result).toBe('Unknown');
-  });
+    // Act
+    const result = await getOriginCountry(context);
 
-  it('should return country code for a valid address', () => {
-    (getConnInfo as vi.Mock).mockReturnValue({remote: {address: '8.8.8.8'}});
-    (lookup as vi.Mock).mockReturnValue({country: 'US'});
-
-    const result = getOriginCountry(mockContext);
-
-    expect(result).toBe('US');
-  });
-
-  it('should handle errors and return "Unknown"', () => {
-    (getConnInfo as vi.Mock).mockImplementation(() => {
-      throw new Error('Test error');
-    });
-
-    const result = getOriginCountry(mockContext);
-
+    // Assert
     expect(result).toBe('Unknown');
   });
 });

@@ -1,24 +1,29 @@
 import {getConnInfo} from '@hono/node-server/conninfo';
-import {lookup} from 'geoip-lite';
 import type {Context} from 'hono';
 
-const LOOPBACK = '127.0.0.1';
-
-export const getOriginCountry = (context: Context): string => {
+export const getOriginCountry = async (context: Context): Promise<string> => {
   try {
     const connectionInfo = getConnInfo(context);
     const requestAddress = connectionInfo.remote.address;
 
-    if (requestAddress === undefined || requestAddress === LOOPBACK) {
-      return 'Unknown';
+    if (requestAddress === undefined) {
+      throw new Error();
     }
 
-    const info = lookup(requestAddress);
-    if (info === null) {
-      return 'Unknown';
+    const request = await fetch(
+      `https://get.geojs.io/v1/ip/country/${requestAddress}.json`
+    );
+    if (!request.ok) {
+      throw new Error();
     }
 
-    return info.country;
+    const info = await request.json();
+
+    if (info === null || info.name === undefined) {
+      throw new Error();
+    }
+
+    return info.name;
   } catch {
     return 'Unknown';
   }

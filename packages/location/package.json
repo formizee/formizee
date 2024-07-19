@@ -18,8 +18,5 @@
   "peerDependencies": {
     "@hono/node-server": "1.12.0",
     "hono": "4.4.12"
-  },
-  "dependencies": {
-    "geoip-lite": "1.4.10"
   }
 }
