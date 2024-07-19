@@ -4,7 +4,7 @@ export const pricingTableConfig: Record<
   string,
   {
     label: string;
-    features: {value: keyof Limits; label: string; badge?: string}[];
+    features: {value: keyof Limits; label: string}[];
   }
 > = {
   forms: {
