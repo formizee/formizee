@@ -1,1 +1,0 @@
-export {JoinWaitlist} from './join';
