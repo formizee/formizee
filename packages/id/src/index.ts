@@ -1,1 +1,1 @@
-export * from './generate';
+export {newId} from './generate';
