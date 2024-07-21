@@ -1,21 +1,8 @@
-export interface Payload<T> {
-  expiresAt: Date;
-  data: T;
-}
+import type {schema} from '@formizee/db';
+import type {Limits} from '@formizee/plans';
 
-export interface LinkedEmailToken {
-  id: string;
-  email: string;
-  token: number;
+export interface AuthContext {
+  limits: Limits;
+  user: schema.User;
+  workspace: schema.Workspace;
 }
-
-export interface Session {
-  id: string;
-}
-
-export interface Verification {
-  email: string;
-  type: 'account' | 'password';
-}
-
-export type Data = Session | Verification | LinkedEmailToken;

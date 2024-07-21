@@ -1,163 +1,95 @@
-import {db} from '@drizzle/db';
-import {apiKeys} from '@drizzle/schemas';
-import type {APIKeyScope} from 'domain/models/values';
-import {eq} from 'drizzle-orm';
-import type {Context, MiddlewareHandler} from 'hono';
-import {getCookie} from 'hono/cookie';
 import {HTTPException} from 'hono/http-exception';
-import {getAPIKeyHash} from './api-keys';
-import {decrypt} from './jwt';
-import type {Session} from './types';
+import {type schema, db} from '@formizee/db';
+import type {MiddlewareHandler} from 'hono';
+import {getLimits} from '@formizee/plans';
+import {sha256} from '@formizee/hashing';
 
-type Method = 'GET' | 'POST' | 'PATCH' | 'DELETE';
-
-interface AuthOptions {
-  /*
-   * Disable API Key authentication.
-   */
-  dashboardOnly?: boolean;
-  /*
-   * When using API Keys if the api key scope is not full-access it returns a 401.
-   */
-  needsFullScope?: boolean;
-
-  excludedMethods?: Method[];
-}
-
-interface Authorization {
-  userId: string;
-  teamId: string | null;
-  scope: APIKeyScope;
-}
-
-export const authentication = (options?: AuthOptions): MiddlewareHandler => {
+export const authentication = (): MiddlewareHandler => {
   return async function auth(context, next) {
-    const excludedMethods = options?.excludedMethods ?? [];
-    if (excludedMethods.some(method => method === context.req.method)) {
-      await next();
-      return;
-    }
-
-    const isAPIKeyAuthEnabled =
-      options?.dashboardOnly === false || options?.dashboardOnly === undefined;
-    const isAPIKeyAuthPresent =
-      context.req.header('Authorization') !== undefined;
-    const isSessionAuthPresent = getCookie(context, 'session');
-
-    if (isAPIKeyAuthEnabled && isAPIKeyAuthPresent) {
-      const validApiKey = await validateAPIKey(context);
-      if (validApiKey) {
-        await next();
-        return;
-      }
-    }
-
-    if (!isAPIKeyAuthEnabled && !isSessionAuthPresent) {
-      throwError({
-        name: 'Unauthorized',
-        description:
-          'This endpoint is only accessible from the Formizee Dashboard.'
+    const authorization = context.req
+      .header('authorization')
+      ?.replace('Bearer ', '');
+    if (!authorization) {
+      throw new HTTPException(401, {
+        message: 'API key required.'
       });
-      return;
     }
 
-    if (isSessionAuthPresent) {
-      const validSession = await validateSession(context);
-      if (validSession) {
-        await next();
-        return;
-      }
+    const hash = await sha256(authorization);
+
+    const key = await db.query.key.findFirst({
+      where: (table, {eq}) => eq(table.hash, hash)
+    });
+    if (!key) {
+      throw new HTTPException(401, {
+        message: 'The API key is not valid.'
+      });
     }
-    throwError();
+
+    const workspace = await db.query.workspace.findFirst({
+      where: (table, {eq}) => eq(table.id, key.workspaceId)
+    });
+    if (!workspace) {
+      throw new HTTPException(404, {
+        message: 'Workspace not found.'
+      });
+    }
+
+    const user = await db.query.user.findFirst({
+      where: (table, {eq}) => eq(table.id, key.userId),
+      with: {usersToWorkspaces: true}
+    });
+    if (!user) {
+      throw new HTTPException(404, {
+        message: 'User not found.'
+      });
+    }
+
+    context.set('auth', {
+      user: user,
+      workspace: workspace,
+      limits: getLimits(workspace.plan)
+    });
+
+    const permissions = user.usersToWorkspaces.find(
+      relation => relation.workspaceId,
+      key.workspaceId
+    )?.permissions;
+    if (!permissions) {
+      throw new HTTPException(403, {
+        message: 'Invalid member permissions.'
+      });
+    }
+
+    authorizeRequests(context.req.method, permissions);
+
+    await next();
   };
 };
 
-export const getAuthentication = (context: Context): Authorization => {
-  return context.get('authorization') as Authorization;
-};
+const authorizeRequests = async (
+  method: string,
+  permissions: schema.MemberPermissions
+) => {
+  const createPermissions = permissions === 'all' || permissions === 'create';
+  const deletePermissions = permissions === 'all';
+  const editPermissions = permissions !== 'read';
 
-const throwError = (message?: {name: string; description: string}): void => {
-  const defaultMessage = {
-    name: 'Unauthorized',
-    description: 'Please, login in order to perform this action.'
-  };
-
-  const res = new Response(JSON.stringify(message ?? defaultMessage), {
-    headers: {'Content-Type': 'application/json'},
-    status: 401
-  });
-  throw new HTTPException(401, {res});
-};
-
-const validateSession = async (context: Context): Promise<boolean> => {
-  const cookie = getCookie(context, 'session');
-  const session = await decrypt(cookie);
-  const data = session?.data as Session;
-
-  if (!session || !data.id) {
-    throwError();
-  }
-
-  context.set('authorization', {
-    teamId: null,
-    userId: data.id,
-    scope: 'full-access'
-  });
-  return true;
-};
-
-const validateAPIKey = async (
-  context: Context,
-  options?: AuthOptions
-): Promise<boolean> => {
-  const authorization = context.req.header('Authorization');
-  if (authorization === undefined) {
-    throwError();
-    return false;
-  }
-  if (!authorization.includes('Bearer ')) {
-    throwError({
-      name: 'Unauthorized',
-      description: 'Invalid API Key.'
-    });
-    return false;
-  }
-  const splittedHeader = authorization.split(' ');
-
-  if (splittedHeader[1] === undefined) {
-    throwError({
-      name: 'Unauthorized',
-      description: 'Invalid API Key.'
-    });
-    return false;
-  }
-
-  const apiKey = getAPIKeyHash(splittedHeader[1]);
-
-  const data = await db.query.apiKeys.findFirst({
-    where: eq(apiKeys.key, apiKey)
-  });
-  if (!data) {
-    throwError({
-      name: 'Unauthorized',
-      description: 'Invalid API Key.'
-    });
-    return false;
-  }
-
-  context.set('authorization', {
-    teamId: data.team,
-    userId: data.user,
-    scope: data.scope
-  });
-
-  if (data.scope !== 'full-access' && options?.needsFullScope === true) {
-    throwError({
-      name: 'Unauthorized',
-      description:
-        'Your API Key does not allow you to do this action, use one with full access instead.'
+  if (method === 'POST' && !createPermissions) {
+    throw new HTTPException(401, {
+      message: 'Unauthorized, please check your permissions.'
     });
   }
 
-  return true;
+  if (method === 'PATCH' && !editPermissions) {
+    throw new HTTPException(401, {
+      message: 'Unauthorized, please check your permissions.'
+    });
+  }
+
+  if (method === 'DELETE' && !deletePermissions) {
+    throw new HTTPException(401, {
+      message: 'Unauthorized, please check your permissions.'
+    });
+  }
 };
