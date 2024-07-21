@@ -84,7 +84,7 @@ export const authentication = (): MiddlewareHandler => {
       });
     }
 
-    if (method === 'PATCH' && !editPermissions) {
+    if (method === 'PUT' && !editPermissions) {
       throw new HTTPException(401, {
         message: 'You need `edit` permissions to perform this action.'
       });
