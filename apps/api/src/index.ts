@@ -1,15 +1,8 @@
-import {OpenAPIHono} from '@hono/zod-openapi';
-import {security} from '@/lib/middlewares';
-import {openApi} from '@/lib/openapi';
-import {server} from '@/lib/server';
-//import v0 from '@/routes/v0';
-import v1 from '@/routes/v1';
+import {newApp, serve} from '@/lib/hono';
+import api from '@/v1';
 
-const router = new OpenAPIHono();
-security(router);
-openApi(router);
+const app = newApp();
 
-//router.route('/v0', v0);
-router.route('/v1', v1);
+app.route('/v1', api);
 
-server(router);
+serve(app);
