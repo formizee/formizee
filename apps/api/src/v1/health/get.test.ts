@@ -1,5 +1,5 @@
 import {test, expect, vi, type Mock} from 'vitest';
-import {healthAPI} from './index';
+import {health as healthAPI} from '.';
 
 globalThis.fetch = vi.fn();
 
