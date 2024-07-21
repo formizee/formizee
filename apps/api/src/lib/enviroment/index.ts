@@ -1,23 +1,16 @@
-import fs from 'node:fs';
-import path from 'node:path';
-import * as dotenv from 'dotenv';
+import {createEnv} from '@t3-oss/env-core';
+import 'dotenv/config';
+import {z} from 'zod';
 
-const envFiles = [
-  '.env.local',
-  '.env.development.local',
-  '.env.development',
-  '.env'
-];
-
-export const loadedEnviroments: string[] = [];
-
-for (const file of envFiles) {
-  const envPath = path.resolve(process.cwd(), file);
-  if (fs.existsSync(envPath)) {
-    loadedEnviroments.push(file);
-  }
-}
-
-dotenv.config({
-  path: envFiles
+export const env = createEnv({
+  server: {
+    NODE_ENV: z.enum(['test', 'development', 'production']),
+    DATABASE_URL: z.string().url(),
+    WEB_URL: z.string().url(),
+    API_URL: z.string().url(),
+    DOCS_URL: z.string().url(),
+    JWT_SECRET: z.string()
+  },
+  runtimeEnv: process.env,
+  emptyStringAsUndefined: true
 });
