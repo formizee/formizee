@@ -17,17 +17,24 @@
   "license": "MIT",
   "scripts": {
     "lint": "biome lint .",
-    "migrate": "drizzle-kit push",
-    "studio": "drizzle-kit studio"
+    "seed": "tsx src/seed.ts",
+    "example": "tsx src/example.ts",
+    "push": "drizzle-kit push",
+    "studio": "drizzle-kit studio",
+    "migrate": "drizzle-kit migrate"
   },
   "devDependencies": {
     "@formizee/tsconfig": "workspace:*",
     "@types/node": "20.14.11",
     "@types/pg": "8.11.6",
-    "drizzle-kit": "0.23.0"
+    "drizzle-kit": "0.23.0",
+    "tsx": "4.16.2"
   },
   "dependencies": {
+    "@formizee/hashing": "workspace:*",
+    "@formizee/id": "workspace:*",
     "@t3-oss/env-core": "0.10.1",
+    "dotenv": "16.4.5",
     "drizzle-orm": "0.32.0",
     "drizzle-zod": "0.5.1",
     "pg": "8.12.0",

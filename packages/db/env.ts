@@ -1,4 +1,5 @@
 import {createEnv} from '@t3-oss/env-core';
+import 'dotenv/config';
 import {z} from 'zod';
 
 export const env = createEnv({
