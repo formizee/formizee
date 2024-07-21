@@ -4,4 +4,4 @@ export {schema};
 
 // Drizzle utilities
 export * from 'drizzle-orm';
-export * from './client';
+export {db} from './client';
