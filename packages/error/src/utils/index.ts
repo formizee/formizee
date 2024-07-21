@@ -42,7 +42,7 @@ export function codeToStatus(code: ErrorCode): number {
       return 409;
     case 'UNPROCESSABLE_ENTITY':
       return 422;
-    case "TOO_MANY_REQUESTS":
+    case 'TOO_MANY_REQUESTS':
       return 429;
     case 'INTERNAL_SERVER_ERROR':
       return 500;
