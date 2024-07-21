@@ -24,7 +24,9 @@ export const insertWorkspaceSchema = createInsertSchema(workspace, {
   endsAt: z.string().datetime().optional(),
   paidUntil: z.string().datetime().optional()
 });
-export const selectWorkspaceSchema = createSelectSchema(workspace);
+export const selectWorkspaceSchema = createSelectSchema(workspace, {
+  availableEmails: z.string().email().array()
+});
 
 export type InsertWorkspace = z.infer<typeof insertWorkspaceSchema>;
 export type Workspace = z.infer<typeof selectWorkspaceSchema>;
