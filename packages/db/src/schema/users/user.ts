@@ -16,7 +16,6 @@ export const user = pgTable(
     id: text('id').primaryKey(),
     name: text('name').notNull(),
     slug: text('slug').notNull().unique(),
-    password: text('password').notNull(),
 
     email: text('email').notNull().unique(),
     isVerified: boolean('is_verified').notNull().default(false),
@@ -56,6 +55,7 @@ export const usersToWorkspaces = pgTable('users_to_workspaces', {
     .references(() => workspace.id),
 
   role: roles('role').notNull().default('member'),
+
   permissions: permissions('permissions').notNull().default('read'),
 
   createdAt: timestamp('created_at').notNull().defaultNow(),

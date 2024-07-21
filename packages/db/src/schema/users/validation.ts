@@ -1,5 +1,4 @@
 import {createInsertSchema, createSelectSchema} from 'drizzle-zod';
-import {checkPasswordComplexity} from './utils';
 import {user} from './user';
 import {z} from 'zod';
 
@@ -21,14 +20,10 @@ export const insertUserSchema = createInsertSchema(user, {
     }),
   email: z.string().email({
     message: 'The email is not valid, please check that is correctly typed.'
-  }),
-  password: z
-    .string()
-    .min(8, {message: 'Password must be between 8 and 64 characters long'})
-    .max(64, {message: 'Password must be between 8 and 64 characters long'})
-}).superRefine(checkPasswordComplexity);
+  })
+});
 
-export const selectUserSchema = createSelectSchema(user).omit({password: true});
+export const selectUserSchema = createSelectSchema(user);
 
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = z.infer<typeof selectUserSchema>;
