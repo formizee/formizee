@@ -1,6 +1,6 @@
-import {openApiErrorResponses} from '@/lib/errors/openapi-error-responses';
+import {openApiErrorResponses} from '@/lib/errors';
 import {createRoute} from '@hono/zod-openapi';
-import type {healthAPI} from '.';
+import type {health as healthAPI} from '.';
 import {z} from 'zod';
 
 export const getRoute = createRoute({
@@ -8,7 +8,7 @@ export const getRoute = createRoute({
   path: '/',
   summary: 'Get API status',
   description: 'Returns the Formizee API status',
-  operationId: 'status',
+  operationId: 'getStatus',
   tags: ['Health'],
   security: [],
   responses: {
