@@ -16,9 +16,11 @@ export const key = pgTable(
       .notNull()
       .references(() => user.id, {onDelete: 'cascade'}),
 
-    workspaceId: text('workspace_id').references(() => workspace.id, {
-      onDelete: 'cascade'
-    }),
+    workspaceId: text('workspace_id')
+      .notNull()
+      .references(() => workspace.id, {
+        onDelete: 'cascade'
+      }),
 
     lastAccess: timestamp('last_access').notNull().defaultNow(),
 
