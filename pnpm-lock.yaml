@@ -56,6 +56,9 @@ importers:
       '@formizee/error':
         specifier: workspace:*
         version: link:../../packages/error
+      '@formizee/plans':
+        specifier: workspace:*
+        version: link:../../packages/plans
       '@formizee/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig
