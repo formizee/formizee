@@ -197,22 +197,6 @@ importers:
         specifier: 5.4.5
         version: 5.4.5
 
-  packages/billing:
-    dependencies:
-      '@formizee/db':
-        specifier: workspace:*
-        version: link:../db
-      zod:
-        specifier: 3.23.8
-        version: 3.23.8
-    devDependencies:
-      '@formizee/tsconfig':
-        specifier: workspace:*
-        version: link:../tsconfig
-      '@types/node':
-        specifier: 20.14.11
-        version: 20.14.11
-
   packages/db:
     dependencies:
       '@t3-oss/env-core':
@@ -390,6 +374,25 @@ importers:
       '@types/geoip-lite':
         specifier: 1.4.4
         version: 1.4.4
+      '@types/node':
+        specifier: 20.14.11
+        version: 20.14.11
+      vitest:
+        specifier: 2.0.3
+        version: 2.0.3(@edge-runtime/vm@4.0.0)(@types/node@20.14.11)(@vitest/ui@2.0.3)(terser@5.31.2)
+
+  packages/plans:
+    dependencies:
+      '@formizee/db':
+        specifier: workspace:*
+        version: link:../db
+      zod:
+        specifier: 3.23.8
+        version: 3.23.8
+    devDependencies:
+      '@formizee/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
       '@types/node':
         specifier: 20.14.11
         version: 20.14.11
