@@ -8,6 +8,7 @@ import {
 } from 'drizzle-orm/pg-core';
 import {workspace, workspaceRole} from '../workspaces';
 import {relations} from 'drizzle-orm';
+import {memberPermissions} from './constants';
 
 export const user = pgTable(
   'users',
@@ -43,6 +44,7 @@ export const userRelations = relations(user, ({many}) => ({
 // Users To Workspaces //
 
 export const roles = pgEnum('workspace_role', workspaceRole);
+export const permissions = pgEnum('member_permissions', memberPermissions);
 
 export const usersToWorkspaces = pgTable('users_to_workspaces', {
   userId: text('user_id')
@@ -54,6 +56,7 @@ export const usersToWorkspaces = pgTable('users_to_workspaces', {
     .references(() => workspace.id),
 
   role: roles('role').notNull().default('member'),
+  permissions: permissions('permissions').notNull().default('read'),
 
   createdAt: timestamp('created_at').notNull().defaultNow(),
 
