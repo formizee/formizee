@@ -1,6 +1,6 @@
 import {HTTPException} from 'hono/http-exception';
-import {type schema, db} from '@formizee/db';
 import type {MiddlewareHandler} from 'hono';
+import {db, eq, schema} from '@formizee/db';
 import {getLimits} from '@formizee/plans';
 import {sha256} from '@formizee/hashing';
 
@@ -26,6 +26,15 @@ export const authentication = (): MiddlewareHandler => {
       });
     }
 
+    const isExpired = new Date() > key.expiresAt;
+    if (isExpired) {
+      await db.delete(schema.key).where(eq(schema.key.id, key.id));
+
+      throw new HTTPException(401, {
+        message: 'The API key is expired.'
+      });
+    }
+
     const workspace = await db.query.workspace.findFirst({
       where: (table, {eq}) => eq(table.id, key.workspaceId)
     });
@@ -45,11 +54,14 @@ export const authentication = (): MiddlewareHandler => {
       });
     }
 
-    context.set('auth', {
-      user: user,
-      workspace: workspace,
-      limits: getLimits(workspace.plan)
-    });
+    await db
+      .update(schema.key)
+      .set({lastAccess: new Date()})
+      .where(eq(schema.key.id, key.id));
+
+    context.set('user', user);
+    context.set('workspace', workspace);
+    context.set('limits', getLimits(workspace.plan));
 
     const permissions = user.usersToWorkspaces.find(
       relation => relation.workspaceId,
@@ -61,35 +73,29 @@ export const authentication = (): MiddlewareHandler => {
       });
     }
 
-    authorizeRequests(context.req.method, permissions);
+    const createPermissions = permissions === 'all' || permissions === 'create';
+    const deletePermissions = permissions === 'all';
+    const editPermissions = permissions !== 'read';
+    const method = context.req.method;
+
+    if (method === 'POST' && !createPermissions) {
+      throw new HTTPException(401, {
+        message: 'You need `create` permissions to perform this action.'
+      });
+    }
+
+    if (method === 'PATCH' && !editPermissions) {
+      throw new HTTPException(401, {
+        message: 'You need `edit` permissions to perform this action.'
+      });
+    }
+
+    if (method === 'DELETE' && !deletePermissions) {
+      throw new HTTPException(401, {
+        message: 'You need to be admin to perform this action.'
+      });
+    }
 
     await next();
   };
-};
-
-const authorizeRequests = async (
-  method: string,
-  permissions: schema.MemberPermissions
-) => {
-  const createPermissions = permissions === 'all' || permissions === 'create';
-  const deletePermissions = permissions === 'all';
-  const editPermissions = permissions !== 'read';
-
-  if (method === 'POST' && !createPermissions) {
-    throw new HTTPException(401, {
-      message: 'Unauthorized, please check your permissions.'
-    });
-  }
-
-  if (method === 'PATCH' && !editPermissions) {
-    throw new HTTPException(401, {
-      message: 'Unauthorized, please check your permissions.'
-    });
-  }
-
-  if (method === 'DELETE' && !deletePermissions) {
-    throw new HTTPException(401, {
-      message: 'Unauthorized, please check your permissions.'
-    });
-  }
 };

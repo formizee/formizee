@@ -1,5 +1,8 @@
-import type {AuthContext} from '@/lib/auth';
+import type {Limits} from '@formizee/plans';
+import type {schema} from '@formizee/db';
 
 export type HonoVariables = {
-  auth: AuthContext;
+  limits: Limits;
+  user: schema.User;
+  workspace: schema.Workspace;
 };
