@@ -1,10 +1,10 @@
-import type {BillingPlan} from '@formizee/db';
+import type {WorkspacePlans} from '@formizee/db/schema';
 import type {Limits} from './types';
 
 export const planConfig: Record<
-  BillingPlan,
+  WorkspacePlans,
   {
-    title: 'Hobby' | 'Pro' | 'Teams' | 'Company';
+    title: 'Hobby' | 'Pro' | 'Teams' | 'Enterprise';
     description: string;
     price: number;
     limits: Limits;
@@ -34,20 +34,8 @@ export const planConfig: Record<
       members: 1
     }
   },
-  teams: {
-    title: 'Teams',
-    description: 'For small teams',
-    price: 20,
-    limits: {
-      support: 'custom',
-      endpoints: 'unlimited',
-      submissions: 10000,
-      storage: 3000,
-      members: 6
-    }
-  },
-  company: {
-    title: 'Company',
+  enterprise: {
+    title: 'Enterprise',
     description: 'For bigger teams',
     price: 80,
     limits: {
