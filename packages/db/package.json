@@ -18,7 +18,6 @@
   "scripts": {
     "lint": "biome lint .",
     "seed": "tsx src/seed.ts",
-    "example": "tsx src/example.ts",
     "push": "drizzle-kit push",
     "studio": "drizzle-kit studio",
     "migrate": "drizzle-kit migrate"
