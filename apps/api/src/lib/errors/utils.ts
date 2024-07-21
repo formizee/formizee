@@ -1,15 +1,14 @@
-import type {Context} from 'hono';
 import {HTTPException} from 'hono/http-exception';
-import {env} from '@enviroment';
+import {z} from '@hono/zod-openapi';
+import type {Context} from 'hono';
+import {ZodError} from 'zod';
+import {env} from '@/lib/enviroment';
 import {
   type ErrorCode,
   ErrorCodeEnum,
   SchemaError,
   statusToCode
 } from '@formizee/error';
-
-import {z} from '@hono/zod-openapi';
-import {ZodError} from 'zod';
 
 export function handleError(err: Error, c: Context): Response {
   if (err instanceof ZodError) {
@@ -34,6 +33,7 @@ export function handleError(err: Error, c: Context): Response {
       {status: err.status}
     );
   }
+  console.error(err);
   return c.json<ErrorSchema>(
     {
       code: 'INTERNAL_SERVER_ERROR',
