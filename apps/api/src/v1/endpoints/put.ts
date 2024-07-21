@@ -8,7 +8,7 @@ import {db, eq, schema} from '@formizee/db';
 export const putRoute = createRoute({
   method: 'put',
   tags: ['Endpoints'],
-  description: 'Update a endpoint',
+  summary: 'Update a endpoint',
   path: '/{id}',
   request: {
     params: ParamsSchema,

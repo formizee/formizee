@@ -9,7 +9,7 @@ import {newId} from '@formizee/id';
 export const postRoute = createRoute({
   method: 'post',
   tags: ['Endpoints'],
-  description: 'Create a endpoint',
+  summary: 'Create a endpoint',
   path: '/',
   request: {
     body: {

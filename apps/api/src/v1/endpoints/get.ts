@@ -8,7 +8,7 @@ import {db} from '@formizee/db';
 export const getRoute = createRoute({
   method: 'get',
   tags: ['Endpoints'],
-  description: 'Retrieve a endpoint',
+  summary: 'Retrieve a endpoint',
   path: '/{id}',
   request: {
     params: ParamsSchema

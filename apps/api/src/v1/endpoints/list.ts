@@ -8,7 +8,7 @@ import {EndpointSchema} from './schema';
 export const listRoute = createRoute({
   method: 'get',
   tags: ['Endpoints'],
-  description: 'List endpoints',
+  summary: 'List endpoints',
   path: '/',
   responses: {
     200: {

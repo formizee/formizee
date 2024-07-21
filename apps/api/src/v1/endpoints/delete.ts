@@ -8,7 +8,7 @@ import {ParamsSchema} from './schema';
 export const deleteRoute = createRoute({
   method: 'delete',
   tags: ['Endpoints'],
-  description: 'Delete a endpoint',
+  summary: 'Delete a endpoint',
   path: '/{id}',
   request: {
     params: ParamsSchema
