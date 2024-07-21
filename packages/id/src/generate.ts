@@ -8,11 +8,10 @@ const prefixes = {
   user: 'id',
   test: 'test',
   auth: 'auth',
-  team: 'team',
   member: 'mbr',
   email: 'mail',
+  workspace: 'ws',
   endpoint: 'enp',
-  waitlist: 'wlt',
   submission: 'sub'
 } as const;
 
