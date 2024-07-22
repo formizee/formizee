@@ -4,7 +4,11 @@ import {z} from 'zod';
 
 export const env = createEnv({
   server: {
-    DATABASE_URL: z.string().url()
+    NODE_ENV: z.enum(['test', 'development', 'production']).default('test'),
+    DATABASE_URL: z
+      .string()
+      .url()
+      .default('postgresql://formizee:formizee@localhost/test')
   },
   runtimeEnv: process.env,
   emptyStringAsUndefined: true

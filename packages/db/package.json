@@ -11,6 +11,11 @@
       "types": "./src/schema/index.ts",
       "import": "./src/schema/index.ts",
       "require": "./src/schema/index.ts"
+    },
+    "./testing": {
+      "types": "./src/testing/index.ts",
+      "import": "./src/testing/index.ts",
+      "require": "./src/testing/index.ts"
     }
   },
   "version": "1.0.0",
@@ -31,7 +36,6 @@
   },
   "dependencies": {
     "@formizee/hashing": "workspace:*",
-    "@formizee/id": "workspace:*",
     "@t3-oss/env-core": "0.10.1",
     "dotenv": "16.4.5",
     "drizzle-orm": "0.32.0",
