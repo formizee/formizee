@@ -4,6 +4,7 @@ import type {endpoints as endpointsAPI} from '.';
 import {createRoute} from '@hono/zod-openapi';
 import {db, count, schema, eq} from '@formizee/db';
 import {EndpointSchema} from './schema';
+import {env} from '@/lib/enviroment';
 import {newId} from '@formizee/id';
 
 export const postRoute = createRoute({
@@ -41,7 +42,6 @@ export const registerPostEndpoint = (api: typeof endpointsAPI) => {
     const user = context.get('user');
 
     // Check plan limits.
-
     const endpoints = await db
       .select({count: count()})
       .from(schema.endpoint)
@@ -99,7 +99,7 @@ export const registerPostEndpoint = (api: typeof endpointsAPI) => {
       isEnabled: input.isEnabled,
       emailNotifications: input.emailNotifications,
 
-      redirectUrl: input.redirectUrl,
+      redirectUrl: input.redirectUrl ?? `${env.WEB_URL}/thanks-you`,
       targetEmails: input.targetEmails,
 
       icon: input.icon,

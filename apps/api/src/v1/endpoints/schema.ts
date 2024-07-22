@@ -53,6 +53,7 @@ export const EndpointSchema = z.object({
       message: 'Invalid redirect url, please check that is correctly typed.'
     })
     .default(`${env.WEB_URL}/thanks-you`)
+    .optional()
     .openapi({
       description:
         'The redirect url of the endpoint. When a user send a submission through a form, will be redirected to this url.',
