@@ -2,7 +2,7 @@
   "name": "@formizee/email",
   "author": "Pau García Chiner",
   "version": "1.0.0",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "exports": {
     ".": {
       "types": "./src/index.ts",

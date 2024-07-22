@@ -1,6 +1,6 @@
 {
   "name": "@formizee/tsconfig",
   "version": "1.0.0",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "private": true
 }
