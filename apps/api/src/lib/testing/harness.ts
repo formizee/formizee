@@ -111,10 +111,10 @@ export abstract class Harness {
       targetEmails: workspace.availableEmails,
       workspaceId: workspace.id,
       redirectUrl: 'https://formizee.com/thanks-you',
-      icon: 'code',
+      icon: 'file',
       color: 'gray',
-      isEnabled: false,
-      emailNotifications: false,
+      isEnabled: true,
+      emailNotifications: true,
       createdAt: new Date(),
       updatedAt: new Date()
     };
