@@ -7,7 +7,7 @@ export const submission = pgTable('submissions', {
 
   endpointId: text('endpoint_id')
     .notNull()
-    .references(() => endpoint.id, {onDelete: 'set null'}),
+    .references(() => endpoint.id, {onDelete: 'cascade'}),
 
   data: jsonb('data').notNull().$type<object>(),
 
