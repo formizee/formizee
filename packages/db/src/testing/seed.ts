@@ -1,6 +1,15 @@
+import {drizzle} from 'drizzle-orm/node-postgres';
 import {sha256} from '@formizee/hashing';
-import {db} from '../client';
+import {env} from '../../env';
 import {schema} from '..';
+import pg from 'pg';
+
+const getTestingClient = async () => {
+  const client = new pg.Client({connectionString: env.TESTING_DATABASE_URL});
+  await client.connect();
+
+  return drizzle(client, {schema: schema});
+};
 
 const generateResources = async () => {
   const workspace = {
@@ -67,21 +76,29 @@ const generateResources = async () => {
 };
 
 export async function seedDatabase() {
-  const {
-    key,
-    user,
-    endpoint,
-    workspace,
-    submission,
-    usersToEmails,
-    usersToWorkspaces
-  } = await generateResources();
+  const db = await getTestingClient();
+
+  const {key, user, endpoint, submission, usersToEmails} =
+    await generateResources();
 
   try {
     await db.transaction(async tx => {
-      await tx.insert(schema.workspace).values(workspace);
+      await tx.insert(schema.workspace).values([
+        {
+          id: 'ws_9CWDA9MKp3UHDwyqxrBt5AbEWfJ',
+          slug: 'formizee',
+          stripeId: 'stripeId1',
+          subscriptionId: 'subscriptionId',
+          availableEmails: ['pauchiner@formizee.com'],
+          plan: 'pro'
+        }
+      ]);
       await tx.insert(schema.user).values(user);
-      await tx.insert(schema.usersToWorkspaces).values(usersToWorkspaces);
+      await tx.insert(schema.usersToWorkspaces).values({
+        workspaceId: 'ws_9CWDA9MKp3UHDwyqxrBt5AbEWfJ',
+        userId: 'id_9CWDA9MKp3UHDwyqxrBt5AbEWfJ',
+        role: 'owner'
+      });
       await tx.insert(schema.usersToEmails).values(usersToEmails);
       await tx.insert(schema.endpoint).values(endpoint);
       await tx.insert(schema.submission).values(submission);
@@ -90,11 +107,12 @@ export async function seedDatabase() {
   } catch (e) {
     console.error(" \x1b[0m[\x1b[31m\x1b[0m] database can't be seeded.");
     console.error(e);
-    process.exit(1);
   }
 }
 
 export async function clearDatabase() {
+  const db = await getTestingClient();
+
   try {
     await db.transaction(async tx => {
       await tx.delete(schema.key);
@@ -108,6 +126,5 @@ export async function clearDatabase() {
   } catch (e) {
     console.error(" \x1b[0m[\x1b[31m\x1b[0m] database can't be cleared.");
     console.error(e);
-    process.exit(1);
   }
 }

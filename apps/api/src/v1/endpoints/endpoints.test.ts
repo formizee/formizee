@@ -1,14 +1,12 @@
 import {clearDatabase, seedDatabase} from '@formizee/db/testing';
-import {beforeEach, expect, test, vi} from 'vitest';
+import {beforeEach, expect, test} from 'vitest';
 import api from '@/v1';
-
-vi.stubEnv('DATABASE_URL', 'postgresql://formizee:formizee@localhost/test');
-vi.stubEnv('WEB_URL', 'https://formizee.com');
 
 beforeEach(async () => {
   await clearDatabase();
   await seedDatabase();
 });
+
 test('GET', async () => {
   const res = await api.request('/endpoints/enp_9CWDA9MKp3UHDwyqxrBt5AbEWfJ', {
     method: 'GET',

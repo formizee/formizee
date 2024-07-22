@@ -5,12 +5,12 @@ import {z} from 'zod';
 export const env = createEnv({
   server: {
     NODE_ENV: z.enum(['test', 'development', 'production']),
+    TESTING_DATABASE_URL: z.string().url(),
     DATABASE_URL: z.string().url(),
     DOCS_URL: z.string().url(),
     WEB_URL: z.string().url(),
     API_URL: z.string().url()
   },
   runtimeEnv: process.env,
-  emptyStringAsUndefined: true,
-  skipValidation: process.env.NODE_ENV === 'test'
+  emptyStringAsUndefined: true
 });

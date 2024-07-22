@@ -22,10 +22,12 @@
   "license": "MIT",
   "scripts": {
     "lint": "biome lint .",
-    "seed": "tsx src/seed.ts",
     "push": "drizzle-kit push",
     "studio": "drizzle-kit studio",
-    "migrate": "drizzle-kit migrate"
+    "migrate": "drizzle-kit migrate",
+    "push:test": "NODE_ENV=test drizzle-kit push",
+    "studio:test": "NODE_ENV=test drizzle-kit studio",
+    "migrate:test": "NODE_ENV=test drizzle-kit migrate"
   },
   "devDependencies": {
     "@formizee/tsconfig": "workspace:*",
