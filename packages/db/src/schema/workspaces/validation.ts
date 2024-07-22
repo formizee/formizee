@@ -18,6 +18,7 @@ export const insertWorkspaceSchema = createInsertSchema(workspace, {
     }),
 
   plan: z.enum(workspacePlans).default('hobby'),
+  availableEmails: z.string().email().array(),
 
   stripeId: z.string().optional(),
   subscriptionId: z.string().optional(),
