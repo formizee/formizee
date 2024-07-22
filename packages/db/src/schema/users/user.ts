@@ -48,11 +48,11 @@ export const permissions = pgEnum('member_permissions', memberPermissions);
 export const usersToWorkspaces = pgTable('users_to_workspaces', {
   userId: text('user_id')
     .notNull()
-    .references(() => user.id),
+    .references(() => user.id, {onDelete: 'cascade'}),
 
   workspaceId: text('workspace_id')
     .notNull()
-    .references(() => workspace.id),
+    .references(() => workspace.id, {onDelete: 'cascade'}),
 
   role: roles('role').notNull().default('member'),
 
@@ -85,7 +85,7 @@ export const usersToWorkspaceRelations = relations(
 export const usersToEmails = pgTable('users_to_emails', {
   userId: text('user_id')
     .notNull()
-    .references(() => user.id),
+    .references(() => user.id, {onDelete: 'cascade'}),
 
   email: text('email').notNull(),
 

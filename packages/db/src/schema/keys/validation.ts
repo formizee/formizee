@@ -1,5 +1,4 @@
 import {createInsertSchema, createSelectSchema} from 'drizzle-zod';
-import {apiKeyExpirationDate} from './constants';
 import {key} from './key';
 import {z} from 'zod';
 
@@ -13,14 +12,11 @@ export const insertKeySchema = createInsertSchema(key, {
     .max(64, {message: 'The name must be between 8 and 64 characters long'}),
   hash: z.string(),
 
-  userId: z.string().regex(/^[a-zA-Z]+_[a-zA-Z0-9]+$/, {
-    message: 'Invalid identifier, please check that is correctly typed.'
-  }),
   workspaceId: z.string().regex(/^[a-zA-Z]+_[a-zA-Z0-9]+$/, {
     message: 'Invalid identifier, please check that is correctly typed.'
   }),
 
-  expiresAt: z.enum(apiKeyExpirationDate)
+  expiresAt: z.date()
 });
 export const selectKeySchema = createSelectSchema(key);
 

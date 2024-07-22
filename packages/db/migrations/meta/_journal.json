@@ -15,6 +15,20 @@
       "when": 1721650750619,
       "tag": "0001_steep_grey_gargoyle",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1721669993671,
+      "tag": "0002_slow_exiles",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1721675790536,
+      "tag": "0003_blue_famine",
+      "breakpoints": true
     }
   ]
 }

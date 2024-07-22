@@ -11,7 +11,7 @@ export const endpoint = pgTable('endpoints', {
 
   workspaceId: text('workspace_id')
     .notNull()
-    .references(() => workspace.id),
+    .references(() => workspace.id, {onDelete: 'cascade'}),
 
   slug: text('slug').notNull().unique(),
   icon: icons('icon').notNull().default('file'),

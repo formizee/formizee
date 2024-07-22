@@ -12,7 +12,9 @@ export const insertSubmissionSchema = createInsertSchema(submission, {
   }),
   data: z.object({}).passthrough()
 });
-export const selectSubmissionSchema = createSelectSchema(submission);
+export const selectSubmissionSchema = createSelectSchema(submission, {
+  data: z.object({}).passthrough()
+});
 
 export type InsertSubmission = z.infer<typeof insertSubmissionSchema>;
 export type Submission = z.infer<typeof selectSubmissionSchema>;

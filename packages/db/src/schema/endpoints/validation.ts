@@ -30,7 +30,9 @@ export const insertEndpointSchema = createInsertSchema(endpoint, {
   color: z.enum(endpointColor).default('gray')
 });
 
-export const selectEndpointSchema = createSelectSchema(endpoint);
+export const selectEndpointSchema = createSelectSchema(endpoint, {
+  targetEmails: z.string().email().array()
+});
 
 export type InsertEndpoint = z.infer<typeof insertEndpointSchema>;
 export type Endpoint = z.infer<typeof selectEndpointSchema>;
