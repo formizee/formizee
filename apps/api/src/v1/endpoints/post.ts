@@ -39,7 +39,6 @@ export const registerPostEndpoint = (api: typeof endpointsAPI) => {
     const workspace = context.get('workspace');
     const input = context.req.valid('json');
     const limits = context.get('limits');
-    const user = context.get('user');
 
     // Check plan limits.
     const endpoints = await db
@@ -84,10 +83,6 @@ export const registerPostEndpoint = (api: typeof endpointsAPI) => {
         message:
           'All the target emails needs to be available in the current workspace'
       });
-    }
-
-    if (input.targetEmails.length === 0) {
-      input.targetEmails = [user.email];
     }
 
     const data: schema.InsertEndpoint = {

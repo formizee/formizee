@@ -66,7 +66,6 @@ export const EndpointSchema = z.object({
       message: 'Invalid redirect url, please check that is correctly typed.'
     })
     .array()
-    .default([])
     .openapi({
       example: ['example1@formizee.com', 'example2@formizee.com']
     }),
