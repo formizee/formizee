@@ -6,11 +6,11 @@ export const env = createEnv({
   server: {
     NODE_ENV: z.enum(['test', 'development', 'production']),
     DATABASE_URL: z.string().url(),
-    WEB_URL: z.string().url(),
-    API_URL: z.string().url(),
     DOCS_URL: z.string().url(),
-    JWT_SECRET: z.string()
+    WEB_URL: z.string().url(),
+    API_URL: z.string().url()
   },
   runtimeEnv: process.env,
-  emptyStringAsUndefined: true
+  emptyStringAsUndefined: true,
+  skipValidation: process.env.NODE_ENV === 'test'
 });
