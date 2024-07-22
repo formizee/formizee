@@ -90,3 +90,5 @@ export const newApp = (): OpenAPIHono<{Variables: HonoVariables}> => {
 
   return app;
 };
+
+export type App = ReturnType<typeof newApp>;

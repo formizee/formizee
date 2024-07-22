@@ -11,11 +11,6 @@
       "types": "./src/schema/index.ts",
       "import": "./src/schema/index.ts",
       "require": "./src/schema/index.ts"
-    },
-    "./testing": {
-      "types": "./src/testing/index.ts",
-      "import": "./src/testing/index.ts",
-      "require": "./src/testing/index.ts"
     }
   },
   "version": "1.0.0",
@@ -25,6 +20,7 @@
     "push": "drizzle-kit push",
     "studio": "drizzle-kit studio",
     "migrate": "drizzle-kit migrate",
+    "generate": "drizzle-kit generate",
     "push:test": "NODE_ENV=test drizzle-kit push",
     "studio:test": "NODE_ENV=test drizzle-kit studio",
     "migrate:test": "NODE_ENV=test drizzle-kit migrate"
