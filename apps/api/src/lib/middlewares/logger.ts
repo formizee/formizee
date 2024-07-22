@@ -4,8 +4,7 @@ const messages = (message: string): void => {
   const rawData = message.split(' ');
 
   if (!rawData[3]) {
-    // biome-ignore lint/suspicious/noConsoleLog: Disabled for obviously reasons.
-    console.log(message);
+    console.info(message);
     return;
   }
 
@@ -25,9 +24,6 @@ const messages = (message: string): void => {
     }
     if (type === 'PUT') {
       return '\x1b[33mPUT\x1b[0m';
-    }
-    if (type === 'PATCH') {
-      return '\x1b[35mPATCH\x1b[0m';
     }
     if (type === 'DELETE') {
       return '\x1b[31mDELETE\x1b[0m';
