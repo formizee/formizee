@@ -3,6 +3,7 @@ import type {MiddlewareHandler} from 'hono';
 import {db, eq, schema} from '@formizee/db';
 import {getLimits} from '@formizee/plans';
 import {sha256} from '@formizee/hashing';
+import {env} from '../enviroment';
 
 export const authentication = (): MiddlewareHandler => {
   return async function auth(context, next) {
@@ -13,6 +14,40 @@ export const authentication = (): MiddlewareHandler => {
       throw new HTTPException(401, {
         message: 'API key required.'
       });
+    }
+
+    if (env.NODE_ENV === 'test' && authorization === '1') {
+      context.set('user', {
+        id: 'id_9CWDA9MKp3UHDwyqxrBt5AbEWfJ',
+        name: 'pauchiner',
+        slug: 'pauchiner',
+        isVerified: true,
+        email: 'pauchiner@formizee.com'
+      });
+      context.set('workspace', {
+        id: 'ws_9CWDA9MKp3UHDwyqxrBt5AbEWfJ',
+        slug: 'formizee',
+        stripeId: 'stripeId1',
+        subscriptionId: 'subscriptionId',
+        availableEmails: ['pauchiner@formizee.com'],
+        plan: 'pro',
+        endsAt: null,
+        paidUntil: null
+      });
+      context.set('limits', {
+        title: 'Pro',
+        description: 'For small projects',
+        price: 5,
+        limits: {
+          support: 'email',
+          endpoints: 'unlimited',
+          submissions: 1000,
+          storage: 1000,
+          members: 1
+        }
+      });
+      await next();
+      return;
     }
 
     const hash = await sha256(authorization);
