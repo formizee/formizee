@@ -1,7 +1,7 @@
 import {handleError, handleZodError} from '@/lib/errors';
 import {apiReference} from '@scalar/hono-api-reference';
 import {OpenAPIHono} from '@hono/zod-openapi';
-import type {HonoVariables} from './types';
+import type {HonoEnv} from './types';
 import {env} from '@/lib/enviroment';
 import {
   cors,
@@ -11,19 +11,22 @@ import {
   prettyJSON,
   rateLimiter,
   secureHeaders,
-  trimTrailingSlash
+  trimTrailingSlash,
+  services
 } from '@/lib/middlewares';
 
-export const newRoute = (
-  basePath = '/'
-): OpenAPIHono<{Variables: HonoVariables}> => {
-  return new OpenAPIHono<{Variables: HonoVariables}>({
+export const newRoute = (basePath = '/'): OpenAPIHono<HonoEnv> => {
+  const route = new OpenAPIHono<HonoEnv>({
     defaultHook: handleZodError
   }).basePath(basePath);
+
+  route.use('*', services());
+
+  return route;
 };
 
-export const newApp = (): OpenAPIHono<{Variables: HonoVariables}> => {
-  const app = new OpenAPIHono<{Variables: HonoVariables}>();
+export const newApp = (): OpenAPIHono<HonoEnv> => {
+  const app = new OpenAPIHono<HonoEnv>();
   app.onError(handleError);
 
   // Middlewares
@@ -71,10 +74,10 @@ export const newApp = (): OpenAPIHono<{Variables: HonoVariables}> => {
     ]
   });
 
-  app.openAPIRegistry.registerComponent('securitySchemes', 'apiKey', {
-    name: 'X-Formizee-Api-Key',
-    type: 'apiKey',
-    in: 'header'
+  app.openAPIRegistry.registerComponent('securitySchemes', 'bearerAuth', {
+    bearerFormat: 'root key',
+    scheme: 'bearer',
+    type: 'http'
   });
 
   app.get(
