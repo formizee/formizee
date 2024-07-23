@@ -1,0 +1,34 @@
+name: formizee
+
+services:
+  database:
+    container_name: database
+    image: postgres:16.3
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DATABASE: formizee
+      POSTGRES_USER: formizee
+      POSTGRES_PASSWORD: password
+    volumes:
+      - database:/var/lib/postgresql
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+
+  storage:
+    container_name: storage
+    image: bitnami/minio:latest
+    ports:
+      - 3902:3902
+      - 2903:2903
+    environment:
+      MINIO_ROOT_USER: minio_root_user
+      MINIO_ROOT_PASSWORD: minio_root_password
+      MINIO_API_PORT_NUMBER: 3902
+      MINIO_CONSOLE_PORT_NUMBER: 3903
+    volumes:
+      - storage:/data
+
+volumes:
+  database:
+  storage:
