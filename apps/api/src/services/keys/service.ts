@@ -1,6 +1,7 @@
 import {ErrorCodeEnum, BaseError, Err, Ok, type Result} from '@formizee/error';
 import {sha256} from '@formizee/hashing';
 import {db, eq, schema} from '@formizee/db';
+import {newId} from '@formizee/id';
 
 class NotFoundError extends BaseError {
   public readonly name = 'Not Found';
@@ -10,6 +11,11 @@ class NotFoundError extends BaseError {
 class UnauthorizedError extends BaseError {
   public readonly name = 'Unauthorized';
   public readonly code = ErrorCodeEnum.enum.UNAUTHORIZED;
+}
+
+class ProcessError extends BaseError {
+  public readonly name = ProcessError.name;
+  public readonly code = ErrorCodeEnum.enum.INTERNAL_SERVER_ERROR;
 }
 
 type Key = Omit<schema.Key, 'hash' | 'createdAt' | 'workspaceId'>;
@@ -76,7 +82,58 @@ export class KeyService {
     }
   }
 
-  public async hash(key: string): Promise<string> {
+  public async createKey(
+    expiracyDate: schema.KeyExpirationDate
+  ): Promise<
+    Result<{key: string; hash: string; expiresAt: Date}, ProcessError>
+  > {
+    try {
+      const key = newId('key');
+      const hash = await this.hash(key);
+      const expiresAt = this.generateExpiracyDate(expiracyDate);
+      return Ok({
+        key,
+        hash,
+        expiresAt
+      });
+    } catch (e) {
+      const error = e as Error;
+      return Err(
+        new ProcessError({
+          message: error.message
+        })
+      );
+    }
+  }
+
+  private generateExpiracyDate(expiracyDate: schema.KeyExpirationDate): Date {
+    const newDate = (days: number): Date => {
+      return new Date(Date.now() + days * 24 * 60 * 60 * 1000);
+    };
+
+    switch (expiracyDate) {
+      case '1-day':
+        return newDate(1);
+      case '7-days':
+        return newDate(7);
+      case '30-days':
+        return newDate(30);
+      case '60-days':
+        return newDate(60);
+      case '90-days':
+        return newDate(90);
+      case '180-days':
+        return newDate(180);
+      case '1-year':
+        return newDate(365);
+      case 'never':
+        return newDate(999999);
+      default:
+        return newDate(1);
+    }
+  }
+
+  private async hash(key: string): Promise<string> {
     const hash = await sha256(key);
     return hash;
   }
