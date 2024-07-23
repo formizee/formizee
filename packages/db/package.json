@@ -11,6 +11,11 @@
       "types": "./src/schema/index.ts",
       "import": "./src/schema/index.ts",
       "require": "./src/schema/index.ts"
+    },
+    "./local": {
+      "types": "./src/local.ts",
+      "import": "./src/local.ts",
+      "require": "./src/local.ts"
     }
   },
   "version": "1.0.0",

@@ -10,6 +10,7 @@ export const env = createEnv({
     TESTING_DATABASE_URL: z.string().url(),
     DATABASE_URL: z.string().url()
   },
+  skipValidation: true,
   runtimeEnv: process.env,
   emptyStringAsUndefined: true
 });
