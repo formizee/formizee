@@ -1,0 +1,26 @@
+{
+  "name": "@formizee/local",
+  "author": "Pau García Chiner",
+  "license": "Apache-2.0",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "lint": "biome lint .",
+    "seed": "tsx ./src/seed.ts",
+    "local": "tsx ./src/index.ts"
+  },
+  "devDependencies": {
+    "@clack/prompts": "0.7.0",
+    "@formizee/db": "workspace:^",
+    "@formizee/id": "workspace:^",
+    "@formizee/tsconfig": "workspace:^",
+    "@types/node": "20.14.11",
+    "@types/pg": "8.11.6",
+    "tsx": "4.16.2"
+  },
+  "dependencies": {
+    "execa": "9.3.0",
+    "pg": "8.12.0"
+  }
+}
