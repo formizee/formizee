@@ -4,7 +4,7 @@ const b58 = baseX('123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz');
 
 const prefixes = {
   key: 'fz',
-  api: 'api',
+  api: 'key',
   user: 'id',
   test: 'test',
   auth: 'auth',
