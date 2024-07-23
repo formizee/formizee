@@ -14,7 +14,7 @@ test('GET', async t => {
 
   expect(res.status).toBe(200);
   expect(await res.json()).toStrictEqual(
-    omit(endpoint, 'createdAt', 'updatedAt')
+    omit(endpoint, ['createdAt', 'updatedAt'])
   );
 });
 
@@ -34,7 +34,7 @@ test('PUT', async t => {
 
   expect(res.status).toBe(200);
   expect(await res.json()).toMatchObject({
-    ...omit(endpoint, 'createdAt', 'updatedAt'),
+    ...omit(endpoint, ['createdAt', 'updatedAt']),
     slug: 'example'
   });
 });
@@ -51,7 +51,7 @@ test('LIST', async t => {
 
   expect(res.status).toBe(200);
   expect(await res.json()).toStrictEqual([
-    omit(endpoint, 'createdAt', 'updatedAt')
+    omit(endpoint, ['createdAt', 'updatedAt'])
   ]);
 });
 
