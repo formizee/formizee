@@ -1,17 +1,14 @@
-type OmitProperties<T, K extends keyof T> = {
-  [P in Exclude<keyof T, K>]: T[P];
-};
+type OmitKeys<T, K extends keyof T> = Omit<T, K>;
 
 export function omit<T, K extends keyof T>(
   obj: T,
-  ...keys: K[]
-): OmitProperties<T, K> {
-  const result = {} as OmitProperties<T, K>;
+  keysToOmit: K[]
+): OmitKeys<T, K> {
+  const result = { ...obj } as OmitKeys<T, K>;
 
-  for (const key in obj) {
-    if (!keys.includes(key as unknown as K)) {
-      result[key] = obj[key];
-    }
+  for (const key of keysToOmit) {
+    // biome-ignore lint:
+    delete (result as any)[key];
   }
 
   return result;
