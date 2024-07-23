@@ -21,7 +21,7 @@ export const EndpointSchema = z.object({
   }),
   workspaceId: z.string().openapi({
     description: 'The id of the workspace',
-    example: 'enp_4VjHrJoEwAFC6itz8oUBW9NW2bia'
+    example: 'ws_4VjHrJoEwAFC6itz8oUBW9NW2bia'
   }),
   slug: z
     .string()
