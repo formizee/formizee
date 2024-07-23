@@ -16,10 +16,10 @@ export async function bootstrapApi(resources: {
 }) {
   const env = marshalEnv({
     General: {
-      DOCS_URL: "http://localhost:3002",
-      WEB_URL: "http://localhost:3000",
-      API_URL: "http://localhost:3001",
-      NODE_ENV: "development"
+      DOCS_URL: 'http://localhost:3002',
+      WEB_URL: 'http://localhost:3000',
+      API_URL: 'http://localhost:3001',
+      NODE_ENV: 'development'
     },
     Database: {
       DATABASE_URL: 'postgresql://formizee:password@localhost/formizee',

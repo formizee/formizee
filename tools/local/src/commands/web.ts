@@ -16,9 +16,9 @@ export function bootstrapWeb(resources: {
 }) {
   const env = marshalEnv({
     General: {
-      DOCS_URL: "http://localhost:3002",
-      WEB_URL: "http://localhost:3000",
-      API_URL: "http://localhost:3001"
+      DOCS_URL: 'http://localhost:3002',
+      WEB_URL: 'http://localhost:3000',
+      API_URL: 'http://localhost:3001'
     },
     Database: {
       DATABASE_URL: 'postgresql://formizee:password@localhost/formizee',
