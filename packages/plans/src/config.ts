@@ -19,7 +19,9 @@ export const planConfig: Record<
       endpoints: 100,
       submissions: 250,
       storage: 100,
-      members: 1
+      members: 1,
+      keys: 10,
+      apiDailyRequests: 1000
     }
   },
   pro: {
@@ -31,7 +33,9 @@ export const planConfig: Record<
       endpoints: 'unlimited',
       submissions: 1000,
       storage: 1000,
-      members: 1
+      members: 1,
+      keys: 10,
+      apiDailyRequests: 'unlimited'
     }
   },
   enterprise: {
@@ -43,7 +47,9 @@ export const planConfig: Record<
       endpoints: 'unlimited',
       submissions: 100000,
       storage: 10000,
-      members: 'unlimited'
+      members: 'unlimited',
+      keys: 'unlimited',
+      apiDailyRequests: 'unlimited'
     }
   }
 };

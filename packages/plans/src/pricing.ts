@@ -20,6 +20,19 @@ export const pricingTableConfig: Record<
       }
     ]
   },
+  integration: {
+    label: 'Integration',
+    features: [
+      {
+        value: 'keys',
+        label: 'Number of API keys'
+      },
+      {
+        value: 'apiDailyRequests',
+        label: 'Daily request to the API'
+      }
+    ]
+  },
   storage: {
     label: 'Storage',
     features: [

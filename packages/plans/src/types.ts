@@ -4,4 +4,6 @@ export type Limits = {
   members: number | 'unlimited';
   submissions: number;
   storage: number; // Size in MB
+  apiDailyRequests: number | 'unlimited';
+  keys: number | 'unlimited';
 };
