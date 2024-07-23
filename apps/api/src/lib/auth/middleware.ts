@@ -1,56 +1,33 @@
+import type {StatusCode} from 'hono/utils/http-status';
 import {HTTPException} from 'hono/http-exception';
+import {codeToStatus} from '@formizee/error';
 import type {MiddlewareHandler} from 'hono';
-import {db, eq, schema} from '@formizee/db';
 import {getLimits} from '@formizee/plans';
-import {sha256} from '@formizee/hashing';
+import type {HonoEnv} from '@/lib/hono';
 
-export const authentication = (): MiddlewareHandler => {
+export const authentication = (): MiddlewareHandler<HonoEnv> => {
   return async function auth(context, next) {
+    const {keyService} = context.get('services');
     const authorization = context.req
       .header('authorization')
       ?.replace('Bearer ', '');
+
     if (!authorization) {
       throw new HTTPException(401, {
         message: 'API key required.'
       });
     }
 
-    const hash = await sha256(authorization);
+    const {val, err} = await keyService.verifyKey(authorization);
 
-    const key = await db.query.key.findFirst({
-      where: (table, {eq}) => eq(table.hash, hash)
-    });
-    if (!key) {
-      throw new HTTPException(401, {
-        message: 'The API key is not valid.'
+    if (err || !val) {
+      throw new HTTPException(codeToStatus(err.code) as StatusCode, {
+        message: err.message
       });
     }
 
-    const isExpired = new Date() > key.expiresAt;
-    if (isExpired) {
-      await db.delete(schema.key).where(eq(schema.key.id, key.id));
-
-      throw new HTTPException(401, {
-        message: 'The API key is expired.'
-      });
-    }
-
-    const workspace = await db.query.workspace.findFirst({
-      where: (table, {eq}) => eq(table.id, key.workspaceId)
-    });
-    if (!workspace) {
-      throw new HTTPException(404, {
-        message: 'Workspace not found.'
-      });
-    }
-
-    await db
-      .update(schema.key)
-      .set({lastAccess: new Date()})
-      .where(eq(schema.key.id, key.id));
-
-    context.set('workspace', workspace);
-    context.set('limits', getLimits(workspace.plan));
+    context.set('workspace', val.workspace);
+    context.set('limits', getLimits(val.workspace.plan));
 
     await next();
   };
