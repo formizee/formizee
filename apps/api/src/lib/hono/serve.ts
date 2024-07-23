@@ -1,11 +1,11 @@
 import type {OpenAPIHono} from '@hono/zod-openapi';
 import {serve as server} from '@hono/node-server';
-import type {HonoVariables} from '@/lib/hono';
+import type {HonoEnv} from '@/lib/hono';
 import {performance} from 'node:perf_hooks';
 import {version} from '@/../package.json';
 import {env} from '@/lib/enviroment';
 
-export const serve = (app: OpenAPIHono<{Variables: HonoVariables}>): void => {
+export const serve = (app: OpenAPIHono<HonoEnv>): void => {
   const startTime = performance.now();
 
   const BASE_URL = new URL(env.API_URL);
