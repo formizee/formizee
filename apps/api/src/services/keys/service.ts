@@ -37,7 +37,7 @@ export class KeyService {
       if (!key) {
         return Err(
           new UnauthorizedError({
-            message: 'The API key is not valid.'
+            message: 'The API key is not valid'
           })
         );
       }
@@ -48,7 +48,7 @@ export class KeyService {
 
         return Err(
           new UnauthorizedError({
-            message: 'The API key is expired.'
+            message: 'The API key is expired'
           })
         );
       }
@@ -59,7 +59,7 @@ export class KeyService {
       if (!workspace) {
         return Err(
           new NotFoundError({
-            message: 'Workspace not found.'
+            message: 'Workspace not found'
           })
         );
       }
