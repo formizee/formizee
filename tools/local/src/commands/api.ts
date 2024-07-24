@@ -8,12 +8,11 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const appPath = path.join(__dirname, '../../../../apps/api');
+const rootPath = path.join(__dirname, '../../../../');
+const rootEnvPath = path.join(rootPath, '.env');
 const envPath = path.join(appPath, '.env');
 
-export async function bootstrapApi(resources: {
-  workspace: {id: string};
-  user: {id: string};
-}) {
+export async function bootstrapApi() {
   const env = marshalEnv({
     General: {
       DOCS_URL: 'http://localhost:3002',
@@ -24,10 +23,6 @@ export async function bootstrapApi(resources: {
     Database: {
       DATABASE_URL: 'postgresql://formizee:password@localhost/formizee',
       TESTING_DATABASE_URL: 'postgresql://formizee:password@localhost/testing'
-    },
-    Bootstrap: {
-      WORKSPACE_ID: resources.workspace.id,
-      USER_ID: resources.user.id
     }
   });
 
@@ -42,11 +37,14 @@ export async function bootstrapApi(resources: {
     });
 
     if (overrideDotEnv) {
-      return writeEnvFile(env, envPath);
+      writeEnvFile(env, envPath);
+      return writeEnvFile(env, rootEnvPath);
     }
     clack.note(env, envPath);
+    clack.note(env, rootEnvPath);
   } else {
     writeEnvFile(env, envPath);
+    writeEnvFile(env, rootEnvPath);
   }
 }
 
