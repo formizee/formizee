@@ -33,7 +33,6 @@ export function handleError(err: Error, c: Context): Response {
       {status: err.status}
     );
   }
-  console.error(err);
   return c.json<ErrorSchema>(
     {
       code: 'INTERNAL_SERVER_ERROR',
