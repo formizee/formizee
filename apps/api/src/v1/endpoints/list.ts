@@ -1,6 +1,6 @@
+import type {listEndpoints as endpointsAPI} from '.';
 import {openApiErrorResponses} from '@/lib/errors';
 import {HTTPException} from 'hono/http-exception';
-import type {endpoints as endpointsAPI} from '.';
 import {createRoute} from '@hono/zod-openapi';
 import {db} from '@formizee/db';
 import {EndpointSchema} from './schema';

@@ -11,7 +11,7 @@ describe('Update a endpoint', () => {
     const {key} = await harness.createKey();
 
     const res = await harness.put<RequestPutEndpoint, ResponseEndpoint>({
-      url: `/endpoints/${endpoint.id}`,
+      url: `/endpoint/${endpoint.id}`,
       headers: {
         authorization: `Bearer ${key}`,
         'content-type': 'application/json'
@@ -40,7 +40,7 @@ describe('Update a endpoint', () => {
     const {key} = await harness.createKey();
 
     const res = await harness.put<RequestPutEndpoint, ResponseEndpoint>({
-      url: `/endpoints/${endpoint.id}`,
+      url: `/endpoint/${endpoint.id}`,
       headers: {
         authorization: `Bearer ${key}`,
         'content-type': 'application/json'

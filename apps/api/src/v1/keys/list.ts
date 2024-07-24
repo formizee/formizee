@@ -1,7 +1,7 @@
 import {openApiErrorResponses} from '@/lib/errors';
 import {HTTPException} from 'hono/http-exception';
 import {createRoute} from '@hono/zod-openapi';
-import type {keys as keysApi} from '.';
+import type {listKeys as keysApi} from '.';
 import {KeySchema} from './schema';
 import {db} from '@formizee/db';
 

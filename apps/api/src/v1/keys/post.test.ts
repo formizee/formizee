@@ -10,7 +10,7 @@ describe('Create a key', () => {
     const {key} = await harness.createKey();
 
     const res = await harness.post<RequestPostKey, ResponseKey>({
-      url: '/keys',
+      url: '/key',
       headers: {
         authorization: `Bearer ${key}`,
         'content-type': 'application/json'

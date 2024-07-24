@@ -11,7 +11,7 @@ describe('Verify a key', () => {
     const {id, key} = await harness.createKey();
 
     const res = await harness.post<RequestVerifyKey, ResponseKey>({
-      url: '/keys/verify',
+      url: '/key/verify',
       headers: {
         authorization: `Bearer ${key}`,
         'content-type': 'application/json'
@@ -32,7 +32,7 @@ describe('Verify a key', () => {
     const {key} = await harness.createKey();
 
     const res = await harness.post<RequestVerifyKey, ResponseKey>({
-      url: '/keys/verify',
+      url: '/key/verify',
       headers: {
         authorization: 'Bearer fz_notvalidkey',
         'content-type': 'application/json'

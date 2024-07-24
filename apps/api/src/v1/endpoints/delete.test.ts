@@ -12,7 +12,7 @@ describe('Delete a endpoint', () => {
 
     const res = await harness.delete<ResponseEndpoint>({
       headers: {authorization: `Bearer ${key}`},
-      url: `/endpoints/${endpoint.id}`
+      url: `/endpoint/${endpoint.id}`
     });
 
     expect(res.status).toBe(200);
@@ -25,7 +25,7 @@ describe('Delete a endpoint', () => {
 
     const res = await harness.delete<ResponseEndpoint>({
       headers: {authorization: `Bearer ${key}`},
-      url: '/endpoints/enp_123456789'
+      url: '/endpoint/enp_123456789'
     });
 
     expect(res.status).toBe(404);

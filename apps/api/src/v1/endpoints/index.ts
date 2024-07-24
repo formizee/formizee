@@ -13,7 +13,10 @@ endpoints.use(authentication());
 registerGetEndpoint(endpoints);
 registerPutEndpoint(endpoints);
 registerPostEndpoint(endpoints);
-registerListEndpoints(endpoints);
 registerDeleteEndpoint(endpoints);
 
-export {endpoints};
+const listEndpoints = newRoute();
+listEndpoints.use(authentication());
+registerListEndpoints(listEndpoints);
+
+export {endpoints, listEndpoints};

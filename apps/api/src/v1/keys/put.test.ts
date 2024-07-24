@@ -11,7 +11,7 @@ describe('Update a key', () => {
     const {key} = await harness.createKey();
 
     const res = await harness.put<RequestPutKey, ResponseKey>({
-      url: `/keys/${exampleKey.id}`,
+      url: `/key/${exampleKey.id}`,
       headers: {
         authorization: `Bearer ${key}`,
         'content-type': 'application/json'
@@ -35,7 +35,7 @@ describe('Update a key', () => {
     const {key} = await harness.createKey();
 
     const res = await harness.put<RequestPutKey, ResponseKey>({
-      url: '/keys/fz_notvalidkey',
+      url: '/key/fz_notvalidkey',
       headers: {
         authorization: `Bearer ${key}`,
         'content-type': 'application/json'

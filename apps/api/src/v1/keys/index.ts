@@ -12,8 +12,11 @@ keys.use(authentication());
 
 registerDeleteKey(keys);
 registerVerifyKey(keys);
-registerListKeys(keys);
 registerPostKey(keys);
 registerPutKey(keys);
 
-export {keys};
+const listKeys = newRoute();
+listKeys.use(authentication());
+registerListKeys(listKeys);
+
+export {keys, listKeys};

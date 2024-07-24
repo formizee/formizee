@@ -11,7 +11,7 @@ describe('Create a endpoint', () => {
     const {key} = await harness.createKey();
 
     const res = await harness.post<RequestPostEndpoint, ResponseEndpoint>({
-      url: '/endpoints',
+      url: '/endpoint',
       headers: {
         authorization: `Bearer ${key}`,
         'content-type': 'application/json'
@@ -40,7 +40,7 @@ describe('Create a endpoint', () => {
     const {key} = await harness.createKey();
 
     const res = await harness.post<RequestPostEndpoint, ResponseEndpoint>({
-      url: '/endpoints',
+      url: '/endpoint',
       headers: {
         authorization: `Bearer ${key}`,
         'content-type': 'application/json'
@@ -65,7 +65,7 @@ describe('Create a endpoint', () => {
     const {key} = await harness.createKey();
 
     const res = await harness.post<RequestPostEndpoint, ResponseEndpoint>({
-      url: '/endpoints',
+      url: '/endpoint',
       headers: {
         authorization: `Bearer ${key}`,
         'content-type': 'application/json'
