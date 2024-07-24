@@ -34,16 +34,16 @@ async function main() {
     case 'api': {
       await startContainers(['database', 'storage']);
 
-      const resources = await prepareDatabase();
-      await bootstrapApi(resources);
+      await prepareDatabase();
+      await bootstrapApi();
       break;
     }
 
     case 'web': {
       await startContainers(['database', 'storage']);
 
-      const resources = await prepareDatabase();
-      bootstrapWeb(resources);
+      await prepareDatabase();
+      bootstrapWeb();
       break;
     }
 
