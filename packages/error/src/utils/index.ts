@@ -15,12 +15,16 @@ export function statusToCode(status: number): ErrorCode {
       return 'METHOD_NOT_ALLOWED';
     case 409:
       return 'METHOD_NOT_ALLOWED';
+    case 413:
+      return 'PAYLOAD_TOO_LARGE';
     case 422:
       return 'UNPROCESSABLE_ENTITY';
     case 429:
       return 'TOO_MANY_REQUESTS';
     case 500:
       return 'INTERNAL_SERVER_ERROR';
+    case 504:
+      return 'GATEWAY_TIMEOUT';
     default:
       return 'INTERNAL_SERVER_ERROR';
   }
@@ -40,12 +44,16 @@ export function codeToStatus(code: ErrorCode): number {
       return 405;
     case 'CONFLICT':
       return 409;
+    case 'PAYLOAD_TOO_LARGE':
+      return 413;
     case 'UNPROCESSABLE_ENTITY':
       return 422;
     case 'TOO_MANY_REQUESTS':
       return 429;
     case 'INTERNAL_SERVER_ERROR':
       return 500;
+    case 'GATEWAY_TIMEOUT':
+      return 504;
     /* v8 ignore next 2 */
     default:
       return 500;

@@ -7,12 +7,14 @@ describe('Error Codes', () => {
       'BAD_REQUEST',
       'FORBIDDEN',
       'INTERNAL_SERVER_ERROR',
+      'GATEWAY_TIMEOUT',
       'USAGE_EXCEEDED',
       'DISABLED',
       'CONFLICT',
       'NOT_FOUND',
       'NOT_UNIQUE',
       'UNAUTHORIZED',
+      'PAYLOAD_TOO_LARGE',
       'METHOD_NOT_ALLOWED',
       'UNPROCESSABLE_ENTITY'
     ];

@@ -9,8 +9,10 @@ describe('statusToCode', () => {
     expect(statusToCode(404)).toBe('NOT_FOUND');
     expect(statusToCode(405)).toBe('METHOD_NOT_ALLOWED');
     expect(statusToCode(409)).toBe('METHOD_NOT_ALLOWED'); // This might be an error, consider 'CONFLICT'
+    expect(statusToCode(413)).toBe('PAYLOAD_TOO_LARGE'); // This might be an error, consider 'CONFLICT'
     expect(statusToCode(422)).toBe('UNPROCESSABLE_ENTITY');
     expect(statusToCode(500)).toBe('INTERNAL_SERVER_ERROR');
+    expect(statusToCode(504)).toBe('GATEWAY_TIMEOUT');
     expect(statusToCode(999)).toBe('INTERNAL_SERVER_ERROR'); // Default case
   });
 });
@@ -21,10 +23,12 @@ describe('codeToStatus', () => {
     expect(codeToStatus('UNAUTHORIZED')).toBe(401);
     expect(codeToStatus('FORBIDDEN')).toBe(403);
     expect(codeToStatus('NOT_FOUND')).toBe(404);
-    expect(codeToStatus('METHOD_NOT_ALLOWED')).toBe(405);
+    expect(codeToStatus('METHOD_NOT_ALLOWED')).toBe(405); // This might be an error, consider 'CONFLICT'
     expect(codeToStatus('CONFLICT')).toBe(409);
+    expect(codeToStatus('PAYLOAD_TOO_LARGE')).toBe(413);
     expect(codeToStatus('UNPROCESSABLE_ENTITY')).toBe(422);
     expect(codeToStatus('INTERNAL_SERVER_ERROR')).toBe(500);
+    expect(codeToStatus('GATEWAY_TIMEOUT')).toBe(504);
   });
 });
 
