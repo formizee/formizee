@@ -1,4 +1,4 @@
-import {authentication} from '@/lib/auth';
+import {authentication} from '@/lib/middlewares';
 import {newRoute} from '@/lib/hono';
 
 import {registerGetEndpoint} from './get';
