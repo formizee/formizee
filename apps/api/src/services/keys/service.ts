@@ -105,7 +105,7 @@ export class KeyService {
     }
   }
 
-  private generateExpiracyDate(expiracyDate: schema.KeyExpirationDate): Date {
+  public generateExpiracyDate(expiracyDate: schema.KeyExpirationDate): Date {
     const newDate = (days: number): Date => {
       return new Date(Date.now() + days * 24 * 60 * 60 * 1000);
     };
