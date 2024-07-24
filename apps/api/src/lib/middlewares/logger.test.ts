@@ -2,26 +2,26 @@ import {describe, it, expect, vi, beforeEach, afterEach} from 'vitest';
 import {logger} from './logger';
 import {Hono} from 'hono';
 
-// Utility to mock console.log
-const mockConsoleLog = () => {
+// Utility to mock console.info
+const mockLogs = () => {
   const logs: string[] = [];
-  const originalLog = console.log;
-  console.log = vi.fn((message: string) => {
+  const originalLog = console.info;
+  console.info = vi.fn((message: string) => {
     logs.push(message);
   });
   return {
     logs,
     restore: () => {
-      console.log = originalLog;
+      console.info = originalLog;
     }
   };
 };
 
 describe('Logger Middleware', () => {
-  let mockLog: ReturnType<typeof mockConsoleLog>;
+  let mockLog: ReturnType<typeof mockLogs>;
 
   beforeEach(() => {
-    mockLog = mockConsoleLog();
+    mockLog = mockLogs();
   });
 
   afterEach(() => {

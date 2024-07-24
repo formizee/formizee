@@ -33,11 +33,9 @@ const messages = (message: string): void => {
 
   const content = generateContent(rawData);
   if (message.includes('->')) {
-    // biome-ignore lint/suspicious/noConsoleLog: Disabled for obviously reasons.
-    console.log(` ${generateType(requestType)} -> ${content}\n`);
+    console.info(` ${generateType(requestType)} -> ${content}\n`);
   } else {
-    // biome-ignore lint/suspicious/noConsoleLog: Disabled for obviously reasons.
-    console.log(` ${generateType(requestType)} <- ${content}`);
+    console.info(` ${generateType(requestType)} <- ${content}`);
   }
 };
 
