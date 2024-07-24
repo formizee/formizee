@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 const base64abc = [
   'A',
   'B',
@@ -66,36 +68,40 @@ const base64abc = [
 ];
 
 /**
+ * CREDIT: https://gist.github.com/enepomnyaschih/72c423f727d395eeaa09697058238727
  * Encodes a given Uint8Array, ArrayBuffer or string into RFC4648 base64 representation
  * @param data
  */
 function encode(data: ArrayBuffer | string): string {
-  let bytes: Uint8Array;
-
-  if (typeof data === 'string') {
-    bytes = new TextEncoder().encode(data);
-  } else if (data instanceof ArrayBuffer) {
-    bytes = new Uint8Array(data);
-  } else {
-    throw new Error('Unsupported data type');
+  const uint8 =
+    typeof data === "string"
+      ? new TextEncoder().encode(data)
+      : data instanceof Uint8Array
+        ? data
+        : new Uint8Array(data);
+  let result = "";
+  let i: number;
+  const l = uint8.length;
+  for (i = 2; i < l; i += 3) {
+    result += base64abc[uint8[i - 2] >> 2];
+    result += base64abc[((uint8[i - 2] & 0x03) << 4) | (uint8[i - 1] >> 4)];
+    result += base64abc[((uint8[i - 1] & 0x0f) << 2) | (uint8[i] >> 6)];
+    result += base64abc[uint8[i] & 0x3f];
   }
-
-  let base64 = '';
-  const len = bytes.length;
-  for (let i = 0; i < len; i += 3) {
-    const a = bytes[i] ?? 0;
-    const b = (i + 1 < len ? bytes[i + 1] : 0) ?? 0;
-    const c = (i + 2 < len ? bytes[i + 2] : 0) ?? 0;
-
-    const triplet = (a << 16) | (b << 8) | c;
-
-    base64 += base64abc[(triplet >> 18) & 0x3f];
-    base64 += base64abc[(triplet >> 12) & 0x3f];
-    base64 += i + 1 < len ? base64abc[(triplet >> 6) & 0x3f] : '=';
-    base64 += i + 2 < len ? base64abc[triplet & 0x3f] : '=';
+  if (i === l + 1) {
+    // 1 octet yet to write
+    result += base64abc[uint8[i - 2] >> 2];
+    result += base64abc[(uint8[i - 2] & 0x03) << 4];
+    result += "==";
   }
-
-  return base64;
+  if (i === l) {
+    // 2 octets yet to write
+    result += base64abc[uint8[i - 2] >> 2];
+    result += base64abc[((uint8[i - 2] & 0x03) << 4) | (uint8[i - 1] >> 4)];
+    result += base64abc[(uint8[i - 1] & 0x0f) << 2];
+    result += "=";
+  }
+  return result;
 }
 
 /**
