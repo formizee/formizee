@@ -31,7 +31,7 @@ describe('Delete a endpoint', () => {
     expect(res.status).toBe(404);
     expect(res.body).toStrictEqual({
       code: 'NOT_FOUND',
-      message: 'Endpoint not found.',
+      message: 'Endpoint not found',
       docs: `${env.DOCS_URL}/api-references/errors/code/NOT_FOUND`
     });
   });

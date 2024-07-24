@@ -33,7 +33,7 @@ export const registerListEndpoints = (api: typeof endpointsAPI) => {
 
     if (!endpoints) {
       throw new HTTPException(404, {
-        message: 'Endpoints not found.'
+        message: 'Endpoints not found'
       });
     }
 

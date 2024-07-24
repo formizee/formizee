@@ -40,7 +40,7 @@ export const registerDeleteEndpoint = (api: typeof endpointsAPI) => {
 
     if (!endpoint) {
       throw new HTTPException(404, {
-        message: 'Endpoint not found.'
+        message: 'Endpoint not found'
       });
     }
 

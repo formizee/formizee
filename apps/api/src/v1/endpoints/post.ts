@@ -48,7 +48,7 @@ export const registerPostEndpoint = (api: typeof endpointsAPI) => {
 
     if (!endpoints[0]) {
       throw new HTTPException(500, {
-        message: 'Server Internal Error.'
+        message: 'Server Internal Error'
       });
     }
 
@@ -57,7 +57,7 @@ export const registerPostEndpoint = (api: typeof endpointsAPI) => {
       endpoints[0].count >= limits.endpoints
     ) {
       throw new HTTPException(403, {
-        message: 'Upgrade for more endpoints.'
+        message: 'Upgrade for more endpoints'
       });
     }
 
