@@ -1,2 +1,2 @@
-export * from './utils';
+export {newKey} from './utils';
 export * from './v1';
