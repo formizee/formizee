@@ -21,6 +21,7 @@ export const newRoute = (basePath = '/'): OpenAPIHono<HonoEnv> => {
   }).basePath(basePath);
 
   route.use('*', services());
+  route.onError(handleError);
 
   return route;
 };
