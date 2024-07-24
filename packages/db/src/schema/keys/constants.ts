@@ -8,3 +8,5 @@ export const apiKeyExpirationDate = [
   '1-year',
   'never'
 ] as const;
+
+export type KeyExpirationDate = (typeof apiKeyExpirationDate)[number];
