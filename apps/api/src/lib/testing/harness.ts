@@ -53,7 +53,6 @@ export abstract class Harness {
     const keyId = newId('test');
     const rootKey = newId('key');
     const hash = await sha256(rootKey);
-
     const newKey: schema.InsertKey = {
       hash,
       id: keyId,
@@ -73,10 +72,10 @@ export abstract class Harness {
   public createResources(): Resources {
     const user: schema.User = {
       id: newId('test'),
-      name: 'example',
-      slug: 'example',
+      name: 'user',
+      slug: 'user',
       isVerified: true,
-      email: 'example@formizee.com',
+      email: 'user@formizee.com',
       lastAccess: new Date(),
       createdAt: new Date(),
       updatedAt: new Date()
@@ -138,12 +137,10 @@ export abstract class Harness {
   }
 
   protected async seed(): Promise<void> {
-    try {
-      await this.db.insert(schema.user).values(this.resources.user);
-      await this.db.insert(schema.workspace).values(this.resources.workspace);
-      await this.db.insert(schema.endpoint).values(this.resources.endpoint);
-      await this.db.insert(schema.submission).values(this.resources.submission);
-      await this.db.insert(schema.key).values(this.resources.key);
-    } catch {}
+    await this.db.insert(schema.user).values(this.resources.user);
+    await this.db.insert(schema.workspace).values(this.resources.workspace);
+    await this.db.insert(schema.endpoint).values(this.resources.endpoint);
+    await this.db.insert(schema.submission).values(this.resources.submission);
+    await this.db.insert(schema.key).values(this.resources.key);
   }
 }

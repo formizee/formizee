@@ -1,19 +1,22 @@
 import type {TaskContext} from 'vitest';
 import {env} from '@/lib/enviroment';
 import {Harness} from './harness';
+import type {App} from '../hono';
 
-import {type StepRequest, type StepResponse, step} from './request';
+import {type StepRequest, type StepResponse, fetchRoute} from './request';
 
 export class IntegrationHarness extends Harness {
   public readonly baseUrl: string;
+  private readonly app: App;
 
-  private constructor(t: TaskContext) {
+  private constructor(t: TaskContext, app: App) {
     super(t);
+    this.app = app;
     this.baseUrl = env.API_URL;
   }
 
-  static async init(t: TaskContext): Promise<IntegrationHarness> {
-    const h = new IntegrationHarness(t);
+  static async init(t: TaskContext, app: App): Promise<IntegrationHarness> {
+    const h = new IntegrationHarness(t, app);
     await h.seed();
     return h;
   }
@@ -21,11 +24,8 @@ export class IntegrationHarness extends Harness {
   async do<TRequestBody = Request, TResponseBody = Response>(
     req: StepRequest<TRequestBody>
   ): Promise<StepResponse<TResponseBody>> {
-    const reqWithUrl: StepRequest<TRequestBody> = {
-      ...req,
-      url: new URL(req.url, this.baseUrl).toString()
-    };
-    return step(reqWithUrl);
+    //const reqWithUrl: StepRequest<TRequestBody> = req;
+    return fetchRoute(this.app, req);
   }
   async get<TRes>(
     req: Omit<StepRequest<never>, 'method'>
