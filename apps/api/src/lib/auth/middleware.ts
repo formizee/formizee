@@ -14,7 +14,7 @@ export const authentication = (): MiddlewareHandler<HonoEnv> => {
 
     if (!authorization) {
       throw new HTTPException(401, {
-        message: 'API key required.'
+        message: 'API key required'
       });
     }
 

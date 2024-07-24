@@ -1,5 +1,7 @@
-import {expect, test, vi, beforeEach, afterEach} from 'vitest';
-import {IntegrationHarness} from '@/lib/testing';
+import {describe, expect, it, vi, beforeEach, afterEach} from 'vitest';
+import type {ResponseEndpoint} from '@/v1/endpoints/schema';
+import {IntegrationHarness, omit} from '@/lib/testing';
+import {env} from '@/lib/enviroment';
 import api from '@/v1';
 
 beforeEach(async () => {
@@ -10,47 +12,71 @@ afterEach(async () => {
   vi.useRealTimers();
 });
 
-test('Should return 401 without a key', async t => {
-  await IntegrationHarness.init(t);
-  const res = await api.request('/endpoints', {});
+describe('Authentication middleware', () => {
+  it('Should return 401 without a key', async t => {
+    const harness = await IntegrationHarness.init(t, api);
 
-  expect(res.status).toBe(401);
-  expect(await res.text()).toBe('API key required.');
-});
+    const res = await harness.get<ResponseEndpoint>({
+      url: '/endpoints'
+    });
 
-test('Should return 200 with a key', async t => {
-  const helper = await IntegrationHarness.init(t);
-  const {key} = await helper.createKey();
-  const res = await api.request('/endpoints', {
-    headers: {Authorization: `Bearer ${key}`}
+    expect(res.status).toBe(401);
+    expect(res.body).toStrictEqual({
+      code: 'UNAUTHORIZED',
+      message: 'API key required',
+      docs: `${env.DOCS_URL}/api-references/errors/code/UNAUTHORIZED`
+    });
   });
 
-  const data = await res.json();
-  expect(res.status).toBe(200);
-  expect(data.length).toBeGreaterThan(0);
-});
+  it('Should return 200 with a key', async t => {
+    const harness = await IntegrationHarness.init(t, api);
+    const endpoint = harness.resources.endpoint;
+    const {key} = await harness.createKey();
 
-test('Should return 401 with a invalid key', async t => {
-  await IntegrationHarness.init(t);
-  const res = await api.request('/endpoints', {
-    headers: {Authorization: 'Bearer fz_invalid'}
+    const res = await harness.get<ResponseEndpoint>({
+      headers: {authorization: `Bearer ${key}`},
+      url: '/endpoints'
+    });
+
+    expect(res.status).toBe(200);
+    expect(res.body).toStrictEqual([
+      omit(endpoint, ['createdAt', 'updatedAt'])
+    ]);
   });
 
-  expect(res.status).toBe(401);
-  expect(await res.text()).toBe('The API key is not valid.');
-});
+  it('Should return 401 with a invalid key', async t => {
+    const harness = await IntegrationHarness.init(t, api);
 
-test('Should return 401 with a expired key', async t => {
-  const helper = await IntegrationHarness.init(t);
-  const {key} = await helper.createKey();
+    const res = await harness.get<ResponseEndpoint>({
+      headers: {authorization: 'Bearer fz_invalid_key'},
+      url: '/endpoints'
+    });
 
-  const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
-  vi.setSystemTime(expiresAt);
-
-  const res = await api.request('/endpoints', {
-    headers: {Authorization: `Bearer ${key}`}
+    expect(res.status).toBe(401);
+    expect(res.body).toStrictEqual({
+      code: 'UNAUTHORIZED',
+      message: 'The API key is not valid',
+      docs: `${env.DOCS_URL}/api-references/errors/code/UNAUTHORIZED`
+    });
   });
 
-  expect(res.status).toBe(401);
-  expect(await res.text()).toBe('The API key is expired.');
+  it('Should return 401 with a expired key', async t => {
+    const harness = await IntegrationHarness.init(t, api);
+    const {key} = await harness.createKey();
+
+    const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+    vi.setSystemTime(expiresAt);
+
+    const res = await harness.get<ResponseEndpoint>({
+      headers: {authorization: `Bearer ${key}`},
+      url: '/endpoints'
+    });
+
+    expect(res.status).toBe(401);
+    expect(res.body).toStrictEqual({
+      code: 'UNAUTHORIZED',
+      message: 'The API key is expired',
+      docs: `${env.DOCS_URL}/api-references/errors/code/UNAUTHORIZED`
+    });
+  });
 });
