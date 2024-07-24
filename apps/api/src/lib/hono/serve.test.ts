@@ -1,7 +1,6 @@
-import { describe, it, expect, afterEach, beforeEach, vi } from 'vitest';
-import { serve as serverMock } from '@hono/node-server';
-import { serve } from './serve';
-
+import {describe, it, expect, afterEach, beforeEach, vi} from 'vitest';
+import {serve as serverMock} from '@hono/node-server';
+import {serve} from './serve';
 
 vi.mock('@hono/node-server');
 vi.mock('node:perf_hooks', () => ({
@@ -31,7 +30,7 @@ describe('serve', () => {
 
   it('should start the server with the correct parameters', () => {
     // biome-ignore lint:
-    const app = { fetch: vi.fn() } as any;
+    const app = {fetch: vi.fn()} as any;
 
     serve(app);
 
