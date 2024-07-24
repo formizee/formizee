@@ -1,7 +1,7 @@
 import {ErrorCodeEnum, BaseError, Err, Ok, type Result} from '@formizee/error';
 import {sha256} from '@formizee/hashing';
 import {db, eq, schema} from '@formizee/db';
-import {newId} from '@formizee/id';
+import {newKey} from '@formizee/keys';
 
 class NotFoundError extends BaseError {
   public readonly name = 'Not Found';
@@ -88,8 +88,7 @@ export class KeyService {
     Result<{key: string; hash: string; expiresAt: Date}, ProcessError>
   > {
     try {
-      const key = newId('key');
-      const hash = await this.hash(key);
+      const {key, hash} = await newKey();
       const expiresAt = this.generateExpiracyDate(expiracyDate);
       return Ok({
         key,

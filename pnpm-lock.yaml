@@ -56,6 +56,9 @@ importers:
       '@formizee/id':
         specifier: workspace:*
         version: link:../../packages/id
+      '@formizee/keys':
+        specifier: workspace:*
+        version: link:../../packages/keys
       '@formizee/plans':
         specifier: workspace:*
         version: link:../../packages/plans
