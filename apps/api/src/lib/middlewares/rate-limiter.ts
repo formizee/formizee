@@ -10,7 +10,7 @@ export const rateLimiter = (requestLimitPerMinute = 60): MiddlewareHandler =>
     keyGenerator: c => c.req.header('x-forwarded-for') ?? '',
     handler: () => {
       throw new HTTPException(429, {
-        message: 'Rate limit reached, please try again later.'
+        message: 'Rate limit reached, please try again later'
       });
     }
   });
