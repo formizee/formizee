@@ -8,61 +8,13 @@ import pg from 'pg';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const ROW_IDS = {
-  workspace: 'ws_local',
-  user: 'id_local'
-};
-
 export type Database = 'development' | 'testing';
 
-export async function prepareDatabase(): Promise<{
-  workspace: {id: string};
-  user: {id: string};
-}> {
-  await prepareDevelopmentDatabase();
-  const resources = await prepareTestingDatabase();
-  return resources;
-}
-
-async function prepareDevelopmentDatabase(): Promise<void> {
+export async function prepareDatabase(): Promise<void> {
   await connectDatabase('development');
   await migrateTables('development');
-}
-
-async function prepareTestingDatabase(): Promise<{
-  workspace: {id: string};
-  user: {id: string};
-}> {
-  const db = await connectDatabase('testing');
+  await connectDatabase('testing');
   await migrateTables('testing');
-
-  return await task('Seeding database', async s => {
-    await db.insert(schema.workspace).values({
-      id: ROW_IDS.workspace,
-      slug: 'formizee'
-    });
-
-    s.message('Created formizee workspace');
-
-    await db.insert(schema.user).values({
-      id: ROW_IDS.user,
-      slug: 'example',
-      name: 'example',
-      email: 'example@formizee.com',
-      createdAt: new Date()
-    });
-    s.message('Created example user');
-
-    s.stop('seed done');
-    return {
-      workspace: {
-        id: ROW_IDS.workspace
-      },
-      user: {
-        id: ROW_IDS.user
-      }
-    };
-  });
 }
 
 async function migrateTables(database: Database) {
