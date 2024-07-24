@@ -74,12 +74,12 @@ const base64abc = [
  */
 function encode(data: ArrayBuffer | string): string {
   const uint8 =
-    typeof data === "string"
+    typeof data === 'string'
       ? new TextEncoder().encode(data)
       : data instanceof Uint8Array
         ? data
         : new Uint8Array(data);
-  let result = "";
+  let result = '';
   let i: number;
   const l = uint8.length;
   for (i = 2; i < l; i += 3) {
@@ -92,14 +92,14 @@ function encode(data: ArrayBuffer | string): string {
     // 1 octet yet to write
     result += base64abc[uint8[i - 2] >> 2];
     result += base64abc[(uint8[i - 2] & 0x03) << 4];
-    result += "==";
+    result += '==';
   }
   if (i === l) {
     // 2 octets yet to write
     result += base64abc[uint8[i - 2] >> 2];
     result += base64abc[((uint8[i - 2] & 0x03) << 4) | (uint8[i - 1] >> 4)];
     result += base64abc[(uint8[i - 1] & 0x0f) << 2];
-    result += "=";
+    result += '=';
   }
   return result;
 }
