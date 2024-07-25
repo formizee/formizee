@@ -1,17 +1,18 @@
+import type {Pagination} from '@/lib/pagination';
 import type {Limits} from '@formizee/plans';
-import type {KeyService} from '@/services';
+import type {Services} from '@/services';
 import type {schema} from '@formizee/db';
 import type {Env} from 'hono';
 
-interface ServiceContext {
-  keyService: KeyService;
-}
-
 export type HonoVariables = {
+  // Authentication
   limits: Limits;
   user: schema.User;
   workspace: schema.Workspace;
-  services: ServiceContext;
+
+  // Context
+  services: Services;
+  pagination: Pagination;
 };
 
 export type HonoEnv = {
