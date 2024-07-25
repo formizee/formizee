@@ -1,6 +1,6 @@
-import type {TaskContext} from 'vitest';
 import {db as database, eq, schema} from '@formizee/db';
-import {sha256} from '@formizee/hashing';
+import type {TaskContext} from 'vitest';
+import {newKey} from '@formizee/keys';
 import {newId} from '@formizee/id';
 
 export type Resources = {
@@ -50,23 +50,20 @@ export abstract class Harness {
   }
 
   public async createKey() {
-    const keyId = newId('test');
-    const rootKey = newId('key');
-    const hash = await sha256(rootKey);
-    const newKey: schema.InsertKey = {
+    const id = newId('test');
+    const {key, hash} = await newKey();
+
+    const data: schema.InsertKey = {
+      id,
       hash,
-      id: keyId,
       name: 'Root Key',
       workspaceId: this.resources.workspace.id,
       expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000)
     };
 
-    await this.db.insert(schema.key).values(newKey);
+    await this.db.insert(schema.key).values(data);
 
-    return {
-      id: keyId,
-      key: rootKey
-    };
+    return {id, key};
   }
 
   public createResources(): Resources {

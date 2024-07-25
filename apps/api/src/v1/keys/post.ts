@@ -67,7 +67,7 @@ export const registerPostKey = (api: typeof keysAPI) => {
     }
 
     const data: schema.InsertKey = {
-      id: newId('api'),
+      id: newId('key'),
       hash: val.hash,
       name: input.name,
       expiresAt: val.expiresAt,
