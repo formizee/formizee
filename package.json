@@ -6,6 +6,7 @@
     "prepare": "husky",
     "test": "turbo test",
     "lint": "turbo lint",
+    "check": "turbo check",
     "test:ui": "vitest --ui",
     "format": "pnpm biome format --write .",
     "test:coverage": "vitest run --coverage",
