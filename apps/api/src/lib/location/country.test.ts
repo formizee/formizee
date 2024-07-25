@@ -15,6 +15,7 @@ describe('getOriginCountry', () => {
     const context: Context = {} as any;
 
     // Mock getConnInfo to return the desired address
+    // @ts-ignore
     (getConnInfo as vi.Mock).mockReturnValue({remote: {address: mockAddress}});
 
     // Act
@@ -30,6 +31,7 @@ describe('getOriginCountry', () => {
     const context = {} as any; // Mock context object
 
     // Mock getConnInfo to return an empty address
+    // @ts-ignore
     (getConnInfo as vi.Mock).mockReturnValue({remote: {address: undefined}});
 
     // Act
@@ -46,6 +48,7 @@ describe('getOriginCountry', () => {
     const context = {} as any; // Mock context object
 
     // Mock getConnInfo to return the desired address
+    // @ts-ignore
     (getConnInfo as vi.Mock).mockReturnValue({remote: {address: mockAddress}});
 
     // Act

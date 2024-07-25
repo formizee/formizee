@@ -376,28 +376,6 @@ importers:
         specifier: 2.0.4
         version: 2.0.4(@edge-runtime/vm@4.0.0)(@types/node@20.14.11)(@vitest/ui@2.0.4)(terser@5.31.2)
 
-  packages/location:
-    dependencies:
-      '@hono/node-server':
-        specifier: 1.12.0
-        version: 1.12.0
-      hono:
-        specifier: 4.4.12
-        version: 4.4.12
-    devDependencies:
-      '@formizee/tsconfig':
-        specifier: workspace:*
-        version: link:../tsconfig
-      '@types/geoip-lite':
-        specifier: 1.4.4
-        version: 1.4.4
-      '@types/node':
-        specifier: 20.14.11
-        version: 20.14.11
-      vitest:
-        specifier: 2.0.4
-        version: 2.0.4(@edge-runtime/vm@4.0.0)(@types/node@20.14.11)(@vitest/ui@2.0.4)(terser@5.31.2)
-
   packages/plans:
     dependencies:
       '@formizee/db':
@@ -2772,9 +2750,6 @@ packages:
   '@types/estree@1.0.5':
     resolution: {integrity: sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==}
 
-  '@types/geoip-lite@1.4.4':
-    resolution: {integrity: sha512-2uVfn+C6bX/H356H6mjxsWUA5u8LO8dJgSBIRO/NFlpMe4DESzacutD/rKYrTDKm1Ugv78b4Wz1KvpHrlv3jSw==}
-
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
 
@@ -3792,10 +3767,6 @@ packages:
     resolution: {integrity: sha512-7RWU2HZvxPtfBrvjXKDiQ3F6ZH8k49JhxVkHquUz5UZKjauj5PrP29MvISykThtfpy4mGG6kqxFBHW1ed9wwnA==}
     peerDependencies:
       hono: ^4.1.1
-
-  hono@4.4.12:
-    resolution: {integrity: sha512-Lx4Vwbws0IqFfXIVYychxUW0A4EE+7dn/jsjVeM34OXSA2Xs45MkDDP14Mzznp7LlDemUNHQG2uv2N5jQld0hA==}
-    engines: {node: '>=16.0.0'}
 
   hono@4.5.1:
     resolution: {integrity: sha512-6q8AugoWG5wlrjdGG8OFFiqEsPlPGjODjUik48sEJeko4Tae1UsLS2vUiYHLEJx1gJvOZa4BWkQC+urwDmkEvQ==}
@@ -7217,8 +7188,6 @@ snapshots:
 
   '@types/estree@1.0.5': {}
 
-  '@types/geoip-lite@1.4.4': {}
-
   '@types/json-schema@7.0.15': {}
 
   '@types/node@20.12.12':
@@ -8352,8 +8321,6 @@ snapshots:
   hono-rate-limiter@0.4.0(hono@4.5.1):
     dependencies:
       hono: 4.5.1
-
-  hono@4.4.12: {}
 
   hono@4.5.1: {}
 

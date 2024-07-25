@@ -1,7 +1,9 @@
 import {getConnInfo} from '@hono/node-server/conninfo';
 import type {Context} from 'hono';
 
-export const getOriginCountry = async (context: Context): Promise<string> => {
+export type Location = 'Unknown' | string;
+
+export async function getOriginCountry(context: Context): Promise<Location> {
   try {
     const connectionInfo = getConnInfo(context);
     const requestAddress = connectionInfo.remote.address;
@@ -27,4 +29,4 @@ export const getOriginCountry = async (context: Context): Promise<string> => {
   } catch {
     return 'Unknown';
   }
-};
+}
