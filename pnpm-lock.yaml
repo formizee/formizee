@@ -44,6 +44,9 @@ importers:
 
   apps/api:
     dependencies:
+      '@formizee/analytics':
+        specifier: workspace:*
+        version: link:../../packages/analytics
       '@formizee/db':
         specifier: workspace:*
         version: link:../../packages/db
@@ -172,6 +175,9 @@ importers:
       '@chronark/zod-bird':
         specifier: 0.3.9
         version: 0.3.9
+      '@formizee/id':
+        specifier: workspace:*
+        version: link:../id
       zod:
         specifier: 3.23.8
         version: 3.23.8
