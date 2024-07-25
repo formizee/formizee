@@ -35,13 +35,11 @@ describe('Authentication middleware', () => {
 
     const res = await harness.get<ResponseEndpoint>({
       headers: {authorization: `Bearer ${key}`},
-      url: '/endpoints'
+      url: `/endpoint/${endpoint.id}`
     });
 
     expect(res.status).toBe(200);
-    expect(res.body).toStrictEqual([
-      omit(endpoint, ['createdAt', 'updatedAt'])
-    ]);
+    expect(res.body).toStrictEqual(omit(endpoint, ['createdAt', 'updatedAt']));
   });
 
   it('Should return 401 with a invalid key', async t => {

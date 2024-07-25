@@ -1,4 +1,5 @@
 import {authentication} from '@/lib/middlewares';
+import {pagination} from '@/lib/pagination';
 import {newRoute} from '@/lib/hono';
 
 import {registerGetEndpoint} from './get';
@@ -17,6 +18,8 @@ registerDeleteEndpoint(endpoints);
 
 const listEndpoints = newRoute();
 listEndpoints.use(authentication());
+listEndpoints.use(pagination());
+
 registerListEndpoints(listEndpoints);
 
 export {endpoints, listEndpoints};

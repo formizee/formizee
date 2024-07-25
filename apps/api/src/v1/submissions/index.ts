@@ -1,4 +1,5 @@
 import {authentication} from '@/lib/middlewares';
+import {pagination} from '@/lib/pagination';
 import {newRoute} from '@/lib/hono';
 
 import {registerDeleteSubmission} from './delete';
@@ -17,6 +18,7 @@ registerDeleteSubmission(submissions);
 
 const listSubmissions = newRoute();
 listSubmissions.use(authentication());
+listSubmissions.use(pagination());
 registerListSubmissions(listSubmissions);
 
 export {submissions, listSubmissions};
