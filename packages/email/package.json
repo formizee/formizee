@@ -16,8 +16,9 @@
     }
   },
   "scripts": {
-    "test": "vitest",
     "dev": "email dev",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "lint": "biome lint ."
   },
   "devDependencies": {
