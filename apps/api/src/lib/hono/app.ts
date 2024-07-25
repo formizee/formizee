@@ -11,7 +11,8 @@ import {
   prettyJSON,
   rateLimiter,
   secureHeaders,
-  trimTrailingSlash
+  trimTrailingSlash,
+  metrics
 } from '@/lib/middlewares';
 
 export const newRoute = (basePath = '/'): OpenAPIHono<HonoEnv> => {
@@ -38,6 +39,7 @@ export const newApp = (): OpenAPIHono<HonoEnv> => {
   app.use(rateLimiter());
   app.use(prettyJSON());
   app.use(bodyLimit);
+  app.use(metrics());
   app.use(timeout);
   app.use(logger);
   app.use(cors);

@@ -15,6 +15,7 @@
     "dev": "tsx watch src/index.ts"
   },
   "dependencies": {
+    "@formizee/analytics": "workspace:*",
     "@formizee/db": "workspace:*",
     "@formizee/error": "workspace:*",
     "@formizee/hashing": "workspace:*",

@@ -4,7 +4,7 @@ import {env} from '@/lib/enviroment';
 import {newId} from '@formizee/id';
 
 import {Analytics} from '@formizee/analytics';
-import {KeyService} from '@/services';
+import {KeyService} from '@/services/keys';
 
 export function services(): MiddlewareHandler<HonoEnv> {
   return async (c, next) => {
