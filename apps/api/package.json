@@ -6,8 +6,10 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "test": "vitest",
+    "test": "vitest run",
     "build": "tsc --build",
+    "test:watch": "vitest",
+    "check": "tsc --noEmit",
     "lint": "biome lint src",
     "start": "tsx src/index.ts",
     "dev": "tsx watch src/index.ts"
