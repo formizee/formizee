@@ -8,6 +8,7 @@
     "lint": "turbo lint",
     "check": "turbo check",
     "test:ui": "vitest --ui",
+    "test:watch": "turbo test:watch",
     "format": "pnpm biome format --write .",
     "test:coverage": "vitest run --coverage",
     "build": "turbo build --cache-dir=.turbo",
