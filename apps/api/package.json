@@ -24,7 +24,7 @@
     "@formizee/tsconfig": "workspace:*",
     "@hono/node-server": "1.12.0",
     "@hono/zod-openapi": "0.15.1",
-    "@t3-oss/env-core": "0.10.1",
+    "@t3-oss/env-core": "0.11.0",
     "dotenv": "16.4.5",
     "hono": "4.5.1",
     "hono-rate-limiter": "0.4.0",
