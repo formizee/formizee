@@ -1,13 +1,15 @@
-// Hono middlewares
+// Hono
 export {trimTrailingSlash} from 'hono/trailing-slash';
 export {secureHeaders} from 'hono/secure-headers';
 export {prettyJSON} from 'hono/pretty-json';
 
-// Custom middlewares
-export {rateLimiter} from './rate-limiter';
-export {bodyLimit} from './body-limit';
+// Security
+export {rateLimiter} from './security/rate-limiter';
+export {bodyLimit} from './security/body-limit';
+export {timeout} from './security/timeout';
+export {cors} from './security/cors';
+
+// Services
 export {authentication} from './auth';
-export {services} from './services';
-export {timeout} from './timeout';
+export {metrics} from './metrics';
 export {logger} from './logger';
-export {cors} from './cors';
