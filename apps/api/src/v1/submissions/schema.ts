@@ -30,6 +30,10 @@ export const SubmissionSchema = z.object({
       description: 'The data of the submission in json format',
       example: {exampleValue: 'foo'}
     }),
+  location: z.string().openapi({
+    description: 'The origin location of the submission',
+    example: 'Spain'
+  }),
   isSpam: z.boolean().openapi({
     description: 'Shows if the submission is marked as spam',
     example: false

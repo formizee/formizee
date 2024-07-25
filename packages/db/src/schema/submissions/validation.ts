@@ -10,6 +10,7 @@ export const insertSubmissionSchema = createInsertSchema(submission, {
     message:
       'Invalid endpoint identifier, please check that is correctly typed.'
   }),
+  location: z.string(),
   data: z.object({}).passthrough()
 });
 export const selectSubmissionSchema = createSelectSchema(submission, {

@@ -120,6 +120,7 @@ export abstract class Harness {
       data: {example: 'formizee'},
       endpointId: endpoint.id,
       createdAt: new Date(),
+      location: 'Spain',
       isSpam: false,
       isRead: false
     };

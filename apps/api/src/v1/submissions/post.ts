@@ -2,6 +2,7 @@ import {SubmissionSchema, EndpointParamsSchema} from './schema';
 import type {submissions as submissionsApi} from '.';
 import {openApiErrorResponses} from '@/lib/errors';
 import {HTTPException} from 'hono/http-exception';
+import {getOriginCountry} from '@/lib/location';
 import {createRoute} from '@hono/zod-openapi';
 import {db, schema} from '@formizee/db';
 import {newId} from '@formizee/id';
@@ -54,6 +55,7 @@ export const postRoute = createRoute({
 export const registerPostSubmission = (api: typeof submissionsApi) => {
   return api.openapi(postRoute, async context => {
     const contentType = context.req.header('Content-Type');
+    const location = await getOriginCountry(context);
     const workspaceId = context.get('workspace').id;
     const {id} = context.req.valid('param');
 
@@ -96,7 +98,8 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
       const data: schema.InsertSubmission = {
         id: newId('submission'),
         endpointId: endpoint.id,
-        data: input
+        data: input,
+        location
       };
 
       const newSubmission = await db
@@ -120,7 +123,8 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
       const data: schema.InsertSubmission = {
         id: newId('submission'),
         endpointId: endpoint.id,
-        data: input
+        data: input,
+        location
       };
 
       const newSubmission = await db

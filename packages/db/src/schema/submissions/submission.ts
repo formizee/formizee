@@ -15,6 +15,8 @@ export const submission = pgTable('submissions', {
 
   isRead: boolean('is_read').notNull().default(false),
 
+  location: text('location').notNull(),
+
   createdAt: timestamp('created_at').notNull().defaultNow()
 });
 
