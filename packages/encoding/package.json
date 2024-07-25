@@ -13,6 +13,6 @@
   "devDependencies": {
     "@formizee/tsconfig": "workspace:*",
     "@types/node": "20.14.11",
-    "vitest": "2.0.3"
+    "vitest": "2.0.4"
   }
 }

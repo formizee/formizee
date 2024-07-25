@@ -18,11 +18,11 @@ importers:
         specifier: workspace:*
         version: link:packages/tsconfig
       '@vitest/coverage-v8':
-        specifier: 2.0.3
-        version: 2.0.3(vitest@2.0.3(@edge-runtime/vm@4.0.0)(@types/node@20.14.12)(@vitest/ui@2.0.3)(terser@5.31.2))
+        specifier: 2.0.4
+        version: 2.0.4(vitest@2.0.4(@edge-runtime/vm@4.0.0)(@types/node@20.14.12)(@vitest/ui@2.0.4)(terser@5.31.2))
       '@vitest/ui':
-        specifier: 2.0.3
-        version: 2.0.3(vitest@2.0.3)
+        specifier: 2.0.4
+        version: 2.0.4(vitest@2.0.4)
       commitlint:
         specifier: 19.3.0
         version: 19.3.0(@types/node@20.14.12)(typescript@5.4.5)
@@ -39,8 +39,8 @@ importers:
         specifier: 4.3.2
         version: 4.3.2(typescript@5.4.5)(vite@5.3.3(@types/node@20.14.12)(terser@5.31.2))
       vitest:
-        specifier: 2.0.3
-        version: 2.0.3(@edge-runtime/vm@4.0.0)(@types/node@20.14.12)(@vitest/ui@2.0.3)(terser@5.31.2)
+        specifier: 2.0.4
+        version: 2.0.4(@edge-runtime/vm@4.0.0)(@types/node@20.14.12)(@vitest/ui@2.0.4)(terser@5.31.2)
 
   apps/api:
     dependencies:
@@ -104,7 +104,7 @@ importers:
         version: 4.3.2(typescript@5.4.5)(vite@5.3.3(@types/node@20.14.12)(terser@5.31.2))
       vitest:
         specifier: 2.0.4
-        version: 2.0.4(@edge-runtime/vm@4.0.0)(@types/node@20.14.12)(@vitest/ui@2.0.3)(terser@5.31.2)
+        version: 2.0.4(@edge-runtime/vm@4.0.0)(@types/node@20.14.12)(@vitest/ui@2.0.4)(terser@5.31.2)
 
   apps/web:
     dependencies:
@@ -166,6 +166,25 @@ importers:
       typescript:
         specifier: 5.4.5
         version: 5.4.5
+
+  packages/analytics:
+    dependencies:
+      '@chronark/zod-bird':
+        specifier: 0.3.9
+        version: 0.3.9
+      zod:
+        specifier: 3.23.8
+        version: 3.23.8
+    devDependencies:
+      '@formizee/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      '@types/node':
+        specifier: 20.14.11
+        version: 20.14.11
+      vitest:
+        specifier: 2.0.4
+        version: 2.0.4(@edge-runtime/vm@4.0.0)(@types/node@20.14.11)(@vitest/ui@2.0.4)(terser@5.31.2)
 
   packages/db:
     dependencies:
@@ -253,8 +272,8 @@ importers:
         specifier: 18.3.1
         version: 18.3.1
       vitest:
-        specifier: 2.0.3
-        version: 2.0.3(@edge-runtime/vm@4.0.0)(@types/node@20.14.11)(@vitest/ui@2.0.3)(terser@5.31.2)
+        specifier: 2.0.4
+        version: 2.0.4(@edge-runtime/vm@4.0.0)(@types/node@20.14.11)(@vitest/ui@2.0.4)(terser@5.31.2)
 
   packages/encoding:
     devDependencies:
@@ -265,8 +284,8 @@ importers:
         specifier: 20.14.11
         version: 20.14.11
       vitest:
-        specifier: 2.0.3
-        version: 2.0.3(@edge-runtime/vm@4.0.0)(@types/node@20.14.11)(@vitest/ui@2.0.3)(terser@5.31.2)
+        specifier: 2.0.4
+        version: 2.0.4(@edge-runtime/vm@4.0.0)(@types/node@20.14.11)(@vitest/ui@2.0.4)(terser@5.31.2)
 
   packages/encryption:
     dependencies:
@@ -284,8 +303,8 @@ importers:
         specifier: 20.14.11
         version: 20.14.11
       vitest:
-        specifier: 2.0.3
-        version: 2.0.3(@edge-runtime/vm@4.0.0)(@types/node@20.14.11)(@vitest/ui@2.0.3)(terser@5.31.2)
+        specifier: 2.0.4
+        version: 2.0.4(@edge-runtime/vm@4.0.0)(@types/node@20.14.11)(@vitest/ui@2.0.4)(terser@5.31.2)
 
   packages/error:
     dependencies:
@@ -303,8 +322,8 @@ importers:
         specifier: 20.14.11
         version: 20.14.11
       vitest:
-        specifier: 2.0.3
-        version: 2.0.3(@edge-runtime/vm@4.0.0)(@types/node@20.14.11)(@vitest/ui@2.0.3)(terser@5.31.2)
+        specifier: 2.0.4
+        version: 2.0.4(@edge-runtime/vm@4.0.0)(@types/node@20.14.11)(@vitest/ui@2.0.4)(terser@5.31.2)
 
   packages/hashing:
     dependencies:
@@ -319,8 +338,8 @@ importers:
         specifier: 20.14.11
         version: 20.14.11
       vitest:
-        specifier: 2.0.3
-        version: 2.0.3(@edge-runtime/vm@4.0.0)(@types/node@20.14.11)(@vitest/ui@2.0.3)(terser@5.31.2)
+        specifier: 2.0.4
+        version: 2.0.4(@edge-runtime/vm@4.0.0)(@types/node@20.14.11)(@vitest/ui@2.0.4)(terser@5.31.2)
 
   packages/id:
     dependencies:
@@ -335,8 +354,8 @@ importers:
         specifier: 20.14.11
         version: 20.14.11
       vitest:
-        specifier: 2.0.3
-        version: 2.0.3(@edge-runtime/vm@4.0.0)(@types/node@20.14.11)(@vitest/ui@2.0.3)(terser@5.31.2)
+        specifier: 2.0.4
+        version: 2.0.4(@edge-runtime/vm@4.0.0)(@types/node@20.14.11)(@vitest/ui@2.0.4)(terser@5.31.2)
 
   packages/keys:
     dependencies:
@@ -354,8 +373,8 @@ importers:
         specifier: 20.14.11
         version: 20.14.11
       vitest:
-        specifier: 2.0.3
-        version: 2.0.3(@edge-runtime/vm@4.0.0)(@types/node@20.14.11)(@vitest/ui@2.0.3)(terser@5.31.2)
+        specifier: 2.0.4
+        version: 2.0.4(@edge-runtime/vm@4.0.0)(@types/node@20.14.11)(@vitest/ui@2.0.4)(terser@5.31.2)
 
   packages/location:
     dependencies:
@@ -376,8 +395,8 @@ importers:
         specifier: 20.14.11
         version: 20.14.11
       vitest:
-        specifier: 2.0.3
-        version: 2.0.3(@edge-runtime/vm@4.0.0)(@types/node@20.14.11)(@vitest/ui@2.0.3)(terser@5.31.2)
+        specifier: 2.0.4
+        version: 2.0.4(@edge-runtime/vm@4.0.0)(@types/node@20.14.11)(@vitest/ui@2.0.4)(terser@5.31.2)
 
   packages/plans:
     dependencies:
@@ -395,8 +414,8 @@ importers:
         specifier: 20.14.11
         version: 20.14.11
       vitest:
-        specifier: 2.0.3
-        version: 2.0.3(@edge-runtime/vm@4.0.0)(@types/node@20.14.11)(@vitest/ui@2.0.3)(terser@5.31.2)
+        specifier: 2.0.4
+        version: 2.0.4(@edge-runtime/vm@4.0.0)(@types/node@20.14.11)(@vitest/ui@2.0.4)(terser@5.31.2)
 
   packages/tailwind:
     devDependencies:
@@ -697,6 +716,9 @@ packages:
     engines: {node: '>=14.21.3'}
     cpu: [x64]
     os: [win32]
+
+  '@chronark/zod-bird@0.3.9':
+    resolution: {integrity: sha512-5+W0KUBDZKWl86OFgKZJ9/pLRg1jbhAEPKDIKBJUEAAJblwRU3FBrnkcEAqW4/JfPBFiiEC5wxG16A8UzgphAQ==}
 
   '@clack/core@0.3.4':
     resolution: {integrity: sha512-H4hxZDXgHtWTwV3RAVenqcC4VbJZNegbBjlPvzOzCouXtS2y3sDvlO3IsbrPNWuLWPPlYVYPghQdSF64683Ldw==}
@@ -2807,48 +2829,30 @@ packages:
     resolution: {integrity: sha512-WiI2g3+ce2g1u1gP41MoDj2DsMuQQ+us7vHobysRixKECGaLHpfTI7DuVZmHU087ozRAGr3GocSyqmWLLo+fig==}
     engines: {node: '>=14.6'}
 
-  '@vitest/coverage-v8@2.0.3':
-    resolution: {integrity: sha512-53d+6jXFdYbasXBmsL6qaGIfcY5eBQq0sP57AjdasOcSiGNj4qxkkpDKIitUNfjxcfAfUfQ8BD0OR2fSey64+g==}
+  '@vitest/coverage-v8@2.0.4':
+    resolution: {integrity: sha512-i4lx/Wpg5zF1h2op7j0wdwuEQxaL/YTwwQaKuKMHYj7MMh8c7I4W7PNfOptZBCSBZI0z1qwn64o0pM/pA8Tz1g==}
     peerDependencies:
-      vitest: 2.0.3
-
-  '@vitest/expect@2.0.3':
-    resolution: {integrity: sha512-X6AepoOYePM0lDNUPsGXTxgXZAl3EXd0GYe/MZyVE4HzkUqyUVC6S3PrY5mClDJ6/7/7vALLMV3+xD/Ko60Hqg==}
+      vitest: 2.0.4
 
   '@vitest/expect@2.0.4':
     resolution: {integrity: sha512-39jr5EguIoanChvBqe34I8m1hJFI4+jxvdOpD7gslZrVQBKhh8H9eD7J/LJX4zakrw23W+dITQTDqdt43xVcJw==}
 
-  '@vitest/pretty-format@2.0.3':
-    resolution: {integrity: sha512-URM4GLsB2xD37nnTyvf6kfObFafxmycCL8un3OC9gaCs5cti2u+5rJdIflZ2fUJUen4NbvF6jCufwViAFLvz1g==}
-
   '@vitest/pretty-format@2.0.4':
     resolution: {integrity: sha512-RYZl31STbNGqf4l2eQM1nvKPXE0NhC6Eq0suTTePc4mtMQ1Fn8qZmjV4emZdEdG2NOWGKSCrHZjmTqDCDoeFBw==}
-
-  '@vitest/runner@2.0.3':
-    resolution: {integrity: sha512-EmSP4mcjYhAcuBWwqgpjR3FYVeiA4ROzRunqKltWjBfLNs1tnMLtF+qtgd5ClTwkDP6/DGlKJTNa6WxNK0bNYQ==}
 
   '@vitest/runner@2.0.4':
     resolution: {integrity: sha512-Gk+9Su/2H2zNfNdeJR124gZckd5st4YoSuhF1Rebi37qTXKnqYyFCd9KP4vl2cQHbtuVKjfEKrNJxHHCW8thbQ==}
 
-  '@vitest/snapshot@2.0.3':
-    resolution: {integrity: sha512-6OyA6v65Oe3tTzoSuRPcU6kh9m+mPL1vQ2jDlPdn9IQoUxl8rXhBnfICNOC+vwxWY684Vt5UPgtcA2aPFBb6wg==}
-
   '@vitest/snapshot@2.0.4':
     resolution: {integrity: sha512-or6Mzoz/pD7xTvuJMFYEtso1vJo1S5u6zBTinfl+7smGUhqybn6VjzCDMhmTyVOFWwkCMuNjmNNxnyXPgKDoPw==}
-
-  '@vitest/spy@2.0.3':
-    resolution: {integrity: sha512-sfqyAw/ypOXlaj4S+w8689qKM1OyPOqnonqOc9T91DsoHbfN5mU7FdifWWv3MtQFf0lEUstEwR9L/q/M390C+A==}
 
   '@vitest/spy@2.0.4':
     resolution: {integrity: sha512-uTXU56TNoYrTohb+6CseP8IqNwlNdtPwEO0AWl+5j7NelS6x0xZZtP0bDWaLvOfUbaYwhhWp1guzXUxkC7mW7Q==}
 
-  '@vitest/ui@2.0.3':
-    resolution: {integrity: sha512-UAkzHk5veR3NRF7BNUxWlLly7Cw7H+wzP3+eiMIVeKo3Md33Ey20rYsNQn/9McIqOeO02tMzqHhpThmjk1yRzw==}
+  '@vitest/ui@2.0.4':
+    resolution: {integrity: sha512-9SNE9ve3kgDkVTxJsY7BjqSwyqDVRJbq/AHVHZs+V0vmr/0cCX6yGT6nOahSXEsXFtKAsvRtBXKlTgr+5njzZQ==}
     peerDependencies:
-      vitest: 2.0.3
-
-  '@vitest/utils@2.0.3':
-    resolution: {integrity: sha512-c/UdELMuHitQbbc/EVctlBaxoYAwQPQdSNwv7z/vHyBKy2edYZaFgptE27BRueZB7eW8po+cllotMNTDpL3HWg==}
+      vitest: 2.0.4
 
   '@vitest/utils@2.0.4':
     resolution: {integrity: sha512-Zc75QuuoJhOBnlo99ZVUkJIuq4Oj0zAkrQ2VzCqNCx6wAwViHEh5Fnp4fiJTE9rA+sAoXRf00Z9xGgfEzV6fzQ==}
@@ -3977,9 +3981,6 @@ packages:
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
 
-  js-tokens@9.0.0:
-    resolution: {integrity: sha512-WriZw1luRMlmV3LGJaR6QOJjWwgLUTf89OwT2lUOyjX2dJGBwgmIkbcz+7WFZjrZM635JOIR517++e/67CP9dQ==}
-
   js-yaml@4.1.0:
     resolution: {integrity: sha512-wpxZs9NoxZaJESJGIZTyDEaYpl0FKSA+FB9aJiyemKhMwkxQg63h4T1KJgUGHpTqPDNRcmmYLugrRjJlBtWvRA==}
     hasBin: true
@@ -4842,9 +4843,6 @@ packages:
     resolution: {integrity: sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==}
     engines: {node: '>=8'}
 
-  strip-literal@2.1.0:
-    resolution: {integrity: sha512-Op+UycaUt/8FbN/Z2TWPBLge3jWrP3xj10f3fnYxf052bKuS3EKs1ZQcVGjnEMdsNVAM+plXRdmjrZ/KgG3Skw==}
-
   styled-jsx@5.1.1:
     resolution: {integrity: sha512-pW7uC1l4mBZ8ugbiZrcIsiIvVx1UmTfw7UkC3Um2tmfUq9Bhk8IiyEIPl6F8agHgjzku6j0xQEZbfA5uSgSaCw==}
     engines: {node: '>= 12.0.0'}
@@ -5150,11 +5148,6 @@ packages:
     resolution: {integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==}
     engines: {node: '>= 0.8'}
 
-  vite-node@2.0.3:
-    resolution: {integrity: sha512-14jzwMx7XTcMB+9BhGQyoEAmSl0eOr3nrnn+Z12WNERtOvLN+d2scbRUvyni05rT3997Bg+rZb47NyP4IQPKXg==}
-    engines: {node: ^18.0.0 || >=20.0.0}
-    hasBin: true
-
   vite-node@2.0.4:
     resolution: {integrity: sha512-ZpJVkxcakYtig5iakNeL7N3trufe3M6vGuzYAr4GsbCTwobDeyPJpE4cjDhhPluv8OvQCFzu2LWp6GkoKRITXA==}
     engines: {node: ^18.0.0 || >=20.0.0}
@@ -5194,31 +5187,6 @@ packages:
       sugarss:
         optional: true
       terser:
-        optional: true
-
-  vitest@2.0.3:
-    resolution: {integrity: sha512-o3HRvU93q6qZK4rI2JrhKyZMMuxg/JRt30E6qeQs6ueaiz5hr1cPj+Sk2kATgQzMMqsa2DiNI0TIK++1ULx8Jw==}
-    engines: {node: ^18.0.0 || >=20.0.0}
-    hasBin: true
-    peerDependencies:
-      '@edge-runtime/vm': '*'
-      '@types/node': ^18.0.0 || >=20.0.0
-      '@vitest/browser': 2.0.3
-      '@vitest/ui': 2.0.3
-      happy-dom: '*'
-      jsdom: '*'
-    peerDependenciesMeta:
-      '@edge-runtime/vm':
-        optional: true
-      '@types/node':
-        optional: true
-      '@vitest/browser':
-        optional: true
-      '@vitest/ui':
-        optional: true
-      happy-dom:
-        optional: true
-      jsdom:
         optional: true
 
   vitest@2.0.4:
@@ -5276,11 +5244,6 @@ packages:
   which@2.0.2:
     resolution: {integrity: sha512-BLI3Tl1TW3Pvl70l3yq3Y64i+awpwXqsGBYWkkqMtnbXgrMD+yj7rhW0kuEDxzJaYXGjEW5ogapKNMEKNMjibA==}
     engines: {node: '>= 8'}
-    hasBin: true
-
-  why-is-node-running@2.2.2:
-    resolution: {integrity: sha512-6tSwToZxTOcotxHeA+qGCq1mVzKR3CwcJGmVcY+QE8SHy6TnpFnh8PAvPNHYr7EcuVeG0QSMxtYCuO1ta/G/oA==}
-    engines: {node: '>=8'}
     hasBin: true
 
   why-is-node-running@2.3.0:
@@ -5584,6 +5547,10 @@ snapshots:
 
   '@biomejs/cli-win32-x64@1.8.3':
     optional: true
+
+  '@chronark/zod-bird@0.3.9':
+    dependencies:
+      zod: 3.23.8
 
   '@clack/core@0.3.4':
     dependencies:
@@ -7323,7 +7290,7 @@ snapshots:
       ws: 8.18.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)
     optional: true
 
-  '@vitest/coverage-v8@2.0.3(vitest@2.0.3(@edge-runtime/vm@4.0.0)(@types/node@20.14.12)(@vitest/ui@2.0.3)(terser@5.31.2))':
+  '@vitest/coverage-v8@2.0.4(vitest@2.0.4(@edge-runtime/vm@4.0.0)(@types/node@20.14.12)(@vitest/ui@2.0.4)(terser@5.31.2))':
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@bcoe/v8-coverage': 0.2.3
@@ -7335,19 +7302,11 @@ snapshots:
       magic-string: 0.30.10
       magicast: 0.3.4
       std-env: 3.7.0
-      strip-literal: 2.1.0
       test-exclude: 7.0.1
       tinyrainbow: 1.2.0
-      vitest: 2.0.3(@edge-runtime/vm@4.0.0)(@types/node@20.14.12)(@vitest/ui@2.0.3)(terser@5.31.2)
+      vitest: 2.0.4(@edge-runtime/vm@4.0.0)(@types/node@20.14.12)(@vitest/ui@2.0.4)(terser@5.31.2)
     transitivePeerDependencies:
       - supports-color
-
-  '@vitest/expect@2.0.3':
-    dependencies:
-      '@vitest/spy': 2.0.3
-      '@vitest/utils': 2.0.3
-      chai: 5.1.1
-      tinyrainbow: 1.2.0
 
   '@vitest/expect@2.0.4':
     dependencies:
@@ -7356,28 +7315,13 @@ snapshots:
       chai: 5.1.1
       tinyrainbow: 1.2.0
 
-  '@vitest/pretty-format@2.0.3':
-    dependencies:
-      tinyrainbow: 1.2.0
-
   '@vitest/pretty-format@2.0.4':
     dependencies:
       tinyrainbow: 1.2.0
 
-  '@vitest/runner@2.0.3':
-    dependencies:
-      '@vitest/utils': 2.0.3
-      pathe: 1.1.2
-
   '@vitest/runner@2.0.4':
     dependencies:
       '@vitest/utils': 2.0.4
-      pathe: 1.1.2
-
-  '@vitest/snapshot@2.0.3':
-    dependencies:
-      '@vitest/pretty-format': 2.0.3
-      magic-string: 0.30.10
       pathe: 1.1.2
 
   '@vitest/snapshot@2.0.4':
@@ -7386,43 +7330,20 @@ snapshots:
       magic-string: 0.30.10
       pathe: 1.1.2
 
-  '@vitest/spy@2.0.3':
-    dependencies:
-      tinyspy: 3.0.0
-
   '@vitest/spy@2.0.4':
     dependencies:
       tinyspy: 3.0.0
 
-  '@vitest/ui@2.0.3(vitest@2.0.3)':
+  '@vitest/ui@2.0.4(vitest@2.0.4)':
     dependencies:
-      '@vitest/utils': 2.0.3
+      '@vitest/utils': 2.0.4
       fast-glob: 3.3.2
       fflate: 0.8.2
       flatted: 3.3.1
       pathe: 1.1.2
       sirv: 2.0.4
       tinyrainbow: 1.2.0
-      vitest: 2.0.3(@edge-runtime/vm@4.0.0)(@types/node@20.14.12)(@vitest/ui@2.0.3)(terser@5.31.2)
-
-  '@vitest/ui@2.0.3(vitest@2.0.4)':
-    dependencies:
-      '@vitest/utils': 2.0.3
-      fast-glob: 3.3.2
-      fflate: 0.8.2
-      flatted: 3.3.1
-      pathe: 1.1.2
-      sirv: 2.0.4
-      tinyrainbow: 1.2.0
-      vitest: 2.0.4(@edge-runtime/vm@4.0.0)(@types/node@20.14.12)(@vitest/ui@2.0.3)(terser@5.31.2)
-    optional: true
-
-  '@vitest/utils@2.0.3':
-    dependencies:
-      '@vitest/pretty-format': 2.0.3
-      estree-walker: 3.0.3
-      loupe: 3.1.1
-      tinyrainbow: 1.2.0
+      vitest: 2.0.4(@edge-runtime/vm@4.0.0)(@types/node@20.14.12)(@vitest/ui@2.0.4)(terser@5.31.2)
 
   '@vitest/utils@2.0.4':
     dependencies:
@@ -8588,8 +8509,6 @@ snapshots:
 
   js-tokens@4.0.0: {}
 
-  js-tokens@9.0.0: {}
-
   js-yaml@4.1.0:
     dependencies:
       argparse: 2.0.1
@@ -9540,10 +9459,6 @@ snapshots:
 
   strip-json-comments@3.1.1: {}
 
-  strip-literal@2.1.0:
-    dependencies:
-      js-tokens: 9.0.0
-
   styled-jsx@5.1.1(@babel/core@7.24.5)(react@18.3.1):
     dependencies:
       client-only: 0.0.1
@@ -9988,30 +9903,13 @@ snapshots:
 
   vary@1.1.2: {}
 
-  vite-node@2.0.3(@types/node@20.14.11)(terser@5.31.2):
+  vite-node@2.0.4(@types/node@20.14.11)(terser@5.31.2):
     dependencies:
       cac: 6.7.14
       debug: 4.3.5
       pathe: 1.1.2
       tinyrainbow: 1.2.0
       vite: 5.3.3(@types/node@20.14.11)(terser@5.31.2)
-    transitivePeerDependencies:
-      - '@types/node'
-      - less
-      - lightningcss
-      - sass
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
-
-  vite-node@2.0.3(@types/node@20.14.12)(terser@5.31.2):
-    dependencies:
-      cac: 6.7.14
-      debug: 4.3.5
-      pathe: 1.1.2
-      tinyrainbow: 1.2.0
-      vite: 5.3.3(@types/node@20.14.12)(terser@5.31.2)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -10070,15 +9968,15 @@ snapshots:
       fsevents: 2.3.3
       terser: 5.31.2
 
-  vitest@2.0.3(@edge-runtime/vm@4.0.0)(@types/node@20.14.11)(@vitest/ui@2.0.3)(terser@5.31.2):
+  vitest@2.0.4(@edge-runtime/vm@4.0.0)(@types/node@20.14.11)(@vitest/ui@2.0.4)(terser@5.31.2):
     dependencies:
       '@ampproject/remapping': 2.3.0
-      '@vitest/expect': 2.0.3
-      '@vitest/pretty-format': 2.0.3
-      '@vitest/runner': 2.0.3
-      '@vitest/snapshot': 2.0.3
-      '@vitest/spy': 2.0.3
-      '@vitest/utils': 2.0.3
+      '@vitest/expect': 2.0.4
+      '@vitest/pretty-format': 2.0.4
+      '@vitest/runner': 2.0.4
+      '@vitest/snapshot': 2.0.4
+      '@vitest/spy': 2.0.4
+      '@vitest/utils': 2.0.4
       chai: 5.1.1
       debug: 4.3.5
       execa: 8.0.1
@@ -10089,12 +9987,12 @@ snapshots:
       tinypool: 1.0.0
       tinyrainbow: 1.2.0
       vite: 5.3.3(@types/node@20.14.11)(terser@5.31.2)
-      vite-node: 2.0.3(@types/node@20.14.11)(terser@5.31.2)
-      why-is-node-running: 2.2.2
+      vite-node: 2.0.4(@types/node@20.14.11)(terser@5.31.2)
+      why-is-node-running: 2.3.0
     optionalDependencies:
       '@edge-runtime/vm': 4.0.0
       '@types/node': 20.14.11
-      '@vitest/ui': 2.0.3(vitest@2.0.3)
+      '@vitest/ui': 2.0.4(vitest@2.0.4)
     transitivePeerDependencies:
       - less
       - lightningcss
@@ -10104,41 +10002,7 @@ snapshots:
       - supports-color
       - terser
 
-  vitest@2.0.3(@edge-runtime/vm@4.0.0)(@types/node@20.14.12)(@vitest/ui@2.0.3)(terser@5.31.2):
-    dependencies:
-      '@ampproject/remapping': 2.3.0
-      '@vitest/expect': 2.0.3
-      '@vitest/pretty-format': 2.0.3
-      '@vitest/runner': 2.0.3
-      '@vitest/snapshot': 2.0.3
-      '@vitest/spy': 2.0.3
-      '@vitest/utils': 2.0.3
-      chai: 5.1.1
-      debug: 4.3.5
-      execa: 8.0.1
-      magic-string: 0.30.10
-      pathe: 1.1.2
-      std-env: 3.7.0
-      tinybench: 2.8.0
-      tinypool: 1.0.0
-      tinyrainbow: 1.2.0
-      vite: 5.3.3(@types/node@20.14.12)(terser@5.31.2)
-      vite-node: 2.0.3(@types/node@20.14.12)(terser@5.31.2)
-      why-is-node-running: 2.2.2
-    optionalDependencies:
-      '@edge-runtime/vm': 4.0.0
-      '@types/node': 20.14.12
-      '@vitest/ui': 2.0.3(vitest@2.0.3)
-    transitivePeerDependencies:
-      - less
-      - lightningcss
-      - sass
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
-
-  vitest@2.0.4(@edge-runtime/vm@4.0.0)(@types/node@20.14.12)(@vitest/ui@2.0.3)(terser@5.31.2):
+  vitest@2.0.4(@edge-runtime/vm@4.0.0)(@types/node@20.14.12)(@vitest/ui@2.0.4)(terser@5.31.2):
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@vitest/expect': 2.0.4
@@ -10162,7 +10026,7 @@ snapshots:
     optionalDependencies:
       '@edge-runtime/vm': 4.0.0
       '@types/node': 20.14.12
-      '@vitest/ui': 2.0.3(vitest@2.0.4)
+      '@vitest/ui': 2.0.4(vitest@2.0.4)
     transitivePeerDependencies:
       - less
       - lightningcss
@@ -10225,11 +10089,6 @@ snapshots:
   which@2.0.2:
     dependencies:
       isexe: 2.0.0
-
-  why-is-node-running@2.2.2:
-    dependencies:
-      siginfo: 2.0.0
-      stackback: 0.0.2
 
   why-is-node-running@2.3.0:
     dependencies:

@@ -14,7 +14,7 @@
     "@formizee/tsconfig": "workspace:*",
     "@types/geoip-lite": "1.4.4",
     "@types/node": "20.14.11",
-    "vitest": "2.0.3"
+    "vitest": "2.0.4"
   },
   "peerDependencies": {
     "@hono/node-server": "1.12.0",
