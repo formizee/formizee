@@ -23,6 +23,7 @@ export class KeyV1 {
       const parts = arg.split(SEPARATOR);
       if (parts.length === 2) {
         this.prefix = parts[0];
+        // @ts-ignore
         s = parts[1];
       }
       const buf = base58.decode(s);
@@ -30,6 +31,7 @@ export class KeyV1 {
         throw new Error('Only version 1 keys are supported');
       }
       const len = buf[1];
+      // @ts-ignore
       this.random = buf.slice(2, 2 + len);
       return;
     }
