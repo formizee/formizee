@@ -9,6 +9,8 @@ const prefixes = {
   auth: 'auth',
   member: 'mbr',
   email: 'mail',
+  request: 'req',
+  auditlog: 'log',
   workspace: 'ws',
   endpoint: 'enp',
   submission: 'sub'
