@@ -1,5 +1,4 @@
 import {handleError, handleNotFound, handleZodError} from '@/lib/errors';
-import {apiReference} from '@scalar/hono-api-reference';
 import {OpenAPIHono} from '@hono/zod-openapi';
 import type {HonoEnv} from './types';
 import {env} from '@/lib/enviroment';
@@ -82,17 +81,6 @@ export const newApp = (): OpenAPIHono<HonoEnv> => {
     scheme: 'bearer',
     type: 'http'
   });
-
-  app.get(
-    '/docs',
-    apiReference({
-      pageTitle: 'Formizee API Reference',
-      hideModels: true,
-      spec: {
-        url: '/openapi.json'
-      }
-    })
-  );
 
   return app;
 };
