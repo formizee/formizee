@@ -1,8 +1,8 @@
 import {HTTPException} from 'hono/http-exception';
+import {env} from '@/lib/enviroment';
 import {z} from '@hono/zod-openapi';
 import type {Context} from 'hono';
 import {ZodError} from 'zod';
-import {env} from '@/lib/enviroment';
 import {
   type ErrorCode,
   ErrorCodeEnum,
@@ -41,6 +41,17 @@ export function handleError(err: Error, c: Context): Response {
     },
 
     {status: 500}
+  );
+}
+
+export function handleNotFound(context: Context): Response {
+  return context.json<ErrorSchema>(
+    {
+      code: 'NOT_FOUND',
+      docs: `${env.DOCS_URL}/api-references/errors/code/NOT_FOUND`,
+      message: 'The route does not exists, ensure that is correctly typed'
+    },
+    {status: 404}
   );
 }
 

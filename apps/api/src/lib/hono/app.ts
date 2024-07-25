@@ -1,4 +1,4 @@
-import {handleError, handleZodError} from '@/lib/errors';
+import {handleError, handleNotFound, handleZodError} from '@/lib/errors';
 import {apiReference} from '@scalar/hono-api-reference';
 import {OpenAPIHono} from '@hono/zod-openapi';
 import type {HonoEnv} from './types';
@@ -21,6 +21,7 @@ export const newRoute = (basePath = '/'): OpenAPIHono<HonoEnv> => {
   }).basePath(basePath);
 
   route.use('*', services());
+  route.notFound(handleNotFound);
   route.onError(handleError);
 
   return route;
@@ -28,6 +29,7 @@ export const newRoute = (basePath = '/'): OpenAPIHono<HonoEnv> => {
 
 export const newApp = (): OpenAPIHono<HonoEnv> => {
   const app = new OpenAPIHono<HonoEnv>();
+  app.notFound(handleNotFound);
   app.onError(handleError);
 
   // Middlewares
