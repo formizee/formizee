@@ -33,6 +33,8 @@ export const newApp = (): OpenAPIHono<HonoEnv> => {
   app.notFound(handleNotFound);
   app.onError(handleError);
 
+  app.use('*', services());
+
   // Middlewares
   app.use(trimTrailingSlash());
   app.use(secureHeaders());
