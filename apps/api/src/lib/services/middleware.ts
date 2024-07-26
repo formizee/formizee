@@ -13,7 +13,8 @@ export function services(): MiddlewareHandler<HonoEnv> {
     c.res.headers.set('Formizee-Request-Id', requestId);
 
     const analytics = new Analytics({
-      tinybirdToken: env.TINYBIRD_TOKEN,
+      tinybirdToken:
+        env.NODE_ENV === 'production' ? env.TINYBIRD_TOKEN : undefined,
       tinybirdUrl: env.TINYBIRD_URL
     });
 
