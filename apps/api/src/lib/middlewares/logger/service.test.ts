@@ -1,5 +1,5 @@
 import {describe, it, expect, vi, beforeEach, afterEach} from 'vitest';
-import {logger} from './logger';
+import {logger} from './service';
 import {Hono} from 'hono';
 
 // Utility to mock console.info
