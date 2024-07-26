@@ -1,7 +1,7 @@
 import {ErrorCodeEnum, BaseError, Err, Ok, type Result} from '@formizee/error';
-import {sha256} from '@formizee/hashing';
 import {db, eq, schema} from '@formizee/db';
-import {newKey} from '@formizee/keys';
+import {sha256} from '@formizee/hashing';
+import {newKey} from './utils';
 
 class NotFoundError extends BaseError {
   public readonly name = 'Not Found';
@@ -32,7 +32,7 @@ export class KeyService {
       const hash = await this.hash(keyToVerify);
 
       const key = await db.query.key.findFirst({
-        where: (table, {eq}) => eq(table.hash, hash)
+        where: eq(schema.key.hash, hash)
       });
       if (!key) {
         return Err(
@@ -54,7 +54,7 @@ export class KeyService {
       }
 
       const workspace = await db.query.workspace.findFirst({
-        where: (table, {eq}) => eq(table.id, key.workspaceId)
+        where: eq(schema.workspace.id, key.workspaceId)
       });
       if (!workspace) {
         return Err(

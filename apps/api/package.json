@@ -18,7 +18,6 @@
     "@formizee/analytics": "workspace:*",
     "@formizee/db": "workspace:*",
     "@formizee/error": "workspace:*",
-    "@formizee/hashing": "workspace:*",
     "@formizee/keys": "workspace:*",
     "@formizee/id": "workspace:*",
     "@formizee/plans": "workspace:*",

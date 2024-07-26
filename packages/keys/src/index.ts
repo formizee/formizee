@@ -1,2 +1,2 @@
+export {KeyService} from './service';
 export {newKey} from './utils';
-export * from './v1';

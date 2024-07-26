@@ -53,9 +53,6 @@ importers:
       '@formizee/error':
         specifier: workspace:*
         version: link:../../packages/error
-      '@formizee/hashing':
-        specifier: workspace:*
-        version: link:../../packages/hashing
       '@formizee/id':
         specifier: workspace:*
         version: link:../../packages/id
@@ -359,6 +356,12 @@ importers:
 
   packages/keys:
     dependencies:
+      '@formizee/db':
+        specifier: workspace:*
+        version: link:../db
+      '@formizee/error':
+        specifier: workspace:*
+        version: link:../error
       '@formizee/hashing':
         specifier: workspace:*
         version: link:../hashing

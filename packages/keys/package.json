@@ -16,6 +16,8 @@
     "vitest": "2.0.4"
   },
   "dependencies": {
+    "@formizee/db": "workspace:*",
+    "@formizee/error": "workspace:*",
     "@formizee/hashing": "workspace:*",
     "base-x": "5.0.0"
   }
