@@ -35,10 +35,11 @@ export const postRoute = createRoute({
 
 export const registerPostKey = (api: typeof keysAPI) => {
   return api.openapi(postRoute, async context => {
-    const {keyService} = context.get('services');
+    const {keyService, analytics} = context.get('services');
     const workspace = context.get('workspace');
     const input = context.req.valid('json');
     const limits = context.get('limits');
+    const rootKey = context.get('key');
 
     // Check plan limits.
     const keys = await db
@@ -75,6 +76,27 @@ export const registerPostKey = (api: typeof keysAPI) => {
     };
 
     await db.insert(schema.key).values(data);
+
+    await analytics.ingestFormizeeAuditLogs({
+      event: 'key.create',
+      workspaceId: workspace.id,
+      actor: {
+        type: 'key',
+        id: rootKey.id,
+        name: rootKey.name
+      },
+      resources: [
+        {
+          id: data.id,
+          type: 'key'
+        }
+      ],
+      description: `Created ${data.id}`,
+      context: {
+        location: context.get('location'),
+        userAgent: context.get('userAgent')
+      }
+    });
 
     const response = KeySchema.parse(data);
     return context.json(response, 201);

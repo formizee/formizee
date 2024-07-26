@@ -28,8 +28,10 @@ export const deleteRoute = createRoute({
 
 export const registerDeleteKey = (api: typeof keysAPI) => {
   return api.openapi(deleteRoute, async context => {
+    const {analytics} = context.get('services');
     const workspace = context.get('workspace');
     const {id} = context.req.valid('param');
+    const rootKey = context.get('key');
 
     const key = await db.query.key.findFirst({
       where: and(
@@ -45,6 +47,27 @@ export const registerDeleteKey = (api: typeof keysAPI) => {
     }
 
     await db.delete(schema.key).where(eq(schema.key.id, id));
+
+    await analytics.ingestFormizeeAuditLogs({
+      event: 'key.delete',
+      workspaceId: workspace.id,
+      actor: {
+        type: 'key',
+        id: rootKey.id,
+        name: rootKey.name
+      },
+      resources: [
+        {
+          id: key.id,
+          type: 'key'
+        }
+      ],
+      description: `Deleted ${key.id}`,
+      context: {
+        location: context.get('location'),
+        userAgent: context.get('userAgent')
+      }
+    });
 
     return context.json({}, 200);
   });

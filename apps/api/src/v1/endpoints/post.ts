@@ -36,9 +36,11 @@ export const postRoute = createRoute({
 
 export const registerPostEndpoint = (api: typeof endpointsAPI) => {
   return api.openapi(postRoute, async context => {
+    const {analytics} = context.get('services');
     const workspace = context.get('workspace');
     const input = context.req.valid('json');
     const limits = context.get('limits');
+    const rootKey = context.get('key');
 
     // Check plan limits.
     const endpoints = await db
@@ -102,6 +104,27 @@ export const registerPostEndpoint = (api: typeof endpointsAPI) => {
     };
 
     await db.insert(schema.endpoint).values(data);
+
+    await analytics.ingestFormizeeAuditLogs({
+      event: 'endpoint.create',
+      workspaceId: workspace.id,
+      actor: {
+        type: 'key',
+        id: rootKey.id,
+        name: rootKey.name
+      },
+      resources: [
+        {
+          id: data.id,
+          type: 'endpoint'
+        }
+      ],
+      description: `Created ${data.id}`,
+      context: {
+        location: context.get('location'),
+        userAgent: context.get('userAgent')
+      }
+    });
 
     const response = EndpointSchema.parse(data);
     return context.json(response, 201);

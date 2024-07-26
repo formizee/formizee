@@ -35,9 +35,11 @@ export const putRoute = createRoute({
 
 export const registerPutEndpoint = (api: typeof endpointsAPI) => {
   return api.openapi(putRoute, async context => {
+    const {analytics} = context.get('services');
     const workspace = context.get('workspace');
     const {id} = context.req.valid('param');
     const input = context.req.valid('json');
+    const rootKey = context.get('key');
 
     const endpoint = await db.query.endpoint.findFirst({
       where: (table, {and, eq}) =>
@@ -85,6 +87,27 @@ export const registerPutEndpoint = (api: typeof endpointsAPI) => {
       .set(input)
       .where(eq(schema.endpoint.id, id))
       .returning();
+
+    await analytics.ingestFormizeeAuditLogs({
+      event: 'endpoint.update',
+      workspaceId: workspace.id,
+      actor: {
+        type: 'key',
+        id: rootKey.id,
+        name: rootKey.name
+      },
+      resources: [
+        {
+          id: endpoint.id,
+          type: 'endpoint'
+        }
+      ],
+      description: `Updated ${endpoint.id}`,
+      context: {
+        location: context.get('location'),
+        userAgent: context.get('userAgent')
+      }
+    });
 
     const response = EndpointSchema.parse(newEndpoint[0]);
     return context.json(response, 200);

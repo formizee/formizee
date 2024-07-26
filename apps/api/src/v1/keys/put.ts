@@ -35,10 +35,11 @@ export const putRoute = createRoute({
 
 export const registerPutKey = (api: typeof keysAPI) => {
   return api.openapi(putRoute, async context => {
-    const {keyService} = context.get('services');
+    const {keyService, analytics} = context.get('services');
     const workspace = context.get('workspace');
     const {id} = context.req.valid('param');
     const input = context.req.valid('json');
+    const rootKey = context.get('key');
 
     const key = await db.query.key.findFirst({
       where: (table, {and, eq}) =>
@@ -80,6 +81,27 @@ export const registerPutKey = (api: typeof keysAPI) => {
       })
       .where(eq(schema.key.id, id))
       .returning();
+
+    await analytics.ingestFormizeeAuditLogs({
+      event: 'key.update',
+      workspaceId: workspace.id,
+      actor: {
+        type: 'key',
+        id: rootKey.id,
+        name: rootKey.name
+      },
+      resources: [
+        {
+          id: key.id,
+          type: 'key'
+        }
+      ],
+      description: `Updated ${key.id}`,
+      context: {
+        location: context.get('location'),
+        userAgent: context.get('userAgent')
+      }
+    });
 
     const response = KeySchema.parse(newKey[0]);
     return context.json(response, 200);
