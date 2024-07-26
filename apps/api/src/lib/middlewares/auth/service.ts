@@ -27,6 +27,7 @@ export const authentication = (): MiddlewareHandler<HonoEnv> => {
     }
 
     context.set('workspace', val.workspace);
+    context.set('key', { id: val.id, name: val.name });
     context.set('limits', getLimits(val.workspace.plan));
 
     await next();

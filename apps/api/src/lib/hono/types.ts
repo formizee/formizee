@@ -11,7 +11,7 @@ export type HonoVariables = {
   // Authentication
   workspace: Workspace;
   limits: Limits;
-  key: Key;
+  key: Pick<Key, 'id' | 'name'>;
 
   // Context
   pagination: Pagination;
