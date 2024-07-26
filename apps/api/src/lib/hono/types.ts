@@ -7,6 +7,8 @@ import type {Env} from 'hono';
 export type HonoVariables = {
   // Metrics
   requestId: string;
+  userAgent: string;
+  location: string;
 
   // Authentication
   workspace: Workspace;

@@ -8,9 +8,20 @@ import {KeyService} from '@formizee/keys';
 
 export function services(): MiddlewareHandler<HonoEnv> {
   return async (c, next) => {
+    // Metrics
+
     const requestId = newId('request');
     c.set('requestId', requestId);
+    c.set('userAgent', c.req.header('User-Agent') ?? '');
     c.res.headers.set('Formizee-Request-Id', requestId);
+    c.set(
+      'location',
+      c.req.header('True-Client-IP') ??
+        c.req.header('CF-Connecting-IP') ??
+        // @ts-expect-error - the cf object will be there on cloudflare
+        c.req.raw?.cf?.colo ??
+        ''
+    );
 
     const analytics = new Analytics({
       tinybirdToken:
