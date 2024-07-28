@@ -6,6 +6,7 @@ import {getOriginCountry} from '@/lib/location';
 import {createRoute} from '@hono/zod-openapi';
 import {db, schema} from '@formizee/db';
 import {newId} from '@formizee/id';
+import {env} from '@/lib/enviroment';
 
 export const postRoute = createRoute({
   method: 'post',
@@ -21,18 +22,6 @@ export const postRoute = createRoute({
             type: 'object',
             additionalProperties: true,
             example: {name: 'example', email: 'example@formizee.com'}
-          }
-        },
-        'multipart/form-data': {
-          schema: {
-            type: 'object',
-            additionalProperties: true
-          }
-        },
-        'application/x-www-form-urlencoded': {
-          schema: {
-            type: 'object',
-            additionalProperties: true
           }
         }
       },
@@ -55,10 +44,18 @@ export const postRoute = createRoute({
 export const registerPostSubmission = (api: typeof submissionsApi) => {
   return api.openapi(postRoute, async context => {
     const {analytics, emailService} = context.get('services');
-    const contentType = context.req.header('Content-Type');
     const location = await getOriginCountry(context);
     const workspaceId = context.get('workspace').id;
     const {id} = context.req.valid('param');
+
+    if (context.req.header('Content-Type') !== 'application/json') {
+      throw new HTTPException(400, {
+        message: "Use one of the supported body types: 'application/json'"
+      });
+    }
+    //
+    // biome-ignore lint/suspicious/noExplicitAny:
+    const input = await context.req.json<any>();
 
     const endpoint = await db.query.endpoint.findFirst({
       where: (table, {eq}) => eq(table.id, id)
@@ -92,108 +89,47 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
       });
     }
 
-    const isForm = contentType?.includes('application/x-www-form-urlencoded');
-    const isJson = contentType?.includes('application/json');
-    // const isMultipartForm = contentType?.includes('multipart/form-data');
-
-    if (isForm) {
-      const form = await context.req.formData();
-      const input = Object.fromEntries(form);
-
-      if (Object.keys(input).length === 0) {
-        throw new HTTPException(400, {
-          message: 'The submission data is empty'
-        });
-      }
-
-      const data: schema.InsertSubmission = {
-        id: newId('submission'),
-        endpointId: endpoint.id,
-        data: input,
-        location
-      };
-
-      const newSubmission = await db
-        .insert(schema.submission)
-        .values(data)
-        .returning();
-
-      if (endpoint.emailNotifications) {
-        for (const email of endpoint.targetEmails) {
-          await emailService.sendSubmissionEmail({
-            email,
-            data: input,
-            endpointSlug: endpoint.slug,
-            workspaceSlug: workspace.slug
-          });
-        }
-      }
-
-      await analytics.ingestFormizeeMetrics({
-        metric: 'submission.upload',
-        endpointId: endpoint.id,
-        workspaceId,
-        uploadedAt: new Date(),
-        context: {
-          location: context.get('location'),
-          userAgent: context.get('userAgent')
-        }
+    if (Object.keys(input).length === 0) {
+      throw new HTTPException(400, {
+        message: 'The submission data is empty'
       });
-
-      const response = SubmissionSchema.parse(newSubmission[0]);
-      return context.json(response, 201);
     }
 
-    if (isJson) {
-      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-      const input = await context.req.json<any>();
-      if (Object.keys(input).length === 0) {
-        throw new HTTPException(400, {
-          message: 'The submission data is empty'
+    const data: schema.InsertSubmission = {
+      id: newId('submission'),
+      endpointId: endpoint.id,
+      data: input,
+      location
+    };
+
+    const newSubmission = await db
+      .insert(schema.submission)
+      .values(data)
+      .returning();
+
+    if (endpoint.emailNotifications && env.NODE_ENV === 'production') {
+      for (const email of endpoint.targetEmails) {
+        await emailService.sendSubmissionEmail({
+          email,
+          data: input,
+          endpointSlug: endpoint.slug,
+          workspaceSlug: workspace.slug
         });
       }
-
-      const data: schema.InsertSubmission = {
-        id: newId('submission'),
-        endpointId: endpoint.id,
-        data: input,
-        location
-      };
-
-      const newSubmission = await db
-        .insert(schema.submission)
-        .values(data)
-        .returning();
-
-      if (endpoint.emailNotifications) {
-        for (const email of endpoint.targetEmails) {
-          await emailService.sendSubmissionEmail({
-            email,
-            data: input,
-            endpointSlug: endpoint.slug,
-            workspaceSlug: workspace.slug
-          });
-        }
-      }
-
-      await analytics.ingestFormizeeMetrics({
-        metric: 'submission.upload',
-        endpointId: endpoint.id,
-        workspaceId,
-        uploadedAt: new Date(),
-        context: {
-          location: context.get('location'),
-          userAgent: context.get('userAgent')
-        }
-      });
-
-      const response = SubmissionSchema.parse(newSubmission[0]);
-      return context.json(response, 201);
     }
 
-    throw new HTTPException(400, {
-      message:
-        "Use one of the supported body types: 'application/json' or 'application/x-www-form-urlencoded'"
+    await analytics.ingestFormizeeMetrics({
+      metric: 'submission.upload',
+      endpointId: endpoint.id,
+      workspaceId,
+      uploadedAt: new Date(),
+      context: {
+        location: context.get('location'),
+        userAgent: context.get('userAgent')
+      }
     });
+
+    const response = SubmissionSchema.parse(newSubmission[0]);
+    return context.json(response, 201);
   });
 };

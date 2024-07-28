@@ -75,8 +75,7 @@ describe('Create a submission', () => {
     expect(res.status).toBe(400);
     expect(res.body).toStrictEqual({
       code: 'BAD_REQUEST',
-      message:
-        "Use one of the supported body types: 'application/json' or 'application/x-www-form-urlencoded'",
+      message: "Use one of the supported body types: 'application/json'",
       docs: `${env.DOCS_URL}/api-references/errors/code/BAD_REQUEST`
     });
   });
@@ -86,15 +85,23 @@ describe('Create a submission', () => {
     const {key} = await harness.createKey();
 
     const res = await harness.post<RequestPostSubmission, ResponseSubmission>({
-      headers: {authorization: `Bearer ${key}`},
-      url: '/submission/enp_123456789'
+      headers: {
+        'content-type': 'application/json',
+        authorization: `Bearer ${key}`
+      },
+      url: '/submission/enp_123456789',
+      body: {
+        year: 2004,
+        name: 'example',
+        verified: false
+      }
     });
 
-    expect(res.status).toBe(404);
     expect(res.body).toStrictEqual({
       code: 'NOT_FOUND',
       message: 'Endpoint not found',
       docs: `${env.DOCS_URL}/api-references/errors/code/NOT_FOUND`
     });
+    expect(res.status).toBe(404);
   });
 });
