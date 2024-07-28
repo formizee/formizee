@@ -1,7 +1,7 @@
 import {InsertKeySchema, KeySchema} from './schema';
-import {db, count, schema, eq} from '@formizee/db';
 import {openApiErrorResponses} from '@/lib/errors';
 import {HTTPException} from 'hono/http-exception';
+import {count, schema, eq} from '@formizee/db';
 import {createRoute} from '@hono/zod-openapi';
 import type {keys as keysAPI} from '.';
 import {newId} from '@formizee/id';
@@ -35,14 +35,14 @@ export const postRoute = createRoute({
 
 export const registerPostKey = (api: typeof keysAPI) => {
   return api.openapi(postRoute, async context => {
-    const {keyService, analytics} = context.get('services');
+    const {analytics, database, keyService} = context.get('services');
     const workspace = context.get('workspace');
     const input = context.req.valid('json');
     const limits = context.get('limits');
     const rootKey = context.get('key');
 
     // Check plan limits.
-    const keys = await db
+    const keys = await database
       .select({count: count()})
       .from(schema.key)
       .where(eq(schema.key.workspaceId, workspace.id));
@@ -75,7 +75,7 @@ export const registerPostKey = (api: typeof keysAPI) => {
       workspaceId: workspace.id
     };
 
-    await db.insert(schema.key).values(data);
+    await database.insert(schema.key).values(data);
 
     await analytics.ingestFormizeeAuditLogs({
       event: 'key.create',

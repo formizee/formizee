@@ -1,5 +1,5 @@
 import {ErrorCodeEnum, BaseError, Err, Ok, type Result} from '@formizee/error';
-import {db, eq, schema} from '@formizee/db';
+import {type Database, eq, schema} from '@formizee/db';
 import {sha256} from '@formizee/hashing';
 import {newKey} from './utils';
 import {KeyV1} from './v1';
@@ -26,6 +26,12 @@ interface VerifyKeyResult extends Key {
 }
 
 export class KeyService {
+  private readonly database: Database;
+
+  constructor (options: {database: Database}) {
+    this.database = options.database;
+  }
+
   public async verifyKey(
     keyToVerify: string
   ): Promise<Result<VerifyKeyResult, VerifyKeyError>> {
@@ -42,7 +48,7 @@ export class KeyService {
 
       const hash = await this.hash(keyToVerify);
 
-      const key = await db.query.key.findFirst({
+      const key = await this.database.query.key.findFirst({
         where: eq(schema.key.hash, hash)
       });
       if (!key) {
@@ -55,7 +61,7 @@ export class KeyService {
 
       const isExpired = new Date() > key.expiresAt;
       if (isExpired) {
-        await db.delete(schema.key).where(eq(schema.key.id, key.id));
+        await this.database.delete(schema.key).where(eq(schema.key.id, key.id));
 
         return Err(
           new UnauthorizedError({
@@ -64,7 +70,7 @@ export class KeyService {
         );
       }
 
-      const workspace = await db.query.workspace.findFirst({
+      const workspace = await this.database.query.workspace.findFirst({
         where: eq(schema.workspace.id, key.workspaceId)
       });
       if (!workspace) {
@@ -75,7 +81,7 @@ export class KeyService {
         );
       }
 
-      await db
+      await this.database
         .update(schema.key)
         .set({lastAccess: new Date()})
         .where(eq(schema.key.id, key.id));

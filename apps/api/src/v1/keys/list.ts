@@ -8,7 +8,7 @@ import {HTTPException} from 'hono/http-exception';
 import {createRoute, z} from '@hono/zod-openapi';
 import type {listKeys as keysApi} from '.';
 import {KeySchema} from './schema';
-import {count, db, eq, schema} from '@formizee/db';
+import {count, eq, schema} from '@formizee/db';
 
 export const listRoute = createRoute({
   method: 'get',
@@ -37,9 +37,10 @@ export const listRoute = createRoute({
 export const registerListKeys = (api: typeof keysApi) => {
   return api.openapi(listRoute, async context => {
     const {page, limit} = context.get('pagination');
+    const {database} = context.get('services');
     const workspace = context.get('workspace');
 
-    const keys = await db.query.key.findMany({
+    const keys = await database.query.key.findMany({
       where: (table, {eq}) => eq(table.workspaceId, workspace.id),
       offset: (page - 1) * limit,
       limit
@@ -52,7 +53,7 @@ export const registerListKeys = (api: typeof keysApi) => {
     }
 
     async function countTotalItems(): Promise<number> {
-      const data = await db
+      const data = await database
         .select({totalItems: count()})
         .from(schema.key)
         .where(eq(schema.key.workspaceId, workspace.id));

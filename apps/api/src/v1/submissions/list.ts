@@ -8,7 +8,7 @@ import type {listSubmissions as submissionsApi} from '.';
 import {openApiErrorResponses} from '@/lib/errors';
 import {HTTPException} from 'hono/http-exception';
 import {createRoute, z} from '@hono/zod-openapi';
-import {count, db, eq, schema} from '@formizee/db';
+import {count, eq, schema} from '@formizee/db';
 
 export const listRoute = createRoute({
   method: 'get',
@@ -38,10 +38,11 @@ export const listRoute = createRoute({
 export const registerListSubmissions = (api: typeof submissionsApi) => {
   return api.openapi(listRoute, async context => {
     const {page, limit} = context.get('pagination');
+    const {database} = context.get('services');
     const workspace = context.get('workspace');
     const {id} = context.req.valid('param');
 
-    const endpoint = await db.query.endpoint.findFirst({
+    const endpoint = await database.query.endpoint.findFirst({
       where: (table, {and, eq}) =>
         and(eq(table.workspaceId, workspace.id), eq(table.id, id))
     });
@@ -54,7 +55,7 @@ export const registerListSubmissions = (api: typeof submissionsApi) => {
 
     const endpointId = endpoint.id;
 
-    const submissions = await db.query.submission.findMany({
+    const submissions = await database.query.submission.findMany({
       where: (table, {eq}) => eq(table.endpointId, endpointId),
       offset: (page - 1) * limit,
       limit
@@ -67,7 +68,7 @@ export const registerListSubmissions = (api: typeof submissionsApi) => {
     }
 
     async function countTotalItems(): Promise<number> {
-      const data = await db
+      const data = await database
         .select({totalItems: count()})
         .from(schema.submission)
         .where(eq(schema.submission.endpointId, endpointId));

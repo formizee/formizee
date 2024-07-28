@@ -2,7 +2,7 @@ import {openApiErrorResponses} from '@/lib/errors';
 import {HTTPException} from 'hono/http-exception';
 import type {endpoints as endpointsAPI} from '.';
 import {createRoute} from '@hono/zod-openapi';
-import {db, count, schema, eq} from '@formizee/db';
+import {count, schema, eq} from '@formizee/db';
 import {EndpointSchema} from './schema';
 import {env} from '@/lib/enviroment';
 import {newId} from '@formizee/id';
@@ -36,14 +36,14 @@ export const postRoute = createRoute({
 
 export const registerPostEndpoint = (api: typeof endpointsAPI) => {
   return api.openapi(postRoute, async context => {
-    const {analytics} = context.get('services');
+    const {analytics, database} = context.get('services');
     const workspace = context.get('workspace');
     const input = context.req.valid('json');
     const limits = context.get('limits');
     const rootKey = context.get('key');
 
     // Check plan limits.
-    const endpoints = await db
+    const endpoints = await database
       .select({count: count()})
       .from(schema.endpoint)
       .where(eq(schema.endpoint.workspaceId, workspace.id));
@@ -65,7 +65,7 @@ export const registerPostEndpoint = (api: typeof endpointsAPI) => {
 
     // Check slug
 
-    const slugAlreadyTaken = await db.query.endpoint.findFirst({
+    const slugAlreadyTaken = await database.query.endpoint.findFirst({
       where: (table, {eq}) => eq(table.slug, input.slug)
     });
 
@@ -103,7 +103,7 @@ export const registerPostEndpoint = (api: typeof endpointsAPI) => {
       color: input.color
     };
 
-    await db.insert(schema.endpoint).values(data);
+    await database.insert(schema.endpoint).values(data);
 
     await analytics.ingestFormizeeAuditLogs({
       event: 'endpoint.create',

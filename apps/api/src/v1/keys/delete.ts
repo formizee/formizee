@@ -1,7 +1,7 @@
 import {openApiErrorResponses} from '@/lib/errors';
 import {HTTPException} from 'hono/http-exception';
 import {createRoute, z} from '@hono/zod-openapi';
-import {and, db, eq, schema} from '@formizee/db';
+import {and, eq, schema} from '@formizee/db';
 import {ParamsKeySchema} from './schema';
 import type {keys as keysAPI} from '.';
 
@@ -28,12 +28,12 @@ export const deleteRoute = createRoute({
 
 export const registerDeleteKey = (api: typeof keysAPI) => {
   return api.openapi(deleteRoute, async context => {
-    const {analytics} = context.get('services');
+    const {database, analytics} = context.get('services');
     const workspace = context.get('workspace');
     const {id} = context.req.valid('param');
     const rootKey = context.get('key');
 
-    const key = await db.query.key.findFirst({
+    const key = await database.query.key.findFirst({
       where: and(
         eq(schema.key.workspaceId, workspace.id),
         eq(schema.key.id, id)
@@ -46,7 +46,7 @@ export const registerDeleteKey = (api: typeof keysAPI) => {
       });
     }
 
-    await db.delete(schema.key).where(eq(schema.key.id, id));
+    await database.delete(schema.key).where(eq(schema.key.id, id));
 
     await analytics.ingestFormizeeAuditLogs({
       event: 'key.delete',

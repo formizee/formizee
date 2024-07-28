@@ -3,7 +3,6 @@ import type {submissions as submissionsApi} from '.';
 import {openApiErrorResponses} from '@/lib/errors';
 import {HTTPException} from 'hono/http-exception';
 import {createRoute} from '@hono/zod-openapi';
-import {db} from '@formizee/db';
 
 export const getRoute = createRoute({
   method: 'get',
@@ -28,12 +27,12 @@ export const getRoute = createRoute({
 
 export const registerGetSubmission = (api: typeof submissionsApi) => {
   return api.openapi(getRoute, async context => {
+    const {analytics, database} = context.get('services');
     const workspaceId = context.get('workspace').id;
-    const {analytics} = context.get('services');
     const {id} = context.req.valid('param');
 
     const dbStart = performance.now();
-    const submission = await db.query.submission.findFirst({
+    const submission = await database.query.submission.findFirst({
       where: (table, {eq}) => eq(table.id, id)
     });
 
@@ -43,7 +42,7 @@ export const registerGetSubmission = (api: typeof submissionsApi) => {
       });
     }
 
-    const endpoint = await db.query.endpoint.findFirst({
+    const endpoint = await database.query.endpoint.findFirst({
       where: (table, {eq}) => eq(table.id, submission.endpointId)
     });
 

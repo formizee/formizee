@@ -3,7 +3,6 @@ import {openApiErrorResponses} from '@/lib/errors';
 import {HTTPException} from 'hono/http-exception';
 import type {endpoints as endpointsAPI} from '.';
 import {createRoute} from '@hono/zod-openapi';
-import {db} from '@formizee/db';
 
 export const getRoute = createRoute({
   method: 'get',
@@ -29,9 +28,10 @@ export const getRoute = createRoute({
 export const registerGetEndpoint = (api: typeof endpointsAPI) => {
   return api.openapi(getRoute, async context => {
     const workspace = context.get('workspace');
+    const {database} = context.get('services');
     const {id} = context.req.valid('param');
 
-    const endpoint = await db.query.endpoint.findFirst({
+    const endpoint = await database.query.endpoint.findFirst({
       where: (table, {and, eq}) =>
         and(eq(table.workspaceId, workspace.id), eq(table.id, id))
     });

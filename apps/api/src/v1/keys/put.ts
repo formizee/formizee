@@ -2,7 +2,7 @@ import {KeySchema, InsertKeySchema, ParamsKeySchema} from './schema';
 import {openApiErrorResponses} from '@/lib/errors';
 import {HTTPException} from 'hono/http-exception';
 import {createRoute} from '@hono/zod-openapi';
-import {db, eq, schema} from '@formizee/db';
+import {eq, schema} from '@formizee/db';
 import type {keys as keysAPI} from '.';
 
 export const putRoute = createRoute({
@@ -35,13 +35,13 @@ export const putRoute = createRoute({
 
 export const registerPutKey = (api: typeof keysAPI) => {
   return api.openapi(putRoute, async context => {
-    const {keyService, analytics} = context.get('services');
+    const {analytics, database, keyService} = context.get('services');
     const workspace = context.get('workspace');
     const {id} = context.req.valid('param');
     const input = context.req.valid('json');
     const rootKey = context.get('key');
 
-    const key = await db.query.key.findFirst({
+    const key = await database.query.key.findFirst({
       where: (table, {and, eq}) =>
         and(eq(table.workspaceId, workspace.id), eq(table.id, id))
     });
@@ -72,7 +72,7 @@ export const registerPutKey = (api: typeof keysAPI) => {
       expiresAt = key.expiresAt;
     }
 
-    const newKey = await db
+    const newKey = await database
       .update(schema.key)
       .set({
         ...key,

@@ -35,7 +35,7 @@ export const verifyRoute = createRoute({
 
 export const registerVerifyKey = (api: typeof keysApi) => {
   return api.openapi(verifyRoute, async context => {
-    const {keyService, analytics} = context.get('services');
+    const {analytics, keyService} = context.get('services');
     const workspaceId = context.get('workspace').id;
     const {key} = context.req.valid('json');
     const rootKey = context.get('key');

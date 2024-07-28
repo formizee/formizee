@@ -1,6 +1,7 @@
-import {db as database, eq, schema} from '@formizee/db';
+import {type Database, createConnection, eq, schema} from '@formizee/db';
 import type {TaskContext} from 'vitest';
 import {newKey} from '@formizee/keys';
+import {env} from '@/lib/enviroment';
 import {newId} from '@formizee/id';
 
 export type Resources = {
@@ -12,12 +13,12 @@ export type Resources = {
 };
 
 export abstract class Harness {
-  public readonly db: typeof database;
+  public readonly db: Database;
   public resources: Resources;
 
   constructor(t: TaskContext) {
     this.resources = this.createResources();
-    this.db = database;
+    this.db = createConnection(env.TESTING_DATABASE_URL);
 
     t.onTestFinished(async () => {
       await this.teardown();

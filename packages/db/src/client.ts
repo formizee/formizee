@@ -1,12 +1,11 @@
-import {drizzle} from 'drizzle-orm/node-postgres';
+import {type NodePgDatabase, drizzle} from 'drizzle-orm/node-postgres';
 import * as schema from './schema';
-import {env} from '../env';
-import pg from 'pg';
+import {Pool} from 'pg';
 
-const connectionString =
-  env.NODE_ENV !== 'test' ? env.DATABASE_URL : env.TESTING_DATABASE_URL;
 
-const client = new pg.Client({connectionString});
-client.connect();
+export const createConnection = (databaseUrl: string) => {
+  const client = new Pool({connectionString: databaseUrl});
+  return drizzle(client, {schema});
+}
 
-export const db = drizzle(client, {schema});
+export type Database = NodePgDatabase<typeof schema>

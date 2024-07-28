@@ -4,7 +4,7 @@ import {openApiErrorResponses} from '@/lib/errors';
 import {HTTPException} from 'hono/http-exception';
 import {getOriginCountry} from '@/lib/location';
 import {createRoute} from '@hono/zod-openapi';
-import {db, schema} from '@formizee/db';
+import {schema} from '@formizee/db';
 import {newId} from '@formizee/id';
 import {env} from '@/lib/enviroment';
 
@@ -43,7 +43,7 @@ export const postRoute = createRoute({
 
 export const registerPostSubmission = (api: typeof submissionsApi) => {
   return api.openapi(postRoute, async context => {
-    const {analytics, emailService} = context.get('services');
+    const {analytics, database, emailService} = context.get('services');
     const location = await getOriginCountry(context);
     const workspaceId = context.get('workspace').id;
     const {id} = context.req.valid('param');
@@ -57,7 +57,7 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
     // biome-ignore lint/suspicious/noExplicitAny:
     const input = await context.req.json<any>();
 
-    const endpoint = await db.query.endpoint.findFirst({
+    const endpoint = await database.query.endpoint.findFirst({
       where: (table, {eq}) => eq(table.id, id)
     });
 
@@ -73,7 +73,7 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
       });
     }
 
-    const workspace = await db.query.workspace.findFirst({
+    const workspace = await database.query.workspace.findFirst({
       where: (table, {eq}) => eq(table.id, workspaceId)
     });
 
@@ -102,7 +102,7 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
       location
     };
 
-    const newSubmission = await db
+    const newSubmission = await database
       .insert(schema.submission)
       .values(data)
       .returning();

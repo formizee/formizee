@@ -3,7 +3,7 @@ import {openApiErrorResponses} from '@/lib/errors';
 import {HTTPException} from 'hono/http-exception';
 import type {endpoints as endpointsAPI} from '.';
 import {createRoute} from '@hono/zod-openapi';
-import {db, eq, schema} from '@formizee/db';
+import {eq, schema} from '@formizee/db';
 
 export const putRoute = createRoute({
   method: 'put',
@@ -35,13 +35,13 @@ export const putRoute = createRoute({
 
 export const registerPutEndpoint = (api: typeof endpointsAPI) => {
   return api.openapi(putRoute, async context => {
-    const {analytics} = context.get('services');
+    const {analytics, database} = context.get('services');
     const workspace = context.get('workspace');
     const {id} = context.req.valid('param');
     const input = context.req.valid('json');
     const rootKey = context.get('key');
 
-    const endpoint = await db.query.endpoint.findFirst({
+    const endpoint = await database.query.endpoint.findFirst({
       where: (table, {and, eq}) =>
         and(eq(table.workspaceId, workspace.id), eq(table.id, id))
     });
@@ -53,7 +53,7 @@ export const registerPutEndpoint = (api: typeof endpointsAPI) => {
     }
 
     if (input.slug && endpoint.slug !== input.slug) {
-      const slugAlreadyTaken = await db.query.endpoint.findFirst({
+      const slugAlreadyTaken = await database.query.endpoint.findFirst({
         where: eq(schema.endpoint.slug, input.slug)
       });
 
@@ -82,7 +82,7 @@ export const registerPutEndpoint = (api: typeof endpointsAPI) => {
       });
     }
 
-    const newEndpoint = await db
+    const newEndpoint = await database
       .update(schema.endpoint)
       .set(input)
       .where(eq(schema.endpoint.id, id))

@@ -2,7 +2,7 @@ import type {submissions as submissionsApi} from '.';
 import {openApiErrorResponses} from '@/lib/errors';
 import {HTTPException} from 'hono/http-exception';
 import {createRoute, z} from '@hono/zod-openapi';
-import {db, eq, schema} from '@formizee/db';
+import {eq, schema} from '@formizee/db';
 import {ParamsSchema} from './schema';
 
 export const deleteRoute = createRoute({
@@ -29,9 +29,10 @@ export const deleteRoute = createRoute({
 export const registerDeleteSubmission = (api: typeof submissionsApi) => {
   return api.openapi(deleteRoute, async context => {
     const workspaceId = context.get('workspace').id;
+    const {database} = context.get('services');
     const {id} = context.req.valid('param');
 
-    const submission = await db.query.submission.findFirst({
+    const submission = await database.query.submission.findFirst({
       where: (table, {eq}) => eq(table.id, id)
     });
 
@@ -41,7 +42,7 @@ export const registerDeleteSubmission = (api: typeof submissionsApi) => {
       });
     }
 
-    const endpoint = await db.query.endpoint.findFirst({
+    const endpoint = await database.query.endpoint.findFirst({
       where: (table, {eq}) => eq(table.id, submission.endpointId)
     });
 
@@ -57,7 +58,7 @@ export const registerDeleteSubmission = (api: typeof submissionsApi) => {
       });
     }
 
-    await db
+    await database
       .delete(schema.submission)
       .where(eq(schema.submission.id, submission.id));
 

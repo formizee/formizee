@@ -3,7 +3,7 @@ import type {submissions as submissionsApi} from '.';
 import {openApiErrorResponses} from '@/lib/errors';
 import {HTTPException} from 'hono/http-exception';
 import {createRoute} from '@hono/zod-openapi';
-import {db, eq, schema} from '@formizee/db';
+import {eq, schema} from '@formizee/db';
 
 export const putRoute = createRoute({
   method: 'put',
@@ -36,10 +36,11 @@ export const putRoute = createRoute({
 export const registerPutSubmission = (api: typeof submissionsApi) => {
   return api.openapi(putRoute, async context => {
     const workspaceId = context.get('workspace').id;
+    const {database} = context.get('services');
     const {id} = context.req.valid('param');
     const input = context.req.valid('json');
 
-    const submission = await db.query.submission.findFirst({
+    const submission = await database.query.submission.findFirst({
       where: (table, {eq}) => eq(table.id, id)
     });
 
@@ -49,7 +50,7 @@ export const registerPutSubmission = (api: typeof submissionsApi) => {
       });
     }
 
-    const endpoint = await db.query.endpoint.findFirst({
+    const endpoint = await database.query.endpoint.findFirst({
       where: (table, {eq}) => eq(table.id, submission.endpointId)
     });
 
@@ -71,7 +72,7 @@ export const registerPutSubmission = (api: typeof submissionsApi) => {
       });
     }
 
-    const newSubmission = await db
+    const newSubmission = await database
       .update(schema.submission)
       .set({
         isRead: input.isRead ?? submission.isRead,
