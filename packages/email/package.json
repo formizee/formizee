@@ -3,18 +3,8 @@
   "author": "Pau García Chiner",
   "version": "1.0.0",
   "license": "Apache-2.0",
-  "exports": {
-    ".": {
-      "types": "./src/index.ts",
-      "import": "./src/index.ts",
-      "require": "./src/index.ts"
-    },
-    "./templates": {
-      "types": "./emails/index.ts",
-      "import": "./emails/index.ts",
-      "require": "./emails/index.ts"
-    }
-  },
+  "main": "src/service.tsx",
+  "types": "src/service.tsx",
   "scripts": {
     "dev": "email dev",
     "test": "vitest run",
