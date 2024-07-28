@@ -2,6 +2,7 @@ import {ErrorCodeEnum, BaseError, Err, Ok, type Result} from '@formizee/error';
 import {db, eq, schema} from '@formizee/db';
 import {sha256} from '@formizee/hashing';
 import {newKey} from './utils';
+import {KeyV1} from './v1';
 
 class NotFoundError extends BaseError {
   public readonly name = 'Not Found';
@@ -29,6 +30,16 @@ export class KeyService {
     keyToVerify: string
   ): Promise<Result<VerifyKeyResult, VerifyKeyError>> {
     try {
+      try {
+        KeyV1.fromString(keyToVerify);
+      } catch {
+        return Err(
+          new UnauthorizedError({
+            message: 'The API key is not valid'
+          })
+        );
+      }
+
       const hash = await this.hash(keyToVerify);
 
       const key = await db.query.key.findFirst({

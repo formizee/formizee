@@ -1,3 +1,4 @@
+// @ts-ignore
 import baseX from 'base-x';
 
 const alphabet = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
