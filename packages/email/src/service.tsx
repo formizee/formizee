@@ -4,6 +4,7 @@ import {render} from '@react-email/components';
 
 import {AuthVerifyEmail} from '../emails/verify-email';
 import {AuthVerifyLinkedEmail} from '../emails/verify-linked-email';
+import SubmissionEmail from '../emails/submission';
 
 export class EmailService {
   private readonly smtp: Client;
@@ -57,6 +58,40 @@ export class EmailService {
     } catch (error) {
       console.error(
         'Error occurred sending authentication email',
+        JSON.stringify(error)
+      );
+    }
+  }
+
+  public async sendSubmissionEmail(req: {
+    workspaceSlug: string;
+    endpointSlug: string;
+    email: string;
+    data: object;
+  }) {
+    const html = render(
+      <SubmissionEmail
+        workspaceSlug={req.workspaceSlug}
+        endpointSlug={req.endpointSlug}
+        data={req.data}
+      />
+    );
+    try {
+      const result = await this.smtp.emails.send({
+        to: req.email,
+        from: this.from,
+        reply_to: this.replyTo,
+        subject: 'New Form Submission!',
+        html
+      });
+
+      if (!result.error) {
+        return;
+      }
+      throw result.error;
+    } catch (error) {
+      console.error(
+        'Error occurred sending submission email',
         JSON.stringify(error)
       );
     }

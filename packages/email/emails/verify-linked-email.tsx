@@ -28,7 +28,7 @@ export const AuthVerifyLinkedEmail = ({email, link}: EmailProps) => (
           alt="Formizee."
           style={logo}
         />
-        <Heading style={heading}>Verify Your New Linked Email</Heading>
+        <Heading style={heading}>Verify your new linked email</Heading>
         <Text style={paragraphTop}>
           We noticed you're adding <span style={emailSpan}>{email}</span> to
           your Formizee account. To finish setting this up, click the button
