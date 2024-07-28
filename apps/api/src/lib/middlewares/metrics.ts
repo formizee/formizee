@@ -25,6 +25,7 @@ export function metrics(): MiddlewareHandler<HonoEnv> {
 
     const m = {
       isolateId,
+      metric: 'http.request',
       isolateLifetime: coldstartAt ? Date.now() - coldstartAt : 0,
       path: c.req.path,
       host: new URL(c.req.url).host,
