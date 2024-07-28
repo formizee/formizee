@@ -23,18 +23,16 @@
   },
   "devDependencies": {
     "@formizee/tsconfig": "workspace:*",
-    "@types/node": "20.14.11",
-    "@types/react": "18.3.2",
-    "nodemailer-mock": "2.0.6",
+    "@types/node": "22.0.0",
+    "@types/react": "18.3.3",
     "react": "18.3.1",
     "vitest": "2.0.4"
   },
   "dependencies": {
-    "@react-email/components": "0.0.21",
-    "@t3-oss/env-core": "0.10.1",
-    "@types/nodemailer": "6.4.15",
-    "nodemailer": "6.9.14",
-    "react-email": "2.1.5",
+    "@react-email/components": "0.0.22",
+    "@react-email/render": "0.0.17",
+    "react-email": "2.1.6",
+    "resend": "3.5.0",
     "zod": "3.23.8"
   }
 }
