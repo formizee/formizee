@@ -28,7 +28,7 @@ interface VerifyKeyResult extends Key {
 export class KeyService {
   private readonly database: Database;
 
-  constructor (options: {database: Database}) {
+  constructor(options: {database: Database}) {
     this.database = options.database;
   }
 
