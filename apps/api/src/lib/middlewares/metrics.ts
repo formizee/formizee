@@ -26,7 +26,6 @@ export function metrics(): MiddlewareHandler<HonoEnv> {
     const m = {
       isolateId,
       isolateLifetime: coldstartAt ? Date.now() - coldstartAt : 0,
-      metric: 'metric.http.request',
       path: c.req.path,
       host: new URL(c.req.url).host,
       method: c.req.method,
@@ -38,10 +37,10 @@ export function metrics(): MiddlewareHandler<HonoEnv> {
       colo: c.req.raw?.cf?.colo,
       // @ts-ignore - this is a bug in the types
       city: c.req.raw?.cf?.city,
-      userAgent: c.req.header('user-agent'),
+      userAgent: c.req.header('user-agent') ?? '',
       fromAgent: c.req.header('Formizee-Redirect'),
       context: {}
-    } as DiscriminateMetric<'metric.http.request'>;
+    } as DiscriminateMetric<'http.request'>;
     coldstartAt = Date.now();
 
     try {
