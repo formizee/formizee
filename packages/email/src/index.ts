@@ -1,1 +1,1 @@
-export * from './send';
+export {EmailService} from './service';

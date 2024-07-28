@@ -5,11 +5,11 @@ import {newId} from '@formizee/id';
 
 import {Analytics} from '@formizee/analytics';
 import {KeyService} from '@formizee/keys';
+import {EmailService} from '@formizee/email';
 
 export function services(): MiddlewareHandler<HonoEnv> {
   return async (c, next) => {
     // Metrics
-
     const requestId = newId('request');
     c.set('requestId', requestId);
     c.set('userAgent', c.req.header('User-Agent') ?? '');
@@ -29,11 +29,16 @@ export function services(): MiddlewareHandler<HonoEnv> {
       tinybirdUrl: env.TINYBIRD_URL
     });
 
+    const emailService = new EmailService({
+      apiKey: env.RESEND_TOKEN
+    });
+
     const keyService = new KeyService();
 
     c.set('services', {
+      analytics,
       keyService,
-      analytics
+      emailService
     });
 
     await next();

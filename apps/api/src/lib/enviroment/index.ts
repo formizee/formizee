@@ -18,7 +18,10 @@ export const env = createEnv({
 
     // Database
     TESTING_DATABASE_URL: z.string().url(),
-    DATABASE_URL: z.string().url()
+    DATABASE_URL: z.string().url(),
+
+    // Communication
+    RESEND_TOKEN: z.string()
   },
   runtimeEnv: process.env,
   emptyStringAsUndefined: true

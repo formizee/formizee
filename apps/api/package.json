@@ -17,6 +17,7 @@
   "dependencies": {
     "@formizee/analytics": "workspace:*",
     "@formizee/db": "workspace:*",
+    "@formizee/email": "workspace:*",
     "@formizee/error": "workspace:*",
     "@formizee/id": "workspace:*",
     "@formizee/keys": "workspace:*",
