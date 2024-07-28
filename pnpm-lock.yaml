@@ -50,6 +50,9 @@ importers:
       '@formizee/db':
         specifier: workspace:*
         version: link:../../packages/db
+      '@formizee/email':
+        specifier: workspace:*
+        version: link:../../packages/email
       '@formizee/error':
         specifier: workspace:*
         version: link:../../packages/error
@@ -177,11 +180,8 @@ importers:
         specifier: workspace:*
         version: link:../tsconfig
       '@types/node':
-        specifier: 20.14.11
-        version: 20.14.11
-      vitest:
-        specifier: 2.0.4
-        version: 2.0.4(@edge-runtime/vm@4.0.0)(@types/node@20.14.11)(@vitest/ui@2.0.4)(terser@5.31.2)
+        specifier: 22.0.0
+        version: 22.0.0
 
   packages/db:
     dependencies:

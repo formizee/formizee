@@ -6,14 +6,11 @@
   "version": "1.0.0",
   "license": "Apache-2.0",
   "scripts": {
-    "test": "vitest run",
-    "test:watch": "vitest",
     "lint": "biome lint ."
   },
   "devDependencies": {
     "@formizee/tsconfig": "workspace:*",
-    "@types/node": "20.14.11",
-    "vitest": "2.0.4"
+    "@types/node": "22.0.0"
   },
   "dependencies": {
     "@chronark/zod-bird": "0.3.9",
