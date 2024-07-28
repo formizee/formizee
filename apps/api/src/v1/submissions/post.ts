@@ -54,10 +54,10 @@ export const postRoute = createRoute({
 
 export const registerPostSubmission = (api: typeof submissionsApi) => {
   return api.openapi(postRoute, async context => {
+    const {analytics, emailService} = context.get('services');
     const contentType = context.req.header('Content-Type');
     const location = await getOriginCountry(context);
     const workspaceId = context.get('workspace').id;
-    const {analytics} = context.get('services');
     const {id} = context.req.valid('param');
 
     const endpoint = await db.query.endpoint.findFirst({
@@ -73,6 +73,16 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
     if (endpoint.workspaceId !== workspaceId) {
       throw new HTTPException(401, {
         message: 'This submission belongs to another workspace'
+      });
+    }
+
+    const workspace = await db.query.workspace.findFirst({
+      where: (table, {eq}) => eq(table.id, workspaceId)
+    });
+
+    if (!workspace) {
+      throw new HTTPException(404, {
+        message: 'Workspace not found'
       });
     }
 
@@ -107,6 +117,17 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
         .insert(schema.submission)
         .values(data)
         .returning();
+
+      if(endpoint.emailNotifications) {
+        for (const email of endpoint.targetEmails) {
+          await emailService.sendSubmissionEmail({
+            email,
+            data: input,
+            endpointSlug: endpoint.slug,
+            workspaceSlug: workspace.slug,
+          })
+        }
+      }
 
       await analytics.ingestFormizeeMetrics({
         metric: 'submission.upload',
@@ -143,6 +164,17 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
         .insert(schema.submission)
         .values(data)
         .returning();
+
+      if(endpoint.emailNotifications) {
+        for (const email of endpoint.targetEmails) {
+          await emailService.sendSubmissionEmail({
+            email,
+            data: input,
+            endpointSlug: endpoint.slug,
+            workspaceSlug: workspace.slug,
+          })
+        }
+      }
 
       await analytics.ingestFormizeeMetrics({
         metric: 'submission.upload',
