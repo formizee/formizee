@@ -57,6 +57,7 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
     const contentType = context.req.header('Content-Type');
     const location = await getOriginCountry(context);
     const workspaceId = context.get('workspace').id;
+    const {analytics} = context.get('services');
     const {id} = context.req.valid('param');
 
     const endpoint = await db.query.endpoint.findFirst({
@@ -107,6 +108,17 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
         .values(data)
         .returning();
 
+      await analytics.ingestFormizeeMetrics({
+        metric: 'submission.upload',
+        endpointId: endpoint.id,
+        workspaceId,
+        uploadedAt: new Date(),
+        context: {
+          location: context.get('location'),
+          userAgent: context.get('userAgent')
+        }
+      });
+
       const response = SubmissionSchema.parse(newSubmission[0]);
       return context.json(response, 201);
     }
@@ -131,6 +143,17 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
         .insert(schema.submission)
         .values(data)
         .returning();
+
+      await analytics.ingestFormizeeMetrics({
+        metric: 'submission.upload',
+        endpointId: endpoint.id,
+        workspaceId,
+        uploadedAt: new Date(),
+        context: {
+          location: context.get('location'),
+          userAgent: context.get('userAgent')
+        }
+      });
 
       const response = SubmissionSchema.parse(newSubmission[0]);
       return context.json(response, 201);

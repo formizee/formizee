@@ -30,32 +30,25 @@ export class Analytics {
     });
   }
 
-  public get ingestGenericAuditLogs() {
-    return this.client.buildIngestEndpoint({
-      datasource: 'audit_logs__v1',
-      event: auditLogSchemaV1.transform(l => ({
-        ...l,
-        meta: l.meta ? JSON.stringify(l.meta) : undefined,
-        actor: {
-          ...l.actor,
-          meta: l.actor.meta ? JSON.stringify(l.actor.meta) : undefined
-        },
-        resources: JSON.stringify(l.resources)
-      }))
-    });
-  }
-
   public async ingestFormizeeMetrics(metric: Metric) {
+    const metricType = metric.metric.split('.')[0] ?? '';
+    const type = metricType === '' ? '' : `${metricType}__`;
+
     const publishEvent = this.client.buildIngestEndpoint({
-      datasource: 'metrics__v1',
+      datasource: `metrics__${type}v1`,
       event: metricSchema
     });
 
-    await publishEvent(metric);
+    try {
+      await publishEvent(metric);
+    } catch (e) {
+      const error = e as Error;
+      console.error(error.message);
+    }
   }
 
-  public ingestFormizeeAuditLogs(logs: MaybeArray<FormizeeAuditLog>) {
-    return this.client.buildIngestEndpoint({
+  public async ingestFormizeeAuditLogs(logs: MaybeArray<FormizeeAuditLog>) {
+    const publishEvent = this.client.buildIngestEndpoint({
       datasource: 'audit_logs__v1',
       event: auditLogSchemaV1
         .merge(
@@ -75,7 +68,14 @@ export class Analytics {
           },
           resources: JSON.stringify(l.resources)
         }))
-    })(logs);
+    });
+
+    try {
+      await publishEvent(logs);
+    } catch (e) {
+      const error = e as Error;
+      console.error(error.message);
+    }
   }
 }
 

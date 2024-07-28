@@ -29,8 +29,10 @@ export const getRoute = createRoute({
 export const registerGetSubmission = (api: typeof submissionsApi) => {
   return api.openapi(getRoute, async context => {
     const workspaceId = context.get('workspace').id;
+    const {analytics} = context.get('services');
     const {id} = context.req.valid('param');
 
+    const dbStart = performance.now();
     const submission = await db.query.submission.findFirst({
       where: (table, {eq}) => eq(table.id, id)
     });
@@ -56,6 +58,12 @@ export const registerGetSubmission = (api: typeof submissionsApi) => {
         message: 'This submission belongs to another workspace'
       });
     }
+
+    await analytics.ingestFormizeeMetrics({
+      metric: 'db.read',
+      query: 'submissions.load',
+      latency: performance.now() - dbStart
+    });
 
     const response = SubmissionSchema.parse(submission);
     return context.json(response, 200);

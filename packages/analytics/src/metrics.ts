@@ -1,22 +1,9 @@
 import {z} from 'zod';
 
 export const metricSchema = z.discriminatedUnion('metric', [
+  // HTTP metrics
   z.object({
-    metric: z.literal('metric.fetch.egress'),
-    url: z.string(),
-    latency: z.number(),
-    status: z.number()
-  }),
-  z.object({
-    metric: z.literal('metric.key.verification'),
-    valid: z.boolean(),
-    code: z.string(),
-    workspaceId: z.string().optional(),
-    apiId: z.string().optional(),
-    keyId: z.string().optional()
-  }),
-  z.object({
-    metric: z.literal('metric.http.request'),
+    metric: z.literal('http.request'),
     host: z.string(),
     path: z.string(),
     method: z.string(),
@@ -36,35 +23,40 @@ export const metricSchema = z.discriminatedUnion('metric', [
     fromAgent: z.string().optional(),
     context: z.record(z.unknown())
   }),
+
+  // Database metrics
   z.object({
-    metric: z.literal('metric.db.read'),
+    metric: z.literal('db.read'),
     query: z.enum([
-      'getKeyAndApiByHash',
-      'loadFromOrigin',
-      'getKeysByKeyAuthId'
+      'keys.verify',
+
+      'submissions.load',
+      'submissions.create',
+      'submissions.update',
+      'submissions.delete'
     ]),
     latency: z.number()
   }),
+
+  // Entities Metrics
   z.object({
-    metric: z.literal('metric.usagelimit'),
-    keyId: z.string(),
-    latency: z.number()
+    metric: z.literal('submission.upload'),
+    workspaceId: z.string(),
+    endpointId: z.string(),
+    uploadedAt: z.date(),
+    context: z.object({
+      location: z.string(),
+      userAgent: z.string().optional()
+    })
   }),
+
   z.object({
-    metric: z.literal('metric.server.latency'),
-    status: z.number(),
-    country: z.string(),
-    continent: z.string(),
-    latency: z.number(),
-    platform: z.string(),
-    colo: z.string()
-  }),
-  z.object({
-    metric: z.literal('metric.db.transaction'),
-    name: z.string(),
-    path: z.string().optional(),
-    latency: z.number(),
-    attempts: z.number().optional()
+    metric: z.literal('endpoint.created'),
+    workspaceId: z.string(),
+    context: z.object({
+      location: z.string(),
+      userAgent: z.string().optional()
+    })
   })
 ]);
 

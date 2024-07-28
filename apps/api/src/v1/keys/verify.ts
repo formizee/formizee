@@ -40,7 +40,14 @@ export const registerVerifyKey = (api: typeof keysApi) => {
     const {key} = context.req.valid('json');
     const rootKey = context.get('key');
 
+    const dbStart = performance.now();
     const {val, err} = await keyService.verifyKey(key);
+
+    analytics.ingestFormizeeMetrics({
+      metric: 'db.read',
+      query: 'keys.verify',
+      latency: performance.now() - dbStart
+    });
 
     if (err || !val) {
       throw new HTTPException(codeToStatus(err.code) as StatusCode, {
