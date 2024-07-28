@@ -1,13 +1,17 @@
-import {getConnInfo} from '@hono/node-server/conninfo';
-import {describe, it, expect, vi} from 'vitest';
-import {getOriginCountry} from './country';
-import type {Context} from 'hono';
+import { getConnInfo } from '@hono/node-server/conninfo';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { getOriginCountry } from './country';
+import type { Context } from 'hono';
 
 vi.mock('@hono/node-server/conninfo', () => ({
   getConnInfo: vi.fn()
 }));
 
 describe('getOriginCountry', () => {
+  beforeEach(() => {
+    vi.resetAllMocks();
+  });
+
   it('Should return country when fetch is successful and response is valid', async () => {
     // Arrange
     const mockAddress = '8.8.8.8';
@@ -16,7 +20,24 @@ describe('getOriginCountry', () => {
 
     // Mock getConnInfo to return the desired address
     // @ts-ignore
-    (getConnInfo as vi.Mock).mockReturnValue({remote: {address: mockAddress}});
+    (getConnInfo as vi.Mock).mockReturnValue({ remote: { address: mockAddress } });
+
+    global.fetch = vi.fn(() =>
+      Promise.resolve(
+        new Response(
+          JSON.stringify({
+            country_3: 'USA',
+            country: 'US',
+            name: 'United States',
+            ip: '8.8.8.8'
+          }),
+          {
+            status: 200,
+            headers: { 'Content-type': 'application/json' }
+          }
+        )
+      )
+    );
 
     // Act
     const result = await getOriginCountry(context);
@@ -32,8 +53,8 @@ describe('getOriginCountry', () => {
 
     // Mock getConnInfo to return an empty address
     // @ts-ignore
-    (getConnInfo as vi.Mock).mockReturnValue({remote: {address: undefined}});
-
+    (getConnInfo as vi.Mock).mockReturnValue({ remote: { address: undefined } });
+    //
     // Act
     const result = await getOriginCountry(context);
 
@@ -49,7 +70,7 @@ describe('getOriginCountry', () => {
 
     // Mock getConnInfo to return the desired address
     // @ts-ignore
-    (getConnInfo as vi.Mock).mockReturnValue({remote: {address: mockAddress}});
+    (getConnInfo as vi.Mock).mockReturnValue({ remote: { address: mockAddress } });
 
     // Act
     const result = await getOriginCountry(context);
