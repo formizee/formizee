@@ -118,14 +118,14 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
         .values(data)
         .returning();
 
-      if(endpoint.emailNotifications) {
+      if (endpoint.emailNotifications) {
         for (const email of endpoint.targetEmails) {
           await emailService.sendSubmissionEmail({
             email,
             data: input,
             endpointSlug: endpoint.slug,
-            workspaceSlug: workspace.slug,
-          })
+            workspaceSlug: workspace.slug
+          });
         }
       }
 
@@ -165,14 +165,14 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
         .values(data)
         .returning();
 
-      if(endpoint.emailNotifications) {
+      if (endpoint.emailNotifications) {
         for (const email of endpoint.targetEmails) {
           await emailService.sendSubmissionEmail({
             email,
             data: input,
             endpointSlug: endpoint.slug,
-            workspaceSlug: workspace.slug,
-          })
+            workspaceSlug: workspace.slug
+          });
         }
       }
 
