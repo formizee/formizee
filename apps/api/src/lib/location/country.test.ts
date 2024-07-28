@@ -1,7 +1,7 @@
-import { getConnInfo } from '@hono/node-server/conninfo';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { getOriginCountry } from './country';
-import type { Context } from 'hono';
+import {getConnInfo} from '@hono/node-server/conninfo';
+import {describe, it, expect, vi, beforeEach} from 'vitest';
+import {getOriginCountry} from './country';
+import type {Context} from 'hono';
 
 vi.mock('@hono/node-server/conninfo', () => ({
   getConnInfo: vi.fn()
@@ -20,7 +20,7 @@ describe('getOriginCountry', () => {
 
     // Mock getConnInfo to return the desired address
     // @ts-ignore
-    (getConnInfo as vi.Mock).mockReturnValue({ remote: { address: mockAddress } });
+    (getConnInfo as vi.Mock).mockReturnValue({remote: {address: mockAddress}});
 
     global.fetch = vi.fn(() =>
       Promise.resolve(
@@ -33,7 +33,7 @@ describe('getOriginCountry', () => {
           }),
           {
             status: 200,
-            headers: { 'Content-type': 'application/json' }
+            headers: {'Content-type': 'application/json'}
           }
         )
       )
@@ -53,7 +53,7 @@ describe('getOriginCountry', () => {
 
     // Mock getConnInfo to return an empty address
     // @ts-ignore
-    (getConnInfo as vi.Mock).mockReturnValue({ remote: { address: undefined } });
+    (getConnInfo as vi.Mock).mockReturnValue({remote: {address: undefined}});
     //
     // Act
     const result = await getOriginCountry(context);
@@ -70,7 +70,7 @@ describe('getOriginCountry', () => {
 
     // Mock getConnInfo to return the desired address
     // @ts-ignore
-    (getConnInfo as vi.Mock).mockReturnValue({ remote: { address: mockAddress } });
+    (getConnInfo as vi.Mock).mockReturnValue({remote: {address: mockAddress}});
 
     // Act
     const result = await getOriginCountry(context);
