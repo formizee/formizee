@@ -2,7 +2,6 @@ import {handleError, handleNotFound, handleZodError} from '@/lib/errors';
 import {OpenAPIHono} from '@hono/zod-openapi';
 import {services} from '@/lib/services';
 import type {HonoEnv} from './types';
-import {env} from '@/lib/enviroment';
 import {
   cors,
   csrf,
@@ -10,7 +9,6 @@ import {
   timeout,
   bodyLimit,
   prettyJSON,
-  rateLimiter,
   secureHeaders,
   trimTrailingSlash,
   metrics
@@ -39,14 +37,14 @@ export const newApp = (): OpenAPIHono<HonoEnv> => {
   // Middlewares
   app.use(trimTrailingSlash());
   app.use(secureHeaders());
-  app.use(rateLimiter());
+  //app.use(rateLimiter());
   app.use(prettyJSON());
   app.use(bodyLimit);
   app.use(metrics());
   app.use(timeout);
   app.use(logger);
   app.use(csrf());
-  app.use(cors);
+  app.use(cors());
 
   // Openapi
   app.doc('/openapi.json', {
@@ -66,7 +64,7 @@ export const newApp = (): OpenAPIHono<HonoEnv> => {
     },
     servers: [
       {
-        url: env.API_URL,
+        url: 'https://formizee.com',
         description: 'Stable Release'
       }
     ],

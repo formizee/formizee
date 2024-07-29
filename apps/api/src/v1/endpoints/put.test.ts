@@ -1,17 +1,15 @@
 import type {RequestPutEndpoint, ResponseEndpoint} from './schema';
 import {IntegrationHarness, omit} from '@/lib/testing';
 import {describe, it, expect} from 'vitest';
-import {env} from '@/lib/enviroment';
-import api from '@/v1';
 
 describe('Update a endpoint', () => {
   it('Should get 200 on update', async context => {
-    const harness = await IntegrationHarness.init(context, api);
+    const harness = await IntegrationHarness.init(context);
     const endpoint = harness.resources.endpoint;
     const {key} = await harness.createKey();
 
     const res = await harness.put<RequestPutEndpoint, ResponseEndpoint>({
-      url: `/endpoint/${endpoint.id}`,
+      url: `/v1/endpoint/${endpoint.id}`,
       headers: {
         authorization: `Bearer ${key}`,
         'content-type': 'application/json'
@@ -35,7 +33,7 @@ describe('Update a endpoint', () => {
   });
 
   it('Should get 400 on empty update', async context => {
-    const harness = await IntegrationHarness.init(context, api);
+    const harness = await IntegrationHarness.init(context);
     const endpoint = harness.resources.endpoint;
     const {key} = await harness.createKey();
 
@@ -44,7 +42,7 @@ describe('Update a endpoint', () => {
         authorization: `Bearer ${key}`,
         'content-type': 'application/json'
       },
-      url: `/endpoint/${endpoint.id}`,
+      url: `/v1/endpoint/${endpoint.id}`,
       body: {}
     });
 
@@ -52,17 +50,17 @@ describe('Update a endpoint', () => {
     expect(res.body).toStrictEqual({
       code: 'BAD_REQUEST',
       message: "There's no fields to update",
-      docs: `${env.DOCS_URL}/api-references/errors/code/BAD_REQUEST`
+      docs: `${harness.docsUrl}/api-references/errors/code/BAD_REQUEST`
     });
   });
 
   it('Should get 403 on invalid target emails', async context => {
-    const harness = await IntegrationHarness.init(context, api);
+    const harness = await IntegrationHarness.init(context);
     const endpoint = harness.resources.endpoint;
     const {key} = await harness.createKey();
 
     const res = await harness.put<RequestPutEndpoint, ResponseEndpoint>({
-      url: `/endpoint/${endpoint.id}`,
+      url: `/v1/endpoint/${endpoint.id}`,
       headers: {
         authorization: `Bearer ${key}`,
         'content-type': 'application/json'
@@ -78,7 +76,7 @@ describe('Update a endpoint', () => {
       code: 'FORBIDDEN',
       message:
         'All the target emails needs to be available in the current workspace',
-      docs: `${env.DOCS_URL}/api-references/errors/code/FORBIDDEN`
+      docs: `${harness.docsUrl}/api-references/errors/code/FORBIDDEN`
     });
   });
 });

@@ -5,9 +5,10 @@
       "drizzle/migrations",
       "node_modules/**",
       "packages/ui/**",
+      ".wrangler/**",
       "coverage/**",
       ".vercel/**",
-      ".github/**",
+      ".vercel/**",
       ".turbo/**",
       ".next/**",
       "dist/**"

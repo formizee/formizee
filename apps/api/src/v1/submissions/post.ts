@@ -6,7 +6,6 @@ import {getOriginCountry} from '@/lib/location';
 import {createRoute} from '@hono/zod-openapi';
 import {schema} from '@formizee/db';
 import {newId} from '@formizee/id';
-import {env} from '@/lib/enviroment';
 
 export const postRoute = createRoute({
   method: 'post',
@@ -44,7 +43,10 @@ export const postRoute = createRoute({
 export const registerPostSubmission = (api: typeof submissionsApi) => {
   return api.openapi(postRoute, async context => {
     const {analytics, database, emailService} = context.get('services');
-    const location = await getOriginCountry(context);
+    const location =
+      context.env.ENVIROMENT === 'production'
+        ? await getOriginCountry(context)
+        : 'Unknown';
     const workspaceId = context.get('workspace').id;
     const {id} = context.req.valid('param');
 
@@ -107,7 +109,10 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
       .values(data)
       .returning();
 
-    if (endpoint.emailNotifications && env.NODE_ENV === 'production') {
+    if (
+      endpoint.emailNotifications &&
+      context.env.ENVIROMENT === 'production'
+    ) {
       for (const email of endpoint.targetEmails) {
         await emailService.sendSubmissionEmail({
           email,

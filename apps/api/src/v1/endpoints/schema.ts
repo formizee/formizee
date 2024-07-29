@@ -1,6 +1,5 @@
 import {schema} from '@formizee/db';
 import {z} from '@hono/zod-openapi';
-import {env} from '@/lib/enviroment';
 
 export const ParamsSchema = z.object({
   id: z
@@ -52,7 +51,7 @@ export const EndpointSchema = z.object({
     .url({
       message: 'Invalid redirect url, please check that is correctly typed.'
     })
-    .default(`${env.WEB_URL}/thanks-you`)
+    .default('https://formizee.com/thanks-you')
     .optional()
     .openapi({
       description:
@@ -111,7 +110,7 @@ export const PostEndpointSchema = z.object({
     .url({
       message: 'Invalid redirect url, please check that is correctly typed.'
     })
-    .default(`${env.WEB_URL}/thanks-you`)
+    .default('https://formizee.com/thanks-you')
     .optional()
     .openapi({
       description:

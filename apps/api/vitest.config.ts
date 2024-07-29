@@ -1,9 +1,12 @@
-import tsconfigPaths from 'vite-tsconfig-paths';
 import {defineConfig} from 'vitest/config';
+import {config} from 'dotenv';
+config({path: '.dev.vars'});
 
 export default defineConfig({
-  plugins: [tsconfigPaths()],
   test: {
+    alias: {
+      '@/': new URL('./src/', import.meta.url).pathname
+    },
     pool: 'threads',
     poolOptions: {
       threads: {

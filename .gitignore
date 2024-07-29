@@ -13,6 +13,9 @@ coverage
 .next/
 out/
 
+# wrangler
+.wrangler
+
 # production
 build
 dist
@@ -28,6 +31,7 @@ yarn-error.log*
 
 # local env files
 .env*.local
+.dev.vars
 .env
 
 # vercel

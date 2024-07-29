@@ -1,8 +1,8 @@
 # General
-SUPPORT_EMAIL="An email to get automatic internal emails from the Formizee API"
 WEB_URL="The url where the webpage is running"
 DOCS_URL="The url where the docs is running"
 API_URL="The url where the api is running"
+ENVIROMENT="development"
 
 # Database
 DATABASE_URL="Your Postgres compatible database connection url"

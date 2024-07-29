@@ -1,7 +1,11 @@
-import {health as healthAPI} from '.';
+import {IntegrationHarness} from '@/lib/testing';
 import {test, expect} from 'vitest';
 
-test('Should return 200', async () => {
-  const result = await healthAPI.request('/');
-  expect(await result.text()).toBe('OK');
+test('Should return 200', async context => {
+  const harness = await IntegrationHarness.init(context);
+
+  const result = await harness.get<Response>({
+    url: '/v1/status'
+  });
+  expect(result.body).toStrictEqual({status: 'OK'});
 });

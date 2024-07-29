@@ -1,6 +1,5 @@
 import type {MiddlewareHandler} from 'hono';
 import type {HonoEnv} from '@/lib/hono';
-import {env} from '@/lib/enviroment';
 import {newId} from '@formizee/id';
 
 import {Analytics} from '@formizee/analytics';
@@ -24,18 +23,17 @@ export function services(): MiddlewareHandler<HonoEnv> {
         ''
     );
 
-    const database = createConnection(
-      env.NODE_ENV === 'test' ? env.TESTING_DATABASE_URL : env.DATABASE_URL
-    );
+    const database = createConnection(c.env.DATABASE_URL);
 
     const analytics = new Analytics({
       tinybirdToken:
-        env.NODE_ENV === 'production' ? env.TINYBIRD_TOKEN : undefined,
-      tinybirdUrl: env.TINYBIRD_URL
+        c.env.ENVIROMENT === 'production' ? c.env.TINYBIRD_TOKEN : undefined,
+      tinybirdUrl: c.env.TINYBIRD_URL
     });
 
     const emailService = new EmailService({
-      apiKey: env.RESEND_TOKEN
+      apiKey:
+        c.env.ENVIROMENT === 'production' ? c.env.RESEND_TOKEN : 're_123456789'
     });
 
     const keyService = new KeyService({database});

@@ -1,7 +1,6 @@
 import type {Metric} from '@formizee/analytics';
 import type {MiddlewareHandler} from 'hono';
 import type {HonoEnv} from '@/lib/hono';
-import {env} from '@/lib/enviroment';
 
 type DiscriminateMetric<T, M = Metric> = M extends {metric: T} ? M : never;
 
@@ -90,7 +89,7 @@ export function metrics(): MiddlewareHandler<HonoEnv> {
       m.status = c.res.status;
       m.serviceLatency = performance.now() - start;
       c.res.headers.append('Formizee-Latency', `service=${m.serviceLatency}ms`);
-      c.res.headers.append('Formizee-Version', env.VERSION);
+      c.res.headers.append('Formizee-Version', c.env.VERSION);
       await analytics.ingestFormizeeMetrics(m);
     }
   };

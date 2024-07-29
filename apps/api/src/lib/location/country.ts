@@ -1,4 +1,4 @@
-import {getConnInfo} from '@hono/node-server/conninfo';
+import {getConnInfo} from 'hono/cloudflare-workers';
 import type {Context} from 'hono';
 
 export type Location = 'Unknown' | string;
@@ -19,7 +19,8 @@ export async function getOriginCountry(context: Context): Promise<Location> {
       throw new Error();
     }
 
-    const info = await request.json();
+    // biome-ignore lint/suspicious/noExplicitAny:
+    const info = (await request.json()) as any;
 
     if (info === null || info.name === undefined) {
       throw new Error();

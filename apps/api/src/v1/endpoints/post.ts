@@ -4,7 +4,6 @@ import type {endpoints as endpointsAPI} from '.';
 import {createRoute} from '@hono/zod-openapi';
 import {count, schema, eq} from '@formizee/db';
 import {EndpointSchema} from './schema';
-import {env} from '@/lib/enviroment';
 import {newId} from '@formizee/id';
 
 export const postRoute = createRoute({
@@ -96,7 +95,7 @@ export const registerPostEndpoint = (api: typeof endpointsAPI) => {
       isEnabled: input.isEnabled,
       emailNotifications: input.emailNotifications,
 
-      redirectUrl: input.redirectUrl ?? `${env.WEB_URL}/thanks-you`,
+      redirectUrl: input.redirectUrl ?? `${context.env.WEB_URL}/thanks-you`,
       targetEmails: input.targetEmails,
 
       icon: input.icon,

@@ -15,9 +15,11 @@ export const getRoute = createRoute({
     200: {
       description: 'The API is running correctly',
       content: {
-        'text/plain': {
-          schema: z.string(),
-          example: 'OK'
+        'application/json': {
+          schema: z.object({
+            status: z.string()
+          }),
+          example: {status: 'OK'}
         }
       }
     },
@@ -26,5 +28,5 @@ export const getRoute = createRoute({
 });
 
 export const registerGetStatus = (api: typeof healthAPI) => {
-  return api.openapi(getRoute, context => context.text('OK', 200));
+  return api.openapi(getRoute, context => context.json({status: 'OK'}, 200));
 };

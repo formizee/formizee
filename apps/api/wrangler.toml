@@ -1,0 +1,14 @@
+name = "api"
+node_compat = true
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+
+[env.development]
+vars = { ENVIRONMENT = "development" }
+
+[env.production]
+vars = { ENVIRONMENT = "production" }
+
+[env.preview]
+vars = { ENVIRONMENT = "preview" }
+

@@ -1,6 +1,6 @@
-import type {MiddlewareHandler} from 'hono';
 import {rateLimiter as honoRateLimiter} from 'hono-rate-limiter';
 import {HTTPException} from 'hono/http-exception';
+import type {MiddlewareHandler} from 'hono';
 
 export const rateLimiter = (requestLimitPerMinute = 60): MiddlewareHandler =>
   honoRateLimiter({

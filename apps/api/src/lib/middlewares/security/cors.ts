@@ -1,8 +1,14 @@
+import type {HonoEnv} from '@/lib/hono';
+import type {MiddlewareHandler} from 'hono';
 import {cors as honoCors} from 'hono/cors';
-import {env} from '@/lib/enviroment';
 
-export const cors = honoCors({
-  origin: env.WEB_URL,
-  allowMethods: ['GET', 'POST', 'PATCH', 'DELETE'],
-  credentials: true
-});
+export const cors = (): MiddlewareHandler<HonoEnv> => {
+  return async function handler(context, next) {
+    honoCors({
+      origin: context.env.WEB_URL,
+      allowMethods: ['GET', 'POST', 'PATCH', 'DELETE'],
+      credentials: true
+    });
+    await next();
+  };
+};
