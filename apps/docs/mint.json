@@ -26,12 +26,6 @@
     "suggestEdit": true,
     "thumbsRating": true
   },
-  "tabs": [
-    {
-      "name": "API Reference",
-      "url": "api-references"
-    }
-  ],
   "anchors": [
     {
       "name": "Home",
@@ -44,9 +38,14 @@
       "url": "https://github.com/formizee"
     },
     {
+      "name": "API Reference",
+      "url": "api-references",
+      "icon": "terminal"
+    },
+    {
       "name": "Contributing",
       "url": "contributing",
-      "icon": "terminal"
+      "icon": "code"
     }
   ],
   "navigation": [
