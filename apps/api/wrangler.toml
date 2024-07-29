@@ -4,11 +4,11 @@ main = "src/index.ts"
 compatibility_date = "2024-01-01"
 
 [env.development]
-vars = { ENVIRONMENT = "development" }
+vars = { API_URL = "http://localhost:8787", DOCS_URL = "http://localhost:3002", WEB_URL = "http://localhost:3000", ENVIROMENT = "development", VERSION = "1.0.0" }
 
 [env.production]
-vars = { ENVIRONMENT = "production" }
+vars = { API_URL = "https://api.formizee.com", DOCS_URL = "https://formize.com/docs", WEB_URL = "https://formizee.com", ENVIROMENT = "production", VERSION = "1.0.0" }
 
 [env.preview]
-vars = { ENVIRONMENT = "preview" }
+vars = { API_URL = "https://api.formizee.com", DOCS_URL = "https://formize.com/docs", WEB_URL = "https://formizee.com", ENVIROMENT = "preview", VERSION = "1.0.0" }
 

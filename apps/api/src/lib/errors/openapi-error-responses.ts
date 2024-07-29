@@ -36,12 +36,42 @@ export const openApiErrorResponses = {
       }
     }
   },
+  405: {
+    description:
+      'The request could not be completed due to a conflict mainly due to unique constraints.',
+    content: {
+      'application/json': {
+        schema: createErrorSchema('METHOD_NOT_ALLOWED').openapi(
+          'ErrMethodNotAllowed'
+        )
+      }
+    }
+  },
   409: {
     description:
       'The request could not be completed due to a conflict mainly due to unique constraints.',
     content: {
       'application/json': {
         schema: createErrorSchema('CONFLICT').openapi('ErrConflict')
+      }
+    }
+  },
+  413: {
+    description:
+      'The request body size is too large to be processed by the server.',
+    content: {
+      'application/json': {
+        schema:
+          createErrorSchema('PAYLOAD_TOO_LARGE').openapi('ErrPayloadTooLarge')
+      }
+    }
+  },
+  429: {
+    description: 'You have made too many requests in a short period of time.',
+    content: {
+      'application/json': {
+        schema:
+          createErrorSchema('TOO_MANY_REQUESTS').openapi('ErrTooManyRequests')
       }
     }
   },
@@ -53,6 +83,16 @@ export const openApiErrorResponses = {
         schema: createErrorSchema('INTERNAL_SERVER_ERROR').openapi(
           'ErrInternalServerError'
         )
+      }
+    }
+  },
+  504: {
+    description:
+      'The server is taking a long time to respond to requests due to load problems.',
+    content: {
+      'application/json': {
+        schema:
+          createErrorSchema('GATEWAY_TIMEOUT').openapi('ErrGatewayTimeout')
       }
     }
   }

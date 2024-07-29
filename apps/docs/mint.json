@@ -1,0 +1,122 @@
+{
+  "$schema": "https://mintlify.com/schema.json",
+  "name": "Formizee Docs",
+  "openapi": "https://api.formizee.com/openapi.json",
+  "favicon": "/favicon.svg",
+  "colors": {
+    "primary": "#0a0a0a",
+    "light": "#fafafa",
+    "dark": "#0a0a0a",
+    "background": {
+      "light": "#fafafa",
+      "dark": "#0a0a0a"
+    }
+  },
+  "api": {
+    "baseUrl": "https://api.formizee.com"
+  },
+  "topbarLinks": [
+    {
+      "name": "Dashboard",
+      "url": "https://formizee.com/login"
+    }
+  ],
+  "feedback": {
+    "raiseIssue": true,
+    "suggestEdit": true,
+    "thumbsRating": true
+  },
+  "anchors": [
+    {
+      "name": "Home",
+      "icon": "book-open-cover",
+      "url": "introduction"
+    },
+    {
+      "name": "GitHub",
+      "icon": "github",
+      "url": "https://github.com/formizee"
+    },
+    {
+      "name": "API Reference",
+      "url": "api-references",
+      "icon": "terminal"
+    },
+    {
+      "name": "Contributing",
+      "url": "contributing",
+      "icon": "code"
+    }
+  ],
+  "navigation": [
+    {
+      "group": "Introduction",
+      "pages": ["introduction"]
+    },
+    {
+      "group": "API Documentation",
+      "pages": [
+        "api-references/authentication",
+        {
+          "group": "Endpoints",
+          "pages": [
+            "api-references/endpoints/get",
+            "api-references/endpoints/list",
+            "api-references/endpoints/post",
+            "api-references/endpoints/put",
+            "api-references/endpoints/delete"
+          ]
+        },
+        {
+          "group": "Keys",
+          "pages": [
+            "api-references/keys/list",
+            "api-references/keys/verify",
+            "api-references/keys/post",
+            "api-references/keys/put",
+            "api-references/keys/delete"
+          ]
+        },
+        {
+          "group": "Submissions",
+          "pages": [
+            "api-references/submissions/list",
+            "api-references/submissions/get",
+            "api-references/submissions/post",
+            "api-references/submissions/put",
+            "api-references/submissions/delete"
+          ]
+        },
+        {
+          "group": "Errors",
+          "pages": [
+            "api-references/errors/introduction",
+            "api-references/errors/code/BAD_REQUEST",
+            "api-references/errors/code/UNAUTHORIZED",
+            "api-references/errors/code/FORBIDDEN",
+            "api-references/errors/code/NOT_FOUND",
+            "api-references/errors/code/CONFLICT",
+            "api-references/errors/code/METHOD_NOT_ALLOWED",
+            "api-references/errors/code/TOO_MANY_REQUESTS",
+            "api-references/errors/code/PAYLOAD_TOO_LARGE",
+            "api-references/errors/code/INTERNAL_SERVER_ERROR",
+            "api-references/errors/code/GATEWAY_TIMEOUT"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Contributing",
+      "icon": "github",
+      "pages": [
+        "contributing/getting-started",
+        "contributing/editor-setup",
+        "contributing/testing"
+      ]
+    }
+  ],
+  "footerSocials": {
+    "website": "https://formizee.com",
+    "github": "https://github.com/formizee"
+  }
+}

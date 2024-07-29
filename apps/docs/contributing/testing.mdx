@@ -1,0 +1,24 @@
+---
+title: Testing
+description: Safety in first place, obviously.
+---
+
+
+We use [vitest](https://vitest.dev/) for our unit and integration tests. You can run the tests with:
+
+```bash
+pnpm install
+pnpm test
+```
+
+## API Tests
+
+`/apps/api` is our core product and needs to be heavily tested. we use integration testing:
+
+  ```bash
+  pnpm test --filter @formizee/api
+  ```
+
+<Info>
+Integration tests require a running API either locally or in a deployed environment.
+</Info>

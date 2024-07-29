@@ -1,0 +1,48 @@
+### Requirements
+
+You need the following services to run Formizee locally:
+
+- [node.js](https://nodejs.org)  v20.16.0 (LTS).
+- [pnpm](https://pnpm.io/installation) v9.0.5 prefered.
+- [docker](https://www.docker.com/products/docker-desktop) Any version it's fine.
+
+<Steps titleSize="h3">
+  <Step title="Setup" >
+    Clone the Formizee [monorepo](https://github.com/formizee/formizee).
+
+    ```bash
+    git clone https://github.com/formizee/formizee
+    ```
+
+
+  </Step>
+
+  <Step title="Install the dependencies">
+    ```bash
+    cd formizee
+    corepack enable
+    pnpm install
+    ```
+
+  </Step>
+
+  <Step title="Setup local development">
+  Formizee provides a CLI to setup our local development environment. Run the following command in your terminal:
+
+  ```bash
+  pnpm local
+  
+  Setting up Formizee locally...
+
+  ◆  What would you like to develop?
+     ● API (api.formizee.com)
+     ○ Web 
+  ```
+
+  <Info>
+  Docker must be running for us to spin up the **database** and the **storage** services.
+  </Info>
+
+  We will create `.env` files in either the `apps/api` or `apps/web` depending on the selection you've made.
+  </Step>
+</Steps>
