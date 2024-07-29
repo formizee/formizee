@@ -1,0 +1,16 @@
+{
+  "name": "@formizee/docs",
+  "author": "Pau García Chiner",
+  "license": "Apache-2.0",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "mintlify dev"
+  },
+  "devDependencies": {
+    "mintlify": "4.0.191"
+  },
+  "dependencies": {
+    "sharp": "0.33.4"
+  }
+}
