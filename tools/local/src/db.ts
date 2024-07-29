@@ -8,24 +8,19 @@ import pg from 'pg';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-export type Database = 'development' | 'testing';
-
 export async function prepareDatabase(): Promise<void> {
-  await connectDatabase('development');
-  await migrateTables('development');
-  await connectDatabase('testing');
-  await migrateTables('testing');
+  await connectDatabase();
+  await migrateTables();
 }
 
-async function migrateTables(database: Database) {
+async function migrateTables() {
   await task('migrating tables', async s => {
     const cwd = path.join(__dirname, '../../../packages/db');
-    const db = database === 'development' ? 'formizee' : 'testing';
 
     await new Promise((resolve, reject) => {
       const p = exec('pnpm drizzle-kit push', {
         env: {
-          DATABASE_URL: `postgresql://formizee:password@localhost/${db}`,
+          DATABASE_URL: 'postgresql://formizee:password@localhost/formizee',
           ...process.env
         },
         cwd
@@ -38,21 +33,22 @@ async function migrateTables(database: Database) {
         }
       });
     });
-    s.stop(`${database} database ready.`);
+    s.stop('database ready.');
   });
 }
 
-async function connectDatabase(database: Database = 'development') {
+async function connectDatabase() {
   return await task('Connecting to database', async s => {
     let err: Error | undefined = undefined;
     for (let i = 1; i <= 10; i++) {
       try {
-        const connectionString = `postgresql://formizee:password@localhost/${database === 'development' ? 'formizee' : 'testing'}`;
+        const connectionString =
+          'postgresql://formizee:password@localhost/formizee';
         const client = new pg.Client({connectionString});
 
         s.message('pinging database');
         await client.connect();
-        s.stop(`connected to the ${database} database`);
+        s.stop('connected to the database');
         return pgDrizzle(client, {schema});
       } catch (e) {
         err = e as Error;

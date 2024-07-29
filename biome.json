@@ -38,7 +38,8 @@
         "noUnusedVariables": "error"
       },
       "style": {
-        "useBlockStatements": "error"
+        "useBlockStatements": "error",
+        "noNonNullAssertion": "off"
       },
       "a11y": {
         "noSvgWithoutTitle": "off"
