@@ -76,7 +76,7 @@ export const newApp = (): OpenAPIHono<HonoEnv> => {
     ],
     security: [
       {
-        apiKey: []
+        bearerAuth: []
       }
     ]
   });
