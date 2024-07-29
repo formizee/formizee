@@ -6,8 +6,8 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "wrangler dev",
     "build": "tsc",
+    "dev": "wrangler dev",
     "check": "tsc --noEmit",
     "lint": "biome lint src",
     "test": "vitest run --bail=1",
@@ -33,7 +33,8 @@
     "@cloudflare/workers-types": "4.20240725.0",
     "@types/node": "20.14.12",
     "dotenv": "16.4.5",
-    "vitest": "2.0.4",
+    "typescript": "5.4.5",
+    "vitest": "1.5.0",
     "wrangler": "3.67.1"
   }
 }
