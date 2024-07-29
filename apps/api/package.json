@@ -6,8 +6,8 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "tsc",
     "dev": "wrangler dev",
+    "build": "tsc --build",
     "check": "tsc --noEmit",
     "lint": "biome lint src",
     "test": "vitest run --bail=1",

@@ -5,6 +5,7 @@
       "@cloudflare/workers-types/experimental",
       "@cloudflare/vitest-pool-workers"
     ],
+    "outDir": "dist",
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
