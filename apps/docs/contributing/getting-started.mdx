@@ -1,0 +1,50 @@
+### Services
+
+You need the following services to run Formizee locally:
+
+- [Node](https://nodejs.org)
+- [pnpm](https://pnpm.io/installation)
+- [Docker](https://www.docker.com/products/docker-desktop)
+
+### Web Application / Marketing Site
+<Steps titleSize="h3">
+  <Step title="Setup" >
+    Get the repo [here.](https://github.com/formizee/formizee)
+
+    ```bash
+    git clone https://github.com/formizee/formizee
+    ```
+
+
+  </Step>
+
+  <Step title="Install">
+    ```bash
+    cd formizee
+    corepack enable
+    pnpm install
+    ```
+
+  </Step>
+
+  <Step title="Setup local development">
+  Formizee provides a CLI to setup our local development environment. Run the following command in your terminal:
+
+  ```bash
+  pnpm local
+  ```
+  <info>
+  Docker must be running for us to spin up the database.
+  </info>
+
+  We will create `.env` files in either the `apps/api` or `apps/web` depending on the selection you've made.
+
+  </Step>
+</Steps>
+
+#### Running the API
+    ```bash
+    cd apps/api
+    pnpm dev
+    ```
+    The development server runs on `:8787` by default.

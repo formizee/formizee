@@ -5,7 +5,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "mintlify dev"
+    "dev": "mintlify dev --port 3002"
   },
   "devDependencies": {
     "mintlify": "4.0.191"

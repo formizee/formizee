@@ -1,85 +1,67 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Starter Kit",
-  "logo": {
-    "dark": "/logo/dark.svg",
-    "light": "/logo/light.svg"
-  },
+  "name": "Formizee Docs",
   "favicon": "/favicon.svg",
   "colors": {
-    "primary": "#0D9373",
-    "light": "#07C983",
-    "dark": "#0D9373",
-    "anchors": {
-      "from": "#0D9373",
-      "to": "#07C983"
+    "primary": "#0a0a0a",
+    "light": "#fafafa",
+    "dark": "#0a0a0a",
+    "background": {
+      "light": "#fafafa",
+      "dark": "#0a0a0a"
     }
   },
   "topbarLinks": [
     {
-      "name": "Support",
-      "url": "mailto:hi@mintlify.com"
+      "name": "Dashboard",
+      "url": "https://formizee.com/login"
     }
   ],
-  "topbarCtaButton": {
-    "name": "Dashboard",
-    "url": "https://dashboard.mintlify.com"
+  "feedback": {
+    "raiseIssue": true,
+    "suggestEdit": true,
+    "thumbsRating": true
   },
   "tabs": [
     {
       "name": "API Reference",
-      "url": "api-reference"
+      "url": "api-references"
     }
   ],
   "anchors": [
     {
-      "name": "Documentation",
+      "name": "Home",
       "icon": "book-open-cover",
-      "url": "https://mintlify.com/docs"
+      "url": "introduction"
     },
     {
-      "name": "Community",
-      "icon": "slack",
-      "url": "https://mintlify.com/community"
+      "name": "GitHub",
+      "icon": "github",
+      "url": "https://github.com/formizee"
     },
     {
-      "name": "Blog",
-      "icon": "newspaper",
-      "url": "https://mintlify.com/blog"
+      "name": "Contributing",
+      "url": "contributing",
+      "icon": "terminal"
     }
   ],
   "navigation": [
     {
-      "group": "Get Started",
-      "pages": ["introduction", "quickstart", "development"]
-    },
-    {
-      "group": "Essentials",
-      "pages": [
-        "essentials/markdown",
-        "essentials/code",
-        "essentials/images",
-        "essentials/settings",
-        "essentials/navigation",
-        "essentials/reusable-snippets"
-      ]
+      "group": "Introduction",
+      "pages": ["introduction"]
     },
     {
       "group": "API Documentation",
-      "pages": ["api-reference/introduction"]
+      "pages": ["api-references/authentication"]
     },
     {
-      "group": "Endpoint Examples",
-      "pages": [
-        "api-reference/endpoint/get",
-        "api-reference/endpoint/create",
-        "api-reference/endpoint/delete"
-      ]
+      "group": "Contributing",
+      "icon": "github",
+      "pages": ["contributing/getting-started"]
     }
   ],
   "footerSocials": {
-    "x": "https://x.com/mintlify",
-    "github": "https://github.com/mintlify",
-    "linkedin": "https://www.linkedin.com/company/mintsearch"
+    "website": "https://formizee.com",
+    "github": "https://github.com/formizee"
   }
 }
