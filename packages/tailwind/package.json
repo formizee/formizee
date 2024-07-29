@@ -1,0 +1,13 @@
+{
+  "name": "@formizee/tailwind",
+  "version": "1.0.0",
+  "license": "Apache-2.0",
+  "private": true,
+  "exports": {
+    ".": "./tailwind.config.ts"
+  },
+  "devDependencies": {
+    "tailwindcss": "3.4.7",
+    "tailwindcss-animate": "1.0.7"
+  }
+}

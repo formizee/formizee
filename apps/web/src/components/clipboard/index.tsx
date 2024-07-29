@@ -20,10 +20,11 @@ export function ClipboardButton(props: ClipboardButtonProps): JSX.Element {
   };
 
   useEffect(() => {
-    if (onClipboard)
+    if (onClipboard) {
       setTimeout(() => {
         setOnClipboard(false);
       }, 2000);
+    }
   }, [onClipboard, setOnClipboard]);
 
   return (
@@ -34,7 +35,8 @@ export function ClipboardButton(props: ClipboardButtonProps): JSX.Element {
           aria-label={props.tooltip}
           className={props.className}
           variant="outline"
-          size="icon">
+          size="icon"
+        >
           {onClipboard ? (
             <CheckIcon className="fill-amber-400" />
           ) : (

@@ -1,6 +1,6 @@
+import type {ActionState} from '@/types';
 import {redirect} from 'next/navigation';
 import {z} from 'zod';
-import {type ActionState} from '@/types';
 
 const verifyTokenSchema = z.object({
   token: z
@@ -30,7 +30,7 @@ export const verifyToken = async (
 
   const {token} = input.data;
 
-  const response = await fetch(`/api/auth/verify`, {
+  const response = await fetch('/api/auth/verify', {
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({token}),
     credentials: 'include',
@@ -47,6 +47,9 @@ export const verifyToken = async (
     };
   }
 
-  if (data.type === 'password') redirect('/auth/update-password');
-  else redirect('/dashboard');
+  if (data.type === 'password') {
+    redirect('/auth/update-password');
+  } else {
+    redirect('/dashboard');
+  }
 };

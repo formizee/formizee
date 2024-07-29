@@ -1,7 +1,7 @@
+import type {ActionState} from '@/types';
 import {Email} from 'domain/models/values';
 import {redirect} from 'next/navigation';
 import {z} from 'zod';
-import type {ActionState} from '@/types';
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -48,6 +48,9 @@ export const login = async (
     };
   }
 
-  if (response.status === 403) redirect('/auth/verify');
-  else redirect('/dashboard');
+  if (response.status === 403) {
+    redirect('/auth/verify');
+  } else {
+    redirect('/dashboard');
+  }
 };

@@ -1,10 +1,10 @@
-import {Analytics} from '@vercel/analytics/react';
+import {ThemeProvider} from '@/components/theme';
+import {cn} from '@formizee/ui';
 import {Toaster} from '@formizee/ui/toaster';
+import {Analytics} from '@vercel/analytics/react';
 import type {Metadata, Viewport} from 'next';
 import {Inter} from 'next/font/google';
 import {Suspense} from 'react';
-import {cn} from '@formizee/ui';
-import {ThemeProvider} from '@/components/theme';
 import '@formizee/ui/globals.css';
 import './globals.css';
 
@@ -39,13 +39,15 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         className={cn(
-          'bg-background min-h-screen font-sans antialiased',
+          'min-h-screen bg-background font-sans antialiased',
           font.variable
-        )}>
+        )}
+      >
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
-          enableSystem={false}>
+          enableSystem={false}
+        >
           <Suspense>{children}</Suspense>
           <Toaster />
         </ThemeProvider>

@@ -1,0 +1,1 @@
+export {newId} from './generate';

@@ -1,68 +1,72 @@
-import {Uid, Email} from './values';
+import {type Color, Email, type Icon, Identifier} from './values';
 
 export class Endpoint {
-  private readonly _uid: Uid;
+  private readonly _id: Identifier;
   private readonly _name: string;
-  private readonly _owner: Uid;
-  private readonly _submissions: Uid[] = [];
+  private readonly _team: Identifier;
 
   private readonly _isEnabled: boolean;
   private readonly _emailNotifications: boolean;
 
   private readonly _redirectUrl: URL;
-  private readonly _targetEmail: Email;
+  private readonly _targetEmails: Email[];
+
+  private readonly _color: Color = 'gray';
+  private readonly _icon: Icon = 'file';
+
+  private readonly _createdAt: Date;
+  private readonly _updatedAt: Date;
 
   constructor(
     uid: string,
     name: string,
-    owner: string,
-    targetEmail: string,
+    team: string,
+    targetEmails: string[],
     redirectUrl: string,
-    submissions?: string[]
+    isEnabled: boolean,
+    emailNotifications: boolean,
+    color: Color,
+    icon: Icon,
+    createdAt: Date,
+    updatedAt: Date
   ) {
     this._name = name;
-    this._uid = new Uid(uid);
-    this._owner = new Uid(owner);
+    this._id = new Identifier(uid);
+    this._team = new Identifier(team);
 
-    if (submissions && submissions.length > 0) {
-      submissions.forEach(submission => {
-        this._submissions.push(new Uid(submission));
-      });
-    }
+    this._isEnabled = isEnabled;
+    this._emailNotifications = emailNotifications;
 
-    this._isEnabled = true;
-    this._emailNotifications = true;
+    this._targetEmails = targetEmails.map(email => {
+      return new Email(email);
+    });
+    this._redirectUrl = new URL(redirectUrl);
 
-    this._redirectUrl = new URL(
-      redirectUrl !== ''
-        ? redirectUrl
-        : `https://formizee.com/f/${this._uid.value}/thanks`
-    );
-    this._targetEmail = new Email(targetEmail);
+    this._color = color;
+    this._icon = icon;
+
+    this._createdAt = createdAt;
+    this._updatedAt = updatedAt;
   }
 
-  get uid(): string {
-    return this._uid.value;
+  get id(): string {
+    return this._id.value;
   }
 
   get name(): string {
     return this._name;
   }
 
-  get owner(): string {
-    return this._owner.value;
+  get team(): string {
+    return this._team.value;
   }
 
   get isEnabled(): boolean {
     return this._isEnabled;
   }
 
-  get submissions(): Uid[] {
-    return this._submissions;
-  }
-
-  get targetEmail(): string {
-    return this._targetEmail.value;
+  get targetEmails(): Email[] {
+    return this._targetEmails;
   }
 
   get redirectUrl(): string {
@@ -71,5 +75,21 @@ export class Endpoint {
 
   get emailNotifications(): boolean {
     return this._emailNotifications;
+  }
+
+  get color(): Color {
+    return this._color;
+  }
+
+  get icon(): Icon {
+    return this._icon;
+  }
+
+  get createdAt(): Date {
+    return this._createdAt;
+  }
+
+  get updatedAt(): Date {
+    return this._updatedAt;
   }
 }

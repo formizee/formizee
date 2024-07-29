@@ -1,0 +1,28 @@
+{
+  "name": "@formizee/email",
+  "author": "Pau García Chiner",
+  "version": "1.0.0",
+  "license": "Apache-2.0",
+  "main": "src/service.tsx",
+  "types": "src/service.tsx",
+  "scripts": {
+    "dev": "email dev",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "biome lint ."
+  },
+  "devDependencies": {
+    "@formizee/tsconfig": "workspace:*",
+    "@types/node": "22.0.0",
+    "@types/react": "18.3.3",
+    "react": "18.3.1",
+    "vitest": "1.5.0"
+  },
+  "dependencies": {
+    "@react-email/components": "0.0.22",
+    "@react-email/render": "0.0.17",
+    "react-email": "2.1.6",
+    "resend": "3.5.0",
+    "zod": "3.23.8"
+  }
+}

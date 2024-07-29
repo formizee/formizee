@@ -1,4 +1,4 @@
-import {Navbar, Sidebar, Content} from './components';
+import {Content, Navbar, Sidebar} from './components';
 
 function DashboardLayout({
   children

@@ -1,31 +1,52 @@
-import {Uid} from './values';
+import {Identifier} from './values';
 
 export class Submission {
-  private readonly _uid: Uid;
-  private readonly _date: Date;
-  private readonly _endpoint: Uid;
-  private readonly _form: FormData;
+  private readonly _id: Identifier;
+  private readonly _endpoint: Identifier;
 
-  constructor(uid: string, endpoint: string, date: string, form: FormData) {
-    this._form = form;
-    this._uid = new Uid(uid);
-    this._date = new Date(date);
-    this._endpoint = new Uid(endpoint);
+  private readonly _data: object;
+  private readonly _isSpam: boolean;
+  private readonly _isRead: boolean;
+
+  private readonly _createdAt: Date;
+
+  constructor(
+    id: string,
+    endpoint: string,
+    data: object,
+    isSpam: boolean,
+    isRead: boolean,
+    createdAt: Date
+  ) {
+    this._data = data;
+    this._id = new Identifier(id);
+    this._isSpam = isSpam;
+    this._isRead = isRead;
+    this._endpoint = new Identifier(endpoint);
+    this._createdAt = new Date(createdAt);
   }
 
-  get uid(): string {
-    return this._uid.value;
+  get id(): string {
+    return this._id.value;
   }
 
-  get date(): Date {
-    return this._date;
+  get data(): unknown {
+    return this._data;
   }
 
-  get form(): FormData {
-    return this._form;
+  get isSpam(): boolean {
+    return this._isSpam;
+  }
+
+  get isRead(): boolean {
+    return this._isRead;
   }
 
   get endpoint(): string {
     return this._endpoint.value;
+  }
+
+  get createdAt(): Date {
+    return this._createdAt;
   }
 }

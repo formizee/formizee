@@ -1,15 +1,45 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "pipeline": {
+  "globalEnv": ["API_URL", "WEB_URL"],
+  "ui": "tui",
+  "tasks": {
+    "test": {},
+    "lint": {},
+    "check": {},
     "format": {},
-    "lint": {"cache": false},
-    "dev": {"cache": false, "persistent": true},
-    "build": {"outputs": ["dist/**"], "cache": true},
-
+    "test:watch": {},
+    "dev": {
+      "env": ["*"],
+      "cache": false,
+      "persistent": true
+    },
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"],
+      "cache": true
+    },
     "@formizee/web#build": {
       "outputs": [".next/**", "!.next/cache/**"],
+      "dependsOn": ["^build"]
+    },
+    "@formizee/api#build": {
+      "outputs": ["dist/**"],
       "dependsOn": ["^build"],
-      "env": ["URL", "API_URL"]
+      "cache": true,
+      "env": [
+        "SUPPORT_EMAIL",
+        "JWT_SECRET",
+        "DATABASE_URL",
+        "DATABASE_USER",
+        "DATABASE_PASSWORD",
+        "STORAGE_ACCESS_KEY",
+        "STORAGE_SECRET_KEY",
+        "STORAGE_BUCKET",
+        "STORAGE_URL",
+        "SMTP_PASSWORD",
+        "SMTP_HOST",
+        "SMTP_USER"
+      ]
     }
   }
 }

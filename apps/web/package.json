@@ -6,10 +6,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "lint": "oxlint src",
     "build": "next build",
     "start": "next start",
-    "format": "prettier -w ."
+    "lint": "biome lint src"
   },
   "dependencies": {
     "@formizee/ui": "workspace:*",
@@ -24,16 +23,14 @@
     "zod": "3.23.8"
   },
   "devDependencies": {
-    "@formizee/eslint-config": "workspace:*",
-    "@formizee/tailwind-config": "workspace:*",
-    "@formizee/typescript-config": "workspace:*",
+    "@formizee/tailwind": "workspace:*",
+    "@formizee/tsconfig": "workspace:*",
     "@types/node": "20.12.12",
     "@types/react": "18.3.2",
     "@types/react-dom": "18.3.0",
     "autoprefixer": "10.4.19",
-    "eslint-config-next": "14.2.3",
     "postcss": "8.4.31",
-    "tailwindcss": "3.4.3",
+    "tailwindcss": "3.4.7",
     "typescript": "5.4.5"
   }
 }

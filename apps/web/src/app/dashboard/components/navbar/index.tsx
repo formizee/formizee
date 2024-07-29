@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import {
   Button,
   DropdownMenu,
@@ -10,6 +9,7 @@ import {
   Logo
 } from '@formizee/ui';
 import {ChatIcon, DocumentIcon, LinkIcon, MenuIcon} from '@formizee/ui/icons';
+import Link from 'next/link';
 
 export function DashboardNavbar(): JSX.Element {
   return (
@@ -32,7 +32,8 @@ export function DashboardNavbar(): JSX.Element {
           <Button
             variant="outline"
             size="icon"
-            className="rounded-full md:hidden">
+            className="rounded-full md:hidden"
+          >
             <MenuIcon />
           </Button>
         </DropdownMenuTrigger>

@@ -1,13 +1,5 @@
 'use client';
 
-import Link from 'next/link';
-import {
-  ChatIcon,
-  HomeIcon,
-  LogoutIcon,
-  SettingsIcon,
-  UserIcon
-} from '@formizee/ui/icons';
 import {
   Button,
   DropdownMenu,
@@ -16,6 +8,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@formizee/ui';
+import {
+  ChatIcon,
+  HomeIcon,
+  LogoutIcon,
+  SettingsIcon,
+  UserIcon
+} from '@formizee/ui/icons';
+import Link from 'next/link';
 import {logout} from '../../actions';
 
 interface SidebarAccountProps {
@@ -52,7 +52,8 @@ export function SidebarAccount(props: SidebarAccountProps): JSX.Element {
           <DropdownMenuSeparator />
           <DropdownMenuItem
             className="text-red-300 hover:text-red-500"
-            onSelect={async () => logout()}>
+            onSelect={async () => logout()}
+          >
             <LogoutIcon />
             <span>Logout</span>
           </DropdownMenuItem>

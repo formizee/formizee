@@ -1,29 +1,27 @@
-import {type ExecutionContext, Hono} from 'hono';
-import {SecretsProvider} from '@/lib/secrets';
-import {reportError} from '@/lib/logger';
-import authRouter from '@/routes/auth';
-import profileRouter from '@/routes/profile';
-import waitlistRouter from '@/routes/waitlist';
-import type {Env} from './types';
-//import endpointsRouter from '@/routes/endpoints';
-//import submissionsRouter from '@/routessubmissions';
+import {zEnv, type Env} from '@/lib/enviroment';
+import type {ExecutionContext} from 'hono';
+import {newApp} from '@/lib/hono';
+import api from '@/v1';
 
-const router = new Hono<{Bindings: Env}>().basePath('/api');
+const app = newApp();
 
-router.route('/auth', authRouter);
-router.route('/profile', profileRouter);
-router.route('/waitlist', waitlistRouter);
-//router.route('/endpoints', endpointsRouter);
-//router.route('/submissions', submissionsRouter);
-
-router.get('/status', context => context.json('OK', 200));
-
-router.onError(reportError);
+app.route('/v1', api);
 
 export default {
-  fetch: (request: Request, env: Env, context: ExecutionContext) => {
-    SecretsProvider.getInstance().setSmtp(env.SMTP_SECRET);
-    SecretsProvider.getInstance().setDb(env.DB);
-    return router.fetch(request, env, context);
+  async fetch(req: Request, env: Env, executionCtx: ExecutionContext) {
+    const parsedEnv = zEnv.safeParse(env);
+    if (!parsedEnv.success) {
+      console.error(`BAD_ENVIRONMENT: ${parsedEnv.error.message}`);
+      return Response.json(
+        {
+          code: 'BAD_ENVIRONMENT',
+          message: 'Some environment variables are missing or are invalid',
+          errors: parsedEnv.error
+        },
+        {status: 500}
+      );
+    }
+
+    return app.fetch(req, parsedEnv.data, executionCtx);
   }
-};
+} satisfies ExportedHandler<Env>;

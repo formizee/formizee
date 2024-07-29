@@ -1,10 +1,17 @@
+type Status = 200 | 201 | 202 | 204 | 400 | 401 | 403 | 404 | 409 | 413 | 500;
+
 interface ResponseOptions {
-  status: number;
+  status: Status;
+}
+
+interface Error {
+  name: string;
+  description: string;
 }
 
 export class Response<T> {
   private readonly _ok: boolean;
-  private readonly _status: number;
+  private readonly _status: Status;
   private readonly _body: T | object;
 
   constructor(body: T | object, options: ResponseOptions) {
@@ -17,15 +24,15 @@ export class Response<T> {
     return status >= 200 && status < 300;
   }
 
-  static success<T>(body: T, status = 200): Response<T> {
+  static success<T>(body: T, status: Status = 200): Response<T> {
     return new Response<T>(body, {status});
   }
 
-  static error<T>(message: string, status = 500): Response<T> {
-    return new Response<T>({error: message}, {status});
+  static error<T>(error: Error, status: Status = 500): Response<T> {
+    return new Response<T>(error, {status});
   }
 
-  get status(): number {
+  get status(): Status {
     return this._status;
   }
 
@@ -37,7 +44,7 @@ export class Response<T> {
     return this._body as T;
   }
 
-  get error(): object {
-    return this._body as object;
+  get error(): Error {
+    return this._body as Error;
   }
 }

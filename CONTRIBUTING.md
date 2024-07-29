@@ -15,3 +15,20 @@ Please note we have a code of conduct, please follow it in all your interactions
 
 3. You may merge the Pull Request in once you have the sign-off of two other developers, or if you 
    do not have permission to do that, you may request the second reviewer to merge it for you.
+
+## Specific Guides
+
+### Updating the domain of Formizee
+
+To make sure that all the packages and apps are aware of new changes on the domain level, please
+follow the next steps.
+
+**`packages/domain`**
+- Make your change on the domain package.
+
+**`apps/api`**
+- If the change affects to the domain models, update the `openapi` schemas.
+- If the change affects to the database, update the `drizzle` schemas.
+- Check the `lib/models`, which contains the transformer code for the models.
+- Update the affected `data` and `useCases` implementation by domain
+- If the change affects to a current Api route, update the `routes` schemas and definitions.

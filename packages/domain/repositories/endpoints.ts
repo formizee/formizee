@@ -1,17 +1,47 @@
 import type {Endpoint, Response} from '../models';
-import type {Uid, Email} from '../models/values';
+import type {Color, Email, Icon, Identifier, Name} from '../models/values';
 
 export interface EndpointsRepository {
-  load: (uid: Uid) => Promise<Response<Endpoint>>;
-  loadByOwner: (owner: Uid) => Promise<Response<Endpoint[]>>;
-  save: (name: string, owner: Uid) => Promise<Response<Endpoint>>;
-  delete: (uid: Uid) => Promise<Response<void>>;
+  load: (endpointId: Identifier) => Promise<Response<Endpoint>>;
+  loadAll: (team: Name) => Promise<Response<Endpoint[]>>;
+  save: (
+    name: string,
+    team: Name,
+    targetEmails: Email[],
+    color?: Color,
+    icon?: Icon
+  ) => Promise<Response<Endpoint>>;
+  delete: (endpointId: Identifier) => Promise<Response<true>>;
 
-  updateEnabled: (uid: Uid, isEnabled: boolean) => Promise<Response<void>>;
-  updateRedirectUrl: (uid: Uid, redirectUrl: URL) => Promise<Response<void>>;
-  updateTargetEmail: (uid: Uid, targetEmail: Email) => Promise<Response<void>>;
-  updateEmailNotifications: (
-    uid: Uid,
+  updateName: (
+    endpointId: Identifier,
+    name: string
+  ) => Promise<Response<Endpoint>>;
+  updateEnabled: (
+    endpointId: Identifier,
     isEnabled: boolean
-  ) => Promise<Response<void>>;
+  ) => Promise<Response<Endpoint>>;
+  updateRedirectUrl: (
+    endpointId: Identifier,
+    redirectUrl: URL
+  ) => Promise<Response<Endpoint>>;
+  updateEmailNotifications: (
+    endpointId: Identifier,
+    isEnabled: boolean
+  ) => Promise<Response<Endpoint>>;
+
+  updateTargetEmails: (
+    endpointId: Identifier,
+    targetEmails: Email[]
+  ) => Promise<Response<Endpoint>>;
+
+  updateColor: (
+    endpointId: Identifier,
+    color: Color
+  ) => Promise<Response<Endpoint>>;
+
+  updateIcon: (
+    endpointId: Identifier,
+    icon: Icon
+  ) => Promise<Response<Endpoint>>;
 }

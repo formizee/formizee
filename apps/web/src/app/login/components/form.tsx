@@ -1,21 +1,21 @@
 'use client';
 
-/* eslint-disable-next-line import/named -- Currently useFormState and useFormStatus are experimental */
-import {useFormState, useFormStatus} from 'react-dom';
-import {useFormContext} from 'react-hook-form';
-import Link from 'next/link';
+import {useFormAction} from '@/hooks';
 import {Button, Input} from '@formizee/ui';
 import {
   Form,
-  FormLabel,
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage
 } from '@formizee/ui/form';
 import {LoadingIcon} from '@formizee/ui/icons';
-import {useFormAction} from '@/hooks';
-import {login, type LoginFormValues} from '../actions';
+import Link from 'next/link';
+/* eslint-disable-next-line import/named -- Currently useFormState and useFormStatus are experimental */
+import {useFormState, useFormStatus} from 'react-dom';
+import {useFormContext} from 'react-hook-form';
+import {type LoginFormValues, login} from '../actions';
 
 export function LoginForm(): JSX.Element {
   const [state, formAction] = useFormState(login, null);

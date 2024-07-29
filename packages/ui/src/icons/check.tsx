@@ -10,7 +10,8 @@ export function CheckIcon(props: CheckIconProps): JSX.Element {
     <svg
       className={cn('h-4 w-4', props.className)}
       fill="currentColor"
-      viewBox="0 0 16 16">
+      viewBox="0 0 16 16"
+    >
       {props.variant === 'circle' ? (
         <path
           clipRule="evenodd"

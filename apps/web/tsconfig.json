@@ -1,5 +1,5 @@
 {
-  "extends": "@formizee/typescript-config/next.json",
+  "extends": "@formizee/tsconfig/next.json",
   "compilerOptions": {
     "paths": {
       "@/*": ["./src/*"]

@@ -1,20 +1,24 @@
-import type {Uid, Name, Email, Password} from '../models/values';
-import type {User, Response} from '../models';
+import type {Response, Team, User} from '../models';
+import type {Email, Identifier, Name, Password} from '../models/values';
 
 export interface UsersRepository {
-  load: (identifier: Uid | Email) => Promise<Response<User>>;
-  save: (
-    name: Name,
-    email: Email,
+  load: (userId: Identifier | Email) => Promise<Response<User>>;
+  loadLinkedTeams: (userId: Identifier) => Promise<Response<Team[]>>;
+  delete: (userId: Identifier, password: string) => Promise<Response<true>>;
+
+  updateName: (userId: Identifier, name: Name) => Promise<Response<User>>;
+  updateEmail: (userId: Identifier, email: Email) => Promise<Response<User>>;
+  updatePassword: (
+    userId: Identifier,
     password: Password
   ) => Promise<Response<User>>;
-  delete: (uid: Uid) => Promise<Response<true>>;
 
-  updateName: (uid: Uid, newName: Name) => Promise<Response<true>>;
-  updateEmail: (uid: Uid, newEmail: Email) => Promise<Response<true>>;
-  updatePassword: (uid: Uid, newPassword: Password) => Promise<Response<true>>;
-  updateLinkedEmails: (
-    uid: Uid,
-    linkedEmails: Email[]
-  ) => Promise<Response<true>>;
+  saveLinkedEmail: (
+    userId: Identifier,
+    linkedEmail: Email
+  ) => Promise<Response<User>>;
+  deleteLinkedEmail: (
+    userId: Identifier,
+    linkedEmail: Email
+  ) => Promise<Response<User>>;
 }

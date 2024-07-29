@@ -46,7 +46,8 @@ const InputOTPSlot = React.forwardRef<
         isActive && 'z-10 ring-1 ring-neutral-950 dark:ring-neutral-300',
         className
       )}
-      {...props}>
+      {...props}
+    >
       {char}
       {hasFakeCaret ? (
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">

@@ -114,7 +114,8 @@ export function CodeBlock(props: CodeBlockProps): JSX.Element {
             <div
               className="my-1 md:my-0.5"
               key={i}
-              style={getLineProps({line}).style}>
+              style={getLineProps({line}).style}
+            >
               <span className="mr-3 select-none text-sm text-neutral-400">
                 {i + 1}
               </span>

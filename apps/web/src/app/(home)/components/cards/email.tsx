@@ -1,7 +1,7 @@
 'use client';
 
-import {useMemo, useState} from 'react';
 import {Card} from '@formizee/ui';
+import {useMemo, useState} from 'react';
 
 const EMAILS: Email[] = [
   {
@@ -53,11 +53,12 @@ interface BodyProps {
 function Item(props: ItemProps): JSX.Element {
   return (
     <div
-      className={`h-50 m-2 flex w-[318px] flex-col justify-start rounded-md p-2 ${props.selected ? 'bg-neutral-700' : 'bg-neutral-800'}`}
-      tabIndex={-1}>
-      <span className="text-md font-semibold">{props.title}</span>
+      className={`m-2 flex h-50 w-[318px] flex-col justify-start rounded-md p-2 ${props.selected ? 'bg-neutral-700' : 'bg-neutral-800'}`}
+      tabIndex={-1}
+    >
+      <span className="font-semibold text-md">{props.title}</span>
       <span className="text-sm">{props.subject}</span>
-      <span className="text-ellipsis text-sm text-neutral-400">
+      <span className="text-ellipsis text-neutral-400 text-sm">
         {props.content}
       </span>
     </div>
@@ -76,7 +77,7 @@ function Header(props: HeaderProps): JSX.Element {
       </div>
       <div className="flex flex-col">
         <span className="font-semibold">{props.title}</span>
-        <span className="text-sm text-neutral-400">{props.subject}</span>
+        <span className="text-neutral-400 text-sm">{props.subject}</span>
         <span className="text-sm">
           Reply to:<span className="text-neutral-400">{props.replyTo}</span>
         </span>
@@ -95,7 +96,8 @@ export function EmailCard(): JSX.Element {
     <Card
       className="z-10 h-[216px] translate-x-[120px] translate-y-[-385px]"
       size="landing"
-      variant="landing">
+      variant="landing"
+    >
       <div className="relative flex flex-row items-center justify-center p-0">
         <div className="mt-0 h-full w-[48%] overflow-hidden">
           {EMAILS.map(item => (

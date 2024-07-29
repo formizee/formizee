@@ -1,8 +1,0 @@
-{
-  "$schema": "https://json.schemastore.org/tsconfig",
-  "display": "API",
-  "extends": "./base.json",
-  "compilerOptions": {
-    "allowSyntheticDefaultImports": true
-  }
-}

@@ -1,5 +1,5 @@
+import type {ActionState} from '@/types';
 import {z} from 'zod';
-import {type ActionState} from '@/types';
 
 const updatePasswordSchema = z.object({
   password: z.string()

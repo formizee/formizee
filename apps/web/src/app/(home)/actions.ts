@@ -1,8 +1,8 @@
 'use server';
 
+import type {ActionState} from '@/types';
 import {redirect} from 'next/navigation';
 import {z} from 'zod';
-import type {ActionState} from '@/types';
 
 const formSchema = z.object({
   email: z.string().email()
@@ -27,10 +27,7 @@ export const joinWaitlist = async (
     };
   }
 
-  if (!process.env.URL)
-    throw new Error('Webpage URL enviroment variable is not defined.');
-
-  const response = await fetch(`${process.env.URL}/api/waitlist/join`, {
+  const response = await fetch(`${process.env.WEB_URL}/api/waitlist/join`, {
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({email: input.data.email}),
     method: 'POST'

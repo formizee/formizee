@@ -1,12 +1,14 @@
-#:schema node_modules/wrangler/config-schema.json
-name = "formizee-api"
+name = "api"
+node_compat = true
 main = "src/index.ts"
-compatibility_date = "2024-05-12"
-compatibility_flags = ["nodejs_compat"]
+compatibility_date = "2024-01-01"
 
-vars = { WORKER_ENV = "prod"}
+[env.development]
+vars = { ENVIRONMENT = "development" }
 
-[[d1_databases]]
-binding = "DB"
-database_name = "formizee"
-database_id = "b781729f-67e8-4387-af61-ec6f5f78b71e"
+[env.production]
+vars = { ENVIRONMENT = "production" }
+
+[env.preview]
+vars = { ENVIRONMENT = "preview" }
+

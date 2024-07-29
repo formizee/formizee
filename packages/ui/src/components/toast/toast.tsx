@@ -81,7 +81,8 @@ const ToastClose = React.forwardRef<
     )}
     ref={ref}
     toast-close=""
-    {...props}>
+    {...props}
+  >
     <CloseIcon className="h-4 w-4" />
   </ToastPrimitives.Close>
 ));
