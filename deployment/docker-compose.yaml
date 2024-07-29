@@ -13,7 +13,6 @@ services:
       POSTGRES_PASSWORD: password
     volumes:
       - database:/var/lib/postgresql
-      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
 
   storage:
     container_name: storage
@@ -28,6 +27,19 @@ services:
       MINIO_CONSOLE_PORT_NUMBER: 3903
     volumes:
       - storage:/data
+
+  api:
+    container_name: api
+    build:
+      context: ..
+      dockerfile: ./apps/api/Dockerfile
+    ports:
+      - 8787:8787
+    depends_on:
+      - database
+      - storage
+    environment:
+      DATABASE_URL: "postgresql://formizee:password@localhost/formizee"
 
 volumes:
   database:
