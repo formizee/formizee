@@ -64,7 +64,7 @@ export const newApp = (): OpenAPIHono<HonoEnv> => {
     },
     servers: [
       {
-        url: 'https://formizee.com',
+        url: 'https://api.formizee.com',
         description: 'Stable Release'
       }
     ],
