@@ -3,10 +3,10 @@ WEB_URL="The url where the webpage is running"
 DOCS_URL="The url where the docs is running"
 API_URL="The url where the api is running"
 ENVIROMENT="development"
+VERSION="1.0.0"
 
 # Database
 DATABASE_URL="Your Postgres compatible database connection url"
-TESTING_DATABASE_URL="Your Testing Postgres compatible database connection url"
 
 # Analytics
 TINYBIRD_URL="Your proxy tinybird url"

@@ -4,7 +4,7 @@ export const databaseEnv = z.object({
   DATABASE_URL: z
     .string()
     .url()
-    .default('postgresql://formizee:password@localhost/testing')
+    .default('postgresql://formizee:password@localhost/formizee')
 });
 
 export const integrationTestEnv = databaseEnv.merge(
