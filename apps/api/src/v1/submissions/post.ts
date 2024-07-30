@@ -2,7 +2,6 @@ import {SubmissionSchema, EndpointParamsSchema} from './schema';
 import type {submissions as submissionsApi} from '.';
 import {openApiErrorResponses} from '@/lib/errors';
 import {HTTPException} from 'hono/http-exception';
-import {getOriginCountry} from '@/lib/location';
 import {createRoute} from '@hono/zod-openapi';
 import {schema} from '@formizee/db';
 import {newId} from '@formizee/id';
@@ -43,11 +42,8 @@ export const postRoute = createRoute({
 export const registerPostSubmission = (api: typeof submissionsApi) => {
   return api.openapi(postRoute, async context => {
     const {analytics, database, emailService} = context.get('services');
-    const location =
-      context.env.ENVIROMENT === 'production'
-        ? await getOriginCountry(context)
-        : 'Unknown';
     const workspaceId = context.get('workspace').id;
+    const location = context.get('location');
     const {id} = context.req.valid('param');
 
     if (context.req.header('Content-Type') !== 'application/json') {
