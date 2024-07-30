@@ -6,12 +6,12 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "wrangler dev",
     "build": "tsc --build",
     "check": "tsc --noEmit",
     "lint": "biome lint src",
     "test": "vitest run --bail=1",
     "test:watch": "vitest --bail=1",
+    "dev": "wrangler dev --show-interactive-dev-session=false",
     "deploy:prod": "pnpm build && wrangler deploy --minify --env=production --keep-vars=true"
   },
   "dependencies": {
