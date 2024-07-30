@@ -55,7 +55,7 @@ export const UsageBreakdown = (props: UsageBreakdownProps) => {
         {label}
       </Text>
       <Text className="flex flex-row items-center gap-1 p-0 m-0 font-medium text-neutral-500 text-ellipsis overflow-hidden whitespace-nowrap">
-        <span className="text-red-500">{limit}</span>
+        <span className="text-orange-500">{Math.abs(Number(limit) * 0.8)}</span>
         <span>/</span>
         <span>{limit}</span>
       </Text>
@@ -63,11 +63,11 @@ export const UsageBreakdown = (props: UsageBreakdownProps) => {
   );
 };
 
-export const PlanLimitReached = (props: EmailProps) => (
+export const PlanLimitWarning = (props: EmailProps) => (
   <Tailwind config={config}>
     <Html lang="en">
       <Head />
-      <Preview>Upgrade your billing plan for Formizee</Preview>
+      <Preview>You've reached 80% of monthly usage</Preview>
       <Body
         style={{fontFamily: 'Inter, System-UI, sans-serif'}}
         className="bg-neutral-50 flex justify-center"
@@ -79,14 +79,12 @@ export const PlanLimitReached = (props: EmailProps) => (
             className="rounded-xl mt-4 w-14 h-14"
           />
           <Heading className="text-[22px] pt-4 pb-2 font-medium text-neutral-800">
-            You've reached the usage limits of the {props.currentPlan} plan
+            You've reached 80% of monthly usage
           </Heading>
           <Text className="text-neutral-600 leading-[1.4] text-[15px]">
             Hi <span className="text-neutral-950">{props.username}</span>,<br />
-          </Text>
-          <Text className="text-neutral-600 leading-[1.4] text-[15px]">
-            You've reached the usage limits of your current {props.currentPlan}{' '}
-            plan for{' '}
+            <br />
+            You've reached the 80% usage of the {props.currentPlan} plan for{' '}
             <span className="font-medium text-neutral-950">{props.limit}</span>.
             To continue enjoying Formizee without interruption, consider
             upgrading.
@@ -156,10 +154,10 @@ export const PlanLimitReached = (props: EmailProps) => (
   </Tailwind>
 );
 
-PlanLimitReached.PreviewProps = {
+PlanLimitWarning.PreviewProps = {
   username: 'pauchiner',
   currentPlan: 'hobby',
   limit: 'submissions'
 } as EmailProps;
 
-export default PlanLimitReached;
+export default PlanLimitWarning;
