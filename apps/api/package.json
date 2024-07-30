@@ -12,7 +12,7 @@
     "lint": "biome lint src",
     "test": "vitest run --bail=1",
     "test:watch": "vitest --bail=1",
-    "deploy": "pnpm build && wrangler deploy"
+    "deploy:prod": "pnpm build && wrangler deploy --minify --env=production --keep-vars=true"
   },
   "dependencies": {
     "@formizee/analytics": "workspace:*",
