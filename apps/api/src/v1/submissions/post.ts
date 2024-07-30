@@ -2,9 +2,8 @@ import {SubmissionSchema, EndpointParamsSchema} from './schema';
 import type {submissions as submissionsApi} from '.';
 import {openApiErrorResponses} from '@/lib/errors';
 import {HTTPException} from 'hono/http-exception';
-import {getOriginCountry} from '@/lib/location';
 import {createRoute} from '@hono/zod-openapi';
-import {schema} from '@formizee/db';
+import {eq, count, schema} from '@formizee/db';
 import {newId} from '@formizee/id';
 
 export const postRoute = createRoute({
@@ -43,12 +42,11 @@ export const postRoute = createRoute({
 export const registerPostSubmission = (api: typeof submissionsApi) => {
   return api.openapi(postRoute, async context => {
     const {analytics, database, emailService} = context.get('services');
-    const location =
-      context.env.ENVIROMENT === 'production'
-        ? await getOriginCountry(context)
-        : 'Unknown';
+    const workspacePlan = context.get('workspace').plan;
     const workspaceId = context.get('workspace').id;
+    const location = context.get('location');
     const {id} = context.req.valid('param');
+    const limits = context.get('limits');
 
     if (context.req.header('Content-Type') !== 'application/json') {
       throw new HTTPException(400, {
@@ -73,6 +71,101 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
       throw new HTTPException(401, {
         message: 'This submission belongs to another workspace'
       });
+    }
+
+    // Check plan limits.
+    const submissions = await database
+      .select({count: count()})
+      .from(schema.submission)
+      .innerJoin(
+        schema.endpoint,
+        eq(schema.submission.endpointId, schema.endpoint.id)
+      )
+      .innerJoin(
+        schema.workspace,
+        eq(schema.endpoint.workspaceId, schema.workspace.id)
+      )
+      .where(eq(schema.workspace.id, workspaceId));
+
+    if (!submissions[0]) {
+      throw new HTTPException(500, {
+        message: 'Server Internal Error'
+      });
+    }
+
+    // Limit Reached
+    if (
+      typeof limits.submissions === 'number' &&
+      submissions[0].count >= limits.submissions
+    ) {
+      const workspaceMember = await database.query.usersToWorkspaces.findFirst({
+        where: (table, {and, eq}) =>
+          and(eq(table.workspaceId, workspaceId), eq(table.role, 'owner'))
+      });
+
+      if (!workspaceMember) {
+        throw new HTTPException(500, {
+          message: 'Server Internal Error'
+        });
+      }
+
+      const workspaceOwner = await database.query.user.findFirst({
+        where: (table, {eq}) => eq(table.id, workspaceMember.userId)
+      });
+
+      if (!workspaceOwner) {
+        throw new HTTPException(500, {
+          message: 'Server Internal Error'
+        });
+      }
+
+      if (context.env.ENVIROMENT === 'production') {
+        await emailService.sendPlanLimitReachedEmail({
+          email: workspaceOwner.email,
+          username: workspaceOwner.name,
+          limitReached: 'submissions',
+          currentPlan: workspacePlan
+        });
+      }
+      throw new HTTPException(403, {
+        message: 'The endpoint is currently not accepting submissions'
+      });
+    }
+
+    // 80% Warning
+    if (
+      typeof limits.submissions === 'number' &&
+      submissions[0].count >= Math.abs(limits.submissions * 0.8)
+    ) {
+      const workspaceMember = await database.query.usersToWorkspaces.findFirst({
+        where: (table, {and, eq}) =>
+          and(eq(table.workspaceId, workspaceId), eq(table.role, 'owner'))
+      });
+
+      if (!workspaceMember) {
+        throw new HTTPException(500, {
+          message: 'Server Internal Error'
+        });
+      }
+
+      const workspaceOwner = await database.query.user.findFirst({
+        where: (table, {eq}) => eq(table.id, workspaceMember.userId)
+      });
+
+      if (!workspaceOwner) {
+        throw new HTTPException(500, {
+          message: 'Server Internal Error'
+        });
+      }
+
+      if (context.env.ENVIROMENT === 'production') {
+        await emailService.sendPlanLimitWarningEmail({
+          email: workspaceOwner.email,
+          username: workspaceOwner.name,
+          limitReached: 'submissions',
+          currentPlan: workspacePlan
+        });
+      }
     }
 
     const workspace = await database.query.workspace.findFirst({
