@@ -226,12 +226,21 @@ importers:
 
   packages/email:
     dependencies:
+      '@formizee/plans':
+        specifier: workspace:*
+        version: link:../plans
+      '@formizee/tailwind':
+        specifier: workspace:*
+        version: link:../tailwind
       '@react-email/components':
         specifier: 0.0.22
         version: 0.0.22(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@react-email/render':
         specifier: 0.0.17
         version: 0.0.17(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@react-email/tailwind':
+        specifier: 0.0.19
+        version: 0.0.19(react@18.3.1)
       react-email:
         specifier: 2.1.6
         version: 2.1.6(@swc/helpers@0.5.5)(eslint@9.8.0)
@@ -254,6 +263,9 @@ importers:
       react:
         specifier: 18.3.1
         version: 18.3.1
+      tailwindcss:
+        specifier: 3.4.7
+        version: 3.4.7
       vitest:
         specifier: 1.5.0
         version: 1.5.0(@types/node@22.0.0)(terser@5.31.3)
