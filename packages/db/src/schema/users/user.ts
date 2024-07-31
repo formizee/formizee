@@ -145,6 +145,20 @@ export const session = pgTable('sessions', {
   expires: timestamp('expires', {mode: 'date'}).notNull()
 });
 
+export const verificationToken = pgTable(
+  'verificationTokens',
+  {
+    identifier: text('identifier').notNull(),
+    token: text('token').notNull(),
+    expires: timestamp('expires', {mode: 'date'}).notNull()
+  },
+  verificationToken => ({
+    compositePk: primaryKey({
+      columns: [verificationToken.identifier, verificationToken.token]
+    })
+  })
+);
+
 export const authenticator = pgTable(
   'authenticators',
   {
