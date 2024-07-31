@@ -25,10 +25,7 @@
     "push": "drizzle-kit push",
     "studio": "drizzle-kit studio",
     "migrate": "drizzle-kit migrate",
-    "generate": "drizzle-kit generate",
-    "push:test": "NODE_ENV=test drizzle-kit push",
-    "studio:test": "NODE_ENV=test drizzle-kit studio",
-    "migrate:test": "NODE_ENV=test drizzle-kit migrate"
+    "generate": "drizzle-kit generate"
   },
   "devDependencies": {
     "@formizee/tsconfig": "workspace:*",
@@ -41,6 +38,7 @@
     "@formizee/hashing": "workspace:*",
     "drizzle-orm": "0.32.0",
     "drizzle-zod": "0.5.1",
+    "next-auth": "5.0.0-beta.20",
     "pg": "8.12.0",
     "zod": "3.23.8"
   }
