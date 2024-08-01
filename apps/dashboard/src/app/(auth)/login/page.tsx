@@ -1,3 +1,4 @@
+import {ThemeToggle} from '@/components/theme';
 import {Button, Input} from '@formizee/ui';
 import {signIn} from '@/lib/auth';
 import * as React from 'react';
@@ -17,8 +18,8 @@ export default async function Login({
 
   return (
     <main className="w-full flex flex-col min-h-screen gap-4 items-center justify-center p-24">
-      <h1 className="text-2xl">Login</h1>
-      <section className="flex flex-col gap-4 ">
+      <h1 className="text-2xl font-medium mb-8 font-mono">Login</h1>
+      <section className="flex flex-col gap-4 w-[300px]">
         <form
           className="gap-4 flex flex-col items-center justify-center"
           action={async formData => {
@@ -36,7 +37,7 @@ export default async function Login({
             Get Started
           </Button>
         </form>
-        <div className="h-[1px] bg-neutral-200 w-full" />
+        <div className="h-[1px] bg-neutral-200 dark:bg-neutral-800 w-full" />
         <form
           action={async () => {
             'use server';
@@ -58,6 +59,7 @@ export default async function Login({
           </Button>
         </form>
       </section>
+      <ThemeToggle className="mt-8" />
     </main>
   );
 }
