@@ -7,6 +7,16 @@
       "import": "./src/index.ts",
       "require": "./src/index.ts"
     },
+    "./web": {
+      "types": "./src/web.ts",
+      "import": "./src/web.ts",
+      "require": "./src/web.ts"
+    },
+    "./api": {
+      "types": "./src/api.ts",
+      "import": "./src/api.ts",
+      "require": "./src/api.ts"
+    },
     "./schema": {
       "types": "./src/schema/index.ts",
       "import": "./src/schema/index.ts",
