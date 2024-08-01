@@ -10,15 +10,15 @@ export async function createUser(
 ): Promise<AdapterUser> {
   const input = z
     .object({
-      name: z.string(),
+      name: z.string().optional(),
       email: z.string().email(),
-      image: z.string().nullable(),
-      emailVerified: z.date().nullable()
+      image: z.string().optional(),
+      emailVerified: z.date().optional()
     })
     .parse(data);
 
-  if (!input.name || !input.email) {
-    throw new Error('Missing inputs to create a user.');
+  if (!input.email) {
+    throw new Error('Missing email to create a user.');
   }
 
   let slug: string | undefined = undefined;
@@ -36,6 +36,7 @@ export async function createUser(
 
   const newUser: schema.InsertUser = {
     ...input,
+    name: input.name ?? input.email,
     id: newId('user'),
     slug
   };
@@ -44,7 +45,8 @@ export async function createUser(
 
   await database.insert(schema.usersToEmails).values({
     userId: newUser.id,
-    email: newUser.email
+    email: newUser.email,
+    isVerified: true
   });
 
   // Create the personal workspace
@@ -64,6 +66,7 @@ export async function createUser(
 
   const workspaceId = newId('workspace');
   await database.insert(schema.workspace).values({
+    availableEmails: [newUser.email],
     slug: workspaceSlug,
     id: workspaceId
   });

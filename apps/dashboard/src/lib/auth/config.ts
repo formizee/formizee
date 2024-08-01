@@ -5,6 +5,8 @@ import type {NextAuthConfig} from 'next-auth';
 export const authConfig = {
   providers: [GitHub, Resend({from: 'Formizee <noreply@formizee.com>'})],
   pages: {
+    verifyRequest: '/auth/verify',
+    error: 'auth/error',
     signIn: '/login',
     newUser: '/'
   }
