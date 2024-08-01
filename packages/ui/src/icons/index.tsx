@@ -17,3 +17,5 @@ export {LinkIcon} from './link';
 export {UserIcon} from './user';
 export {MailIcon} from './mail';
 export {HomeIcon} from './home';
+export {MoonIcon} from './moon';
+export {SunIcon} from './sun';
