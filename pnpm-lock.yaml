@@ -102,6 +102,9 @@ importers:
       '@formizee/db':
         specifier: workspace:*
         version: link:../../packages/db
+      '@formizee/email':
+        specifier: workspace:*
+        version: link:../../packages/email
       '@formizee/id':
         specifier: workspace:*
         version: link:../../packages/id

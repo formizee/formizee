@@ -1,9 +1,11 @@
 import type {AdapterUser} from 'next-auth/adapters';
 import {generateSlug} from 'random-word-slugs';
+import {EmailService} from '@formizee/email';
 
 import {database, schema, eq} from '@/lib/db';
 import {newId} from '@formizee/id';
 import {z} from 'zod';
+import {EmailConfig} from 'next-auth/providers';
 
 export async function createUser(
   data: Omit<AdapterUser, 'id'>
@@ -102,4 +104,13 @@ export async function getUser(id: string): Promise<AdapterUser | null> {
   }
 
   return result[0];
+}
+
+export async function sendVerificationRequest(params: {
+  provider: EmailConfig;
+  identifier: string;
+  url: string;
+}) {
+  const smtp = new EmailService({apiKey: params.provider.apiKey ?? ''});
+  await smtp.sendVerifyEmail({email: params.identifier, link: params.url});
 }
