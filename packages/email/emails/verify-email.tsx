@@ -1,5 +1,6 @@
 import {
   Body,
+  Button,
   Container,
   Head,
   Heading,
@@ -7,25 +8,19 @@ import {
   Html,
   Img,
   Link,
-  Preview,
   Tailwind,
   Text
 } from '@react-email/components';
 import config from '../tailwind.config';
 
 interface EmailProps {
-  tokenCode: string;
+  link: string;
 }
 
-export const AuthVerifyEmail = ({tokenCode}: EmailProps) => (
+export const AuthVerifyEmail = ({link}: EmailProps) => (
   <Tailwind config={config}>
     <Html lang="en">
       <Head />
-      <Preview>
-        Your verification code is {tokenCode}, Please do not share this code
-        with anybody, If you didn't request this code, you can safely ignore
-        this email.
-      </Preview>
       <Body
         style={{fontFamily: 'Inter, System-UI, sans-serif'}}
         className="bg-neutral-50 flex justify-center"
@@ -38,18 +33,44 @@ export const AuthVerifyEmail = ({tokenCode}: EmailProps) => (
           />
 
           <Heading className="text-[22px] pt-4 pb-2 font-medium text-neutral-800">
-            Account verification for Formizee.
+            Login Request for Formizee.
           </Heading>
           <Text className="text-neutral-600 leading-[1.4] text-[15px]">
-            To complete your registration, please use the verification code
-            below:
+            Click the button below to log into your workspaces
           </Text>
-          <code className="font-mono font-semibold text-2xl tracking-[3px]">
-            {tokenCode}
-          </code>
+          <Button
+            className="flex w-24 px-3 border-neutral-300 py-2 justify-center items-center rounded-md my-8 text-neutral-700"
+            style={{border: '1px solid #d4d4d4'}}
+            href={link}
+          >
+            <div className="flex gap-2">
+              <span className="font-medium text-sm">Sign In</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 16 16"
+                width="18"
+                height="18"
+                fill="currentColor"
+                className="size-4"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M2 8a.75.75 0 0 1 .75-.75h8.69L8.22 4.03a.75.75 0 0 1 1.06-1.06l4.5 4.5a.75.75 0 0 1 0 1.06l-4.5 4.5a.75.75 0 0 1-1.06-1.06l3.22-3.22H2.75A.75.75 0 0 1 2 8Z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </div>
+          </Button>
           <Text className="text-neutral-600 leading-[1.4] text-[15px]">
-            Please do not share this code with anybody. If you didn't request
-            this code, you can safely ignore this email.
+            If you're having trouble with the button above,{' '}
+            <Link className="text-amber-500 underline" href={link}>
+              click here
+            </Link>
+            .
+          </Text>
+          <Text className="text-neutral-600 leading-[1.4] text-[15px]">
+            Please do not share this link with anybody. If you didn't request
+            this link, you can safely ignore this email.
           </Text>
           <Hr className="text-neutral-300 my-5 mx-1" />
           <Container className="flex flex-row justify-between items-center">
@@ -67,7 +88,7 @@ export const AuthVerifyEmail = ({tokenCode}: EmailProps) => (
 );
 
 AuthVerifyEmail.PreviewProps = {
-  tokenCode: '123456'
+  link: 'https://dashboard.formizee.com/api/auth/callback/resend?callbackUrl=https%3A%2F%2Fformizee%3A3001%2Flogin&token=02cd118467370b7d3e974bf3bfbbea16c572f823946a0fce0f154e476de48b4d&email=example@formizee.com'
 } as EmailProps;
 
 export default AuthVerifyEmail;
