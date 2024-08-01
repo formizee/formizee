@@ -74,8 +74,9 @@ export abstract class Harness {
       id: newId('test'),
       name: 'user',
       slug: 'user',
-      isVerified: true,
-      email: 'user@formizee.com',
+      image: '',
+      emailVerified: new Date(),
+      email: 'pauchiner@formizee.com',
       lastAccess: new Date(),
       createdAt: new Date(),
       updatedAt: new Date()
@@ -83,6 +84,7 @@ export abstract class Harness {
 
     const workspace: schema.Workspace = {
       id: newId('test'),
+      name: 'Formizee',
       slug: 'formizee',
       stripeId: 'stripeId1',
       subscriptionId: 'subscriptionId',
@@ -106,6 +108,7 @@ export abstract class Harness {
 
     const endpoint: schema.Endpoint = {
       id: newId('test'),
+      name: 'My Endpoint',
       slug: 'my-endpoint',
       targetEmails: workspace.availableEmails,
       workspaceId: workspace.id,

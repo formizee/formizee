@@ -108,12 +108,6 @@ importers:
       '@formizee/ui':
         specifier: workspace:*
         version: link:../../packages/ui
-      '@hookform/resolvers':
-        specifier: 3.9.0
-        version: 3.9.0(react-hook-form@7.52.1(react@18.3.1))
-      '@vercel/analytics':
-        specifier: 1.3.1
-        version: 1.3.1(next@14.2.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       next:
         specifier: 14.2.5
         version: 14.2.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -132,9 +126,6 @@ importers:
       react-dom:
         specifier: 18.3.1
         version: 18.3.1(react@18.3.1)
-      react-hook-form:
-        specifier: 7.52.1
-        version: 7.52.1(react@18.3.1)
       zod:
         specifier: 3.23.8
         version: 3.23.8
@@ -262,18 +253,18 @@ importers:
       '@formizee/hashing':
         specifier: workspace:*
         version: link:../hashing
+      '@neondatabase/serverless':
+        specifier: 0.9.4
+        version: 0.9.4
       drizzle-orm:
         specifier: 0.32.0
-        version: 0.32.0(@cloudflare/workers-types@4.20240725.0)(@types/pg@8.11.6)(@types/react@18.3.3)(pg@8.12.0)(react@18.3.1)
+        version: 0.32.0(@cloudflare/workers-types@4.20240725.0)(@neondatabase/serverless@0.9.4)(@types/pg@8.11.6)(@types/react@18.3.3)(pg@8.12.0)(react@18.3.1)
       drizzle-zod:
         specifier: 0.5.1
-        version: 0.5.1(drizzle-orm@0.32.0(@cloudflare/workers-types@4.20240725.0)(@types/pg@8.11.6)(@types/react@18.3.3)(pg@8.12.0)(react@18.3.1))(zod@3.23.8)
+        version: 0.5.1(drizzle-orm@0.32.0(@cloudflare/workers-types@4.20240725.0)(@neondatabase/serverless@0.9.4)(@types/pg@8.11.6)(@types/react@18.3.3)(pg@8.12.0)(react@18.3.1))(zod@3.23.8)
       next-auth:
         specifier: 5.0.0-beta.20
         version: 5.0.0-beta.20(next@14.2.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
-      pg:
-        specifier: 8.12.0
-        version: 8.12.0
       zod:
         specifier: 3.23.8
         version: 3.23.8
@@ -290,6 +281,9 @@ importers:
       drizzle-kit:
         specifier: 0.23.0
         version: 0.23.0
+      pg:
+        specifier: 8.12.0
+        version: 8.12.0
       tsx:
         specifier: 4.16.2
         version: 4.16.2
@@ -320,6 +314,9 @@ importers:
       '@react-email/tailwind':
         specifier: 0.0.19
         version: 0.0.19(react@18.3.1)
+      react:
+        specifier: 18.3.1
+        version: 18.3.1
       react-email:
         specifier: 2.1.6
         version: 2.1.6(@swc/helpers@0.5.5)(eslint@9.8.0)
@@ -339,9 +336,6 @@ importers:
       '@types/react':
         specifier: 18.3.3
         version: 18.3.3
-      react:
-        specifier: 18.3.1
-        version: 18.3.1
       tailwindcss:
         specifier: 3.4.7
         version: 3.4.7
@@ -1677,11 +1671,6 @@ packages:
     peerDependencies:
       react-hook-form: ^7.0.0
 
-  '@hookform/resolvers@3.9.0':
-    resolution: {integrity: sha512-bU0Gr4EepJ/EQsH/IwEzYLsT/PEj5C0ynLQ4m+GSHS+xKH4TfSelhluTgOaoc4kA5s7eCsQbM4wvZLzELmWzUg==}
-    peerDependencies:
-      react-hook-form: ^7.0.0
-
   '@humanwhocodes/module-importer@1.0.1':
     resolution: {integrity: sha512-bxveV4V8v5Yb4ncFTT3rPSgZBOpCkjfK0y4oVVVJwIuDVBRMDXrPyXRL988i5ap9m9bnyEEjWfm5WkBmtffLfA==}
     engines: {node: '>=12.22'}
@@ -1882,6 +1871,9 @@ packages:
 
   '@mintlify/validation@0.1.170':
     resolution: {integrity: sha512-lwIb/8cT1U6qHp2kzUtE0tXPEoKftDjcEEh5W3pHCUC8xjIQkfTXpYicjWf6WaTdVs3cSm5aPsAL3azD1A/Tpg==}
+
+  '@neondatabase/serverless@0.9.4':
+    resolution: {integrity: sha512-D0AXgJh6xkf+XTlsO7iwE2Q1w8981E1cLCPAALMU2YKtkF/1SF6BiAzYARZFYo175ON+b1RNIy9TdSFHm5nteg==}
 
   '@next/env@14.1.4':
     resolution: {integrity: sha512-e7X7bbn3Z6DWnDi75UWn+REgAbLEqxI8Tq2pkFOFAMpWAWApz/YCUhtWMWn410h8Q2fYiYL7Yg5OlxMOCfFjJQ==}
@@ -6103,12 +6095,6 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18
 
-  react-hook-form@7.52.1:
-    resolution: {integrity: sha512-uNKIhaoICJ5KQALYZ4TOaOLElyM+xipord+Ha3crEFhTntdLvWZqVY49Wqd/0GiVCA/f9NjemLeiNPjG7Hpurg==}
-    engines: {node: '>=12.22.0'}
-    peerDependencies:
-      react: ^16.8.0 || ^17 || ^18 || ^19
-
   react-is@18.3.1:
     resolution: {integrity: sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==}
 
@@ -8000,10 +7986,6 @@ snapshots:
     dependencies:
       react-hook-form: 7.51.4(react@18.3.1)
 
-  '@hookform/resolvers@3.9.0(react-hook-form@7.52.1(react@18.3.1))':
-    dependencies:
-      react-hook-form: 7.52.1(react@18.3.1)
-
   '@humanwhocodes/module-importer@1.0.1': {}
 
   '@humanwhocodes/retry@0.3.0': {}
@@ -8360,6 +8342,10 @@ snapshots:
       zod-to-json-schema: 3.23.2(zod@3.23.8)
     transitivePeerDependencies:
       - debug
+
+  '@neondatabase/serverless@0.9.4':
+    dependencies:
+      '@types/pg': 8.11.6
 
   '@next/env@14.1.4': {}
 
@@ -9632,13 +9618,6 @@ snapshots:
       next: 14.2.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react: 18.3.1
 
-  '@vercel/analytics@1.3.1(next@14.2.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)':
-    dependencies:
-      server-only: 0.0.1
-    optionalDependencies:
-      next: 14.2.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      react: 18.3.1
-
   '@vitest/expect@1.5.0':
     dependencies:
       '@vitest/spy': 1.5.0
@@ -10472,17 +10451,18 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.32.0(@cloudflare/workers-types@4.20240725.0)(@types/pg@8.11.6)(@types/react@18.3.3)(pg@8.12.0)(react@18.3.1):
+  drizzle-orm@0.32.0(@cloudflare/workers-types@4.20240725.0)(@neondatabase/serverless@0.9.4)(@types/pg@8.11.6)(@types/react@18.3.3)(pg@8.12.0)(react@18.3.1):
     optionalDependencies:
       '@cloudflare/workers-types': 4.20240725.0
+      '@neondatabase/serverless': 0.9.4
       '@types/pg': 8.11.6
       '@types/react': 18.3.3
       pg: 8.12.0
       react: 18.3.1
 
-  drizzle-zod@0.5.1(drizzle-orm@0.32.0(@cloudflare/workers-types@4.20240725.0)(@types/pg@8.11.6)(@types/react@18.3.3)(pg@8.12.0)(react@18.3.1))(zod@3.23.8):
+  drizzle-zod@0.5.1(drizzle-orm@0.32.0(@cloudflare/workers-types@4.20240725.0)(@neondatabase/serverless@0.9.4)(@types/pg@8.11.6)(@types/react@18.3.3)(pg@8.12.0)(react@18.3.1))(zod@3.23.8):
     dependencies:
-      drizzle-orm: 0.32.0(@cloudflare/workers-types@4.20240725.0)(@types/pg@8.11.6)(@types/react@18.3.3)(pg@8.12.0)(react@18.3.1)
+      drizzle-orm: 0.32.0(@cloudflare/workers-types@4.20240725.0)(@neondatabase/serverless@0.9.4)(@types/pg@8.11.6)(@types/react@18.3.3)(pg@8.12.0)(react@18.3.1)
       zod: 3.23.8
 
   eastasianwidth@0.2.0: {}
@@ -13030,10 +13010,6 @@ snapshots:
       - webpack-cli
 
   react-hook-form@7.51.4(react@18.3.1):
-    dependencies:
-      react: 18.3.1
-
-  react-hook-form@7.52.1(react@18.3.1):
     dependencies:
       react: 18.3.1
 
