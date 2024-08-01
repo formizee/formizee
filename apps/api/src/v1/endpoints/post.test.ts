@@ -20,9 +20,9 @@ describe('Create a endpoint', () => {
       }
     });
 
-    expect(res.status).toBe(201);
     expect(res.body).toMatchObject({
       workspaceId,
+      name: 'my-example',
       slug: 'my-example',
       isEnabled: true,
       emailNotifications: true,
@@ -31,6 +31,7 @@ describe('Create a endpoint', () => {
       icon: 'file',
       color: 'gray'
     });
+    expect(res.status).toBe(201);
   });
 
   it('Should get 403 on invalid target emails', async context => {

@@ -3,7 +3,7 @@ import {HTTPException} from 'hono/http-exception';
 import type {endpoints as endpointsAPI} from '.';
 import {createRoute} from '@hono/zod-openapi';
 import {count, schema, eq} from '@formizee/db';
-import {EndpointSchema} from './schema';
+import {EndpointSchema, PostEndpointSchema} from './schema';
 import {newId} from '@formizee/id';
 
 export const postRoute = createRoute({
@@ -15,7 +15,7 @@ export const postRoute = createRoute({
     body: {
       content: {
         'application/json': {
-          schema: EndpointSchema.omit({id: true, workspaceId: true})
+          schema: PostEndpointSchema
         }
       }
     }
@@ -91,6 +91,7 @@ export const registerPostEndpoint = (api: typeof endpointsAPI) => {
       workspaceId: workspace.id,
 
       slug: input.slug,
+      name: input.name ?? input.slug,
 
       isEnabled: input.isEnabled,
       emailNotifications: input.emailNotifications,
