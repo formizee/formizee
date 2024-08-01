@@ -1,4 +1,5 @@
-import {type Database, createConnection, eq, schema} from '@formizee/db';
+import {type Database, createConnection} from '@formizee/db/api';
+import {eq, schema} from '@formizee/db';
 import {databaseEnv} from './enviroment';
 import type {TaskContext} from 'vitest';
 import {newKey} from '@formizee/keys';
@@ -76,7 +77,7 @@ export abstract class Harness {
       slug: 'user',
       image: '',
       emailVerified: new Date(),
-      email: 'pauchiner@formizee.com',
+      email: 'user@formizee.com',
       lastAccess: new Date(),
       createdAt: new Date(),
       updatedAt: new Date()

@@ -5,7 +5,7 @@ import {newId} from '@formizee/id';
 import {Analytics} from '@formizee/analytics';
 import {KeyService} from '@formizee/keys';
 import {EmailService} from '@formizee/email';
-import {createConnection} from '@formizee/db';
+import {createConnection} from '@formizee/db/api';
 
 export function services(): MiddlewareHandler<HonoEnv> {
   return async (c, next) => {
