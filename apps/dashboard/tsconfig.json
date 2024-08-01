@@ -1,6 +1,7 @@
 {
   "extends": "@formizee/tsconfig/next.json",
   "compilerOptions": {
+    "declaration": false,
     "paths": {
       "@/*": ["./src/*"]
     }
