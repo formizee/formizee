@@ -14,6 +14,7 @@
   "dependencies": {
     "@auth/core": "0.34.2",
     "@auth/drizzle-adapter": "1.4.2",
+    "@formizee/email": "workspace:*",
     "@formizee/db": "workspace:*",
     "@formizee/id": "workspace:*",
     "@formizee/ui": "workspace:*",

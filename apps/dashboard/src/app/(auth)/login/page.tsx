@@ -51,7 +51,7 @@ export default async function Login({
         <form
           action={async () => {
             'use server';
-            await signIn('github', {redirectTo});
+            await signIn('google', {redirectTo});
           }}
         >
           <Button className="w-full" variant="outline" type="submit">
