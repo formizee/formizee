@@ -1,4 +1,5 @@
 import {ThemeProvider} from '@/components/theme';
+import {TRPCProvider} from '@/components/trpc';
 import type {Metadata, Viewport} from 'next';
 import {Toaster} from '@formizee/ui/toaster';
 import {Inter} from 'next/font/google';
@@ -44,14 +45,16 @@ export default function RootLayout({
           font.variable
         )}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem={false}
-        >
-          <Suspense>{children}</Suspense>
-          <Toaster />
-        </ThemeProvider>
+        <TRPCProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem={false}
+          >
+            <Suspense>{children}</Suspense>
+            <Toaster />
+          </ThemeProvider>
+        </TRPCProvider>
       </body>
     </html>
   );
