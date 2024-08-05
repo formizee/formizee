@@ -1,10 +1,8 @@
-import {auth, publicProcedure, router} from '../server';
-import {database} from '@/lib/db';
+import {endpointRouter} from './endpoints';
+import {trpcServer} from '../server';
 
-export const appRouter = router({
-  getUsers: publicProcedure.use(auth).query(async () => {
-    return await database.query.user.findMany();
-  })
+export const appRouter = trpcServer.router({
+  endpoint: endpointRouter
 });
 
 export type AppRouter = typeof appRouter;
