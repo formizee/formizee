@@ -1,11 +1,10 @@
+import type {EmailConfig} from 'next-auth/providers';
 import type {AdapterUser} from 'next-auth/adapters';
 import {generateSlug} from 'random-word-slugs';
-import {EmailService} from '@formizee/email';
-
 import {database, schema, eq} from '@/lib/db';
+import {EmailService} from '@formizee/email';
 import {newId} from '@formizee/id';
 import {z} from 'zod';
-import {EmailConfig} from 'next-auth/providers';
 
 export async function createUser(
   data: Omit<AdapterUser, 'id'>
