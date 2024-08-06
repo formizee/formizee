@@ -15,3 +15,4 @@ export * from './components/logo';
 export * from './components/tabs';
 export * from './components/toast';
 export * from './components/tooltip';
+export * from './components/popover';
