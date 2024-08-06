@@ -31,7 +31,7 @@ export const NavbarOptions = () => {
 
   return (
     <div className="flex flex-row justify-end p-4 gap-2">
-      <Button variant="outline">
+      <Button variant="outline" asChild>
         <Link
           href="https://docs.formizee.com"
           target="_blank"
