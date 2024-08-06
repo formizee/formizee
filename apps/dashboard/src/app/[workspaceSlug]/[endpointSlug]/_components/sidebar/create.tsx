@@ -37,8 +37,7 @@ const formSchema = z.object({
 export const CreateButton = (props: {workspaceSlug: string}) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema)
-  });
-  //const router = useRouter();
+  }); //const router = useRouter();
 
   //const createEndpoint = trpc.endpoint.create.useMutation({
   //onSuccess: async ({ workspace, endpoint }) => {
@@ -55,7 +54,7 @@ export const CreateButton = (props: {workspaceSlug: string}) => {
         <DialogTrigger asChild>
           <Button>
             <div className="flex flex-row w-full justify-start items-center gap-2">
-              <DocumentAddIcon className="fill-neutral-950" />
+              <DocumentAddIcon />
               Create a new form
             </div>
           </Button>

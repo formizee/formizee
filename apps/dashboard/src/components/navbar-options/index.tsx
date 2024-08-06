@@ -1,10 +1,16 @@
 'use client';
+
+import {useTheme} from 'next-themes';
+import {logout} from './actions';
+import Link from 'next/link';
 import {
+  BookIcon,
   ChatIcon,
   HomeIcon,
-  LinkIcon,
   LogoutIcon,
+  MoonIcon,
   SettingsIcon,
+  SunIcon,
   UserIcon
 } from '@formizee/ui/icons';
 import {
@@ -15,20 +21,24 @@ import {
   DropdownMenuContent,
   DropdownMenuSeparator
 } from '@formizee/ui';
-import Link from 'next/link';
-import {logout} from './actions';
 
-export const Navbar = () => {
+export const NavbarOptions = () => {
+  const {theme, setTheme} = useTheme();
+
+  const toggleTheme = () => {
+    setTheme(theme === 'light' ? 'dark' : 'light');
+  };
+
   return (
-    <nav className="flex flex-row justify-end bg-neutral-950/50 backdrop-blur-md top right-0 fixed p-4 gap-2 rounded-bl-md">
-      <Button variant="ghost">
+    <div className="flex flex-row justify-end p-4 gap-2">
+      <Button variant="outline">
         <Link
           href="https://docs.formizee.com"
           target="_blank"
           className="flex flex-row items-center gap-2"
         >
+          <BookIcon />
           Docs
-          <LinkIcon />
         </Link>
       </Button>
       <Button variant="outline">
@@ -37,24 +47,24 @@ export const Navbar = () => {
       </Button>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" size="icon">
+          <Button variant="outline" size="icon" className="ml-2">
             <UserIcon />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent
           side="bottom"
           align="end"
-          sideOffset={6}
-          className="w-36"
+          sideOffset={8}
+          className="w-[10.5rem]"
         >
           <DropdownMenuItem asChild>
             <Link href="/settings" className="flex flex-row items-center gap-2">
-              <SettingsIcon className="fill-neutral-400" />
+              <SettingsIcon />
               Settings
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <ChatIcon className="fill-neutral-400" />
+            <ChatIcon />
             Feedback
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
@@ -62,17 +72,21 @@ export const Navbar = () => {
               href="https://formizee.com"
               className="flex flex-row items-center gap-2"
             >
-              <HomeIcon className="fill-neutral-400" />
+              <HomeIcon />
               Homepage
             </Link>
           </DropdownMenuItem>
+          <DropdownMenuItem onClick={toggleTheme}>
+            {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
+            Toggle Theme
+          </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={async () => logout()}>
-            <LogoutIcon className="fill-red-400" />
+            <LogoutIcon className="fill-red-500 dark:fill-red-400" />
             Logout
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-    </nav>
+    </div>
   );
 };

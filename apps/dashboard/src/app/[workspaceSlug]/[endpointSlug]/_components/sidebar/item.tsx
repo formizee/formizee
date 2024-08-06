@@ -17,7 +17,9 @@ const Icon = (props: {icon: string; color: string; selected: boolean}) => {
   const getColor = (color: string, selected: boolean) => {
     switch (color) {
       default:
-        return selected ? 'fill-neutral-50' : 'fill-neutral-400';
+        return selected
+          ? 'fill-neutral-950 dark:fill-neutral-50'
+          : 'fill-neutral-500 dark:fill-neutral-400';
     }
   };
 
@@ -41,7 +43,15 @@ export const EndpointItem = (props: EndpointItemProps) => {
             color={props.color}
             selected={props.selected}
           />
-          <span>{props.children}</span>
+          <span
+            className={
+              props.selected
+                ? 'text-neutral-950 dark:text-neutral-50'
+                : 'text-neutral-500 dark:text-neutral-400'
+            }
+          >
+            {props.children}
+          </span>
         </div>
       </Link>
     </Button>
