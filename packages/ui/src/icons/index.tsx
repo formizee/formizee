@@ -1,4 +1,5 @@
 export {ChevronRightIcon} from './chevron-right';
+export {ChevronLeftIcon} from './chevron-left';
 export {DocumentAddIcon} from './document-add';
 export {ArrowRightIcon} from './arrow-right';
 export {ClipboardIcon} from './clipboard';
@@ -19,4 +20,6 @@ export {MailIcon} from './mail';
 export {HomeIcon} from './home';
 export {BookIcon} from './book';
 export {MoonIcon} from './moon';
+export {InfoIcon} from './info'
+export {LockIcon} from './lock'
 export {SunIcon} from './sun';
