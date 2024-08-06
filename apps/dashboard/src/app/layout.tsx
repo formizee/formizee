@@ -5,6 +5,7 @@ import {Toaster} from '@formizee/ui/toaster';
 import {Inter} from 'next/font/google';
 import '@formizee/ui/globals.css';
 import {cn} from '@formizee/ui';
+import Loading from './loading';
 import {Suspense} from 'react';
 
 import '@formizee/ui/globals.css';
@@ -51,7 +52,7 @@ export default function RootLayout({
             defaultTheme="dark"
             enableSystem={false}
           >
-            <Suspense>{children}</Suspense>
+            <Suspense fallback={<Loading />}>{children}</Suspense>
             <Toaster />
           </ThemeProvider>
         </TRPCProvider>
