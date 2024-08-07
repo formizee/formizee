@@ -17,7 +17,9 @@
     "@formizee/db": "workspace:*",
     "@formizee/email": "workspace:*",
     "@formizee/id": "workspace:*",
+    "@formizee/plans": "workspace:*",
     "@formizee/ui": "workspace:*",
+    "@hookform/resolvers": "3.4.0",
     "@tanstack/react-query": "4.36.1",
     "@trpc/client": "10.45.2",
     "@trpc/react-query": "10.45.2",
@@ -28,6 +30,7 @@
     "random-word-slugs": "0.1.7",
     "react": "18.3.1",
     "react-dom": "18.3.1",
+    "react-hook-form": "7.51.4",
     "superjson": "2.2.1",
     "zod": "3.23.8"
   },

@@ -1,7 +1,7 @@
-import {ThemeToggle} from '@/components/theme';
-import {Button, Input} from '@formizee/ui';
-import {signIn} from '@/lib/auth';
-import * as React from 'react';
+import {Transition} from '@/components';
+import {LoginForm} from './form';
+import Image from 'next/image';
+import Link from 'next/link';
 import {z} from 'zod';
 
 const searchParamsSchema = z.object({
@@ -17,49 +17,39 @@ export default async function Login({
   const redirectTo = search.success ? search.data.redirectTo : '/';
 
   return (
-    <main className="w-full flex flex-col min-h-screen gap-4 items-center justify-center p-24">
-      <h1 className="text-2xl font-medium mb-8 font-mono">Login</h1>
-      <section className="flex flex-col gap-4 w-[300px]">
-        <form
-          className="gap-4 flex flex-col items-center justify-center"
-          action={async formData => {
-            'use server';
-            await signIn('resend', formData);
-          }}
-        >
-          <Input
-            required
-            type="email"
-            name="email"
-            placeholder="example@formizee.com"
+    <main className="w-full flex flex-col min-h-screen items-center justify-center p-8">
+      <Transition className="flex flex-col max-w-96 gap-4">
+        <header className="mb-8 flex w-full flex-col items-center sm:items-start gap-8">
+          <Image
+            alt="Formizee"
+            className="z-[999] rounded-xl border-4 dark:border dark:border-neutral-600 border-neutral-300 shadow-md shadow-neutral-950"
+            height={64}
+            src="/logo.svg"
+            width={64}
           />
-          <Button className="w-full" variant="outline" type="submit">
-            Get Started
-          </Button>
-        </form>
-        <div className="h-[1px] bg-neutral-200 dark:bg-neutral-800 w-full" />
-        <form
-          action={async () => {
-            'use server';
-            await signIn('github', {redirectTo});
-          }}
-        >
-          <Button className="w-full" variant="outline" type="submit">
-            Login with Github
-          </Button>
-        </form>
-        <form
-          action={async () => {
-            'use server';
-            await signIn('google', {redirectTo});
-          }}
-        >
-          <Button className="w-full" variant="outline" type="submit">
-            Login with Google
-          </Button>
-        </form>
-      </section>
-      <ThemeToggle className="mt-8" />
+          <h1 className="text-neutral-950 dark:text-neutral-50 font-bold text-xl sm:text-xl">
+            Log In To Formizee
+          </h1>
+        </header>
+        <LoginForm redirectTo={redirectTo} />
+        <p className="text-balance text-center text-neutral-600 dark:text-neutral-400 text-xs">
+          {'By signing in, you agree to our '}
+          <Link
+            className="underline underline-offset-2 transition-colors hover:text-neutral-950 dark:hover:text-neutral-50"
+            href="/legal/terms-of-service"
+          >
+            Terms of Service
+          </Link>
+          {' and '}{' '}
+          <Link
+            className="underline underline-offset-2 transition-colors hover:text-neutral-950 dark:hover:text-neutral-50"
+            href="/legal/privacy-policy"
+          >
+            Privacy Policy
+          </Link>
+          .
+        </p>
+      </Transition>
     </main>
   );
 }
