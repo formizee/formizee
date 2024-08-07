@@ -36,14 +36,14 @@ export default async function Login({
           {'By signing in, you agree to our '}
           <Link
             className="underline underline-offset-2 transition-colors hover:text-neutral-950 dark:hover:text-neutral-50"
-            href="/legal/terms-of-service"
+            href="https://formizee.com/legal/terms-of-service"
           >
             Terms of Service
           </Link>
           {' and '}{' '}
           <Link
             className="underline underline-offset-2 transition-colors hover:text-neutral-950 dark:hover:text-neutral-50"
-            href="/legal/privacy-policy"
+            href="https://formizee.com/legal/privacy-policy"
           >
             Privacy Policy
           </Link>
