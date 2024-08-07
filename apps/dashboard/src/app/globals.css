@@ -12,4 +12,45 @@
     scrollbar-color: #525252 black;
     scrollbar-width: thin;
   }
+
+  .reflection {
+    border-radius: 0.75rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .reflection::after {
+    content: "";
+    display: block;
+    width: 30px;
+    height: 100%;
+    position: absolute;
+    top: -180px;
+    left: 0;
+    background-color: #fef3c740;
+    opacity: 0;
+    animation: reflect 6.5s ease-in-out infinite;
+  }
+
+  @keyframes reflect {
+    10% {
+      transform: scale(0) rotate(135deg);
+      opacity: 0.5;
+    }
+
+    11% {
+      transform: scale(4) rotate(135deg);
+      opacity: 1;
+    }
+
+    40% {
+      transform: scale(50) rotate(135deg);
+      opacity: 0;
+    }
+
+    100% {
+      transform: scale(0) rotate(135deg);
+      opacity: 0;
+    }
+  }
 }
