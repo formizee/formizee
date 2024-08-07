@@ -3,8 +3,8 @@ import {Transition} from '../components';
 
 function Loading(): JSX.Element {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-neutral-50 dark:bg-neutral-950">
-      <Transition className="z-20 flex flex-col px-5">
+    <main className="w-full flex flex-col min-h-screen gap-4 items-center justify-center p-24">
+      <Transition className="flex flex-col max-w-[50rem] gap-4">
         <LoadingIcon />
       </Transition>
     </main>
