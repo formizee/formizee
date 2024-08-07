@@ -1,8 +1,11 @@
+import logo from '@/../public/logo.svg';
 import {Transition} from '@/components';
 import {LoginForm} from './form';
 import Image from 'next/image';
 import Link from 'next/link';
 import {z} from 'zod';
+import {auth} from '@/lib/auth';
+import {redirect} from 'next/navigation';
 
 const searchParamsSchema = z.object({
   redirectTo: z.string().optional().default('/')
@@ -13,6 +16,12 @@ export default async function Login({
 }: {
   searchParams: {[key: string]: string | string[] | undefined};
 }) {
+  const session = await auth();
+
+  if (session?.user?.id) {
+    redirect('/');
+  }
+
   const search = searchParamsSchema.safeParse(searchParams);
   const redirectTo = search.success ? search.data.redirectTo : '/';
 
@@ -24,7 +33,7 @@ export default async function Login({
             alt="Formizee"
             className="z-[999] rounded-xl border-4 dark:border dark:border-neutral-600 border-neutral-300 shadow-md shadow-neutral-950"
             height={64}
-            src="/logo.svg"
+            src={logo}
             width={64}
           />
           <h1 className="text-neutral-950 dark:text-neutral-50 font-bold text-xl sm:text-xl">
