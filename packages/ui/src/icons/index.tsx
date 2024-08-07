@@ -21,5 +21,6 @@ export {HomeIcon} from './home';
 export {BookIcon} from './book';
 export {MoonIcon} from './moon';
 export {InfoIcon} from './info'
+export {UndoIcon} from './undo'
 export {LockIcon} from './lock'
 export {SunIcon} from './sun';
