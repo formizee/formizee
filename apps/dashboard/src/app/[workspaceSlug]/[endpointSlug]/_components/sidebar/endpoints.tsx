@@ -1,6 +1,4 @@
-'use client';
-
-import {trpc} from '@/trpc/client';
+import {api} from '@/trpc/server';
 import Item from './item';
 
 interface EndpointsProps {
@@ -19,16 +17,16 @@ export const Endpoints = (props: EndpointsProps) => {
   );
 };
 
-const Content = (props: EndpointsProps) => {
-  const data = trpc.endpoint.list.useQuery({
+const Content = async (props: EndpointsProps) => {
+  const endpoints = await api.endpoint.list.query({
     workspaceSlug: props.workspaceSlug
-  }).data;
+  });
 
-  if (!data?.endpoints) {
+  if (!endpoints) {
     return <></>;
   }
 
-  return data.endpoints.map(endpoint => (
+  return endpoints.map(endpoint => (
     <Item
       key={endpoint.id}
       icon={endpoint.icon}

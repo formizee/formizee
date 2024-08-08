@@ -1,9 +1,20 @@
 import {SettingsTabs, SettingsNavbar} from './_components';
-import {Footer, Transition} from '@/components';
 import {ChevronLeftIcon} from '@formizee/ui/icons';
+import {Footer, Transition} from '@/components';
 import Link from 'next/link';
+import {api} from '@/trpc/server';
+import {auth} from '@/lib/auth';
+import {redirect} from 'next/navigation';
 
 const Settings = async () => {
+  const session = await auth();
+
+  if (!session?.user?.id) {
+    redirect('/login');
+  }
+
+  const user = await api.user.get.query({id: session.user.id});
+
   return (
     <div className="flex flex-col h-screen">
       <SettingsNavbar />
@@ -18,7 +29,7 @@ const Settings = async () => {
           <ChevronLeftIcon className="h-5 w-0 transition-all group-hover:w-5 group-hover:pr-1" />
           Back To Workspace
         </Link>
-        <SettingsTabs />
+        <SettingsTabs user={user} />
       </Transition>
       <Footer />
     </div>

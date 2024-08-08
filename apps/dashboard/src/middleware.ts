@@ -1,4 +1,4 @@
-import {database, schema, eq} from '@/lib/db';
+import {database, schema, eq} from './lib/db';
 import {NextResponse} from 'next/server';
 import {auth} from '@/lib/auth';
 
@@ -7,39 +7,59 @@ export default auth(async req => {
   const pathname = url.pathname;
 
   if (!req.auth && pathname !== '/login') {
-    return NextResponse.redirect(
-      new URL(
-        `/login?redirectTo=${encodeURIComponent(req.nextUrl.href)}`,
-        req.url
-      )
-    );
+    return NextResponse.redirect(new URL('/login', req.url));
   }
 
   if (req.auth?.user?.id && pathname === '/') {
-    const allowedWorkspaces = await database
-      .select()
-      .from(schema.usersToWorkspaces)
-      .innerJoin(
-        schema.user,
-        eq(schema.user.id, schema.usersToWorkspaces.userId)
-      )
-      .innerJoin(
-        schema.workspace,
-        eq(schema.workspace.id, schema.usersToWorkspaces.workspaceId)
-      )
-      .where(eq(schema.user.id, req.auth.user.id));
+    const getUser = async (id: string) => {
+      return await database.query.user.findFirst({
+        where: (table, {eq}) => eq(table.id, id)
+      });
+    };
 
-    if (allowedWorkspaces.length > 0 && allowedWorkspaces[0]?.workspaces) {
-      const firstWorkspace = allowedWorkspaces[0]?.workspaces;
-      const {slug} = firstWorkspace;
-      return NextResponse.redirect(new URL(`/${slug}`, req.url));
+    const user = await getUser(req.auth.user.id);
+
+    if (!user) {
+      throw new Error('User not found.');
     }
-  }
 
-  if (!req.auth && req.cookies.has('workspace-slug')) {
-    const response = NextResponse.next();
-    response.cookies.delete('workspace-slug');
-    return response;
+    const getWorspaces = async (userId: string) => {
+      return await database
+        .select()
+        .from(schema.usersToWorkspaces)
+        .innerJoin(
+          schema.user,
+          eq(schema.user.id, schema.usersToWorkspaces.userId)
+        )
+        .innerJoin(
+          schema.workspace,
+          eq(schema.workspace.id, schema.usersToWorkspaces.workspaceId)
+        )
+        .where(eq(schema.user.id, userId));
+    };
+
+    const allowedWorkspaces = await getWorspaces(user.id);
+
+    if (!allowedWorkspaces || !allowedWorkspaces[0]?.workspaces) {
+      throw new Error('Workspaces not found.');
+    }
+
+    const workspace = allowedWorkspaces[0].workspaces;
+
+    const getEndpoints = async (workspaceId: string) => {
+      return await database.query.endpoint.findMany({
+        where: (table, {eq}) => eq(table.workspaceId, workspaceId)
+      });
+    };
+
+    const endpoints = await getEndpoints(workspace.id);
+
+    if (!endpoints[0]) {
+      throw new Error('Endpoint not found.');
+    }
+    return NextResponse.redirect(
+      new URL(`/${workspace.slug}/${endpoints[0].slug}`, req.url)
+    );
   }
 });
 

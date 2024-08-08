@@ -7,17 +7,10 @@ import {
   SettingsCardTitle
 } from './_components';
 import {Button, Input} from '@formizee/ui';
-import {redirect} from 'next/navigation';
 import {Transition} from '@/components';
-import {auth} from '@/lib/auth';
+import type {schema} from '@/lib/db';
 
-const GeneralSettings = async () => {
-  const session = await auth();
-
-  if (!session?.user?.id) {
-    redirect('/login');
-  }
-
+const GeneralSettings = ({user}: {user: schema.User}) => {
   return (
     <Transition className="flex flex-col py-6 gap-6">
       <SettingsCard>
@@ -26,7 +19,12 @@ const GeneralSettings = async () => {
           <SettingsCardLabel>
             This name will be visible by the members of your workspaces.
           </SettingsCardLabel>
-          <Input required placeholder="My Cool Name" className="max-w-96" />
+          <Input
+            required
+            defaultValue={user.name}
+            placeholder="Your Display Name"
+            className="max-w-96"
+          />
         </SettingsCardContent>
         <SettingsCardFooter>
           <SettingsCardFooterLabel>
@@ -41,7 +39,12 @@ const GeneralSettings = async () => {
           <SettingsCardLabel>
             This is your URL namespace within Formizee.
           </SettingsCardLabel>
-          <Input required placeholder="my-cool-slug" className="max-w-96" />
+          <Input
+            required
+            defaultValue={user.slug}
+            placeholder="your-user-name"
+            className="max-w-96"
+          />
         </SettingsCardContent>
         <SettingsCardFooter>
           <SettingsCardFooterLabel>
@@ -56,7 +59,7 @@ const GeneralSettings = async () => {
           <SettingsCardLabel>
             This is your user ID within Formizee.
           </SettingsCardLabel>
-          <Input disabled defaultValue="id_sEjsdf323oid" className="max-w-96" />
+          <Input disabled defaultValue={user.id} className="max-w-96" />
         </SettingsCardContent>
         <SettingsCardFooter>
           <SettingsCardLabel>

@@ -14,7 +14,7 @@ export async function createUser(
       name: z.string().optional(),
       email: z.string().email(),
       image: z.string().optional(),
-      emailVerified: z.date().optional()
+      emailVerified: z.date().nullable().optional()
     })
     .parse(data);
 
@@ -77,6 +77,17 @@ export async function createUser(
     userId: newUser.id,
     role: 'owner'
   });
+
+  const newEndpoint: schema.InsertEndpoint = {
+    id: newId('endpoint'),
+    name: 'Welcome Form',
+    slug: 'welcome',
+    targetEmails: [newUser.email],
+    workspaceId,
+    redirectUrl: 'https://formizee.com/thanks-you'
+  };
+
+  await database.insert(schema.endpoint).values(newEndpoint);
 
   return {
     emailVerified: newUser.emailVerified ?? null,

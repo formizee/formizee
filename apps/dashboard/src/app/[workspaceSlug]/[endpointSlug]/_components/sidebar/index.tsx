@@ -2,13 +2,21 @@ import {WorkspaceSwitch} from './workspace';
 import {CreateButton} from './create';
 import {Endpoints} from './endpoints';
 import {Logo} from '@formizee/ui';
+import {auth} from '@/lib/auth';
+import {redirect} from 'next/navigation';
 
 interface SidebarProps {
   workspaceSlug: string;
   endpointSlug: string;
 }
 
-export const Sidebar = (props: SidebarProps) => {
+export const Sidebar = async (props: SidebarProps) => {
+  const session = await auth();
+
+  if (!session) {
+    redirect('/');
+  }
+
   return (
     <div className="p-2 flex flex-col min-h-screen min-w-56 border-neutral-200 dark:border-r-neutral-800 border-r">
       <div className="flex flex-row items-center h-14 pl-2 mb-2 gap-5">
@@ -19,6 +27,7 @@ export const Sidebar = (props: SidebarProps) => {
       </div>
       <CreateButton workspaceSlug={props.workspaceSlug} />
       <Endpoints
+        endpoints={session.endpoints}
         workspaceSlug={props.workspaceSlug}
         endpointSlug={props.endpointSlug}
       />

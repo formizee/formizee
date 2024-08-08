@@ -21,7 +21,7 @@ export const SettingsCard = (props: SettingsCardProps) => {
   const variant = props.variant === 'destructive' ? destructive : normal;
 
   return (
-    <form
+    <article
       className={cn(
         props.className,
         variant,
@@ -29,7 +29,7 @@ export const SettingsCard = (props: SettingsCardProps) => {
       )}
     >
       {props.children}
-    </form>
+    </article>
   );
 };
 
