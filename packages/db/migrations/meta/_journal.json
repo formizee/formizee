@@ -57,6 +57,13 @@
       "when": 1722456839622,
       "tag": "0007_shocking_quasimodo",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1723134857265,
+      "tag": "0008_old_chat",
+      "breakpoints": true
     }
   ]
 }
