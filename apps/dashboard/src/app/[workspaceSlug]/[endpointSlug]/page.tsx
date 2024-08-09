@@ -1,17 +1,30 @@
-import {redirect} from 'next/navigation';
-import {auth} from '@/lib/auth';
+import {handleTrpcServerAction} from '@/trpc/utils';
+import {EndpointTabs, Label} from './_components';
+import {Transition} from '@/components';
+import {api} from '@/trpc/server';
 
-const EndpointPage = async ({params}: {params: {endpointSlug: string}}) => {
-  const session = await auth();
+interface Params {
+  workspaceSlug: string;
+  endpointSlug: string;
+}
 
-  if (!session) {
-    redirect('/');
-  }
+const EndpointPage = async ({params}: {params: Params}) => {
+  const endpoint = await handleTrpcServerAction(
+    api.endpoint.getBySlug.query(params)
+  );
 
   return (
-    <main className="animate-out fade-out-100 opacity-0 fill-mode-forwards">
-      <h1 className="font-bold text-4xl">{params.endpointSlug}</h1>
-    </main>
+    <Transition className="flex flex-col w-full h-full items-center justify-start pt-20">
+      <main className="container flex flex-col">
+        <div className="flex flex-row gap-2 mb-4 items-center">
+          <h1 className="font-bold text-4xl">{endpoint.name}</h1>
+          <Label variant={endpoint.isEnabled ? 'active' : 'paused'}>
+            {endpoint.isEnabled ? 'Active' : 'Paused'}
+          </Label>
+        </div>
+        <EndpointTabs endpoint={endpoint} />
+      </main>
+    </Transition>
   );
 };
 

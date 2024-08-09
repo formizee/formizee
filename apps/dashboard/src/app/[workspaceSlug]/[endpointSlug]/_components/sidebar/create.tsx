@@ -15,8 +15,6 @@ import {
 } from '@formizee/ui';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {Form, useForm} from 'react-hook-form';
-import {parseTrpcError, trpc} from '@/trpc';
-import {useRouter} from 'next/navigation';
 import {z} from 'zod';
 import {
   FormControl,
@@ -26,33 +24,54 @@ import {
   FormLabel,
   FormMessage
 } from '@formizee/ui/form';
+import {api} from '@/trpc/client';
+import {redirect} from 'next/navigation';
+import {generateSlug} from 'random-word-slugs';
 
 const formSchema = z.object({
   name: z
     .string()
     .min(4, 'Name is required and should be at least 4 characters')
+    .max(64),
+  slug: z
+    .string()
+    .min(4, 'Slug is required and should be at least 4 characters')
     .max(64)
 });
 
 export const CreateButton = (props: {workspaceSlug: string}) => {
   const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema)
-  }); //const router = useRouter();
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: '',
+      slug: generateSlug(2)
+    }
+  });
 
-  //const createEndpoint = trpc.endpoint.create.useMutation({
-  //onSuccess: async ({ workspace, endpoint }) => {
-  //router.push(`${workspace}/${endpoint}`);
-  //},
-  //onError(err) {
-  //console.error(err);
-  //}
-  //});
+  const onSubmit = form.handleSubmit(async data => {
+    try {
+      const newEndpoint = await api.endpoint.create.mutate({
+        workspaceSlug: props.workspaceSlug,
+        targetEmails: [],
+        ...data
+      });
+
+      redirect(`/${props.workspaceSlug}/${newEndpoint.slug}`);
+    } catch (error) {
+      const err = error as Error;
+      toast({
+        title: err.name,
+        variant: 'destructive',
+        description: err.message
+      });
+    }
+  });
 
   return (
     <div className="flex flex-col">
       <Dialog>
         <DialogTrigger asChild>
-          <Button>
+          <Button variant="outline">
             <div className="flex flex-row w-full justify-start items-center gap-2">
               <DocumentAddIcon />
               Create a new form
@@ -71,12 +90,7 @@ export const CreateButton = (props: {workspaceSlug: string}) => {
             <DialogFooter>
               <Form {...form}>
                 <form
-                  onSubmit={form.handleSubmit(values =>
-                    createEndpoint.mutate({
-                      workspaceSlug: props.workspaceSlug,
-                      ...values
-                    })
-                  )}
+                  onSubmit={onSubmit}
                   className="flex w-full flex-row justify-between gap-x-4 pt-4"
                 >
                   <FormField
@@ -90,7 +104,23 @@ export const CreateButton = (props: {workspaceSlug: string}) => {
                           <Input {...field} />
                         </FormControl>
                         <FormDescription>
-                          What should your workspace be called?
+                          What should your form be called?
+                        </FormDescription>
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="slug"
+                    render={({field}) => (
+                      <FormItem>
+                        <FormLabel>Slug</FormLabel>
+                        <FormMessage className="text-xs" />
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormDescription>
+                          This is the form namespace inside you workspace.
                         </FormDescription>
                       </FormItem>
                     )}

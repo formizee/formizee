@@ -25,13 +25,12 @@ export const Sidebar = async (props: SidebarProps) => {
           Beta
         </span>
       </div>
-      <CreateButton workspaceSlug={props.workspaceSlug} />
+      <WorkspaceSwitch workspaceSlug={props.workspaceSlug} />
       <Endpoints
-        endpoints={session.endpoints}
         workspaceSlug={props.workspaceSlug}
         endpointSlug={props.endpointSlug}
       />
-      <WorkspaceSwitch />
+      <CreateButton workspaceSlug={props.workspaceSlug} />
     </div>
   );
 };
