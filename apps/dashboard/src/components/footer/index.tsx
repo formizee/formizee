@@ -41,13 +41,13 @@ export function Footer(props: FooterProps): JSX.Element {
         </Link>
         <Link
           className="transition-colors hover:text-neutral-950 underline-offset-2 hover:underline dark:hover:text-neutral-50"
-          href="/legal/privacy-policy"
+          href="https://formizee.com/legal/privacy-policy"
         >
           Privacy Policy
         </Link>
         <Link
           className="transition-colors hover:text-neutral-950 underline-offset-2 hover:underline dark:hover:text-neutral-50"
-          href="/legal/terms-of-service"
+          href="https://formizee.com/legal/terms-of-service"
         >
           Terms Of Service
         </Link>
