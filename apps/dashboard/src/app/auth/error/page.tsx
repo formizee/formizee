@@ -72,7 +72,7 @@ export default async function AuthError({
             {error.message}
           </p>
           <Button asChild className="group mt-4 w-full max-w-96">
-            <Link href="/login">
+            <Link href="/">
               Go Back
               <UndoIcon className="transition-all -ml-2 group-hover:ml-0 w-0 opacity-0 group-hover:w-4 group-hover:opacity-100" />
             </Link>

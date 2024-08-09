@@ -9,6 +9,7 @@ import {Suspense} from 'react';
 
 import '@formizee/ui/globals.css';
 import './globals.css';
+import {TrpcProvider} from '@/components/trpc';
 
 export const viewport: Viewport = {
   colorScheme: 'dark',
@@ -50,8 +51,10 @@ export default function RootLayout({
           defaultTheme="dark"
           enableSystem={false}
         >
-          <Suspense fallback={<Loading />}>{children}</Suspense>
-          <Toaster />
+          <TrpcProvider>
+            <Suspense fallback={<Loading />}>{children}</Suspense>
+            <Toaster />
+          </TrpcProvider>
         </ThemeProvider>
       </body>
     </html>

@@ -68,6 +68,7 @@ export async function createUser(
   const workspaceId = newId('workspace');
   await database.insert(schema.workspace).values({
     availableEmails: [newUser.email],
+    name: 'Personal Workspace',
     slug: workspaceSlug,
     id: workspaceId
   });
