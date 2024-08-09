@@ -62,9 +62,9 @@ const GeneralSettings = ({user}: {user: schema.User}) => {
           <Input disabled defaultValue={user.id} className="max-w-96" />
         </SettingsCardContent>
         <SettingsCardFooter>
-          <SettingsCardLabel>
+          <SettingsCardFooterLabel>
             Used when interacting with the Formizee API.
-          </SettingsCardLabel>
+          </SettingsCardFooterLabel>
         </SettingsCardFooter>
       </SettingsCard>
       <SettingsCard variant="destructive">

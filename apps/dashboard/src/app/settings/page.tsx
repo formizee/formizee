@@ -1,10 +1,11 @@
 import {SettingsTabs, SettingsNavbar} from './_components';
+import {handleTrpcServerAction} from '@/trpc/utils';
 import {ChevronLeftIcon} from '@formizee/ui/icons';
 import {Footer, Transition} from '@/components';
-import Link from 'next/link';
+import {redirect} from 'next/navigation';
 import {api} from '@/trpc/server';
 import {auth} from '@/lib/auth';
-import {redirect} from 'next/navigation';
+import Link from 'next/link';
 
 const Settings = async () => {
   const session = await auth();
@@ -13,7 +14,9 @@ const Settings = async () => {
     redirect('/login');
   }
 
-  const user = await api.user.get.query({id: session.user.id});
+  const user = await handleTrpcServerAction(
+    api.user.get.query({id: session.user.id})
+  );
 
   return (
     <div className="flex flex-col h-screen">
