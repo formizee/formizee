@@ -1,7 +1,7 @@
 import {ThemeProvider} from '@/components/theme';
-import type {Metadata, Viewport} from 'next';
 import {Toaster} from '@formizee/ui/toaster';
 import {Inter} from 'next/font/google';
+import type {Metadata} from 'next';
 import '@formizee/ui/globals.css';
 import {cn} from '@formizee/ui';
 import Loading from './loading';
@@ -10,11 +10,6 @@ import {Suspense} from 'react';
 import '@formizee/ui/globals.css';
 import './globals.css';
 import {TrpcProvider} from '@/components/trpc';
-
-export const viewport: Viewport = {
-  colorScheme: 'dark',
-  themeColor: 'black'
-};
 
 const font = Inter({
   subsets: ['latin'],
