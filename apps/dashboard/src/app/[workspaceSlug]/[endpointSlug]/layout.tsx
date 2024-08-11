@@ -8,13 +8,13 @@ const DashboardLayout = ({
   children: React.ReactNode;
 }>) => {
   return (
-    <main className="flex w-full min-h-screen bg-neutral-50 dark:bg-neutral-950">
+    <main className="flex w-full h-screen bg-neutral-50 no-overflow dark:bg-neutral-950">
       <Sidebar
         workspaceSlug={params.workspaceSlug}
         endpointSlug={params.endpointSlug}
       />
       <Navbar />
-      <div className="flex w-full flex-col p-8 justify-center items-center">
+      <div className="flex w-full flex-col p-8 items-center overflow-auto  overflow-light-style dark:overflow-dark-style">
         {children}
       </div>
     </main>

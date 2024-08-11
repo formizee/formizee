@@ -7,9 +7,12 @@ import {
   SettingsIcon
 } from '@formizee/ui/icons';
 import {Tabs, TabsContent, TabsList, TabsTrigger} from '@formizee/ui';
-import {Overview} from '../../overview';
 import type {schema} from '@/lib/db';
+
 import {Integrations} from '../../integrations';
+import {Submissions} from '../../submissions';
+import {Overview} from '../../overview';
+import {Settings} from '../../settings';
 
 export const EndpointTabs = ({endpoint}: {endpoint: schema.Endpoint}) => {
   return (
@@ -35,11 +38,15 @@ export const EndpointTabs = ({endpoint}: {endpoint: schema.Endpoint}) => {
       <TabsContent value="overview">
         <Overview endpointId={endpoint.id} />
       </TabsContent>
-      <TabsContent value="submissions">Submissions</TabsContent>
+      <TabsContent value="submissions">
+        <Submissions />
+      </TabsContent>
       <TabsContent value="integrations">
         <Integrations />
       </TabsContent>
-      <TabsContent value="settings">Settings</TabsContent>
+      <TabsContent value="settings">
+        <Settings endpoint={endpoint} />
+      </TabsContent>
     </Tabs>
   );
 };

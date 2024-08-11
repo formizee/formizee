@@ -1,4 +1,3 @@
-import {handleTrpcServerAction} from '@/trpc/utils';
 import {EndpointTabs, Label} from './_components';
 import {Transition} from '@/components';
 import {api} from '@/trpc/server';
@@ -9,16 +8,21 @@ interface Params {
 }
 
 const EndpointPage = async ({params}: {params: Params}) => {
-  const endpoint = await handleTrpcServerAction(
-    api.endpoint.getBySlug.query(params)
-  );
+  const endpoint = await api.endpoint.getBySlug.query(params);
+
+  if (!endpoint) {
+    return <></>;
+  }
 
   return (
-    <Transition className="flex flex-col w-full h-full items-center justify-start pt-20">
+    <Transition className="flex flex-col w-full items-center pt-20 justify-start">
       <main className="container flex flex-col">
-        <div className="flex flex-row gap-2 mb-4 items-center">
+        <div className="flex flex-row gap-4 mb-4 items-center">
           <h1 className="font-bold text-4xl">{endpoint.name}</h1>
-          <Label variant={endpoint.isEnabled ? 'active' : 'paused'}>
+          <Label
+            className="mt-1"
+            variant={endpoint.isEnabled ? 'active' : 'paused'}
+          >
             {endpoint.isEnabled ? 'Active' : 'Paused'}
           </Label>
         </div>
