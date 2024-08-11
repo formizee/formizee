@@ -47,7 +47,7 @@ export const NavbarOptions = () => {
       </Button>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" size="icon" className="ml-2">
+          <Button variant="outline" size="icon">
             <UserIcon />
           </Button>
         </DropdownMenuTrigger>
