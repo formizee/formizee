@@ -66,12 +66,12 @@ export const createEndpoint = protectedProcedure
     }
 
     // Check Slug
-    const slugAvailable = await database.query.endpoint.findFirst({
+    const slugExists = await database.query.endpoint.findFirst({
       where: (table, {and, eq}) =>
         and(eq(table.workspaceId, workspace.id), eq(table.slug, input.slug))
     });
 
-    if (!slugAvailable) {
+    if (slugExists) {
       throw new TRPCError({
         code: 'CONFLICT',
         message: 'Slug has to be unique and has already been taken'
