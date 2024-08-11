@@ -7,10 +7,21 @@
     @apply selection:bg-amber-600/20;
   }
 
-  div,
-  body {
-    scrollbar-color: #525252 black;
-    scrollbar-width: thin;
+  html.dark {
+    scrollbar-color: #525252 #0a0a0a;
+  }
+
+  html.light {
+    scrollbar-color: #a3a3a3 #fafafa;
+  }
+
+
+  .overflow-dark-style {
+    scrollbar-color: #525252 #0a0a0a;
+  }
+
+  .overflow-light-style {
+    scrollbar-color: #a3a3a3 #fafafa;
   }
 
   .reflection {
