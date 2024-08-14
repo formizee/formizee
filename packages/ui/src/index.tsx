@@ -12,6 +12,7 @@ export * from './components/input';
 export * from './components/label';
 export * from './components/logo';
 export * from './components/tabs';
+export * from './components/text-area';
 export * from './components/toast';
 export * from './components/tooltip';
 export * from './components/popover';
