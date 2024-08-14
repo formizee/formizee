@@ -1,6 +1,5 @@
 'use client';
 
-/* eslint-disable -- External Library */
 import * as React from 'react';
 import type * as LabelPrimitive from '@radix-ui/react-label';
 import {Slot} from '@radix-ui/react-slot';
@@ -8,6 +7,7 @@ import {
   type ControllerProps,
   type FieldPath,
   type FieldValues,
+  type UseFormReturn,
   Controller,
   FormProvider,
   useFormContext
@@ -15,7 +15,14 @@ import {
 import {cn} from '../../lib/ui';
 import {Label} from '../label';
 
-const Form = FormProvider;
+type FormProps<TFieldValues extends FieldValues> = {
+  children: React.ReactNode;
+  methods: UseFormReturn<TFieldValues>;
+};
+
+const Form = <TFieldValues extends FieldValues>({ children, methods }: FormProps<TFieldValues>) => {
+  return <FormProvider {...methods}>{children}</FormProvider>;
+};
 
 interface FormFieldContextValue<
   TFieldValues extends FieldValues = FieldValues,
