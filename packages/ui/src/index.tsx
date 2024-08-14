@@ -9,7 +9,6 @@ export * from './components/code-block';
 export * from './components/dialog';
 export * from './components/dropdown-menu';
 export * from './components/input';
-export * from './components/input-otp';
 export * from './components/label';
 export * from './components/logo';
 export * from './components/tabs';
