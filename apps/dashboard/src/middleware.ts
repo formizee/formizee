@@ -55,8 +55,11 @@ export default auth(async req => {
     const endpoints = await getEndpoints(workspace.id);
 
     if (!endpoints[0]) {
-      throw new Error('Endpoint not found.');
+      return NextResponse.redirect(
+        new URL(`/${workspace.slug}/welcome`, req.url)
+      );
     }
+
     return NextResponse.redirect(
       new URL(`/${workspace.slug}/${endpoints[0].slug}`, req.url)
     );

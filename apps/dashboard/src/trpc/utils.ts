@@ -10,13 +10,13 @@ export function parseTrpcError(error: {message: string}): string {
   );
 }
 
-export async function handleTrpcServerAction<T>(promise: Promise<T>) {
-  function isTRPCClientError(
-    cause: unknown
-  ): cause is TRPCClientError<AppRouter> {
-    return cause instanceof TRPCClientError;
-  }
+export function isTRPCClientError(
+  cause: unknown
+): cause is TRPCClientError<AppRouter> {
+  return cause instanceof TRPCClientError;
+}
 
+export async function handleTrpcServerAction<T>(promise: Promise<T>) {
   try {
     return await promise;
   } catch (error) {

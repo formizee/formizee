@@ -6,7 +6,7 @@ import {
   httpBatchLink
 } from '@trpc/client';
 
-const getBaseUrl = () => {
+export const getBaseUrl = () => {
   if (typeof window !== 'undefined') {
     return '';
   }
