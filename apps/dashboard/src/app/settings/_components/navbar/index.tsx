@@ -1,4 +1,4 @@
-import {NavbarOptions} from '@/components';
+import {Options} from '@/components/navbar';
 import {Logo} from '@formizee/ui';
 
 export const SettingsNavbar = () => {
@@ -10,7 +10,7 @@ export const SettingsNavbar = () => {
           Beta
         </span>
       </div>
-      <NavbarOptions />
+      <Options />
     </nav>
   );
 };

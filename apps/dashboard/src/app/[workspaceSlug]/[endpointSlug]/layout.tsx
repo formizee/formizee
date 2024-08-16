@@ -1,4 +1,5 @@
-import {Sidebar, Navbar} from './_components';
+import {Sidebar} from '@/components/sidebar';
+import {Navbar} from '@/components/navbar';
 
 const DashboardLayout = ({
   params,

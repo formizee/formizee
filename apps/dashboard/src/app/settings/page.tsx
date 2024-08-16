@@ -1,11 +1,13 @@
-import {SettingsTabs, SettingsNavbar} from './_components';
-import {handleTrpcServerAction} from '@/trpc/utils';
 import {ChevronLeftIcon} from '@formizee/ui/icons';
 import {Footer, Transition} from '@/components';
+import Navbar from './_components/navbar';
+import Tabs from './_components/tabs';
+import Link from 'next/link';
+
+import {handleTrpcServerAction} from '@/trpc/utils';
 import {redirect} from 'next/navigation';
 import {api} from '@/trpc/server';
 import {auth} from '@/lib/auth';
-import Link from 'next/link';
 
 const Settings = async () => {
   const session = await auth();
@@ -20,7 +22,7 @@ const Settings = async () => {
 
   return (
     <div className="flex flex-col h-screen">
-      <SettingsNavbar />
+      <Navbar />
       <Transition className="container px-8 flex flex-1 flex-col w-full pt-20 pb-10">
         <h1 className="bg-clip-text font-bold text-transparent mt-4 text-3xl bg-gradient-to-b from-slate-500 to-black dark:from-white dark:to-slate-400">
           Account Settings
@@ -32,7 +34,7 @@ const Settings = async () => {
           <ChevronLeftIcon className="h-5 w-0 transition-all group-hover:w-5 group-hover:pr-1" />
           Back To Workspace
         </Link>
-        <SettingsTabs user={user} />
+        <Tabs user={user} />
       </Transition>
       <Footer />
     </div>
