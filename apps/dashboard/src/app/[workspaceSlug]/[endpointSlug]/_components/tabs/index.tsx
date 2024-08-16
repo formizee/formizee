@@ -9,10 +9,10 @@ import {
 import {Tabs, TabsContent, TabsList, TabsTrigger} from '@formizee/ui';
 import type {schema} from '@/lib/db';
 
-import {Integrations} from '../../integrations';
-import {Submissions} from '../../submissions';
-import {Overview} from '../../overview';
-import {Settings} from '../../settings';
+import {Integrations} from '../../(content)/integrations';
+import {Submissions} from '../../(content)/submissions';
+import {Overview} from '../../(content)/overview';
+import {Settings} from '../../(content)/settings';
 
 export const EndpointTabs = ({endpoint}: {endpoint: schema.Endpoint}) => {
   return (
