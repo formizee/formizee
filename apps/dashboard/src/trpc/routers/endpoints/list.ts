@@ -38,7 +38,8 @@ export const listEndpoints = protectedProcedure
     }
 
     const endpoints = await database.query.endpoint.findMany({
-      where: (table, {eq}) => eq(table.workspaceId, workspace.id)
+      where: (table, {eq}) => eq(table.workspaceId, workspace.id),
+      orderBy: (endpoints, {asc}) => [asc(endpoints.createdAt)]
     });
 
     if (!endpoints) {
@@ -48,5 +49,15 @@ export const listEndpoints = protectedProcedure
       });
     }
 
-    return endpoints;
+    const response = endpoints.map(endpoint => {
+      return {
+        id: endpoint.id,
+        name: endpoint.name,
+        slug: endpoint.slug,
+        icon: endpoint.icon,
+        color: endpoint.color
+      };
+    });
+
+    return response;
   });
