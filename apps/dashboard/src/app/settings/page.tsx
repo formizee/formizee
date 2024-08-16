@@ -27,7 +27,7 @@ const Settings = async () => {
         </h1>
         <Link
           href="/"
-          className="max-w-44 group flex flex-row items-center text-neutral-600 font-semibold dark:text-neutral-400 mt-2 mb-8"
+          className="max-w-44 group flex flex-row items-center text-amber-500 dark:text-amber-400 font-semibold mt-2 mb-8"
         >
           <ChevronLeftIcon className="h-5 w-0 transition-all group-hover:w-5 group-hover:pr-1" />
           Back To Workspace
