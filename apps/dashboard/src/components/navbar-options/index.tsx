@@ -5,7 +5,6 @@ import {logout} from './actions';
 import Link from 'next/link';
 import {
   BookIcon,
-  ChatIcon,
   HomeIcon,
   LogoutIcon,
   MoonIcon,
@@ -21,6 +20,7 @@ import {
   DropdownMenuContent,
   DropdownMenuSeparator
 } from '@formizee/ui';
+import {FeedbackButton} from './feedback';
 
 export const NavbarOptions = () => {
   const {theme, setTheme} = useTheme();
@@ -41,10 +41,7 @@ export const NavbarOptions = () => {
           Docs
         </Link>
       </Button>
-      <Button variant="outline">
-        <ChatIcon />
-        Feedback
-      </Button>
+      <FeedbackButton />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="outline" size="icon">
@@ -62,10 +59,6 @@ export const NavbarOptions = () => {
               <SettingsIcon />
               Settings
             </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <ChatIcon />
-            Feedback
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link
