@@ -1,22 +1,22 @@
 'use client';
 
-import {ArrowRightIcon, DocumentAddIcon} from '@formizee/ui/icons';
+import {ArrowRightIcon, DocumentAddIcon, LoadingIcon} from '@formizee/ui/icons';
+import formIcon from '@/../public/form.webp';
 import {
   Input,
   Button,
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
   toast
 } from '@formizee/ui';
 import {zodResolver} from '@hookform/resolvers/zod';
-import {Form, useForm} from 'react-hook-form';
+import {useForm} from 'react-hook-form';
 import {z} from 'zod';
 import {
+  Form,
   FormControl,
   FormDescription,
   FormField,
@@ -25,8 +25,9 @@ import {
   FormMessage
 } from '@formizee/ui/form';
 import {api} from '@/trpc/client';
-import {redirect} from 'next/navigation';
+import {useRouter} from 'next/navigation';
 import {generateSlug} from 'random-word-slugs';
+import Image from 'next/image';
 
 const formSchema = z.object({
   name: z
@@ -48,90 +49,106 @@ export const CreateButton = (props: {workspaceSlug: string}) => {
     }
   });
 
-  const onSubmit = form.handleSubmit(async data => {
-    try {
-      const newEndpoint = await api.endpoint.create.mutate({
-        workspaceSlug: props.workspaceSlug,
-        targetEmails: [],
-        ...data
-      });
+  const router = useRouter();
 
-      redirect(`/${props.workspaceSlug}/${newEndpoint.slug}`);
-    } catch (error) {
-      const err = error as Error;
+  const createEndpoint = api.endpoint.create.useMutation({
+    onError: error => {
       toast({
-        title: err.name,
         variant: 'destructive',
-        description: err.message
+        description: error.message,
+        title: "Form can't be created"
       });
+    },
+    onSuccess: newEndpoint => {
+      router.push(`/${props.workspaceSlug}/${newEndpoint.slug}`);
     }
   });
+
+  const onSubmit = form.handleSubmit(data =>
+    createEndpoint.mutate({
+      workspaceSlug: props.workspaceSlug,
+      targetEmails: [],
+      ...data
+    })
+  );
 
   return (
     <div className="flex flex-col">
       <Dialog>
         <DialogTrigger asChild>
           <Button variant="outline">
-            <div className="flex flex-row w-full justify-start items-center gap-2">
-              <DocumentAddIcon />
+            <div className="group flex -mr-3 hover:mr-0 flex-row w-full justify-center items-center gap-2">
               Create a new form
+              <DocumentAddIcon className="transition-all w-0 rotate-45 group-hover:w-6 group-hover:rotate-0" />
             </div>
           </Button>
         </DialogTrigger>
-        <DialogContent>
+        <DialogContent className="rounded-lg border-neutral-200 dark:border-neutral-800">
           <DialogHeader>
-            <DialogTitle className="text-left font-semibold">
+            <DialogTitle className="w-full flex flex-col gap-6 items-center text-left text-xl font-bold">
+              <Image
+                src={formIcon}
+                alt="Form Icon"
+                width={64}
+                height={64}
+                className="dark:rounded-[0.65rem] rounded-xl border-4 dark:border dark:border-neutral-600 border-neutral-300 shadow-md shadow-neutral-950"
+              />
               Create New Form
             </DialogTitle>
-            <DialogDescription className="text-left">
-              Give your form a catchy name that captures its essence. This will
-              be your form&apos;s headline act!
-            </DialogDescription>
-            <DialogFooter>
-              <Form {...form}>
-                <form
-                  onSubmit={onSubmit}
-                  className="flex w-full flex-row justify-between gap-x-4 pt-4"
-                >
-                  <FormField
-                    control={form.control}
-                    name="name"
-                    render={({field}) => (
-                      <FormItem>
-                        <FormLabel>Name</FormLabel>
-                        <FormMessage className="text-xs" />
-                        <FormControl>
-                          <Input {...field} />
-                        </FormControl>
-                        <FormDescription>
-                          What should your form be called?
-                        </FormDescription>
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="slug"
-                    render={({field}) => (
-                      <FormItem>
-                        <FormLabel>Slug</FormLabel>
-                        <FormMessage className="text-xs" />
-                        <FormControl>
-                          <Input {...field} />
-                        </FormControl>
-                        <FormDescription>
-                          This is the form namespace inside you workspace.
-                        </FormDescription>
-                      </FormItem>
-                    )}
-                  />
-                  <Button type="submit">
-                    <span>Let&apos;s Build</span> <ArrowRightIcon />
-                  </Button>
-                </form>
-              </Form>
-            </DialogFooter>
           </DialogHeader>
+          <Form {...form}>
+            <form
+              onSubmit={onSubmit}
+              className="flex w-full flex-col justify-between gap-y-4"
+            >
+              <FormField
+                control={form.control}
+                name="name"
+                render={({field}) => (
+                  <FormItem>
+                    <FormLabel>Name</FormLabel>
+                    <FormMessage className="text-xs" />
+                    <FormControl>
+                      <Input autoComplete="off" {...field} />
+                    </FormControl>
+                    <FormDescription>
+                      What should your form be called?
+                    </FormDescription>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="slug"
+                render={({field}) => (
+                  <FormItem>
+                    <FormLabel>Slug</FormLabel>
+                    <FormMessage className="text-xs" />
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormDescription>
+                      This is the form namespace inside you workspace.
+                    </FormDescription>
+                  </FormItem>
+                )}
+              />
+              <Button
+                className="mt-4"
+                disabled={createEndpoint.isLoading}
+                type="submit"
+              >
+                {createEndpoint.isLoading ? (
+                  <LoadingIcon className="size-8" />
+                ) : (
+                  <div className="group flex flex-row w-full items-center justify-center gap-2">
+                    <span>Let&apos;s Build</span>{' '}
+                    <ArrowRightIcon className="transition-all w-0 group-hover:w-6" />
+                  </div>
+                )}
+              </Button>
+            </form>
+          </Form>
         </DialogContent>
       </Dialog>
     </div>

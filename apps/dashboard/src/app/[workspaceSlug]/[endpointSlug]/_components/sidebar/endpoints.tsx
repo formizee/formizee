@@ -1,22 +1,25 @@
-import {api} from '@/trpc/server';
+'use client';
+
+import {api} from '@/trpc/client';
 import Item from './item';
-import {handleTrpcServerAction} from '@/trpc/utils';
 
 interface EndpointsProps {
   workspaceSlug: string;
   endpointSlug: string;
 }
 
-export const Endpoints = async (props: EndpointsProps) => {
-  const endpoints = await handleTrpcServerAction(
-    api.endpoint.list.query({workspaceSlug: props.workspaceSlug})
-  );
+export const Endpoints = (props: EndpointsProps) => {
+  const {data} = api.endpoint.list.useQuery({
+    workspaceSlug: props.workspaceSlug
+  });
+
+  const endpoints = data ?? [];
 
   return (
-    <div className="flex flex-1 flex-col bg-red my-2 gap-2">
+    <div className="flex flex-1 pr-2 flex-col my-2 gap-2 overflow-y-auto overflow-light-style dark:overflow-dark-style">
       {endpoints.map(endpoint => (
         <Item
-          key={endpoint.id}
+          key={endpoint.slug}
           icon={endpoint.icon}
           slug={endpoint.slug}
           color={endpoint.color}

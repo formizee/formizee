@@ -1,59 +1,40 @@
 'use client';
 
-import {DocumentIcon} from '@formizee/ui/icons';
-import {Button} from '@formizee/ui';
-import Link from 'next/link';
+import {useRouter} from 'next/navigation';
+import {Button, cn} from '@formizee/ui';
+import {Icon} from '@/components';
 
 interface EndpointItemProps {
   children: React.ReactNode;
   workspaceSlug: string;
-  selected: boolean;
   color: string;
-  slug: string;
   icon: string;
+  selected: boolean;
+  slug: string;
 }
 
-const Icon = (props: {icon: string; color: string; selected: boolean}) => {
-  const getColor = (color: string, selected: boolean) => {
-    switch (color) {
-      default:
-        return selected
-          ? 'fill-neutral-950 dark:fill-neutral-50'
-          : 'fill-neutral-500 dark:fill-neutral-400';
-    }
+export const EndpointItem = (props: EndpointItemProps) => {
+  const router = useRouter();
+
+  const onClick = () => {
+    router.push(`/${props.workspaceSlug}/${props.slug}`);
   };
 
-  switch (props.icon) {
-    default:
-      return <DocumentIcon className={getColor(props.color, props.selected)} />;
-  }
-};
-
-export const EndpointItem = (props: EndpointItemProps) => {
   return (
-    <Button
-      asChild
-      variant={props.selected ? 'outline' : 'ghost'}
-      className="flex animate-fade-in duration-100"
-    >
-      <Link href={`/${props.workspaceSlug}/${props.slug}`}>
-        <div className="flex flex-row w-full items-center gap-2 justify-start">
-          <Icon
-            icon={props.icon}
-            color={props.color}
-            selected={props.selected}
-          />
-          <span
-            className={
-              props.selected
-                ? 'text-neutral-950 dark:text-neutral-50'
-                : 'text-neutral-500 dark:text-neutral-400'
-            }
-          >
-            {props.children}
-          </span>
-        </div>
-      </Link>
+    <Button onClick={onClick} variant={props.selected ? 'outline' : 'ghost'}>
+      <div className="flex flex-row w-full items-center gap-2 justify-start">
+        <Icon icon={props.icon} color={props.color} selected={props.selected} />
+        <span
+          className={cn(
+            'truncate',
+            props.selected
+              ? 'text-neutral-950 dark:text-neutral-50'
+              : 'text-neutral-500 dark:text-neutral-400'
+          )}
+        >
+          {props.children}
+        </span>
+      </div>
     </Button>
   );
 };
