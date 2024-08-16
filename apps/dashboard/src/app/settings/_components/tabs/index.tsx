@@ -2,9 +2,9 @@
 
 import {Tabs, TabsContent, TabsList, TabsTrigger} from '@formizee/ui';
 import {InfoIcon, LockIcon, SettingsIcon} from '@formizee/ui/icons';
-import DocumentsSettings from '../../documents';
-import SecuritySettings from '../../security';
-import GeneralSettings from '../../general';
+import DocumentsSettings from '../../(content)/documents';
+import SecuritySettings from '../../(content)/security';
+import GeneralSettings from '../../(content)/general';
 import type {schema} from '@/lib/db';
 
 export const SettingsTabs = ({user}: {user: schema.User}) => (

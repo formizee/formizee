@@ -5,7 +5,7 @@ import {
   SettingsCardFooter,
   SettingsCardLabel,
   SettingsCardTitle
-} from './_components';
+} from '@/components';
 import {Button} from '@formizee/ui';
 import {LinkIcon} from '@formizee/ui/icons';
 import {Transition} from '@/components';

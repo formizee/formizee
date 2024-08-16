@@ -6,7 +6,7 @@ import {
   SettingsCardFooterLabel,
   SettingsCardLabel,
   SettingsCardTitle
-} from './_components';
+} from '@/components';
 import {Button} from '@formizee/ui';
 
 const SecuritySettings = () => (
