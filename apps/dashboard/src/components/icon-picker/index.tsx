@@ -91,7 +91,7 @@ export const IconPicker = (props: Props) => {
                 icon={endpoint.icon}
                 color={endpoint.color}
                 selected={true}
-                className="size-8 animate-fade-in"
+                className="size-8"
               />
             ) : (
               <></>
