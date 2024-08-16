@@ -25,7 +25,7 @@ const DashboardRedirect = async ({params}: {params: Params}) => {
   });
 
   if (!endpoint) {
-    redirect('/onboarding');
+    redirect(`/${workspace.slug}/welcome`);
   }
 
   redirect(`/${workspace.slug}/${endpoint.slug}`);
