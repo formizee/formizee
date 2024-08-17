@@ -38,7 +38,7 @@ const EndpointPage = async ({params}: {params: Params}) => {
   return (
     <Transition className="flex flex-col w-full items-center pt-20 justify-start">
       <main className="container flex flex-col">
-        <Heading params={params} endpoint={endpoint} />
+        <Heading endpoint={endpoint} />
         <Tabs endpoint={endpoint} />
       </main>
     </Transition>

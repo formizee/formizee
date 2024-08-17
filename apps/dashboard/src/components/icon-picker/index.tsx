@@ -19,20 +19,11 @@ import {
   toast
 } from '@formizee/ui';
 
-type EndpointIcon = (typeof schema.endpointIcon)[number];
-type EndpointColor = (typeof schema.endpointColor)[number];
-
 interface Props {
-  workspaceSlug: string;
-  endpointSlug: string;
+  endpoint: schema.Endpoint;
 }
 
-export const IconPicker = (props: Props) => {
-  const {data} = api.endpoint.getBySlug.useQuery(props, {
-    refetchOnWindowFocus: false
-  });
-  const endpoint = data ?? null;
-
+export const IconPicker = ({endpoint}: Props) => {
   const utils = api.useUtils();
 
   const updateEndpoint = api.endpoint.update.useMutation({
@@ -43,43 +34,11 @@ export const IconPicker = (props: Props) => {
         description: error.message
       });
     },
-    onSuccess: async newEndpoint => {
-      utils.endpoint.getBySlug.setData(props, newEndpoint);
-      const list = utils.endpoint.list.getData({
-        workspaceSlug: props.workspaceSlug
-      });
-
-      if (!list) {
-        utils.endpoint.list.invalidate();
-        return;
-      }
-
-      const updatedList = list.map(endpoint =>
-        endpoint.id === newEndpoint.id ? newEndpoint : endpoint
-      );
-
-      utils.endpoint.list.setData(
-        {workspaceSlug: props.workspaceSlug},
-        updatedList
-      );
+    onSuccess: async () => {
+      await utils.endpoint.getBySlug.invalidate();
+      await utils.endpoint.list.invalidate();
     }
   });
-
-  const updateColor = (color: EndpointColor) => {
-    if (!endpoint) {
-      return;
-    }
-
-    updateEndpoint.mutate({id: endpoint.id, color});
-  };
-
-  const updateIcon = (icon: EndpointIcon) => {
-    if (!endpoint) {
-      return;
-    }
-
-    updateEndpoint.mutate({id: endpoint.id, icon});
-  };
 
   return (
     <div className="flex flex-col">
@@ -122,7 +81,7 @@ export const IconPicker = (props: Props) => {
                       <Button
                         key={icon}
                         size="icon"
-                        onClick={() => updateIcon(icon)}
+                        onClick={() => updateEndpoint.mutate({id: endpoint.id, icon})}
                         variant={endpoint?.icon !== icon ? 'ghost' : 'outline'}
                       >
                         <Icon icon={icon} color="gray" selected={true} />
@@ -138,7 +97,7 @@ export const IconPicker = (props: Props) => {
                       <Button
                         key={color}
                         size="icon"
-                        onClick={() => updateColor(color)}
+                        onClick={() => updateEndpoint.mutate({id: endpoint.id, color})}
                         variant={
                           endpoint?.color !== color ? 'ghost' : 'outline'
                         }
