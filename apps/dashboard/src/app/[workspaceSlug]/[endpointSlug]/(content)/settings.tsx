@@ -9,6 +9,7 @@ import {
 } from '@/components';
 import {Button, Input} from '@formizee/ui';
 import type {schema} from '@/lib/db';
+import DeleteButton from '../_components/delete-dialog';
 
 export const Settings = ({endpoint}: {endpoint: schema.Endpoint}) => {
   return (
@@ -63,7 +64,7 @@ export const Settings = ({endpoint}: {endpoint: schema.Endpoint}) => {
           </SettingsCardLabel>
         </SettingsCardContent>
         <SettingsCardFooter variant="destructive" align="right">
-          <Button variant="destructive">Delete Permanently</Button>
+          <DeleteButton endpointId={endpoint.id} />
         </SettingsCardFooter>
       </SettingsCard>
     </Transition>
