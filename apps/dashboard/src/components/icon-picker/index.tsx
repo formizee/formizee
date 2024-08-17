@@ -81,7 +81,9 @@ export const IconPicker = ({endpoint}: Props) => {
                       <Button
                         key={icon}
                         size="icon"
-                        onClick={() => updateEndpoint.mutate({id: endpoint.id, icon})}
+                        onClick={() =>
+                          updateEndpoint.mutate({id: endpoint.id, icon})
+                        }
                         variant={endpoint?.icon !== icon ? 'ghost' : 'outline'}
                       >
                         <Icon icon={icon} color="gray" selected={true} />
@@ -97,7 +99,9 @@ export const IconPicker = ({endpoint}: Props) => {
                       <Button
                         key={color}
                         size="icon"
-                        onClick={() => updateEndpoint.mutate({id: endpoint.id, color})}
+                        onClick={() =>
+                          updateEndpoint.mutate({id: endpoint.id, color})
+                        }
                         variant={
                           endpoint?.color !== color ? 'ghost' : 'outline'
                         }

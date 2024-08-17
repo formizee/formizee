@@ -1,5 +1,5 @@
 import {IconPicker, Label} from '@/components';
-import type { schema } from '@/lib/db';
+import type {schema} from '@/lib/db';
 
 interface HeadingProps {
   endpoint: schema.Endpoint;
