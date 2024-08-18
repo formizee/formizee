@@ -8,9 +8,9 @@ interface LabelProps {
 
 export const Label = (props: LabelProps) => {
   const activeStyle =
-    'border-green-300 dark:border-green-700  text-green-700 dark:text-green-100';
+    'border-green-500 dark:border-green-400 bg-green-400 dark:bg-green-500  text-neutral-50 dark:text-neutral-950';
   const pausedStyle =
-    'border-yellow-300 dark:border-yellow-700  text-neutral-700 dark:text-neutral-100';
+    'border-yellow-500 dark:border-yellow-400 bg-yellow-400 dark:bg-yellow-500  text-neutral-50 dark:text-neutral-950';
   const variant = props.variant === 'active' ? activeStyle : pausedStyle;
 
   return (
@@ -18,7 +18,7 @@ export const Label = (props: LabelProps) => {
       className={cn(
         props.className,
         variant,
-        'px-3 border select-none rounded-xl text-sm'
+        'px-3 border select-none rounded-xl text-sm font-medium'
       )}
     >
       {props.children}
