@@ -1,6 +1,6 @@
 'use client';
 
-import {PaintIcon, ReloadIcon, StarIcon} from '@formizee/ui/icons';
+import {LoadingIcon, PaintIcon, ReloadIcon, StarIcon} from '@formizee/ui/icons';
 import {Icon, getColor} from '../icon';
 import Transition from '../transition';
 import {schema} from '@formizee/db';
@@ -21,25 +21,32 @@ import {
   TooltipTrigger,
   TooltipContent
 } from '@formizee/ui';
+import {useState} from 'react';
 
 interface Props {
   endpoint: schema.Endpoint;
 }
 
 export const IconPicker = ({endpoint}: Props) => {
+  const [isLoading, setIsLoading] = useState(false);
   const utils = api.useUtils();
 
   const updateEndpoint = api.endpoint.update.useMutation({
+    onMutate: () => {
+      setIsLoading(true);
+    },
     onError: error => {
       toast({
         variant: 'destructive',
         title: 'Error updating the icon',
         description: error.message
       });
+      setTimeout(() => setIsLoading(false), 150);
     },
     onSuccess: () => {
       utils.endpoint.getBySlug.invalidate();
       utils.endpoint.list.invalidate();
+      setTimeout(() => setIsLoading(false), 150);
     }
   });
 
@@ -60,15 +67,15 @@ export const IconPicker = ({endpoint}: Props) => {
       <Popover>
         <PopoverTrigger asChild>
           <Button variant="outline" size="icon" className="size-12">
-            {endpoint !== null ? (
+            {isLoading ? (
+              <LoadingIcon className="size-8" />
+            ) : (
               <Icon
+                selected={true}
                 icon={endpoint.icon}
                 color={endpoint.color}
-                selected={true}
-                className="size-8"
+                className="animate-fade-in size-8"
               />
-            ) : (
-              <></>
             )}
           </Button>
         </PopoverTrigger>
