@@ -16,3 +16,4 @@ export * from './components/text-area';
 export * from './components/toast';
 export * from './components/tooltip';
 export * from './components/popover';
+export * from './components/skeleton';
