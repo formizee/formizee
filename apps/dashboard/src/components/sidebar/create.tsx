@@ -1,6 +1,6 @@
 'use client';
 
-import {ArrowRightIcon, DocumentAddIcon, LoadingIcon} from '@formizee/ui/icons';
+import {ArrowRightIcon, LoadingIcon, PlusIcon} from '@formizee/ui/icons';
 import formIcon from '@/../public/form.webp';
 import {
   Input,
@@ -76,11 +76,13 @@ export const CreateButton = (props: {workspaceSlug: string}) => {
     <div className="flex flex-col">
       <Dialog>
         <DialogTrigger asChild>
-          <Button variant="outline">
-            <div className="group flex -mr-3 hover:mr-0 flex-row w-full justify-center items-center gap-2">
-              Create a new form
-              <DocumentAddIcon className="transition-all w-0 rotate-45 group-hover:w-6 group-hover:rotate-0" />
-            </div>
+          <Button
+            size="lg"
+            variant="outline"
+            className="group flex flex-row w-full justify-center items-center gap-2"
+          >
+            <span>Create</span>
+            <PlusIcon className="transition-all w-0 rotate-45 group-hover:w-6 group-hover:rotate-0" />
           </Button>
         </DialogTrigger>
         <DialogContent className="rounded-lg border-neutral-200 dark:border-neutral-800">
