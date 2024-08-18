@@ -59,7 +59,7 @@ export const DeleteButton = ({endpointId}: {endpointId: string}) => {
 
   return (
     <Dialog>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <Button variant="destructive">Delete Permanently</Button>
       </DialogTrigger>
       <DialogContent>
