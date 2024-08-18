@@ -47,6 +47,7 @@ export {MusicIcon} from './music';
 export {PaintIcon} from './paint';
 export {PluginIcon} from './plugin';
 export {PlusIcon} from './plus';
+export {ReloadIcon} from './reload';
 export {RocketIcon} from './rocket';
 export {SchoolIcon} from './school';
 export {ServerIcon} from './server';
