@@ -82,7 +82,11 @@ export const LoginForm = ({redirectTo}: {redirectTo: string}) => {
             </FormItem>
           )}
         />
-        <Button disabled={isEmailLoading || isGithubLoading || isGoogleLoading} type="submit" className="group">
+        <Button
+          disabled={isEmailLoading || isGithubLoading || isGoogleLoading}
+          type="submit"
+          className="group"
+        >
           {!isEmailLoading ? (
             <div className="flex flex-row items-center justify-center gap-2 w-full">
               Continue
