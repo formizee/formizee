@@ -16,25 +16,28 @@ interface EndpointItemProps {
 export const EndpointItem = (props: EndpointItemProps) => {
   const router = useRouter();
 
-  const onClick = () => {
-    router.push(`/${props.workspaceSlug}/${props.slug}`);
-  };
-
   return (
-    <Button onClick={onClick} variant={props.selected ? 'outline' : 'ghost'}>
-      <div className="flex flex-row w-full items-center gap-2 justify-start">
-        <Icon icon={props.icon} color={props.color} selected={props.selected} />
-        <span
-          className={cn(
-            'truncate',
-            props.selected
-              ? 'text-neutral-950 dark:text-neutral-50'
-              : 'text-neutral-500 dark:text-neutral-400'
-          )}
-        >
-          {props.children}
-        </span>
-      </div>
+    <Button
+      variant={props.selected ? 'outline' : 'ghost'}
+      className="flex flex-row w-full items-center gap-2 justify-start"
+      onClick={() => router.push(`/${props.workspaceSlug}/${props.slug}`)}
+    >
+      <Icon
+        icon={props.icon}
+        color={props.color}
+        selected={props.selected}
+        className="min-w-4"
+      />
+      <span
+        className={cn(
+          'truncate',
+          props.selected
+            ? 'text-neutral-950 dark:text-neutral-50'
+            : 'text-neutral-500 dark:text-neutral-400'
+        )}
+      >
+        {props.children}
+      </span>
     </Button>
   );
 };

@@ -107,7 +107,7 @@ export const CreateButton = (props: {workspaceSlug: string}) => {
                 render={({field}) => (
                   <FormItem>
                     <FormLabel>Name</FormLabel>
-                    <FormMessage className="text-xs" />
+                    <FormMessage className="text-xs text-red-600 dark:text-red-400" />
                     <FormControl>
                       <Input autoComplete="off" {...field} />
                     </FormControl>
@@ -123,7 +123,7 @@ export const CreateButton = (props: {workspaceSlug: string}) => {
                 render={({field}) => (
                   <FormItem>
                     <FormLabel>Slug</FormLabel>
-                    <FormMessage className="text-xs" />
+                    <FormMessage className="text-xs text-red-600 dark:text-red-400" />
                     <FormControl>
                       <Input {...field} />
                     </FormControl>
