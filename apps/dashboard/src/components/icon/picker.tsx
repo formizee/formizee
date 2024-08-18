@@ -1,6 +1,6 @@
 'use client';
 
-import {PaintIcon, StarIcon} from '@formizee/ui/icons';
+import {PaintIcon, ReloadIcon, StarIcon} from '@formizee/ui/icons';
 import {Icon, getColor} from '../icon';
 import Transition from '../transition';
 import {schema} from '@formizee/db';
@@ -16,7 +16,10 @@ import {
   TabsContent,
   TabsList,
   cn,
-  toast
+  toast,
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent
 } from '@formizee/ui';
 
 interface Props {
@@ -34,11 +37,23 @@ export const IconPicker = ({endpoint}: Props) => {
         description: error.message
       });
     },
-    onSuccess: async () => {
-      await utils.endpoint.getBySlug.invalidate();
-      await utils.endpoint.list.invalidate();
+    onSuccess: () => {
+      utils.endpoint.getBySlug.invalidate();
+      utils.endpoint.list.invalidate();
     }
   });
+
+  const randomizeIcon = () => {
+    const icon =
+      schema.endpointIcon[
+        Math.floor(Math.random() * schema.endpointIcon.length)
+      ];
+    const color =
+      schema.endpointColor[
+        Math.floor(Math.random() * schema.endpointColor.length)
+      ];
+    updateEndpoint.mutate({id: endpoint.id, color, icon});
+  };
 
   return (
     <div className="flex flex-col">
@@ -60,22 +75,32 @@ export const IconPicker = ({endpoint}: Props) => {
         <PopoverContent
           align="start"
           sideOffset={8}
-          className="bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700"
+          className="bg-neutral-100 dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-700"
         >
           <Transition>
             <Tabs defaultValue="icons">
-              <TabsList className="w-full mb-2">
-                <TabsTrigger value="icons">
-                  <StarIcon />
-                  Icons
-                </TabsTrigger>
-                <TabsTrigger value="colors">
-                  <PaintIcon />
-                  Colors
-                </TabsTrigger>
-              </TabsList>
+              <div className="flex flex-row w-full justify-between mb-4 px-2">
+                <TabsList>
+                  <TabsTrigger value="icons">
+                    <StarIcon />
+                    Icons
+                  </TabsTrigger>
+                  <TabsTrigger value="colors">
+                    <PaintIcon />
+                    Colors
+                  </TabsTrigger>
+                </TabsList>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <Button variant="ghost" size="icon" onClick={randomizeIcon}>
+                      <ReloadIcon />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>Randomize</TooltipContent>
+                </Tooltip>
+              </div>
               <TabsContent value="icons">
-                <Transition className="grid grid-cols-5">
+                <div className="grid grid-cols-5">
                   {schema.endpointIcon.map(icon => {
                     return (
                       <Button
@@ -90,10 +115,10 @@ export const IconPicker = ({endpoint}: Props) => {
                       </Button>
                     );
                   })}
-                </Transition>
+                </div>
               </TabsContent>
               <TabsContent value="colors">
-                <Transition className="grid grid-cols-5">
+                <div className="grid grid-cols-5">
                   {schema.endpointColor.map(color => {
                     return (
                       <Button
@@ -118,7 +143,7 @@ export const IconPicker = ({endpoint}: Props) => {
                       </Button>
                     );
                   })}
-                </Transition>
+                </div>
               </TabsContent>
             </Tabs>
           </Transition>
