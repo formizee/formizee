@@ -1,4 +1,4 @@
-import {Button, Input} from '@formizee/ui';
+import {Button, Input, Skeleton} from '@formizee/ui';
 import {
   SettingsCard,
   SettingsCardContent,
@@ -11,7 +11,11 @@ import {
 import {LinkIcon} from '@formizee/ui/icons';
 import Link from 'next/link';
 
-export const Overview = ({endpointId}: {endpointId: string}) => {
+interface Props {
+  endpointId?: string;
+}
+
+export const Overview = ({endpointId}: Props) => {
   return (
     <Transition className="flex flex-col py-6 gap-6">
       <SettingsCard>
@@ -20,7 +24,11 @@ export const Overview = ({endpointId}: {endpointId: string}) => {
           <SettingsCardLabel>
             Used when interacting with the Formizee API.
           </SettingsCardLabel>
-          <Input disabled defaultValue={endpointId} className="max-w-96" />
+          {endpointId ? (
+            <Input disabled defaultValue={endpointId} className="max-w-96" />
+          ) : (
+            <Skeleton className="max-w-96 h-9" />
+          )}
         </SettingsCardContent>
         <SettingsCardFooter>
           <SettingsCardFooterLabel>

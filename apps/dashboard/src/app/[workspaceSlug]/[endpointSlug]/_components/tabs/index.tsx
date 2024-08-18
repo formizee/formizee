@@ -14,7 +14,11 @@ import {Submissions} from '../../(content)/submissions';
 import {Overview} from '../../(content)/overview';
 import {Settings} from '../../(content)/settings';
 
-export const EndpointTabs = ({endpoint}: {endpoint: schema.Endpoint}) => {
+interface Props {
+  endpoint: schema.Endpoint | null;
+}
+
+export const EndpointTabs = ({endpoint}: Props) => {
   return (
     <Tabs defaultValue="overview">
       <TabsList>
@@ -36,7 +40,7 @@ export const EndpointTabs = ({endpoint}: {endpoint: schema.Endpoint}) => {
         </TabsTrigger>
       </TabsList>
       <TabsContent value="overview">
-        <Overview endpointId={endpoint.id} />
+        <Overview endpointId={endpoint?.id} />
       </TabsContent>
       <TabsContent value="submissions">
         <Submissions />

@@ -1,4 +1,10 @@
-import {Button, Popover, PopoverContent, PopoverTrigger} from '@formizee/ui';
+import {
+  Button,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+  Skeleton
+} from '@formizee/ui';
 import {CheckIcon, EllipsisIcon, UserGroupIcon} from '@formizee/ui/icons';
 import workspaceIcon from '@/../public/workspace.webp';
 import {handleTrpcServerAction} from '@/trpc/utils';
@@ -49,15 +55,13 @@ export const WorkspaceSwitch = async ({
       <PopoverTrigger asChild>
         <Button variant="ghost" className="h-16 mb-2 p-0">
           <div className="flex flex-row w-full h-full items-center pl-2 gap-2">
-            <div className="flex items-center justify-center size-8 rounded-md bg-neutral-600 dark:bg-neutral-400">
+            <div className="flex items-center justify-center size-8 dark:size-9 dark:bg-neutral-700 rounded-md">
+              <Skeleton className="fixed size-8" />
               <Image
                 className="z-20 size-8"
                 src={workspaceIcon}
                 alt="Workspace Icon"
               />
-              <span className="fixed text-neutral-50 dark:text-neutral-950 font-bold">
-                {currentWorkspace.name?.split('')?.[0]?.toUpperCase()}
-              </span>
             </div>
             {currentWorkspace.name}
           </div>

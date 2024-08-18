@@ -7,11 +7,16 @@ import {
   SettingsCardTitle,
   Transition
 } from '@/components';
-import {Button, Input} from '@formizee/ui';
+import {Button, Input, Skeleton} from '@formizee/ui';
 import type {schema} from '@/lib/db';
 import DeleteButton from '../_components/delete-dialog';
+import {LoadingIcon} from '@formizee/ui/icons';
 
-export const Settings = ({endpoint}: {endpoint: schema.Endpoint}) => {
+interface Props {
+  endpoint: schema.Endpoint | null;
+}
+
+export const Settings = ({endpoint}: Props) => {
   return (
     <Transition className="flex flex-col py-6 gap-6">
       <SettingsCard>
@@ -20,13 +25,17 @@ export const Settings = ({endpoint}: {endpoint: schema.Endpoint}) => {
           <SettingsCardLabel>
             This name will be visible by the members of your workspaces.
           </SettingsCardLabel>
-          <Input
-            required
-            maxLength={64}
-            className="max-w-96"
-            placeholder="My Endpoint"
-            defaultValue={endpoint.name ?? endpoint.slug}
-          />
+          {endpoint ? (
+            <Input
+              required
+              maxLength={64}
+              className="max-w-96"
+              placeholder="My Endpoint"
+              defaultValue={endpoint.name ?? endpoint.slug}
+            />
+          ) : (
+            <Skeleton className="max-w-96 h-9" />
+          )}
         </SettingsCardContent>
         <SettingsCardFooter>
           <SettingsCardFooterLabel>
@@ -41,12 +50,16 @@ export const Settings = ({endpoint}: {endpoint: schema.Endpoint}) => {
           <SettingsCardLabel>
             This is your form URL namespace within Formizee.
           </SettingsCardLabel>
-          <Input
-            required
-            defaultValue={endpoint.slug}
-            placeholder="your-user-name"
-            className="max-w-96"
-          />
+          {endpoint ? (
+            <Input
+              required
+              defaultValue={endpoint.slug}
+              placeholder="your-user-name"
+              className="max-w-96"
+            />
+          ) : (
+            <Skeleton className="max-w-96 h-9" />
+          )}
         </SettingsCardContent>
         <SettingsCardFooter>
           <SettingsCardFooterLabel>
@@ -64,7 +77,13 @@ export const Settings = ({endpoint}: {endpoint: schema.Endpoint}) => {
           </SettingsCardLabel>
         </SettingsCardContent>
         <SettingsCardFooter variant="destructive" align="right">
-          <DeleteButton endpointId={endpoint.id} />
+          {endpoint ? (
+            <DeleteButton endpointId={endpoint.id} />
+          ) : (
+            <Button disabled variant="destructive">
+              <LoadingIcon className="size-8" />
+            </Button>
+          )}
         </SettingsCardFooter>
       </SettingsCard>
     </Transition>

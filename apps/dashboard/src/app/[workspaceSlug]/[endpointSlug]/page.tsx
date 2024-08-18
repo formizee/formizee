@@ -1,38 +1,32 @@
+'use client';
+
 import Heading from './_components/heading';
-import EmptyPage from './(content)/empty';
 import {Transition} from '@/components';
 import Tabs from './_components/tabs';
+import NotFound from './not-found';
 
-import {notFound, redirect} from 'next/navigation';
-import {isTRPCClientError} from '@/trpc/utils';
-import {api} from '@/trpc/server';
+import {useRouter} from 'next/navigation';
+import {api} from '@/trpc/client';
 
 interface Params {
   workspaceSlug: string;
   endpointSlug: string;
 }
 
-const getEndpoint = async (params: Params) => {
-  try {
-    return await api.endpoint.getBySlug.query(params);
-  } catch (error) {
-    if (isTRPCClientError(error)) {
-      if (error.data?.code === 'UNAUTHORIZED') {
-        return redirect('/auth/error?error=AccessDenied');
-      }
+const EndpointPage = ({params}: {params: Params}) => {
+  const {data, error} = api.endpoint.getBySlug.useQuery(params, {
+    retry: 0
+  });
+  const endpoint = data ?? null;
+  const router = useRouter();
 
-      if (error.data?.code === 'NOT_FOUND') {
-        return notFound();
-      }
-    }
+  if (error?.data?.code === 'UNAUTHORIZED') {
+    router.push('/auth/error?error=AccessDenied');
+    return;
   }
-};
 
-const EndpointPage = async ({params}: {params: Params}) => {
-  const endpoint = await getEndpoint(params);
-
-  if (!endpoint) {
-    return <EmptyPage />;
+  if (error?.data?.code === 'NOT_FOUND') {
+    return <NotFound />;
   }
 
   return (
