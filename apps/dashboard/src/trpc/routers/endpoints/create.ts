@@ -1,9 +1,9 @@
 import {database, schema, count, eq} from '@/lib/db';
 import {protectedProcedure} from '@/trpc';
+import {getLimits} from '@formizee/plans';
 import {TRPCError} from '@trpc/server';
-import {z} from 'zod';
-import {getLimits} from '../../../../../../packages/plans/src';
 import {newId} from '@formizee/id';
+import {z} from 'zod';
 
 export const createEndpoint = protectedProcedure
   .input(
