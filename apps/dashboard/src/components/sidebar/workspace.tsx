@@ -10,6 +10,7 @@ import workspaceIcon from '@/../public/workspace.webp';
 import {handleTrpcServerAction} from '@/trpc/utils';
 import {api} from '@/trpc/server';
 import Image from 'next/image';
+import Link from 'next/link';
 
 interface WorkspaceItemProps {
   selected: boolean;
@@ -77,10 +78,13 @@ export const WorkspaceSwitch = async ({
             Personal Workspace
           </span>
           <Button
+            asChild
             variant="ghost"
             className="flex items-center justify-center size-6 p-0"
           >
-            <EllipsisIcon className="text-neutral-600 dark:text-neutral-400" />
+            <Link href={`/${currentWorkspace.slug}/settings`}>
+              <EllipsisIcon className="text-neutral-600 dark:text-neutral-400" />
+            </Link>
           </Button>
         </div>
         <WorkspaceItem
