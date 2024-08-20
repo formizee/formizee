@@ -12,6 +12,7 @@ export * from './components/input';
 export * from './components/label';
 export * from './components/logo';
 export * from './components/popover';
+export * from './components/select';
 export * from './components/skeleton';
 export * from './components/table';
 export * from './components/tabs';
