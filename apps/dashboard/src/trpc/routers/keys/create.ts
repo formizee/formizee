@@ -2,7 +2,7 @@ import {database, schema, count, eq} from '@/lib/db';
 import {getLimits} from '@formizee/plans';
 import {protectedProcedure} from '@/trpc';
 import {TRPCError} from '@trpc/server';
-import {newKey} from '@formizee/keys';
+import {KeyService, newKey} from '@formizee/keys';
 import {z} from 'zod';
 
 export const createKey = protectedProcedure
@@ -65,10 +65,12 @@ export const createKey = protectedProcedure
     }
 
     const {key, hash} = await newKey();
+    const expiresAt = KeyService.generateExpiracyDate(input.expiresAt);
 
     const data: schema.InsertKey = {
       hash,
       id: key,
+      expiresAt,
       name: input.name,
       workspaceId: workspace.id
     };
