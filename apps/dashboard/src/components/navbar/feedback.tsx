@@ -12,8 +12,7 @@ import {
   DialogTitle,
   Textarea,
   DialogHeader,
-  toast,
-  DialogClose
+  toast
 } from '@formizee/ui';
 import {z} from 'zod';
 import {useForm} from 'react-hook-form';
@@ -93,22 +92,20 @@ export const FeedbackButton = () => {
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage className="text-xs" />
+                  <FormMessage className="text-xs text-red-600 dark:text-red-400" />
                 </FormItem>
               )}
             />
-            <DialogClose asChild>
-              <Button className="mt-4" disabled={isLoading} type="submit">
-                {isLoading ? (
-                  <LoadingIcon className="size-8" />
-                ) : (
-                  <div className="group flex flex-row w-full items-center justify-center gap-2">
-                    <span>Send Feedback</span>{' '}
-                    <ArrowRightIcon className="transition-all w-0 group-hover:w-6" />
-                  </div>
-                )}
-              </Button>
-            </DialogClose>
+            <Button className="mt-4" disabled={isLoading} type="submit">
+              {isLoading ? (
+                <LoadingIcon className="size-8" />
+              ) : (
+                <div className="group flex flex-row w-full items-center justify-center gap-2">
+                  <span>Send Feedback</span>{' '}
+                  <ArrowRightIcon className="transition-all w-0 group-hover:w-6" />
+                </div>
+              )}
+            </Button>
           </form>
         </Form>
       </DialogContent>
