@@ -1,6 +1,6 @@
 'use client';
 
-import {CloseIcon, ReloadIcon} from '@formizee/ui/icons';
+import {CloseIcon, DocumentIcon, ReloadIcon} from '@formizee/ui/icons';
 import type {schema} from '@/lib/db';
 import {useState} from 'react';
 
@@ -17,9 +17,9 @@ import {
   TableActions,
   TableOptions,
   TableActionsItem,
-  TableColumnOptions,
-  TableSearchOptions
+  TableColumnOptions
 } from '@/components';
+import {Button} from '@formizee/ui';
 
 export const columns: ColumnDef<schema.Key>[] = [
   {
@@ -74,7 +74,7 @@ interface KeysTableProps<TData> {
   data: TData[];
 }
 
-export function KeysTable<TData>({columns, data}: KeysTableProps<TData>) {
+export function AuditTable<TData>({columns, data}: KeysTableProps<TData>) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   const table = useReactTable({
@@ -89,12 +89,10 @@ export function KeysTable<TData>({columns, data}: KeysTableProps<TData>) {
 
   return (
     <div>
-      <TableOptions>
-        <TableSearchOptions
-          column="name"
-          table={table}
-          placeholder="Filter API Keys..."
-        />
+      <TableOptions className="justify-end">
+        <Button variant="outline">
+          Export <DocumentIcon />
+        </Button>
         <TableColumnOptions table={table} />
       </TableOptions>
       <Table table={table} columns={columns} />

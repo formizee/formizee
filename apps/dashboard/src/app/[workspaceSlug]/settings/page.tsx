@@ -21,7 +21,7 @@ const General = async ({params}: {params: Params}) => {
   );
 
   return (
-    <Transition className="flex flex-col py-6 gap-6">
+    <Transition className="flex flex-col mt-6 py-6 gap-6">
       <SettingsCard>
         <SettingsCardTitle>Display Name</SettingsCardTitle>
         <SettingsCardContent>
