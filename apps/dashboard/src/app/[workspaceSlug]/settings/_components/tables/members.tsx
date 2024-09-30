@@ -9,7 +9,7 @@ import {
   useReactTable
 } from '@tanstack/react-table';
 
-import {Table} from '@/components';
+import {Table, TableActions, TableActionsItem} from '@/components';
 
 import type {schema} from '@/lib/db';
 import {
@@ -18,13 +18,14 @@ import {
   TableSearchOptions
 } from '@/components';
 import {useState} from 'react';
+import {CloseIcon, UserGroupIcon} from '@formizee/ui/icons';
 
 export type Member = {
   user: schema.User;
   role: schema.WorkspaceRole;
 };
 
-export const columns: ColumnDef<Member>[] = [
+export const columns: ColumnDef<schema.Key>[] = [
   {
     accessorKey: 'user.name',
     header: 'Name'
@@ -36,18 +37,33 @@ export const columns: ColumnDef<Member>[] = [
   {
     accessorKey: 'role',
     header: 'Role'
+  },
+  {
+    id: 'actions',
+    cell: () => {
+      return (
+        <TableActions>
+          <TableActionsItem disabled>
+            <UserGroupIcon />
+            Update Role
+          </TableActionsItem>
+          <TableActionsItem disabled>
+            <CloseIcon className="fill-red-500" />
+            Remove
+          </TableActionsItem>
+        </TableActions>
+      );
+    }
   }
 ];
 
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
+interface DataTableProps<TData> {
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+  columns: any;
   data: TData[];
 }
 
-export function MembersTable<TData, TValue>({
-  columns,
-  data
-}: DataTableProps<TData, TValue>) {
+export function MembersTable<TData>({columns, data}: DataTableProps<TData>) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   const table = useReactTable({
@@ -64,7 +80,7 @@ export function MembersTable<TData, TValue>({
     <div>
       <TableOptions>
         <TableSearchOptions
-          column="user.email"
+          column="user_email"
           table={table}
           placeholder="Filter by email..."
         />
