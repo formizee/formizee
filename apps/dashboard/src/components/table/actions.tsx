@@ -32,12 +32,16 @@ export const TableActions = ({children}: TableActionsProps) => {
 
 interface TableActionsItemProps {
   onClick?: MouseEventHandler<HTMLDivElement> | undefined;
+  disabled?: boolean;
   children: React.ReactNode;
 }
 
 export const TableActionsItem = (props: TableActionsItemProps) => {
   return (
-    <DropdownMenuItem onClick={() => props.onClick}>
+    <DropdownMenuItem
+      disabled={props.disabled ?? false}
+      onClick={() => props.onClick}
+    >
       {props.children}
     </DropdownMenuItem>
   );
