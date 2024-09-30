@@ -51,7 +51,7 @@ export const CreateKeyButton = (props: {workspaceSlug: string}) => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: '',
-      expiresAt: '90-days'
+      expiresAt: '30-days'
     }
   });
 
@@ -137,17 +137,13 @@ export const CreateKeyButton = (props: {workspaceSlug: string}) => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectGroup defaultValue="90-days">
-                          <SelectItem value="1-day">1 Day</SelectItem>
-                          <SelectItem value="7-days">7 Days</SelectItem>
+                        <SelectGroup defaultValue="30-days">
                           <SelectItem value="30-days">30 Days</SelectItem>
                           <SelectItem value="60-days">60 Days</SelectItem>
                           <SelectItem value="90-days">90 Days</SelectItem>
                           <SelectItem value="180-days">180 Days</SelectItem>
                           <SelectItem value="1-year">1 Year</SelectItem>
-                          <SelectItem value="never">
-                            Never (Not Recommended)
-                          </SelectItem>
+                          <SelectItem value="never">Never</SelectItem>
                         </SelectGroup>
                       </SelectContent>
                     </Select>
