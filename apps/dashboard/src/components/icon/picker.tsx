@@ -74,7 +74,7 @@ export const IconPicker = ({endpoint}: Props) => {
                 selected={true}
                 icon={endpoint.icon}
                 color={endpoint.color}
-                className="animate-fade-in size-8"
+                className="size-8"
               />
             )}
           </Button>
