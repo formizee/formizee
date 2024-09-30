@@ -36,8 +36,20 @@ export const listKeys = protectedProcedure
       });
     }
 
-    const keys = await database.query.key.findMany({
+    const data = await database.query.key.findMany({
       where: (table, {eq}) => eq(table.workspaceId, workspace.id)
+    });
+
+    const keys = data.map(key => {
+      const lastAccess =
+        key.lastAccess.getTime() === key.createdAt.getTime()
+          ? 'Never'
+          : key.lastAccess;
+
+      const expiresAt =
+        key.expiresAt.getFullYear() > 4000 ? 'Never' : key.expiresAt;
+
+      return {...key, lastAccess, expiresAt};
     });
 
     return keys;
