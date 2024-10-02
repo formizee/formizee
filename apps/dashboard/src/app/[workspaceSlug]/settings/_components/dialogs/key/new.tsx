@@ -65,8 +65,13 @@ export const CreateKeyButton = (props: {workspaceSlug: string}) => {
         title: "API Key can't be created"
       });
     },
-    onSuccess: async () => {
+    onSuccess: async data => {
+      await navigator.clipboard.writeText(data.id);
       router.refresh();
+      toast({
+        title: 'Key created!',
+        description: 'Your new key has been copied to the clipboard.'
+      });
     }
   });
 
