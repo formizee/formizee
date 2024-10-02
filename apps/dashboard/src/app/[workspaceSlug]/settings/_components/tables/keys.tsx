@@ -1,6 +1,7 @@
 'use client';
 
-import {CloseIcon, ReloadIcon} from '@formizee/ui/icons';
+import {DeleteKeyDialog} from '../dialogs/key';
+import {CloseIcon} from '@formizee/ui/icons';
 import type {schema} from '@/lib/db';
 import {useState} from 'react';
 
@@ -51,18 +52,27 @@ export const columns: ColumnDef<schema.Key>[] = [
   {
     id: 'actions',
     cell: ({row}) => {
+      const [deleteDialogVisible, setDeleteDialogVisible] = useState(false);
       const key = row.original;
+
       return (
-        <TableActions>
-          <TableActionsItem onClick={() => console.log(key)}>
-            <ReloadIcon />
-            Rename
-          </TableActionsItem>
-          <TableActionsItem>
-            <CloseIcon className="fill-red-500" />
-            Delete
-          </TableActionsItem>
-        </TableActions>
+        <>
+          <TableActions>
+            <TableActionsItem onClick={() => setDeleteDialogVisible(true)}>
+              <CloseIcon className="fill-red-500" />
+              Delete
+            </TableActionsItem>
+          </TableActions>
+          <DeleteKeyDialog
+            isOpen={deleteDialogVisible}
+            onOpenChange={() =>
+              deleteDialogVisible
+                ? setDeleteDialogVisible(false)
+                : setDeleteDialogVisible(true)
+            }
+            keyId={key.id}
+          />
+        </>
       );
     }
   }

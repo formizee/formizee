@@ -1,6 +1,7 @@
 import Transition from '@/components/transition';
 import {Button, Input} from '@formizee/ui';
 import {
+  ClipboardButton,
   SettingsCard,
   SettingsCardContent,
   SettingsCardFooter,
@@ -68,7 +69,13 @@ const General = async ({params}: {params: Params}) => {
           <SettingsCardLabel>
             This is your workspace ID within Formizee.
           </SettingsCardLabel>
-          <Input disabled defaultValue={workspace.id} className="max-w-96" />
+          <div className="flex items-center justify-between max-w-96 border rounded-md border py-2 pl-2 pr-0 text-sm h-9 border-neutral-200 dark:border-neutral-800">
+            {workspace.id}
+            <ClipboardButton
+              data={workspace.id}
+              className="border-none hover:bg-transparent bg-transparent shadow-none"
+            />
+          </div>
         </SettingsCardContent>
         <SettingsCardFooter>
           <SettingsCardFooterLabel>
