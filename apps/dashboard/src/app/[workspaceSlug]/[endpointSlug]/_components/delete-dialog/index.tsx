@@ -67,7 +67,7 @@ export const DeleteButton = ({endpointId}: {endpointId: string}) => {
           <DialogTitle className="w-full flex flex-col gap-6 items-center text-left text-xl font-bold">
             <Image
               src={trashIcon}
-              alt="Form Icon"
+              alt="Trash Icon"
               width={64}
               height={64}
               className="dark:rounded-[0.65rem] rounded-xl border-4 dark:border dark:border-neutral-600 border-neutral-300 shadow-md shadow-neutral-950"
