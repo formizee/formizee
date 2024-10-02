@@ -7,7 +7,7 @@ export const updateKey = protectedProcedure
   .input(
     z.object({
       id: z.string(),
-      name: z.string().optional()
+      name: z.string()
     })
   )
   .mutation(async ({input, ctx}) => {
@@ -48,19 +48,19 @@ export const updateKey = protectedProcedure
       });
     }
 
-    const updatedKey = await database
-      .update(schema.key)
-      .set({name: input.name ?? key.name})
-      .where(eq(schema.endpoint.id, key.id))
-      .returning();
+    try {
+      const updatedKey = await database
+        .update(schema.key)
+        .set({name: input.name ?? key.name})
+        .where(eq(schema.endpoint.id, key.id))
+        .returning();
 
-    if (!updatedKey[0]) {
+      return updatedKey[0];
+    } catch {
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message:
           "The key can't be updated, please contact to support@formizee.com"
       });
     }
-
-    return updatedKey[0];
   });
