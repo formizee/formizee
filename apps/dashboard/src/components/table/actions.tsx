@@ -8,7 +8,6 @@ import {
   DropdownMenuTrigger
 } from '@formizee/ui';
 import {EllipsisIcon} from '@formizee/ui/icons';
-import type {MouseEventHandler} from 'react';
 
 interface TableActionsProps {
   children: React.ReactNode;
@@ -31,16 +30,16 @@ export const TableActions = ({children}: TableActionsProps) => {
 };
 
 interface TableActionsItemProps {
-  onClick?: MouseEventHandler<HTMLDivElement> | undefined;
-  disabled?: boolean;
   children: React.ReactNode;
+  onClick: () => void;
+  disabled?: boolean;
 }
 
 export const TableActionsItem = (props: TableActionsItemProps) => {
   return (
     <DropdownMenuItem
+      onClick={props.onClick}
       disabled={props.disabled ?? false}
-      onClick={() => props.onClick}
     >
       {props.children}
     </DropdownMenuItem>
