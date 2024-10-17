@@ -1,6 +1,12 @@
 'use client';
 
-import {Button, Tooltip, TooltipContent, TooltipTrigger} from '@formizee/ui';
+import {
+  Button,
+  toast,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger
+} from '@formizee/ui';
 import {CheckIcon, ClipboardIcon} from '@formizee/ui/icons';
 import {useEffect, useState} from 'react';
 
@@ -8,6 +14,7 @@ interface ClipboardButtonProps {
   data: string;
   tooltip?: string;
   className?: string;
+  description?: string;
   side?: 'left' | 'right' | 'top' | 'bottom';
 }
 
@@ -17,6 +24,9 @@ export function ClipboardButton(props: ClipboardButtonProps): JSX.Element {
   const onClick = async (): Promise<void> => {
     setOnClipboard(true);
     await navigator.clipboard.writeText(props.data);
+    toast({
+      description: props.description ?? 'The data is copied to your clipboard'
+    });
   };
 
   useEffect(() => {
