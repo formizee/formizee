@@ -4,15 +4,19 @@ import {AccountButton} from './account';
 import {Button} from '@formizee/ui';
 import Link from 'next/link';
 
-export const Navbar = () => {
+interface NavbarProps {
+  userId: string;
+}
+
+export const Navbar = (props: NavbarProps) => {
   return (
     <nav className="z-50 flex flex-row bg-neutral-50/50 dark:bg-neutral-950/50 backdrop-blur-md right-4 fixed rounded-bl-md">
-      <Options />
+      <Options {...props} />
     </nav>
   );
 };
 
-export const Options = () => {
+export const Options = (props: NavbarProps) => {
   return (
     <div className="flex flex-row justify-end p-4 gap-2">
       <Button variant="outline" asChild>
@@ -26,7 +30,7 @@ export const Options = () => {
         </Link>
       </Button>
       <FeedbackButton />
-      <AccountButton />
+      <AccountButton userId={props.userId} />
     </div>
   );
 };

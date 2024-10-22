@@ -1,7 +1,11 @@
 import {Options} from '@/components/navbar';
 import {Logo} from '@formizee/ui';
 
-export const SettingsNavbar = () => {
+interface SettingsNavbarProps {
+  userId: string;
+}
+
+export const SettingsNavbar = (props: SettingsNavbarProps) => {
   return (
     <nav className="z-50 dark:border-b-neutral-800 bg-neutral-50/[.01] dark:bg-neutral-950/[0.01] flex flex-row justify-between w-full backdrop-blur-lg pr-[1px] fixed">
       <div className="flex flex-row pt-1 items-center pl-4 gap-5">
@@ -10,7 +14,7 @@ export const SettingsNavbar = () => {
           Beta
         </span>
       </div>
-      <Options />
+      <Options {...props} />
     </nav>
   );
 };
