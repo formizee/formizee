@@ -5,7 +5,7 @@ import {newId} from '@formizee/id';
 import {Analytics} from '@formizee/analytics';
 import {KeyService} from '@formizee/keys';
 import {EmailService} from '@formizee/email';
-import {createConnection} from '@formizee/db';
+import {createConnection} from '@formizee/db/api';
 
 export function services(): MiddlewareHandler<HonoEnv> {
   return async (c, next) => {
@@ -23,7 +23,7 @@ export function services(): MiddlewareHandler<HonoEnv> {
         ''
     );
 
-    const database = createConnection(c.env.DATABASE_URL);
+    const database = createConnection(c.env.DATABASE_URL, c.env.ENVIROMENT);
 
     const analytics = new Analytics({
       tinybirdToken:

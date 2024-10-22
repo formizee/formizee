@@ -2,7 +2,7 @@ import {cn} from '../lib/ui';
 import type {IconProps} from './types';
 
 interface CheckIconProps extends IconProps {
-  variant: 'default' | 'circle';
+  variant?: 'default' | 'circle';
 }
 
 export function CheckIcon(props: CheckIconProps): JSX.Element {
@@ -28,7 +28,3 @@ export function CheckIcon(props: CheckIconProps): JSX.Element {
     </svg>
   );
 }
-
-CheckIcon.defaultProps = {
-  variant: 'default'
-};

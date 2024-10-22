@@ -7,7 +7,8 @@ export const endpointColor = [
   'cyan',
   'indigo',
   'violet',
-  'pink'
+  'pink',
+  'white'
 ] as const;
 
 export const endpointIcon = [

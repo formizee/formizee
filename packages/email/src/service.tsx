@@ -1,8 +1,6 @@
 import {Resend as Client} from 'resend';
 import type {WorkspacePlans, Limits} from '@formizee/plans';
 
-import {render} from '@react-email/components';
-
 import {SubmissionEmail} from '../emails/submission';
 import {AuthVerifyEmail} from '../emails/verify-email';
 import {PlanLimitWarning} from '../emails/plan-limit-warning';
@@ -11,22 +9,21 @@ import {AuthVerifyLinkedEmail} from '../emails/verify-linked-email';
 
 export class EmailService {
   private readonly smtp: Client;
-  private readonly from = 'noreply@formizee.com';
-  private readonly replyTo = 'support@formizee.com';
+  private readonly from = 'Formizee <noreply@formizee.com>';
+  private readonly replyTo = 'Formizee Support <support@formizee.com>';
 
   constructor(options: {apiKey: string}) {
     this.smtp = new Client(options.apiKey);
   }
 
-  public async sendVerifyEmail(req: {email: string; tokenCode: string}) {
-    const html = render(<AuthVerifyEmail tokenCode={req.tokenCode} />);
+  public async sendVerifyEmail(req: {email: string; link: string}) {
     try {
       const result = await this.smtp.emails.send({
         to: req.email,
         from: this.from,
         reply_to: this.replyTo,
-        subject: 'Verify Your Formizee Account',
-        html
+        subject: 'Your login request to Formizee.',
+        react: <AuthVerifyEmail link={req.link} />
       });
 
       if (!result.error) {
@@ -47,20 +44,19 @@ export class EmailService {
     email: string;
     data: object;
   }) {
-    const html = render(
-      <SubmissionEmail
-        workspaceSlug={req.workspaceSlug}
-        endpointSlug={req.endpointSlug}
-        data={req.data}
-      />
-    );
     try {
       const result = await this.smtp.emails.send({
         to: req.email,
         from: this.from,
         reply_to: this.replyTo,
         subject: 'New Form Submission!',
-        html
+        react: (
+          <SubmissionEmail
+            workspaceSlug={req.workspaceSlug}
+            endpointSlug={req.endpointSlug}
+            data={req.data}
+          />
+        )
       });
 
       if (!result.error) {
@@ -68,24 +64,19 @@ export class EmailService {
       }
       throw result.error;
     } catch (error) {
-      console.error(
-        'Error occurred sending submission email',
-        JSON.stringify(error)
-      );
+      const err = error as Error;
+      console.error('Error occurred sending submission email', err.message);
     }
   }
 
   public async sendVerifyLinkedEmail(req: {email: string; magicLink: string}) {
-    const html = render(
-      <AuthVerifyLinkedEmail email={req.email} link={req.magicLink} />
-    );
     try {
       const result = await this.smtp.emails.send({
         to: req.email,
         from: this.from,
         reply_to: this.replyTo,
         subject: 'Verify Your New Email',
-        html
+        react: <AuthVerifyLinkedEmail email={req.email} link={req.magicLink} />
       });
 
       if (!result.error) {
@@ -106,20 +97,19 @@ export class EmailService {
     limitReached: keyof Limits;
     currentPlan: WorkspacePlans;
   }) {
-    const html = render(
-      <PlanLimitWarning
-        limit={req.limitReached}
-        username={req.username}
-        currentPlan={req.currentPlan}
-      />
-    );
     try {
       const result = await this.smtp.emails.send({
         to: req.email,
         from: 'payments@formizee.com',
         reply_to: this.replyTo,
         subject: "You've reached the 80% monthly usage of your plan",
-        html
+        react: (
+          <PlanLimitWarning
+            limit={req.limitReached}
+            username={req.username}
+            currentPlan={req.currentPlan}
+          />
+        )
       });
 
       if (!result.error) {
@@ -140,20 +130,19 @@ export class EmailService {
     limitReached: keyof Limits;
     currentPlan: WorkspacePlans;
   }) {
-    const html = render(
-      <PlanLimitReached
-        limit={req.limitReached}
-        username={req.username}
-        currentPlan={req.currentPlan}
-      />
-    );
     try {
       const result = await this.smtp.emails.send({
         to: req.email,
         from: 'payments@formizee.com',
         reply_to: this.replyTo,
         subject: "Action Required: You've reached the limits of your plan",
-        html
+        react: (
+          <PlanLimitReached
+            limit={req.limitReached}
+            username={req.username}
+            currentPlan={req.currentPlan}
+          />
+        )
       });
 
       if (!result.error) {

@@ -7,6 +7,16 @@
       "import": "./src/index.ts",
       "require": "./src/index.ts"
     },
+    "./web": {
+      "types": "./src/web.ts",
+      "import": "./src/web.ts",
+      "require": "./src/web.ts"
+    },
+    "./api": {
+      "types": "./src/api.ts",
+      "import": "./src/api.ts",
+      "require": "./src/api.ts"
+    },
     "./schema": {
       "types": "./src/schema/index.ts",
       "import": "./src/schema/index.ts",
@@ -25,23 +35,22 @@
     "push": "drizzle-kit push",
     "studio": "drizzle-kit studio",
     "migrate": "drizzle-kit migrate",
-    "generate": "drizzle-kit generate",
-    "push:test": "NODE_ENV=test drizzle-kit push",
-    "studio:test": "NODE_ENV=test drizzle-kit studio",
-    "migrate:test": "NODE_ENV=test drizzle-kit migrate"
+    "generate": "drizzle-kit generate"
   },
   "devDependencies": {
     "@formizee/tsconfig": "workspace:*",
     "@types/node": "20.14.11",
     "@types/pg": "8.11.6",
     "drizzle-kit": "0.23.0",
+    "pg": "8.12.0",
     "tsx": "4.16.2"
   },
   "dependencies": {
     "@formizee/hashing": "workspace:*",
+    "@neondatabase/serverless": "0.9.4",
     "drizzle-orm": "0.32.0",
     "drizzle-zod": "0.5.1",
-    "pg": "8.12.0",
+    "next-auth": "5.0.0-beta.20",
     "zod": "3.23.8"
   }
 }

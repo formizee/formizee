@@ -10,6 +10,8 @@ export const workspace = pgTable(
   'workspaces',
   {
     id: text('id').primaryKey(),
+
+    name: text('name'),
     slug: text('slug').notNull().unique(),
 
     availableEmails: text('available_emails')

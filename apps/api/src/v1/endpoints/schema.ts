@@ -34,6 +34,14 @@ export const EndpointSchema = z.object({
       description: 'The slug of the endpoint',
       example: 'my-endpoint'
     }),
+  name: z
+    .string()
+    .min(4, {message: 'The name must be between 4 and 64 characters long.'})
+    .max(64, {message: 'The name must be between 4 and 64 characters long.'})
+    .openapi({
+      description: 'The name of the endpoint',
+      example: 'My Endpoint'
+    }),
   isEnabled: z.boolean().default(true).openapi({
     description:
       "The state of the endpoint. If is false, the endpoint don't receive more submissions",
@@ -93,6 +101,15 @@ export const PostEndpointSchema = z.object({
       description: 'The slug of the endpoint',
       example: 'my-endpoint'
     }),
+  name: z
+    .string()
+    .min(4, {message: 'The name must be between 4 and 64 characters long.'})
+    .max(64, {message: 'The name must be between 4 and 64 characters long.'})
+    .openapi({
+      description: 'The name of the endpoint',
+      example: 'My Endpoint'
+    })
+    .optional(),
   isEnabled: z.boolean().default(true).optional().openapi({
     description:
       "The state of the endpoint. If is false, the endpoint don't receive more submissions",
