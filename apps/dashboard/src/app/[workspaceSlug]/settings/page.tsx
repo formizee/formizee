@@ -1,5 +1,4 @@
 import Transition from '@/components/transition';
-import {Button, Input} from '@formizee/ui';
 import {
   ClipboardButton,
   SettingsCard,
@@ -11,6 +10,10 @@ import {
 } from '@/components';
 import {handleTrpcServerAction} from '@/trpc/utils';
 import {api} from '@/trpc/server';
+import {redirect} from 'next/navigation';
+import {UpdateNameCard} from './_components/cards';
+import {UpdateSlugCard} from './_components/cards/update-slug';
+import {DeleteWorkspaceCard} from './_components/cards/delete-workspace';
 
 interface Params {
   workspaceSlug: string;
@@ -21,48 +24,20 @@ const General = async ({params}: {params: Params}) => {
     api.workspace.getBySlug.query({slug: params.workspaceSlug})
   );
 
+  if (!workspace.name) {
+    redirect('/');
+  }
+
   return (
     <Transition className="flex flex-col mt-6 py-6 gap-6">
-      <SettingsCard>
-        <SettingsCardTitle>Display Name</SettingsCardTitle>
-        <SettingsCardContent>
-          <SettingsCardLabel>
-            This name will be visible by the members of the workspace.
-          </SettingsCardLabel>
-          <Input
-            required
-            defaultValue={workspace.name ?? workspace.slug}
-            placeholder="Your Workspace Name"
-            className="max-w-96"
-          />
-        </SettingsCardContent>
-        <SettingsCardFooter>
-          <SettingsCardFooterLabel>
-            Please use between 4 and 64 characters
-          </SettingsCardFooterLabel>
-          <Button>Save</Button>
-        </SettingsCardFooter>
-      </SettingsCard>
-      <SettingsCard>
-        <SettingsCardTitle>Workspace Slug</SettingsCardTitle>
-        <SettingsCardContent>
-          <SettingsCardLabel>
-            This is your URL namespace within Formizee.
-          </SettingsCardLabel>
-          <Input
-            required
-            defaultValue={workspace.slug}
-            placeholder="your-workspace-name"
-            className="max-w-96"
-          />
-        </SettingsCardContent>
-        <SettingsCardFooter>
-          <SettingsCardFooterLabel>
-            Please use between 4 and 64 characters
-          </SettingsCardFooterLabel>
-          <Button>Save</Button>
-        </SettingsCardFooter>
-      </SettingsCard>
+      <UpdateNameCard
+        workspaceId={workspace.id}
+        workspaceName={workspace.name}
+      />
+      <UpdateSlugCard
+        workspaceId={workspace.id}
+        workspaceSlug={workspace.slug}
+      />
       <SettingsCard>
         <SettingsCardTitle>Formizee ID</SettingsCardTitle>
         <SettingsCardContent>
@@ -73,6 +48,7 @@ const General = async ({params}: {params: Params}) => {
             {workspace.id}
             <ClipboardButton
               data={workspace.id}
+              description="The Workspace ID is copied to your clipboard."
               className="border-none hover:bg-transparent bg-transparent shadow-none"
             />
           </div>
@@ -83,19 +59,7 @@ const General = async ({params}: {params: Params}) => {
           </SettingsCardFooterLabel>
         </SettingsCardFooter>
       </SettingsCard>
-      <SettingsCard variant="destructive">
-        <SettingsCardTitle>Delete Workspace</SettingsCardTitle>
-        <SettingsCardContent>
-          <SettingsCardLabel>
-            Permanently remove this worspace and all of its contents from
-            Formizee. This action is not reversible, so please continue with
-            caution.
-          </SettingsCardLabel>
-        </SettingsCardContent>
-        <SettingsCardFooter variant="destructive" align="right">
-          <Button variant="destructive">Delete Permanently</Button>
-        </SettingsCardFooter>
-      </SettingsCard>
+      <DeleteWorkspaceCard />
     </Transition>
   );
 };
