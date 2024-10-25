@@ -57,14 +57,14 @@ importers:
         specifier: workspace:*
         version: link:../../packages/tsconfig
       '@hono/zod-openapi':
-        specifier: 0.15.1
-        version: 0.15.1(hono@4.5.1)(zod@3.23.8)
+        specifier: 0.16.4
+        version: 0.16.4(hono@4.6.6)(zod@3.23.8)
       hono:
-        specifier: 4.5.1
-        version: 4.5.1
+        specifier: 4.6.6
+        version: 4.6.6
       hono-rate-limiter:
         specifier: 0.4.0
-        version: 0.4.0(hono@4.5.1)
+        version: 0.4.0(hono@4.6.6)
       zod:
         specifier: 3.23.8
         version: 3.23.8
@@ -411,7 +411,7 @@ importers:
     dependencies:
       '@hono/zod-openapi':
         specifier: 0.14.8
-        version: 0.14.8(hono@4.5.1)(zod@3.23.8)
+        version: 0.14.8(hono@4.6.6)(zod@3.23.8)
       zod:
         specifier: 3.23.8
         version: 3.23.8
@@ -1836,8 +1836,8 @@ packages:
       hono: '>=4.3.6'
       zod: 3.*
 
-  '@hono/zod-openapi@0.15.1':
-    resolution: {integrity: sha512-2Un3D5xD1j4tIvUwzQ/XkB6xwrEA0Ne23TRjB8UVw0PgUWzsB3xiB8Hl/y2ZEMfcIfrA15/ga4P6Bkct8uYaLg==}
+  '@hono/zod-openapi@0.16.4':
+    resolution: {integrity: sha512-mnF6GthBaKex0D5PsY/4lYNtkaGJNE38bjeUI//EUqq7Ee4TNm2su35IUiFH4HcmJp5fWYMLyOJOpjnkClzEGw==}
     engines: {node: '>=16.0.0'}
     peerDependencies:
       hono: '>=4.3.6'
@@ -1845,6 +1845,12 @@ packages:
 
   '@hono/zod-validator@0.2.2':
     resolution: {integrity: sha512-dSDxaPV70Py8wuIU2QNpoVEIOSzSXZ/6/B/h4xA7eOMz7+AarKTSGV8E6QwrdcCbBLkpqfJ4Q2TmBO0eP1tCBQ==}
+    peerDependencies:
+      hono: '>=3.9.0'
+      zod: ^3.19.1
+
+  '@hono/zod-validator@0.3.0':
+    resolution: {integrity: sha512-7XcTk3yYyk6ldrO/VuqsroE7stvDZxHJQcpATRAyha8rUxJNBPV3+6waDrARfgEqxOVlzIadm3/6sE/dPseXgQ==}
     peerDependencies:
       hono: '>=3.9.0'
       zod: ^3.19.1
@@ -4980,9 +4986,9 @@ packages:
     peerDependencies:
       hono: ^4.1.1
 
-  hono@4.5.1:
-    resolution: {integrity: sha512-6q8AugoWG5wlrjdGG8OFFiqEsPlPGjODjUik48sEJeko4Tae1UsLS2vUiYHLEJx1gJvOZa4BWkQC+urwDmkEvQ==}
-    engines: {node: '>=16.0.0'}
+  hono@4.6.6:
+    resolution: {integrity: sha512-euUj5qwvtkG+p38GFs0LYacwaoS2hYRAGn9ysAggiwT2QBcPnT1XYUCW3hatW4C1KzAXTYuQ08BlVDJtAGuhlg==}
+    engines: {node: '>=16.9.0'}
 
   html-to-text@9.0.5:
     resolution: {integrity: sha512-qY60FjREgVZL03vJU6IfMV4GDjGBIoOyvuFdpBDIX9yTlDw0TjxVBQp+P8NvpdIXNJvfWBTNul7fsAQJq2FNpg==}
@@ -8353,23 +8359,28 @@ snapshots:
 
   '@floating-ui/utils@0.2.5': {}
 
-  '@hono/zod-openapi@0.14.8(hono@4.5.1)(zod@3.23.8)':
+  '@hono/zod-openapi@0.14.8(hono@4.6.6)(zod@3.23.8)':
     dependencies:
       '@asteasolutions/zod-to-openapi': 7.1.1(zod@3.23.8)
-      '@hono/zod-validator': 0.2.2(hono@4.5.1)(zod@3.23.8)
-      hono: 4.5.1
+      '@hono/zod-validator': 0.2.2(hono@4.6.6)(zod@3.23.8)
+      hono: 4.6.6
       zod: 3.23.8
 
-  '@hono/zod-openapi@0.15.1(hono@4.5.1)(zod@3.23.8)':
+  '@hono/zod-openapi@0.16.4(hono@4.6.6)(zod@3.23.8)':
     dependencies:
       '@asteasolutions/zod-to-openapi': 7.1.1(zod@3.23.8)
-      '@hono/zod-validator': 0.2.2(hono@4.5.1)(zod@3.23.8)
-      hono: 4.5.1
+      '@hono/zod-validator': 0.3.0(hono@4.6.6)(zod@3.23.8)
+      hono: 4.6.6
       zod: 3.23.8
 
-  '@hono/zod-validator@0.2.2(hono@4.5.1)(zod@3.23.8)':
+  '@hono/zod-validator@0.2.2(hono@4.6.6)(zod@3.23.8)':
     dependencies:
-      hono: 4.5.1
+      hono: 4.6.6
+      zod: 3.23.8
+
+  '@hono/zod-validator@0.3.0(hono@4.6.6)(zod@3.23.8)':
+    dependencies:
+      hono: 4.6.6
       zod: 3.23.8
 
   '@hookform/resolvers@3.4.0(react-hook-form@7.51.4(react@18.3.1))':
@@ -12075,11 +12086,11 @@ snapshots:
 
   he@1.2.0: {}
 
-  hono-rate-limiter@0.4.0(hono@4.5.1):
+  hono-rate-limiter@0.4.0(hono@4.6.6):
     dependencies:
-      hono: 4.5.1
+      hono: 4.6.6
 
-  hono@4.5.1: {}
+  hono@4.6.6: {}
 
   html-to-text@9.0.5:
     dependencies:

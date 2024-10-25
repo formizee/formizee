@@ -4,6 +4,7 @@ import {HTTPException} from 'hono/http-exception';
 import {createRoute} from '@hono/zod-openapi';
 import {eq, schema} from '@formizee/db';
 import type {keys as keysAPI} from '.';
+import { KeyService } from '@formizee/keys';
 
 export const putRoute = createRoute({
   method: 'put',
@@ -35,13 +36,14 @@ export const putRoute = createRoute({
 
 export const registerPutKey = (api: typeof keysAPI) => {
   return api.openapi(putRoute, async context => {
-    const {analytics, database, keyService} = context.get('services');
+    const {analytics, database} = context.get('services');
     const workspace = context.get('workspace');
     const {id} = context.req.valid('param');
     const input = context.req.valid('json');
     const rootKey = context.get('key');
 
     const key = await database.query.key.findFirst({
+      //@ts-ignore
       where: (table, {and, eq}) =>
         and(eq(table.workspaceId, workspace.id), eq(table.id, id))
     });
@@ -67,7 +69,7 @@ export const registerPutKey = (api: typeof keysAPI) => {
 
     let expiresAt: Date;
     if (input.expiresAt !== undefined) {
-      expiresAt = keyService.generateExpiracyDate(input.expiresAt);
+      expiresAt = KeyService.generateExpiracyDate(input.expiresAt);
     } else {
       expiresAt = key.expiresAt;
     }

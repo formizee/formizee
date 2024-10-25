@@ -23,8 +23,8 @@
     "@formizee/keys": "workspace:*",
     "@formizee/plans": "workspace:*",
     "@formizee/tsconfig": "workspace:*",
-    "@hono/zod-openapi": "0.15.1",
-    "hono": "4.5.1",
+    "@hono/zod-openapi": "0.16.4",
+    "hono": "4.6.6",
     "hono-rate-limiter": "0.4.0",
     "zod": "3.23.8"
   },
