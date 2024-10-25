@@ -4,7 +4,7 @@ import {HTTPException} from 'hono/http-exception';
 import {createRoute} from '@hono/zod-openapi';
 import {eq, schema} from '@formizee/db';
 import type {keys as keysAPI} from '.';
-import { KeyService } from '@formizee/keys';
+import {KeyService} from '@formizee/keys';
 
 export const putRoute = createRoute({
   method: 'put',
