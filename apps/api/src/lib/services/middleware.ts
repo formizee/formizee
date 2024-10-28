@@ -18,8 +18,7 @@ export function services(): MiddlewareHandler<HonoEnv> {
       'location',
       c.req.header('True-Client-IP') ??
         c.req.header('CF-Connecting-IP') ??
-        // @ts-expect-error - the cf object will be there on cloudflare
-        c.req.raw?.cf?.colo ??
+        String(c.req.raw?.cf?.colo) ??
         ''
     );
 

@@ -1,7 +1,7 @@
 import type {Analytics} from '@formizee/analytics';
 import type {EmailService} from '@formizee/email';
 import type {KeyService} from '@formizee/keys';
-import type {Database} from '@formizee/db';
+import type {Database} from '@formizee/db/api';
 
 export interface Services {
   database: Database;
