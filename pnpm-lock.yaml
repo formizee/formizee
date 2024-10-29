@@ -201,6 +201,55 @@ importers:
         specifier: 4.0.254
         version: 4.0.254(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.5.4)
 
+  apps/vault:
+    dependencies:
+      '@formizee/analytics':
+        specifier: workspace:*
+        version: link:../../packages/analytics
+      '@formizee/error':
+        specifier: workspace:*
+        version: link:../../packages/error
+      '@formizee/id':
+        specifier: workspace:*
+        version: link:../../packages/id
+      '@formizee/tsconfig':
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
+      '@hono/zod-openapi':
+        specifier: 0.16.4
+        version: 0.16.4(hono@4.6.6)(zod@3.23.8)
+      hono:
+        specifier: 4.6.6
+        version: 4.6.6
+      hono-rate-limiter:
+        specifier: 0.4.0
+        version: 0.4.0(hono@4.6.6)
+      zod:
+        specifier: 3.23.8
+        version: 3.23.8
+    devDependencies:
+      '@cloudflare/vitest-pool-workers':
+        specifier: 0.5.22
+        version: 0.5.22(@cloudflare/workers-types@4.20241022.0)(@vitest/runner@2.1.3)(@vitest/snapshot@2.1.3)(vitest@2.1.3(@types/node@22.7.9)(terser@5.31.3))
+      '@cloudflare/workers-types':
+        specifier: 4.20241022.0
+        version: 4.20241022.0
+      '@types/node':
+        specifier: 22.7.9
+        version: 22.7.9
+      dotenv:
+        specifier: 16.4.5
+        version: 16.4.5
+      typescript:
+        specifier: 5.4.5
+        version: 5.4.5
+      vitest:
+        specifier: 2.1.3
+        version: 2.1.3(@types/node@22.7.9)(terser@5.31.3)
+      wrangler:
+        specifier: 3.83.0
+        version: 3.83.0(@cloudflare/workers-types@4.20241022.0)
+
   apps/web:
     dependencies:
       '@formizee/ui':
