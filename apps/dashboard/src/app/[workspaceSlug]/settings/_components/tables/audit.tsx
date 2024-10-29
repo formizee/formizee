@@ -58,7 +58,7 @@ export const columns: ColumnDef<schema.Key>[] = [
             <ReloadIcon />
             Rename
           </TableActionsItem>
-          <TableActionsItem>
+          <TableActionsItem onClick={() => console.log(key)}>
             <CloseIcon className="fill-red-500" />
             Delete
           </TableActionsItem>

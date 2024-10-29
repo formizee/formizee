@@ -31,7 +31,7 @@ export const TableActions = ({children}: TableActionsProps) => {
 
 interface TableActionsItemProps {
   children: React.ReactNode;
-  onClick: () => void;
+  onClick?: () => void;
   disabled?: boolean;
 }
 
