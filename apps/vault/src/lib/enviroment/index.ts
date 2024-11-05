@@ -4,6 +4,7 @@ import {z} from 'zod';
 export const zEnv = z.object({
   ENVIROMENT: z.enum(['test', 'preview', 'development', 'production']),
   VERSION: z.string().default(project.version),
+  DOCS_URL: z.string().url(),
 
   // Analytics
   TINYBIRD_URL: z.string().url().optional(),
