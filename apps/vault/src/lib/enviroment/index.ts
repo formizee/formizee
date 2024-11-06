@@ -5,6 +5,7 @@ export const zEnv = z.object({
   ENVIROMENT: z.enum(['test', 'preview', 'development', 'production']),
   VERSION: z.string().default(project.version),
   DOCS_URL: z.string().url(),
+  VAULT: z.custom<R2Bucket>(),
 
   // Analytics
   TINYBIRD_URL: z.string().url().optional(),
