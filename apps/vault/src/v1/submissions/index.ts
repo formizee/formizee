@@ -8,7 +8,7 @@ import {registerListSubmissions} from './list';
 import {registerDeleteSubmission} from './delete';
 
 const submissions = newRoute();
-submissions.use(authentication())
+submissions.use(authentication());
 
 registerGetSubmission(submissions);
 registerPostSubmission(submissions);
