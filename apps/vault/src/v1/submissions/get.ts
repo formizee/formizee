@@ -1,9 +1,8 @@
 import {SubmissionSchema, ParamsSchema} from './schema';
 import type {submissions as submissionsAPI} from '.';
 import {openApiErrorResponses} from '@/lib/errors';
-import {HTTPException} from 'hono/http-exception';
 import {createRoute} from '@hono/zod-openapi';
-import {decode} from 'msgpack-lite';
+import {getSubmission} from '@/lib/helpers';
 
 export const getRoute = createRoute({
   method: 'get',
@@ -29,34 +28,10 @@ export const getRoute = createRoute({
 export const registerGetSubmission = (api: typeof submissionsAPI) => {
   return api.openapi(getRoute, async context => {
     const {endpointId, id} = context.req.valid('param');
+    const key = `${endpointId}:${id}`;
+    const vault = context.env.VAULT;
 
-    // Retrieve the data from the vault
-    const data = await context.env.VAULT.get(
-      `${endpointId}:${id}`,
-      'arrayBuffer'
-    );
-    if (!data) {
-      throw new HTTPException(404, {
-        message: 'Submission not found'
-      });
-    }
-
-    // Decode the data
-    try {
-      const buffer = new Uint8Array(data);
-      const submission = decode(buffer);
-
-      const response = {
-        id,
-        endpointId,
-        data: submission
-      };
-
-      return context.json(response, 200);
-    } catch {
-      throw new HTTPException(500, {
-        message: 'There was a problem decoding the submission'
-      });
-    }
+    const response = await getSubmission(key, vault, true);
+    return context.json(response, 200);
   });
 };

@@ -27,9 +27,10 @@ export const deleteRoute = createRoute({
 export const registerDeleteSubmission = (api: typeof submissionsAPI) => {
   return api.openapi(deleteRoute, async context => {
     const {endpointId, id} = context.req.valid('param');
+    const key = `${endpointId}:${id}`;
+    const vault = context.env.VAULT;
 
-    await context.env.VAULT.delete(`${endpointId}:${id}`);
-
+    await vault.delete(key);
     return context.json({}, 200);
   });
 };

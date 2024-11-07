@@ -1,14 +1,8 @@
-import {
-  type DataSchema,
-  generateSchema,
-  validateDataWithSchema
-} from '@/lib/schemas';
-import {SubmissionSchema, ResponseSchema} from './schema';
+import {getSchema, generateSchema, uploadSubmission} from '@/lib/helpers';
 import type {submissions as submissionsAPI} from '.';
 import {openApiErrorResponses} from '@/lib/errors';
-import {createRoute} from '@hono/zod-openapi';
-import {encode} from 'msgpack-lite';
-import {HTTPException} from 'hono/http-exception';
+import {createRoute, z} from '@hono/zod-openapi';
+import {PostSchema} from './schema';
 
 export const postRoute = createRoute({
   method: 'post',
@@ -19,7 +13,7 @@ export const postRoute = createRoute({
     body: {
       content: {
         'application/json': {
-          schema: SubmissionSchema
+          schema: PostSchema
         }
       }
     }
@@ -29,7 +23,7 @@ export const postRoute = createRoute({
       description: 'Create a submission',
       content: {
         'application/json': {
-          schema: ResponseSchema
+          schema: z.object({})
         }
       }
     },
@@ -39,53 +33,19 @@ export const postRoute = createRoute({
 
 export const registerPostSubmission = (api: typeof submissionsAPI) => {
   return api.openapi(postRoute, async context => {
-    const input = context.req.valid('json');
+    const {id, data, endpointId} = context.req.valid('json');
+    const key = `${endpointId}/${id}`;
+    const bucket = context.env.BUCKET;
+    const vault = context.env.VAULT;
 
-    // Get the schema
-    const schemaObject = await context.env.BUCKET.get(
-      `${input.endpointId}/schema.json`
-    );
-    let rawSchema = await schemaObject?.text();
+    let schema = await getSchema(endpointId, bucket);
 
-    // If the schema does not exists, create a new one
-    if (!rawSchema) {
-      rawSchema = generateSchema(input.data);
-      await context.env.BUCKET.put(
-        `${input.endpointId}/schema.json`,
-        rawSchema
-      );
+    if (!schema) {
+      schema = await generateSchema(endpointId, data, bucket);
     }
 
-    // Parse the schema
-    let schema: DataSchema;
-    try {
-      schema = JSON.parse(rawSchema);
-    } catch {
-      throw new HTTPException(500, {
-        message: 'Internal error while parsing the submission schema'
-      });
-    }
+    await uploadSubmission(key, data, schema, vault);
 
-    // Validate the schema with the new submission
-    const dataIsCorrect = validateDataWithSchema(input.data, schema);
-    if (!dataIsCorrect) {
-      throw new HTTPException(403, {
-        message:
-          'The submission structure does not match with the current data structure of the endpoint'
-      });
-    }
-
-    // Generate the new submission encoded
-    const submission = encode(input.data);
-    await context.env.VAULT.put(`${input.endpointId}:${input.id}`, submission);
-
-    // Return submission metadata
-    const response = {
-      id: input.id,
-      endpointId: input.endpointId,
-      createdAt: new Date().toString()
-    };
-
-    return context.json(response, 201);
+    return context.json({}, 201);
   });
 };

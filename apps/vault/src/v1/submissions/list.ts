@@ -1,9 +1,10 @@
+import {getSchema, getSubmission, type DataSchema} from '@/lib/helpers';
 import {MetadataSchema, calculateTotalPages} from '@/lib/pagination';
-import {ListSchema, ListSubmissionsResponseSchema} from './schema';
+import {ListSchema, SubmissionSchema} from './schema';
 import type {submissions as submissionsAPI} from '.';
 import {openApiErrorResponses} from '@/lib/errors';
+import {HTTPException} from 'hono/http-exception';
 import {createRoute, z} from '@hono/zod-openapi';
-import {decode} from 'msgpack-lite';
 
 export const listRoute = createRoute({
   method: 'post',
@@ -25,8 +26,12 @@ export const listRoute = createRoute({
       content: {
         'application/json': {
           schema: z.object({
-            _metadata: MetadataSchema,
-            submissions: ListSubmissionsResponseSchema.array()
+            _metadata: MetadataSchema.merge(
+              z.object({
+                schema: z.custom<DataSchema>()
+              })
+            ),
+            submissions: SubmissionSchema.array()
           })
         }
       }
@@ -39,49 +44,64 @@ export const registerListSubmissions = (api: typeof submissionsAPI) => {
   return api.openapi(listRoute, async context => {
     const {page, limit} = context.get('pagination');
     const input = context.req.valid('json');
+    const bucket = context.env.BUCKET;
+    const vault = context.env.VAULT;
+
+    // List all submissions for the endpoint.
+    const list = await vault.list({prefix: `${input.endpointId}:`});
+
+    if (list.keys.length < 1) {
+      return context.json(
+        {
+          _metadata: {
+            schema: {},
+            page: 1,
+            totalPages: 1,
+            itemsPerPage: 0
+          },
+          submissions: []
+        },
+        200
+      );
+    }
+
+    // Get the endpoint schema from the bucket
+    const schema = await getSchema(input.endpointId, bucket);
+
+    if (!schema) {
+      throw new HTTPException(404, {
+        message: 'Endpoint schema not found'
+      });
+    }
+
+    // Calculate pagination values.
+    const totalPages = calculateTotalPages(page, list.keys.length, limit);
     const offset = (page - 1) * limit;
 
-    // Retrieve all submissions for the endpoint
-    const list = await context.env.VAULT.list({prefix: `${input.endpointId}:`});
-    const totalPages = calculateTotalPages(page, list.keys.length, limit);
+    // Retrieve the current keys of the submissions.
     const keys = list.keys.slice(offset, offset + limit);
 
-    // Fetch submissions in a batch
-    const submissions = await Promise.all(
+    // Fetch submissions in a batch.
+    const data = await Promise.all(
       keys.map(async key => {
-        const data = await context.env.VAULT.get(key.name, 'arrayBuffer');
-        if (!data) {
-          return;
-        }
-
-        try {
-          const buffer = new Uint8Array(data);
-          const submission = decode(buffer);
-
-          const response = {
-            id: key.name.split(':')[1],
-            data: submission
-          };
-
-          return response;
-        } catch {
-          return;
-        }
+        return await getSubmission(key.name, vault);
       })
     );
 
-    const response = submissions.map(submission =>
-      ListSubmissionsResponseSchema.parse(submission)
+    // Parse submissions data.
+    const submissions = data.map(submission =>
+      SubmissionSchema.parse(submission)
     );
 
     return context.json(
       {
         _metadata: {
+          schema: schema,
           page,
           totalPages,
           itemsPerPage: limit
         },
-        submissions: response
+        submissions
       },
       200
     );
