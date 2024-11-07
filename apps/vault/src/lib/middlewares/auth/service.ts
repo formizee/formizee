@@ -1,6 +1,6 @@
 import type {MiddlewareHandler} from 'hono';
 import type {HonoEnv} from '@/lib/hono';
-import { HTTPException } from 'hono/http-exception';
+import {HTTPException} from 'hono/http-exception';
 
 export const authentication = (): MiddlewareHandler<HonoEnv> => {
   return async function auth(context, next) {
