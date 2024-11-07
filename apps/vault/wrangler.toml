@@ -16,8 +16,10 @@ ENVIROMENT = "development"
 VERSION = "1.0.0"
 
 [env.production]
-name = "vault"
 vars = { ENVIROMENT = "production", DOCS_URL="https://docs.formizee.com", VERSION="1.0.0" }
+kv_namespaces = [ { binding = "VAULT", id = "03dacbed06b542a69a4abbfb52b72d2e" } ]
+r2_buckets = [ { binding = "BUCKET", bucket_name = "vault" } ]
+name = "vault"
 
 [[r2_buckets]]
 binding = "BUCKET"
