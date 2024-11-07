@@ -1,0 +1,1 @@
+VAULT_SECRET = "openssl rand -base64 33"
