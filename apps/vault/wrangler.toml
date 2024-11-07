@@ -12,6 +12,11 @@ ENVIROMENT = "development"
 VERSION = "1.0.0"
 
 [[r2_buckets]]
-binding = "VAULT"
+binding = "BUCKET"
 bucket_name = "vault"
 preview_bucket_name = "preview"
+
+[[kv_namespaces]]
+binding = "VAULT"
+id = "03dacbed06b542a69a4abbfb52b72d2e"
+preview_id = "c23ba34f403241089cdc39003e023788"

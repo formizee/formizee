@@ -9,7 +9,6 @@ app.route('/v1', api);
 
 export default {
   async fetch(req: Request, env: Env, executionCtx: ExecutionContext) {
-    console.log(env);
     const parsedEnv = zEnv.safeParse(env);
     if (!parsedEnv.success) {
       console.error(`BAD_ENVIRONMENT: ${parsedEnv.error.message}`);
