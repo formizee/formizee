@@ -1,4 +1,4 @@
-import {type DataSchema, generateSchema, validateData} from '@/lib/schemas';
+import {type DataSchema, generateSchema, validateDataWithSchema} from '@/lib/schemas';
 import {SubmissionSchema, ResponseSchema} from './schema';
 import type {submissions as submissionsAPI} from '.';
 import {openApiErrorResponses} from '@/lib/errors';
@@ -63,7 +63,7 @@ export const registerPostSubmission = (api: typeof submissionsAPI) => {
     }
 
     // Validate the schema with the new submission
-    const dataIsCorrect = validateData(input.data, schema);
+    const dataIsCorrect = validateDataWithSchema(input.data, schema);
     if (!dataIsCorrect) {
       throw new HTTPException(403, {
         message:

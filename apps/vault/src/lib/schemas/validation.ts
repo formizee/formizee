@@ -1,6 +1,4 @@
-export type DataSchema = {
-  [key: string]: string;
-};
+import type {DataSchema} from './types';
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export const generateSchema = (data: Record<string, any>): string => {
@@ -14,19 +12,19 @@ export const generateSchema = (data: Record<string, any>): string => {
   return JSON.stringify(schema);
 };
 
-export const validateData = (
+export const validateDataWithSchema = (
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   data: Record<string, any>,
   schema: DataSchema
 ): boolean => {
   for (const key in schema) {
     if (!(key in data)) {
-      return false; // Missing key in data
+      return false;
     }
     // biome-ignore lint/suspicious/useValidTypeof: <explanation>
     if (typeof data[key] !== schema[key]) {
-      return false; // Type mismatch (e.g., expected 'string', but found 'number')
+      return false;
     }
   }
-  return true; // Data matches the schema
+  return true;
 };
