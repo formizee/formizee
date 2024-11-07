@@ -1,12 +1,13 @@
 import {newRoute} from '@/lib/hono';
 
 import {health} from './health';
-import {workspaces} from './workspaces';
+import {listSubmissions, submissions} from './submissions';
 
 const api = newRoute('/');
 
 api.route('/status', health);
 
-api.route('/workspace', workspaces);
+api.route('/submission', submissions);
+api.route('/submissions', listSubmissions);
 
 export default api;
