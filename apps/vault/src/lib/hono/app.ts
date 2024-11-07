@@ -1,7 +1,7 @@
-import { handleError, handleNotFound, handleZodError } from '@/lib/errors';
-import { OpenAPIHono } from '@hono/zod-openapi';
-import { services } from '@/lib/services';
-import type { HonoEnv } from './types';
+import {handleError, handleNotFound, handleZodError} from '@/lib/errors';
+import {OpenAPIHono} from '@hono/zod-openapi';
+import {services} from '@/lib/services';
+import type {HonoEnv} from './types';
 import {
   csrf,
   logger,
@@ -64,7 +64,7 @@ export const newApp = (): OpenAPIHono<HonoEnv> => {
         description: 'Stable Release'
       }
     ],
-    tags: [{ name: 'Health' }, { name: 'Endpoints' }, { name: 'Submissions' }],
+    tags: [{name: 'Health'}, {name: 'Endpoints'}, {name: 'Submissions'}],
     security: [
       {
         bearerAuth: []
