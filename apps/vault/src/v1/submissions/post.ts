@@ -1,4 +1,8 @@
-import {type DataSchema, generateSchema, validateDataWithSchema} from '@/lib/schemas';
+import {
+  type DataSchema,
+  generateSchema,
+  validateDataWithSchema
+} from '@/lib/schemas';
 import {SubmissionSchema, ResponseSchema} from './schema';
 import type {submissions as submissionsAPI} from '.';
 import {openApiErrorResponses} from '@/lib/errors';
