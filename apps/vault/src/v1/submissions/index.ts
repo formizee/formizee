@@ -3,8 +3,8 @@ import {newRoute} from '@/lib/hono';
 
 import {registerGetSubmission} from './get';
 import {registerPostSubmission} from './post';
-import {registerDeleteSubmission} from './delete';
 import {registerListSubmissions} from './list';
+import {registerDeleteSubmission} from './delete';
 
 const submissions = newRoute();
 
