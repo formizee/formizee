@@ -55,3 +55,13 @@ export const uploadSubmission = async (
   const submission = encode(data);
   await vault.put(key, submission);
 };
+
+export const deleteSubmission = async (key: string, vault: KVNamespace) => {
+  const submission = await vault.get(key, 'arrayBuffer');
+
+  if (!submission) {
+    throw new HTTPException(404, {message: 'Submission not found'});
+  }
+
+  await vault.delete(key);
+};

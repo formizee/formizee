@@ -45,6 +45,19 @@ export const generateSchema = async (
   return schema;
 };
 
+export const deleteSchema = async (endpointId: string, bucket: R2Bucket) => {
+  const schemaObject = await bucket.get(`${endpointId}/schema.json`);
+  const schema = await schemaObject?.text();
+
+  if (!schema) {
+    throw new HTTPException(404, {
+      message: 'Endpoint schema not found'
+    });
+  }
+
+  await bucket.delete(`${endpointId}/schema.json`);
+};
+
 export const validateData = (
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   data: Record<string, any>,
