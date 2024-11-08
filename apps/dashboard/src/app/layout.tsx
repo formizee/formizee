@@ -1,3 +1,4 @@
+import {Analytics} from '@vercel/analytics/react';
 import {ThemeProvider} from '@/components/theme';
 import {Toaster} from '@formizee/ui/toaster';
 import {Inter} from 'next/font/google';
@@ -51,6 +52,7 @@ export default function RootLayout({
             <Toaster />
           </TrpcProvider>
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
