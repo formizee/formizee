@@ -11,7 +11,10 @@ export const env = () =>
       VERCEL_URL: z.string().optional(),
 
       // Databases
-      DATABASE_URL: z.string().url().default("postgresql://formizee:password@localhost/formizee"),
+      DATABASE_URL: z
+        .string()
+        .url()
+        .default('postgresql://formizee:password@localhost/formizee'),
 
       // Analytics
       TINYBIRD_URL: z.string().url().optional(),
