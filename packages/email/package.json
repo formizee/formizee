@@ -22,10 +22,10 @@
   "dependencies": {
     "@formizee/plans": "workspace:*",
     "@formizee/tailwind": "workspace:*",
-    "@react-email/components": "0.0.22",
-    "@react-email/render": "0.0.17",
-    "@react-email/tailwind": "0.0.19",
-    "react-email": "2.1.6",
+    "@react-email/components": "0.0.27",
+    "@react-email/render": "1.0.2",
+    "@react-email/tailwind": "1.0.1",
+    "react-email": "3.0.2",
     "resend": "3.5.0",
     "zod": "3.23.8"
   }
