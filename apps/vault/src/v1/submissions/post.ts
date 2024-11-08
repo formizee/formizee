@@ -34,7 +34,7 @@ export const postRoute = createRoute({
 export const registerPostSubmission = (api: typeof submissionsAPI) => {
   return api.openapi(postRoute, async context => {
     const {id, data, endpointId} = context.req.valid('json');
-    const key = `${endpointId}/${id}`;
+    const key = `${endpointId}:${id}`;
     const bucket = context.env.BUCKET;
     const vault = context.env.VAULT;
 
