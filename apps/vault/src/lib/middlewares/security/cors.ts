@@ -5,7 +5,7 @@ import {cors as honoCors} from 'hono/cors';
 export const cors = (): MiddlewareHandler<HonoEnv> => {
   return async function handler(_context, next) {
     honoCors({
-      origin: "*",
+      origin: '*',
       allowMethods: ['GET', 'POST', 'DELETE'],
       credentials: true
     });
