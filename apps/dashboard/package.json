@@ -7,7 +7,6 @@
   "scripts": {
     "build": "next build",
     "start": "next start",
-    "check": "tsc --noEmit",
     "lint": "biome lint src",
     "dev": "next dev --port 3001"
   },
