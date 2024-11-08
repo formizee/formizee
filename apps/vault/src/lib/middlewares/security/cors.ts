@@ -5,11 +5,7 @@ import {cors as honoCors} from 'hono/cors';
 export const cors = (): MiddlewareHandler<HonoEnv> => {
   return async function handler(_context, next) {
     honoCors({
-      origin: origin => {
-        const allowedOrigins =
-          /^(https?:\/\/)?((.*\.)?formizee\.com|localhost:3001)$/;
-        return allowedOrigins.test(origin) ? origin : null;
-      },
+      origin: "*",
       allowMethods: ['GET', 'POST', 'DELETE'],
       credentials: true
     });
