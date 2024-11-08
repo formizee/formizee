@@ -72,6 +72,7 @@ export const LoginForm = ({redirectTo}: {redirectTo: string}) => {
               <FormControl>
                 <Input
                   autoComplete="off"
+                  className="text-neutral-900 dark:text-neutral-50"
                   placeholder="you@mail.com"
                   required
                   type="email"
