@@ -43,7 +43,7 @@ export const EndpointTabs = ({endpoint}: Props) => {
         <Overview endpointId={endpoint?.id} />
       </TabsContent>
       <TabsContent value="submissions">
-        <Submissions />
+        <Submissions endpointId={endpoint?.id} />
       </TabsContent>
       <TabsContent value="integrations">
         <Integrations />

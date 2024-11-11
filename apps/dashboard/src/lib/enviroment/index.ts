@@ -16,6 +16,9 @@ export const env = () =>
         .url()
         .default('postgresql://formizee:password@localhost/formizee'),
 
+      // Storage
+      VAULT_SECRET: z.string().default(''),
+
       // Analytics
       TINYBIRD_URL: z.string().url().optional(),
       TINYBIRD_TOKEN: z.string().optional(),
