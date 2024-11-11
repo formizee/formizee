@@ -36,6 +36,7 @@ export const Overview = ({endpointId}: Props) => {
             <Link
               className="text-amber-500 dark:text-amber-400"
               href="https://docs.formizee.com/concepts"
+              target="_blank"
             >
               Endpoint ID
             </Link>
