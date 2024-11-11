@@ -23,7 +23,7 @@ const Settings = async () => {
   return (
     <div className="flex flex-col h-screen">
       <Navbar userId={user.id} />
-      <Transition className="container px-8 flex flex-1 flex-col w-full pt-20 pb-10">
+      <Transition className="container px-8 flex flex-1 flex-col w-full pt-24 pb-10">
         <div className="flex flex-row gap-4 items-center mt-2 mb-6">
           <div className="flex items-center justify-center size-12 rounded-md bg-neutral-600 dark:bg-neutral-400">
             <span className="fixed text-neutral-50 dark:text-neutral-950 font-semibold text-2xl">

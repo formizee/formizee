@@ -1,4 +1,5 @@
 import {
+  ClipboardButton,
   SettingsCard,
   SettingsCardContent,
   SettingsCardFooter,
@@ -59,7 +60,14 @@ const GeneralSettings = ({user}: {user: schema.User}) => {
           <SettingsCardLabel>
             This is your user ID within Formizee.
           </SettingsCardLabel>
-          <Input disabled defaultValue={user.id} className="max-w-96" />
+          <div className="flex items-center justify-between max-w-96 border rounded-md border py-2 pl-2 pr-0 text-sm h-9 border-neutral-200 dark:border-neutral-800">
+            {user.id}
+            <ClipboardButton
+              data={user.id}
+              description="Your User ID is copied to your clipboard."
+              className="border-none hover:bg-transparent bg-transparent shadow-none"
+            />
+          </div>
         </SettingsCardContent>
         <SettingsCardFooter>
           <SettingsCardFooterLabel>

@@ -70,7 +70,7 @@ export const SettingsTabs = ({workspaceSlug}: Props) => {
   };
 
   return (
-    <div className="flex flex-row items-center gap-2">
+    <div className="flex flex-row mt-8 items-center gap-2">
       <TabItem type="general">
         <SettingsIcon />
         General

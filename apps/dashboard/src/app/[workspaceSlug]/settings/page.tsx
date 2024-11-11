@@ -29,7 +29,7 @@ const General = async ({params}: {params: Params}) => {
   }
 
   return (
-    <Transition className="flex flex-col mt-6 py-6 gap-6">
+    <Transition className="flex flex-col mt-4 py-6 gap-6">
       <UpdateNameCard
         workspaceId={workspace.id}
         workspaceName={workspace.name}
