@@ -15,6 +15,11 @@
       "import": "./dist/components/form/index.mjs",
       "require": "./dist/components/form/index.js"
     },
+    "./sidebar": {
+      "types": "./src/components/sidebar/index.tsx",
+      "import": "./dist/components/sidebar/index.mjs",
+      "require": "./dist/components/sidebar/index.js"
+    },
     "./toaster": {
       "types": "./src/components/toast/toaster.tsx",
       "import": "./dist/components/toast/toaster.mjs",
@@ -28,18 +33,20 @@
     "./globals.css": "./dist/index.css"
   },
   "scripts": {
-    "build": "tsup",
-    "dev": "tsup --watch",
     "check": "tsc --noEmit",
+    "build": "NODE_OPTIONS='--max-old-space-size=4096' tsup",
+    "dev": "NODE_OPTIONS='--max-old-space-size=4096' tsup --watch",
     "dev:styles": "tailwindcss -i ./src/styles/globals.css -o ./dist/index.css --watch",
     "build:styles": "tailwindcss -i ./src/styles/globals.css -o ./dist/index.css --minify"
   },
   "dependencies": {
+    "@radix-ui/react-collapsible": "1.1.1",
     "@radix-ui/react-dialog": "1.0.5",
     "@radix-ui/react-dropdown-menu": "2.0.6",
     "@radix-ui/react-label": "2.0.2",
     "@radix-ui/react-popover": "1.1.1",
     "@radix-ui/react-select": "2.1.1",
+    "@radix-ui/react-separator": "1.1.0",
     "@radix-ui/react-slot": "1.0.2",
     "@radix-ui/react-tabs": "1.0.4",
     "@radix-ui/react-toast": "1.1.5",
