@@ -14,6 +14,7 @@ WEB_URL = "http://localhost:3000"
 ENVIROMENT = "development"
 VERSION = "1.0.0"
 
+services = [ { binding = "VAULT", service = "vault" } ]
 
 [env.preview]
 vars = { ENVIROMENT = "preview" }
@@ -24,3 +25,4 @@ vars = { ENVIROMENT = "development" }
 [env.production]
 name = "api"
 vars = { ENVIROMENT = "production", API_URL="https://api.formizee.com", DOCS_URL="https://docs.formizee.com", WEB_URL="https://formizee.com", VERSION="1.0.0" }
+services = [ { binding = "VAULT", service = "vault" } ]

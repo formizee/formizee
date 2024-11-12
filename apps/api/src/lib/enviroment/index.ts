@@ -14,6 +14,7 @@ export const zEnv = z.object({
 
   // Storage
   DATABASE_URL: z.string().url(),
+  VAULT: z.custom<Fetcher>(),
   VAULT_SECRET: z.string(),
 
   // Communication

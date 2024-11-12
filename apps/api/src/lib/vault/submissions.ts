@@ -1,17 +1,11 @@
-const VAULT_URL = 'https://vault.formizee.com/v1';
-
 export const getSubmission = async (
-  VAULT_SECRET: string,
+  vault: Fetcher,
+  secret: string,
   id: string
 ): Promise<{id: string; data: object}> => {
-  const response = await fetch(`${VAULT_URL}/submission/${id}`, {
-    method: 'GET',
-    mode: 'no-cors',
-    credentials: 'include',
-    headers: {
-      Authorization: VAULT_SECRET,
-      'Content-Type': 'application/json'
-    }
+  const response = await vault.fetch(`/v1/submission/${id}`, {
+    headers: {Authorization: `Bearer ${secret}`},
+    method: 'GET'
   });
 
   const result = await response.json();
@@ -19,29 +13,27 @@ export const getSubmission = async (
 };
 
 export const postSubmission = async (
-  VAULT_SECRET: string,
+  vault: Fetcher,
+  secret: string,
   data: {id: string; endpointId: string; data: object}
 ) => {
-  await fetch(`${VAULT_URL}/submission`, {
-    method: 'POST',
-    mode: 'no-cors',
+  await vault.fetch('/v1/submission', {
     body: JSON.stringify(data),
-    credentials: 'include',
+    method: 'POST',
     headers: {
-      Authorization: VAULT_SECRET,
+      Authorization: `Bearer ${secret}`,
       'Content-Type': 'application/json'
     }
   });
 };
 
-export const deleteSubmission = async (VAULT_SECRET: string, id: string) => {
-  await fetch(`${VAULT_URL}/submission/${id}`, {
-    method: 'DELETE',
-    mode: 'no-cors',
-    credentials: 'include',
-    headers: {
-      Authorization: VAULT_SECRET,
-      'Content-Type': 'application/json'
-    }
+export const deleteSubmission = async (
+  vault: Fetcher,
+  secret: string,
+  id: string
+) => {
+  await vault.fetch(`/v1/submission/${id}`, {
+    headers: {Authorization: `Bearer ${secret}`},
+    method: 'DELETE'
   });
 };
