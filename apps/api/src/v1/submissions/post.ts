@@ -203,7 +203,7 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
       .values(data)
       .returning();
 
-    await postSubmission(context.env.VAULT, context.env.VAULT_SECRET, {
+    await postSubmission(context.env.VAULT_SECRET, {
       endpointId: data.endpointId,
       id: data.id,
       data: input

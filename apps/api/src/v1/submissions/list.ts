@@ -71,7 +71,6 @@ export const registerListSubmissions = (api: typeof submissionsApi) => {
     const submissionsData = await Promise.all(
       submissions.map(async submission => {
         const content = await getSubmission(
-          context.env.VAULT,
           context.env.VAULT_SECRET,
           submission.id
         );
