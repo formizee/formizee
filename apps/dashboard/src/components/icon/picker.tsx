@@ -66,7 +66,7 @@ export const IconPicker = ({endpoint}: Props) => {
     <div className="flex flex-col">
       <Popover>
         <PopoverTrigger asChild>
-          <Button variant="outline" size="icon" className="size-12">
+          <Button variant="ghost" size="icon" className="size-12">
             {isLoading ? (
               <LoadingIcon className="size-8" />
             ) : (
