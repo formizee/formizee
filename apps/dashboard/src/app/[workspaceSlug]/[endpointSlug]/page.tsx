@@ -14,9 +14,7 @@ interface Params {
 }
 
 const EndpointPage = ({params}: {params: Params}) => {
-  const {data, error} = api.endpoint.getBySlug.useQuery(params, {
-    retry: 0
-  });
+  const {data, error} = api.endpoint.getBySlug.useQuery(params);
   const endpoint = data ?? null;
   const router = useRouter();
 
@@ -30,11 +28,9 @@ const EndpointPage = ({params}: {params: Params}) => {
   }
 
   return (
-    <Transition className="flex flex-col w-full items-center pt-20 justify-start">
-      <main className="container flex flex-col">
-        <Heading endpoint={endpoint} />
-        <Tabs endpoint={endpoint} />
-      </main>
+    <Transition className="container flex-col w-full items-center pt-20 justify-start">
+      <Heading endpoint={endpoint} />
+      <Tabs endpoint={endpoint} />
     </Transition>
   );
 };
