@@ -6,8 +6,6 @@ export const getSubmission = async (
 ): Promise<{id: string; data: object}> => {
   const response = await fetch(`${VAULT_URL}/submission/${id}`, {
     method: 'GET',
-    mode: 'no-cors',
-    credentials: 'include',
     headers: {
       Authorization: VAULT_SECRET,
       'Content-Type': 'application/json'
@@ -24,9 +22,7 @@ export const postSubmission = async (
 ) => {
   await fetch(`${VAULT_URL}/submission`, {
     method: 'POST',
-    mode: 'no-cors',
     body: JSON.stringify(data),
-    credentials: 'include',
     headers: {
       Authorization: VAULT_SECRET,
       'Content-Type': 'application/json'
@@ -37,8 +33,6 @@ export const postSubmission = async (
 export const deleteSubmission = async (VAULT_SECRET: string, id: string) => {
   await fetch(`${VAULT_URL}/submission/${id}`, {
     method: 'DELETE',
-    mode: 'no-cors',
-    credentials: 'include',
     headers: {
       Authorization: VAULT_SECRET,
       'Content-Type': 'application/json'
