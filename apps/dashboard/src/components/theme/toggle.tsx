@@ -15,7 +15,11 @@ export const ThemeToggle = () => {
       className="transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-800"
       onClick={onClick}
     >
-      {theme === 'light' ? <SunIcon /> : <MoonIcon />}
+      {theme === 'light' ? (
+        <SunIcon variant="outline" />
+      ) : (
+        <MoonIcon variant="outline" />
+      )}
       Toggle Theme
     </DropdownMenuItem>
   );

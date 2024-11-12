@@ -6,6 +6,7 @@ import {
   SidebarMenuSkeleton
 } from '@formizee/ui/sidebar';
 import {Icon} from '../icon';
+import Link from 'next/link';
 
 interface EndpointItemProps {
   children: React.ReactNode;
@@ -22,14 +23,14 @@ export const EndpointItem = (props: EndpointItemProps) => {
         asChild
         className="transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-800"
       >
-        <a href={props.href}>
+        <Link href={props.href}>
           <Icon
             icon={props.icon}
             color={props.color}
             selected={props.selected}
           />
           <span>{props.children}</span>
-        </a>
+        </Link>
       </SidebarMenuButton>
     </SidebarMenuItem>
   );

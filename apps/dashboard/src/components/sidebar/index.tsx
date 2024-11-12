@@ -1,4 +1,4 @@
-import {BookIcon, SearchIcon, SettingsIcon} from '@formizee/ui/icons';
+import {BookIcon, SettingsIcon} from '@formizee/ui/icons';
 import {
   Sidebar,
   SidebarContent,
@@ -14,13 +14,9 @@ import {Logo} from '@formizee/ui';
 import {Account} from './account';
 import {auth} from '@/lib/auth';
 import {redirect} from 'next/navigation';
+import {SearchPalette} from '../command-palette';
 
 const items = [
-  {
-    title: 'Search',
-    url: '#',
-    icon: SearchIcon
-  },
   {
     title: 'Settings',
     url: '/settings',
@@ -58,6 +54,7 @@ export const AppSidebar = async (props: AppSidebarProps) => {
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
+              <SearchPalette workspaceSlug={props.workspaceSlug} />
               {items.map(item => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton
@@ -74,7 +71,6 @@ export const AppSidebar = async (props: AppSidebarProps) => {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
-              <SidebarMenuItem></SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
