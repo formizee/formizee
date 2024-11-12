@@ -124,7 +124,7 @@ export abstract class Harness {
 
     const submission: schema.Submission = {
       id: newId('test'),
-      data: {example: 'formizee'},
+      data: {},
       endpointId: endpoint.id,
       createdAt: new Date(),
       location: 'Spain',

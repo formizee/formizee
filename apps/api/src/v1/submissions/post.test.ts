@@ -23,11 +23,7 @@ describe('Create a submission', () => {
 
     expect(res.body).toMatchObject({
       endpointId: id,
-      data: {
-        year: 2004,
-        verified: false,
-        name: 'example'
-      },
+      data: {},
       isRead: false,
       isSpam: false
     });

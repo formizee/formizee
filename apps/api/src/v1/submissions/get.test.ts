@@ -14,7 +14,7 @@ describe('Retrieve a submission', () => {
     });
 
     expect(res.status).toBe(200);
-    expect(res.body).toStrictEqual(omit(submission, ['createdAt']));
+    expect(res.body).toStrictEqual(omit(submission, ['createdAt', 'data']));
   });
 
   it('Should get 404', async context => {

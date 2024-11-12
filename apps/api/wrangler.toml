@@ -3,6 +3,10 @@ node_compat = true
 main = "src/index.ts"
 compatibility_date = "2024-01-01"
 
+[observability]
+enabled = true
+head_sampling_rate = 1
+
 [vars]
 API_URL = "http://localhost:8787"
 DOCS_URL = "http://localhost:3002"

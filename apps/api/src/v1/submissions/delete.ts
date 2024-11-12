@@ -4,6 +4,7 @@ import {HTTPException} from 'hono/http-exception';
 import {createRoute, z} from '@hono/zod-openapi';
 import {eq, schema} from '@formizee/db';
 import {ParamsSchema} from './schema';
+import {deleteSubmission} from '@/lib/vault';
 
 export const deleteRoute = createRoute({
   method: 'delete',
@@ -61,6 +62,8 @@ export const registerDeleteSubmission = (api: typeof submissionsApi) => {
     await database
       .delete(schema.submission)
       .where(eq(schema.submission.id, submission.id));
+
+    await deleteSubmission(context.env.VAULT_SECRET, submission.id);
 
     return context.json({}, 200);
   });

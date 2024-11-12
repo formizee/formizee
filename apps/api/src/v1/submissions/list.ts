@@ -9,6 +9,7 @@ import {openApiErrorResponses} from '@/lib/errors';
 import {HTTPException} from 'hono/http-exception';
 import {createRoute, z} from '@hono/zod-openapi';
 import {count, eq, schema} from '@formizee/db';
+import {getSubmission} from '@/lib/vault';
 
 export const listRoute = createRoute({
   method: 'get',
@@ -67,6 +68,16 @@ export const registerListSubmissions = (api: typeof submissionsApi) => {
       });
     }
 
+    const submissionsData = await Promise.all(
+      submissions.map(async submission => {
+        const content = await getSubmission(
+          context.env.VAULT_SECRET,
+          submission.id
+        );
+        return {...submission, data: content.data};
+      })
+    );
+
     async function countTotalItems(): Promise<number> {
       const data = await database
         .select({totalItems: count()})
@@ -85,7 +96,7 @@ export const registerListSubmissions = (api: typeof submissionsApi) => {
     const totalItems = await countTotalItems();
     const totalPages = calculateTotalPages(page, totalItems, limit);
 
-    const response = submissions.map(submission =>
+    const response = submissionsData.map(submission =>
       SubmissionSchema.parse(submission)
     );
     return context.json(

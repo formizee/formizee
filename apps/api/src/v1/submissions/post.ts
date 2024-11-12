@@ -5,6 +5,7 @@ import {HTTPException} from 'hono/http-exception';
 import {createRoute} from '@hono/zod-openapi';
 import {eq, count, schema} from '@formizee/db';
 import {newId} from '@formizee/id';
+import {postSubmission} from '@/lib/vault';
 
 export const postRoute = createRoute({
   method: 'post',
@@ -193,7 +194,7 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
     const data: schema.InsertSubmission = {
       id: newId('submission'),
       endpointId: endpoint.id,
-      data: input,
+      data: {},
       location
     };
 
@@ -201,6 +202,12 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
       .insert(schema.submission)
       .values(data)
       .returning();
+
+    await postSubmission(context.env.VAULT_SECRET, {
+      endpointId: data.endpointId,
+      id: data.id,
+      data: input
+    });
 
     if (
       endpoint.emailNotifications &&

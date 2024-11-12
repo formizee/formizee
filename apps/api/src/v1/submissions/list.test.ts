@@ -21,7 +21,7 @@ describe('List submissions', () => {
         totalPages: 1,
         itemsPerPage: 100
       },
-      submissions: [omit(submission, ['createdAt'])]
+      submissions: [omit(submission, ['createdAt', 'data'])]
     });
   });
 

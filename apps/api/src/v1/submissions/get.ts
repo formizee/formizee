@@ -3,6 +3,7 @@ import type {submissions as submissionsApi} from '.';
 import {openApiErrorResponses} from '@/lib/errors';
 import {HTTPException} from 'hono/http-exception';
 import {createRoute} from '@hono/zod-openapi';
+import {getSubmission} from '@/lib/vault';
 
 export const getRoute = createRoute({
   method: 'get',
@@ -58,13 +59,19 @@ export const registerGetSubmission = (api: typeof submissionsApi) => {
       });
     }
 
+    const content = await getSubmission(context.env.VAULT_SECRET, id);
+
     await analytics.ingestFormizeeMetrics({
       metric: 'db.read',
       query: 'submissions.load',
       latency: performance.now() - dbStart
     });
 
-    const response = SubmissionSchema.parse(submission);
+    const response = SubmissionSchema.parse({
+      ...submission,
+      data: content.data
+    });
+
     return context.json(response, 200);
   });
 };

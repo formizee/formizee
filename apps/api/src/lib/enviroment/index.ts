@@ -12,8 +12,9 @@ export const zEnv = z.object({
   TINYBIRD_URL: z.string().url().optional(),
   TINYBIRD_TOKEN: z.string().optional(),
 
-  // Database
+  // Storage
   DATABASE_URL: z.string().url(),
+  VAULT_SECRET: z.string(),
 
   // Communication
   RESEND_TOKEN: z.string()
