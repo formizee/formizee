@@ -59,7 +59,11 @@ export const registerGetSubmission = (api: typeof submissionsApi) => {
       });
     }
 
-    const content = await getSubmission(context.env.VAULT_SECRET, id);
+    const content = await getSubmission(
+      context.env.VAULT_SECRET,
+      endpoint.id,
+      id
+    );
 
     await analytics.ingestFormizeeMetrics({
       metric: 'db.read',

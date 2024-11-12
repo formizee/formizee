@@ -63,7 +63,11 @@ export const registerDeleteSubmission = (api: typeof submissionsApi) => {
       .delete(schema.submission)
       .where(eq(schema.submission.id, submission.id));
 
-    await deleteSubmission(context.env.VAULT_SECRET, submission.id);
+    await deleteSubmission(
+      context.env.VAULT_SECRET,
+      endpoint.id,
+      submission.id
+    );
 
     return context.json({}, 200);
   });

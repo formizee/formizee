@@ -2,9 +2,10 @@ const VAULT_URL = 'https://vault.formizee.com/v1';
 
 export const getSubmission = async (
   VAULT_SECRET: string,
+  endpointId: string,
   id: string
 ): Promise<{id: string; data: object}> => {
-  const response = await fetch(`${VAULT_URL}/submission/${id}`, {
+  const response = await fetch(`${VAULT_URL}/submission/${endpointId}/${id}`, {
     method: 'GET',
     headers: {
       Authorization: VAULT_SECRET,
@@ -30,8 +31,12 @@ export const postSubmission = async (
   });
 };
 
-export const deleteSubmission = async (VAULT_SECRET: string, id: string) => {
-  await fetch(`${VAULT_URL}/submission/${id}`, {
+export const deleteSubmission = async (
+  VAULT_SECRET: string,
+  endpointId: string,
+  id: string
+) => {
+  await fetch(`${VAULT_URL}/submission/${endpointId}/${id}`, {
     method: 'DELETE',
     headers: {
       Authorization: VAULT_SECRET,

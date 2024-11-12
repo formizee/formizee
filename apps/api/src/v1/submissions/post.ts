@@ -234,7 +234,7 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
       }
     });
 
-    const response = SubmissionSchema.parse(newSubmission[0]);
+    const response = SubmissionSchema.parse({...newSubmission[0], data: input});
     return context.json(response, 201);
   });
 };

@@ -72,6 +72,7 @@ export const registerListSubmissions = (api: typeof submissionsApi) => {
       submissions.map(async submission => {
         const content = await getSubmission(
           context.env.VAULT_SECRET,
+          endpointId,
           submission.id
         );
         return {...submission, data: content.data};
