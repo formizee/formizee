@@ -1,34 +1,68 @@
 'use client';
 
+import {
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarMenu
+} from '@formizee/ui/sidebar';
 import {api} from '@/trpc/client';
-import Item from './item';
+import {EndpointItem, EndpointSkeleton} from './item';
+import Transition from '../transition';
+import {CreateButton} from './create';
 
-interface EndpointsProps {
+interface Props {
   workspaceSlug: string;
-  endpointSlug: string;
 }
 
-export const Endpoints = (props: EndpointsProps) => {
-  const {data} = api.endpoint.list.useQuery({
+export const EndpointsContent = (props: Props) => {
+  const {data, isLoading} = api.endpoint.list.useQuery({
     workspaceSlug: props.workspaceSlug
   });
+
+  if (isLoading) {
+    return (
+      <SidebarGroup>
+        <SidebarGroupContent>
+          <SidebarGroupLabel className="text-neutral-600 dark:text-neutral-300">
+            Forms
+          </SidebarGroupLabel>
+          <SidebarMenu>
+            <Transition>
+              {Array.from({length: 5}).map((_, index) => (
+                // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                <EndpointSkeleton key={index} />
+              ))}
+            </Transition>
+          </SidebarMenu>
+        </SidebarGroupContent>
+      </SidebarGroup>
+    );
+  }
 
   const endpoints = data ?? [];
 
   return (
-    <div className="flex flex-1 pr-2 flex-col my-2 gap-2 overflow-y-auto overflow-light-style dark:overflow-dark-style">
-      {endpoints.map(endpoint => (
-        <Item
-          key={endpoint.slug}
-          icon={endpoint.icon}
-          slug={endpoint.slug}
-          color={endpoint.color}
-          workspaceSlug={props.workspaceSlug}
-          selected={endpoint.slug === props.endpointSlug}
-        >
-          {endpoint.name}
-        </Item>
-      ))}
-    </div>
+    <SidebarGroup>
+      <SidebarGroupLabel className="text-neutral-600 dark:text-neutral-300">
+        Forms
+      </SidebarGroupLabel>
+      <CreateButton workspaceSlug={props.workspaceSlug} />
+      <SidebarGroupContent>
+        <SidebarMenu>
+          {endpoints.map(endpoint => (
+            <EndpointItem
+              href={`/${props.workspaceSlug}/${endpoint.slug}`}
+              color={endpoint.color}
+              icon={endpoint.icon}
+              key={endpoint.id}
+              selected={true}
+            >
+              {endpoint.name}
+            </EndpointItem>
+          ))}
+        </SidebarMenu>
+      </SidebarGroupContent>
+    </SidebarGroup>
   );
 };

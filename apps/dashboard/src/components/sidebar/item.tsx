@@ -1,45 +1,42 @@
 'use client';
 
-import {useRouter} from 'next/navigation';
-import {Button, cn} from '@formizee/ui';
-import {Icon} from '@/components';
+import {
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarMenuSkeleton
+} from '@formizee/ui/sidebar';
+import {Icon} from '../icon';
 
 interface EndpointItemProps {
   children: React.ReactNode;
-  workspaceSlug: string;
+  selected: boolean;
   color: string;
   icon: string;
-  selected: boolean;
-  slug: string;
+  href: string;
 }
 
 export const EndpointItem = (props: EndpointItemProps) => {
-  const router = useRouter();
-
   return (
-    <Button
-      variant={props.selected ? 'outline' : 'ghost'}
-      className="flex flex-row w-full items-center gap-2 justify-start"
-      onClick={() => router.push(`/${props.workspaceSlug}/${props.slug}`)}
-    >
-      <Icon
-        icon={props.icon}
-        color={props.color}
-        selected={props.selected}
-        className="min-w-4"
-      />
-      <span
-        className={cn(
-          'truncate',
-          props.selected
-            ? 'text-neutral-950 dark:text-neutral-50'
-            : 'text-neutral-500 dark:text-neutral-400'
-        )}
+    <SidebarMenuItem>
+      <SidebarMenuButton
+        asChild
+        className="transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-800"
       >
-        {props.children}
-      </span>
-    </Button>
+        <a href={props.href}>
+          <Icon
+            icon={props.icon}
+            color={props.color}
+            selected={props.selected}
+          />
+          <span>{props.children}</span>
+        </a>
+      </SidebarMenuButton>
+    </SidebarMenuItem>
   );
 };
 
-export default EndpointItem;
+export const EndpointSkeleton = () => (
+  <SidebarMenuItem>
+    <SidebarMenuSkeleton showIcon />
+  </SidebarMenuItem>
+);

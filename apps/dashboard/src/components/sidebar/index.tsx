@@ -1,36 +1,86 @@
-import {WorkspaceSwitch} from './workspace';
-import {CreateButton} from './create';
-import {Endpoints} from './endpoints';
+import {BookIcon, SearchIcon, SettingsIcon} from '@formizee/ui/icons';
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem
+} from '@formizee/ui/sidebar';
+import {EndpointsContent} from './endpoints';
 import {Logo} from '@formizee/ui';
+import {Account} from './account';
 import {auth} from '@/lib/auth';
 import {redirect} from 'next/navigation';
 
-interface SidebarProps {
+const items = [
+  {
+    title: 'Search',
+    url: '#',
+    icon: SearchIcon
+  },
+  {
+    title: 'Settings',
+    url: '/settings',
+    icon: SettingsIcon
+  },
+  {
+    title: 'Documentation',
+    icon: BookIcon,
+    url: 'https://docs.formizee.com'
+  }
+];
+
+interface AppSidebarProps {
   workspaceSlug: string;
-  endpointSlug: string;
 }
 
-export const Sidebar = async (props: SidebarProps) => {
+export const AppSidebar = async (props: AppSidebarProps) => {
   const session = await auth();
 
-  if (!session) {
-    redirect('/');
+  if (!session?.user?.id) {
+    redirect('/login');
   }
 
   return (
-    <div className="p-2 flex flex-col h-screen max-w-56 border-neutral-200 dark:border-r-neutral-800 border-r">
-      <div className="flex flex-row items-center h-14 pl-2 mb-2 gap-5">
-        <Logo />
-        <span className="px-3 border select-none border-neutral-300 dark:border-neutral-700 rounded-xl text-sm tex-neutral-700 dark:text-neutral-100">
-          Beta
-        </span>
-      </div>
-      <WorkspaceSwitch workspaceSlug={props.workspaceSlug} />
-      <Endpoints
-        workspaceSlug={props.workspaceSlug}
-        endpointSlug={props.endpointSlug}
-      />
-      <CreateButton workspaceSlug={props.workspaceSlug} />
-    </div>
+    <Sidebar className="dark:border-neutral-800">
+      <SidebarHeader>
+        <div className="flex flex-row items-center h-14 pl-2 gap-5">
+          <Logo />
+          <span className="px-3 border select-none border-neutral-300 dark:border-neutral-700 rounded-xl text-sm tex-neutral-700 dark:text-neutral-100">
+            Beta
+          </span>
+        </div>
+      </SidebarHeader>
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {items.map(item => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton
+                    asChild
+                    className="transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-800"
+                  >
+                    <a
+                      href={item.url}
+                      className="text-neutral-600 dark:text-neutral-400"
+                    >
+                      <item.icon />
+                      <span>{item.title}</span>
+                    </a>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+              <SidebarMenuItem></SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+        <EndpointsContent workspaceSlug={props.workspaceSlug} />
+      </SidebarContent>
+      <Account userId={session.user.id} />
+    </Sidebar>
   );
 };

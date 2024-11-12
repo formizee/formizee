@@ -28,6 +28,7 @@ import {api} from '@/trpc/client';
 import {useRouter} from 'next/navigation';
 import {generateSlug} from 'random-word-slugs';
 import Image from 'next/image';
+import {SidebarGroupAction} from '@formizee/ui/sidebar';
 
 const formSchema = z.object({
   name: z
@@ -75,15 +76,13 @@ export const CreateButton = (props: {workspaceSlug: string}) => {
   return (
     <div className="flex flex-col">
       <Dialog>
-        <DialogTrigger asChild>
-          <Button
-            size="lg"
-            variant="outline"
-            className="group flex flex-row w-full justify-center items-center gap-2"
+        <DialogTrigger asChild className="animate-fade-in">
+          <SidebarGroupAction
+            title="New Form"
+            className="transition-colors bg-transparent hover:bg-neutral-200 dark:hover:bg-neutral-800"
           >
-            <span>Create</span>
-            <PlusIcon className="transition-all w-0 rotate-45 group-hover:w-6 group-hover:rotate-0" />
-          </Button>
+            <PlusIcon /> <span className="sr-only">New Form</span>
+          </SidebarGroupAction>
         </DialogTrigger>
         <DialogContent className="rounded-lg border-neutral-200 dark:border-neutral-800">
           <DialogHeader>
