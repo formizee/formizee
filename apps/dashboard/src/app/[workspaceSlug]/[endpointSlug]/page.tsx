@@ -28,7 +28,7 @@ const EndpointPage = ({params}: {params: Params}) => {
   }
 
   return (
-    <Transition className="container flex-col w-full items-center pt-20 justify-start">
+    <Transition className="container flex-col w-full items-center pt-10 justify-start">
       <Heading endpoint={endpoint} />
       <Tabs endpoint={endpoint} />
     </Transition>
