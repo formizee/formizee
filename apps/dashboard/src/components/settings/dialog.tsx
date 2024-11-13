@@ -7,6 +7,7 @@ import {DialogDescription, DialogTitle} from '@formizee/ui';
 import {useState} from 'react';
 import {SidebarProvider} from '@formizee/ui/sidebar';
 import {api} from '@/trpc/client';
+import {SettingsBreadcrumb} from './breadcrumb';
 
 export default function SettingsDialogContent(props: {userId: string}) {
   const user = api.user.get.useQuery({id: props.userId}).data;
@@ -31,7 +32,10 @@ export default function SettingsDialogContent(props: {userId: string}) {
           userSlug={user.slug}
         />
         <main className="flex h-[480px] flex-1 flex-col overflow-hidden">
-          <Content currentRoute={currentRoute} />
+          <SettingsBreadcrumb route={currentRoute} />
+          <div className="p-8">
+            <Content currentRoute={currentRoute} />
+          </div>
         </main>
       </SidebarProvider>
     </>
