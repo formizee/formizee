@@ -1,6 +1,8 @@
-import Transition from '@/components/transition';
 import {Button, Input, Label, Separator} from '@formizee/ui';
+import Transition from '@/components/transition';
+import accountIcon from '@/../public/user.webp';
 import {api} from '@/trpc/client';
+import Image from 'next/image';
 
 interface Props {
   userId: string;
@@ -16,11 +18,13 @@ export const SettingsAccountGeneral = (props: Props) => {
   return (
     <Transition className="flex flex-col w-full">
       <div className="flex gap-4 my-4">
-        <div className="flex flex-row items-center px-4 justify-center size-14 rounded-md bg-neutral-600 dark:bg-neutral-400">
-          <span className="fixed text-lg text-neutral-50 dark:text-neutral-950 font-semibold">
-            {user.name.split('')[0]?.toUpperCase()}
-          </span>
-        </div>
+        <Image
+          height={48}
+          width={48}
+          src={accountIcon}
+          alt="User Icon"
+          className="z-[999] size-14 dark:border-2 rounded-xl border-4 dark:border dark:border-neutral-600 border-neutral-300 shadow-md shadow-neutral-950"
+        />
         <div className="flex flex-col max-w-96">
           <span className="font-regular truncate mr-2">{user.name}</span>
           <span className="text-sm text-neutral-600 dark:text-neutral-400 font-regular max-w-[12.5rem] truncate">

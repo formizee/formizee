@@ -37,7 +37,7 @@ export const Pages = (props: Props) => {
     case 'account.general':
       return <SettingsAccountGeneral userId={props.userId} />;
     case 'workspace.general':
-      return <SettingsWorkspaceGeneral />;
+      return <SettingsWorkspaceGeneral workspaceSlug={props.workspaceSlug} />;
     case 'workspace.members':
       return <SettingsWorkspaceMembers workspaceSlug={props.workspaceSlug} />;
     case 'workspace.keys':
