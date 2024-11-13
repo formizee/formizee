@@ -56,7 +56,7 @@ export const EndpointsContent = (props: Props) => {
               color={endpoint.color}
               icon={endpoint.icon}
               key={endpoint.id}
-              selected={true}
+              selected={false}
             >
               {endpoint.name}
             </EndpointItem>
