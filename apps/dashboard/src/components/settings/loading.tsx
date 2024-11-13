@@ -1,4 +1,4 @@
-import { LoadingIcon } from '@formizee/ui/icons';
+import {LoadingIcon} from '@formizee/ui/icons';
 
 export const DialogLoading = () => {
   return (

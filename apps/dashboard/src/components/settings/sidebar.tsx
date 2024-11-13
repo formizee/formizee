@@ -1,4 +1,4 @@
-import type { Route } from './pages';
+import type {Route} from './pages';
 import {
   CreditCardIcon,
   KeyIcon,
@@ -51,11 +51,17 @@ export const SettingsSidebar = (props: Props) => {
                 </div>
               </SidebarMenuButton>
               <SidebarMenu>
-                <Item setCurrentRoute={props.setCurrentRoute} route="account.general">
+                <Item
+                  setCurrentRoute={props.setCurrentRoute}
+                  route="account.general"
+                >
                   <UserIcon />
                   General
                 </Item>
-                <Item setCurrentRoute={props.setCurrentRoute} route="account.security">
+                <Item
+                  setCurrentRoute={props.setCurrentRoute}
+                  route="account.security"
+                >
                   <LockIcon />
                   Security
                 </Item>
@@ -68,23 +74,38 @@ export const SettingsSidebar = (props: Props) => {
                 Workspace
               </SidebarGroupLabel>
               <SidebarMenu>
-                <Item setCurrentRoute={props.setCurrentRoute} route="workspace.billing">
+                <Item
+                  setCurrentRoute={props.setCurrentRoute}
+                  route="workspace.billing"
+                >
                   <CreditCardIcon />
                   Billing
                 </Item>
-                <Item setCurrentRoute={props.setCurrentRoute} route="workspace.general">
+                <Item
+                  setCurrentRoute={props.setCurrentRoute}
+                  route="workspace.general"
+                >
                   <SettingsIcon />
                   General
                 </Item>
-                <Item setCurrentRoute={props.setCurrentRoute} route="workspace.keys">
+                <Item
+                  setCurrentRoute={props.setCurrentRoute}
+                  route="workspace.keys"
+                >
                   <KeyIcon />
                   API Keys
                 </Item>
-                <Item setCurrentRoute={props.setCurrentRoute} route="workspace.members">
+                <Item
+                  setCurrentRoute={props.setCurrentRoute}
+                  route="workspace.members"
+                >
                   <UserGroupIcon />
                   Members
                 </Item>
-                <Item setCurrentRoute={props.setCurrentRoute} route="workspace.audit">
+                <Item
+                  setCurrentRoute={props.setCurrentRoute}
+                  route="workspace.audit"
+                >
                   <LockIcon />
                   Audit Logs
                 </Item>
@@ -106,7 +127,9 @@ interface ItemProps {
 const Item = (props: ItemProps) => {
   return (
     <SidebarMenuItem className="rounded-md text-neutral-700 dark:text-neutral-300 transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-800">
-      <SidebarMenuButton onClick={() => props.setCurrentRoute(props.route)}>{props.children}</SidebarMenuButton>
+      <SidebarMenuButton onClick={() => props.setCurrentRoute(props.route)}>
+        {props.children}
+      </SidebarMenuButton>
     </SidebarMenuItem>
   );
 };

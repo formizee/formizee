@@ -170,7 +170,7 @@ export const Icon = (props: {
       return <CreditCardIcon className={cn(props.className, color)} />;
     case 'checkcircle':
       return (
-        <CheckIcon variant="circle" className={cn(props.className, color)} />
+        <CheckIcon variant="outline" className={cn(props.className, color)} />
       );
     default:
       return <DocumentIcon className={cn(props.className, color)} />;

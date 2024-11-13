@@ -1,11 +1,11 @@
 'use client';
 
-import { SettingsIcon } from '@formizee/ui/icons';
+import {SettingsIcon} from '@formizee/ui/icons';
 
-import { SidebarMenuButton, SidebarMenuItem } from '@formizee/ui/sidebar';
-import { Dialog, DialogContent } from '@formizee/ui';
-import { lazy, Suspense, useState } from 'react';
-import { DialogLoading } from './loading';
+import {SidebarMenuButton, SidebarMenuItem} from '@formizee/ui/sidebar';
+import {Dialog, DialogContent} from '@formizee/ui';
+import {lazy, Suspense, useState} from 'react';
+import {DialogLoading} from './loading';
 
 const SettingsDialogContent = lazy(() => import('./dialog'));
 

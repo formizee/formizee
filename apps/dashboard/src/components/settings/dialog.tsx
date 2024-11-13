@@ -1,15 +1,15 @@
 'use client';
 
-import { type Route, ROUTES, Content } from './pages';
-import { SettingsSidebar } from './sidebar';
+import {type Route, ROUTES, Content} from './pages';
+import {SettingsSidebar} from './sidebar';
 
-import { DialogDescription, DialogTitle } from '@formizee/ui';
-import { useState } from 'react';
-import { SidebarProvider } from '@formizee/ui/sidebar';
-import { api } from '@/trpc/client';
+import {DialogDescription, DialogTitle} from '@formizee/ui';
+import {useState} from 'react';
+import {SidebarProvider} from '@formizee/ui/sidebar';
+import {api} from '@/trpc/client';
 
-export default function SettingsDialogContent(props: { userId: string }) {
-  const user = api.user.get.useQuery({ id: props.userId }).data;
+export default function SettingsDialogContent(props: {userId: string}) {
+  const user = api.user.get.useQuery({id: props.userId}).data;
   const [currentRoute, setCurrentRoute] = useState<Route>(
     ROUTES.accountsGeneral
   );
