@@ -34,7 +34,11 @@ export default function SettingsDialogContent(props: Props) {
         <SettingsSidebar setCurrentRoute={setCurrentRoute} />
         <main className="relative flex min-h-[700px] md:max-h-[700px] overflow-auto flex-1">
           <SettingsBreadcrumb route={currentRoute} />
-          <Content currentRoute={currentRoute} userId={user.id} workspaceSlug={props.workspaceSlug} />
+          <Content
+            currentRoute={currentRoute}
+            userId={user.id}
+            workspaceSlug={props.workspaceSlug}
+          />
         </main>
       </SidebarProvider>
     </>

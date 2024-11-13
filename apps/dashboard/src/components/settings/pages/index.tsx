@@ -39,9 +39,9 @@ export const Pages = (props: Props) => {
     case 'workspace.general':
       return <SettingsWorkspaceGeneral />;
     case 'workspace.members':
-      return <SettingsWorkspaceMembers workspaceSlug={props.workspaceSlug}/>;
+      return <SettingsWorkspaceMembers workspaceSlug={props.workspaceSlug} />;
     case 'workspace.keys':
-      return <SettingsWorkspaceKeys workspaceSlug={props.workspaceSlug}/>;
+      return <SettingsWorkspaceKeys workspaceSlug={props.workspaceSlug} />;
     case 'workspace.audit':
       return <SettingsWorkspaceAudit />;
     case 'workspace.billing':

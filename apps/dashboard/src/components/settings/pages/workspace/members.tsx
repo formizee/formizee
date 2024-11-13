@@ -29,7 +29,7 @@ export const SettingsWorkspaceMembers = (props: Props) => {
             <span className="font-medium">Members</span>
             <p className="text-sm text-neutral-600 dark:text-neutral-400">
               This a a feature of the paid plans, upgrade in order to use it.
-          </p>
+            </p>
           </div>
         </div>
         <AddMemberButton />

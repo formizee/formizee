@@ -44,7 +44,10 @@ export const AppSidebar = async (props: AppSidebarProps) => {
           <SidebarGroupContent>
             <SidebarMenu>
               <SearchPalette workspaceSlug={props.workspaceSlug} />
-              <Settings userId={session.user.id} workspaceSlug={props.workspaceSlug} />
+              <Settings
+                userId={session.user.id}
+                workspaceSlug={props.workspaceSlug}
+              />
               <FeedbackButton />
               <SidebarMenuItem>
                 <SidebarMenuButton

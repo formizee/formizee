@@ -91,7 +91,11 @@ export function AuditTable<TData>({columns, data}: KeysTableProps<TData>) {
   return (
     <div>
       <TableOptions className="justify-end">
-        <TableSearchOptions column={columns} table={table} placeholder={'Search logs...'} />
+        <TableSearchOptions
+          column={columns}
+          table={table}
+          placeholder={'Search logs...'}
+        />
         <Button variant="outline">
           Export <DocumentIcon />
         </Button>

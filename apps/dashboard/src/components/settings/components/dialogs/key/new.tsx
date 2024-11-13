@@ -158,11 +158,7 @@ export const CreateKeyButton = (props: {workspaceSlug: string}) => {
                   </FormItem>
                 )}
               />
-              <Button
-                variant="outline"
-                className="mt-4"
-                type="submit"
-              >
+              <Button variant="outline" className="mt-4" type="submit">
                 {createKey.isLoading ? (
                   <LoadingIcon className="size-8" />
                 ) : (

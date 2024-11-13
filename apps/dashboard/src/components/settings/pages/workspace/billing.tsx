@@ -18,7 +18,7 @@ export const SettingsWorkspaceBilling = () => {
             <span className="font-medium">Billing</span>
             <p className="text-sm text-neutral-600 dark:text-neutral-400">
               The payment settings of the workspace
-          </p>
+            </p>
           </div>
         </div>
       </section>

@@ -2,7 +2,7 @@ import {columns, KeysTable} from '../../components/tables/keys';
 import {CreateKeyButton} from '../../components/dialogs/key';
 import Transition from '@/components/transition';
 import keyIcon from '@/../public/key.webp';
-import { api } from '@/trpc/client';
+import {api} from '@/trpc/client';
 import Image from 'next/image';
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 }
 
 export const SettingsWorkspaceKeys = (props: Props) => {
-  const {data} = api.key.list.useQuery({ workspaceSlug: props.workspaceSlug });
+  const {data} = api.key.list.useQuery({workspaceSlug: props.workspaceSlug});
   const keys = data ?? [];
 
   return (
@@ -28,7 +28,7 @@ export const SettingsWorkspaceKeys = (props: Props) => {
             <span className="font-medium">API Keys</span>
             <p className="text-sm text-neutral-600 dark:text-neutral-400">
               These keys are used to interact with the Formizee API.
-          </p>
+            </p>
           </div>
         </div>
         <CreateKeyButton {...props} />

@@ -1,4 +1,4 @@
-import {columns, AuditTable } from '../../components/tables/audit';
+import {columns, AuditTable} from '../../components/tables/audit';
 import Transition from '@/components/transition';
 import lockIcon from '@/../public/lock.webp';
 import Image from 'next/image';
@@ -22,7 +22,7 @@ export const SettingsWorkspaceAudit = () => {
             <span className="font-medium">Audit Logs</span>
             <p className="text-sm text-neutral-600 dark:text-neutral-400">
               Here are logged all the important actions on the workspace.
-          </p>
+            </p>
           </div>
         </div>
       </section>
