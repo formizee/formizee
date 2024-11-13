@@ -1,4 +1,4 @@
-import {BookIcon, SettingsIcon} from '@formizee/ui/icons';
+import {BookIcon} from '@formizee/ui/icons';
 import {
   Sidebar,
   SidebarContent,
@@ -15,19 +15,8 @@ import {Account} from './account';
 import {auth} from '@/lib/auth';
 import {redirect} from 'next/navigation';
 import {SearchPalette} from '../command-palette';
-
-const items = [
-  {
-    title: 'Settings',
-    url: '/settings',
-    icon: SettingsIcon
-  },
-  {
-    title: 'Documentation',
-    icon: BookIcon,
-    url: 'https://docs.formizee.com'
-  }
-];
+import {FeedbackButton} from './feedback';
+import {Settings} from './settings';
 
 interface AppSidebarProps {
   workspaceSlug: string;
@@ -55,22 +44,24 @@ export const AppSidebar = async (props: AppSidebarProps) => {
           <SidebarGroupContent>
             <SidebarMenu>
               <SearchPalette workspaceSlug={props.workspaceSlug} />
-              {items.map(item => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton
-                    asChild
-                    className="transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-800"
+              <Settings />
+              <FeedbackButton />
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  asChild
+                  className="transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-800"
+                >
+                  <a
+                    target="_blank"
+                    rel="noreferrer"
+                    href="https://docs.formizee.com"
+                    className="text-neutral-600 dark:text-neutral-400"
                   >
-                    <a
-                      href={item.url}
-                      className="text-neutral-600 dark:text-neutral-400"
-                    >
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+                    <BookIcon />
+                    <span>Documentation</span>
+                  </a>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
