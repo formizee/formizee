@@ -8,20 +8,20 @@
   }
 
   html.dark {
-    scrollbar-color: #525252 #0a0a0a;
+    scrollbar-color: #525252 transparent;
   }
 
   html.light {
-    scrollbar-color: #a3a3a3 #fafafa;
+    scrollbar-color: #a3a3a3 transparent;
   }
 
 
   .overflow-dark-style {
-    scrollbar-color: #525252 #0a0a0a;
+    scrollbar-color: #525252 transparent;
   }
 
   .overflow-light-style {
-    scrollbar-color: #a3a3a3 #fafafa;
+    scrollbar-color: #a3a3a3 transparent;
   }
 
   .reflection {

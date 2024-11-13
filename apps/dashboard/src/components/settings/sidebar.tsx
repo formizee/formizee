@@ -21,13 +21,11 @@ import {
 
 interface Props {
   setCurrentRoute: React.Dispatch<React.SetStateAction<Route>>;
-  userName: string;
-  userSlug: string;
 }
 
 export const SettingsSidebar = (props: Props) => {
   return (
-    <Sidebar collapsible="none">
+    <Sidebar collapsible="none" className="w-40">
       <SidebarContent className="bg-neutral-100 dark:bg-neutral-900">
         <SidebarHeader>
           <SidebarGroup className="pl-0 pt-0">
@@ -35,21 +33,6 @@ export const SettingsSidebar = (props: Props) => {
               <SidebarGroupLabel className="text-neutral-600 dark:text-neutral-300">
                 Account
               </SidebarGroupLabel>
-              <SidebarMenuButton className="h-12">
-                <div className="flex flex-row items-center justify-center size-6 rounded-[6px] bg-neutral-600 dark:bg-neutral-400">
-                  <span className="fixed text-sm text-neutral-50 dark:text-neutral-950 font-semibold">
-                    {props.userName.split('')[0]?.toUpperCase()}
-                  </span>
-                </div>
-                <div className="flex flex-col max-w-44">
-                  <span className="text-xs font-regular truncate mr-2">
-                    {props.userName}
-                  </span>
-                  <span className="text-xs text-neutral-600 dark:text-neutral-400 font-regular max-w-[12.5rem] truncate">
-                    {props.userSlug}
-                  </span>
-                </div>
-              </SidebarMenuButton>
               <SidebarMenu>
                 <Item
                   setCurrentRoute={props.setCurrentRoute}
@@ -57,13 +40,6 @@ export const SettingsSidebar = (props: Props) => {
                 >
                   <UserIcon />
                   General
-                </Item>
-                <Item
-                  setCurrentRoute={props.setCurrentRoute}
-                  route="account.security"
-                >
-                  <LockIcon />
-                  Security
                 </Item>
               </SidebarMenu>
             </SidebarGroupContent>

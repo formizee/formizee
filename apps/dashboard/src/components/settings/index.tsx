@@ -10,6 +10,7 @@ import {DialogLoading} from './loading';
 const SettingsDialogContent = lazy(() => import('./dialog'));
 
 interface Props {
+  workspaceSlug: string;
   userId: string;
 }
 export function Settings(props: Props) {
@@ -29,7 +30,7 @@ export function Settings(props: Props) {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="flex overflow-hidden p-0 min-h-[700px] min-w-[500px] md:max-h-[700px] max-w-[500px] sm:max-w-[700px] lg:max-w-[900px]">
           <Suspense fallback={<DialogLoading />}>
-            <SettingsDialogContent userId={props.userId} />
+            <SettingsDialogContent {...props} />
           </Suspense>
         </DialogContent>
       </Dialog>

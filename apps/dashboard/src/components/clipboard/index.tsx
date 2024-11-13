@@ -5,6 +5,7 @@ import {
   toast,
   Tooltip,
   TooltipContent,
+  TooltipProvider,
   TooltipTrigger
 } from '@formizee/ui';
 import {CheckIcon, ClipboardIcon} from '@formizee/ui/icons';
@@ -38,25 +39,27 @@ export function ClipboardButton(props: ClipboardButtonProps): JSX.Element {
   }, [onClipboard, setOnClipboard]);
 
   return (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <Button
-          onClick={onClick}
-          aria-label={props.tooltip}
-          className={props.className}
-          variant="outline"
-          size="icon"
-        >
-          {onClipboard ? (
-            <CheckIcon className="fill-amber-400" />
-          ) : (
-            <ClipboardIcon className="animate-fade-in" />
-          )}
-        </Button>
-      </TooltipTrigger>
-      <TooltipContent side={props.side ?? 'top'}>
-        {props.tooltip ?? 'Copy'}
-      </TooltipContent>
-    </Tooltip>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            onClick={onClick}
+            aria-label={props.tooltip}
+            className={props.className}
+            variant="outline"
+            size="icon"
+          >
+            {onClipboard ? (
+              <CheckIcon className="fill-amber-400" />
+            ) : (
+              <ClipboardIcon className="animate-fade-in" />
+            )}
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent side={props.side ?? 'top'}>
+          {props.tooltip ?? 'Copy'}
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 }

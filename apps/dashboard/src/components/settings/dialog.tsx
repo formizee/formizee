@@ -9,7 +9,12 @@ import {SidebarProvider} from '@formizee/ui/sidebar';
 import {api} from '@/trpc/client';
 import {SettingsBreadcrumb} from './breadcrumb';
 
-export default function SettingsDialogContent(props: {userId: string}) {
+interface Props {
+  workspaceSlug: string;
+  userId: string;
+}
+
+export default function SettingsDialogContent(props: Props) {
   const user = api.user.get.useQuery({id: props.userId}).data;
   const [currentRoute, setCurrentRoute] = useState<Route>(
     ROUTES.accountsGeneral
@@ -26,16 +31,10 @@ export default function SettingsDialogContent(props: {userId: string}) {
         Customize your settings here.
       </DialogDescription>
       <SidebarProvider className="items-start">
-        <SettingsSidebar
-          setCurrentRoute={setCurrentRoute}
-          userName={user.name}
-          userSlug={user.slug}
-        />
-        <main className="flex h-[480px] flex-1 flex-col overflow-hidden">
+        <SettingsSidebar setCurrentRoute={setCurrentRoute} />
+        <main className="relative flex min-h-[700px] md:max-h-[700px] overflow-auto flex-1">
           <SettingsBreadcrumb route={currentRoute} />
-          <div className="p-8">
-            <Content currentRoute={currentRoute} />
-          </div>
+          <Content currentRoute={currentRoute} userId={user.id} workspaceSlug={props.workspaceSlug} />
         </main>
       </SidebarProvider>
     </>
