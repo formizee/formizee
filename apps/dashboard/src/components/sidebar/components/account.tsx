@@ -65,11 +65,11 @@ export const Account = (props: AccountProps) => {
                     {data.name.split('')[0]?.toUpperCase()}
                   </span>
                 </div>
-                <div className="flex flex-col max-w-48">
+                <div className="flex flex-col flex-grow overflow-hidden">
                   <span className="text-sm font-regular truncate mr-2">
                     {data.name}
                   </span>
-                  <span className="text-xs text-neutral-600 dark:text-neutral-400 font-regular max-w-[12.5rem] truncate">
+                  <span className="text-xs text-neutral-600 dark:text-neutral-400 font-regular truncate">
                     {data.slug}
                   </span>
                 </div>
