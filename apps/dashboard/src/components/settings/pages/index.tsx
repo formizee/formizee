@@ -45,6 +45,6 @@ export const Pages = (props: Props) => {
     case 'workspace.audit':
       return <SettingsWorkspaceAudit />;
     case 'workspace.billing':
-      return <SettingsWorkspaceBilling />;
+      return <SettingsWorkspaceBilling workspaceSlug={props.workspaceSlug} />;
   }
 };
