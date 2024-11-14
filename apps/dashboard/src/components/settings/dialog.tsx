@@ -1,46 +1,22 @@
 'use client';
 
-import {type Route, ROUTES, Content} from './pages';
-import {SettingsSidebar} from './sidebar';
+import {lazy, Suspense} from 'react';
+import {Dialog, DialogContent} from '@formizee/ui';
+import {DialogLoading} from './loading';
+import {useSettings} from '.';
 
-import {DialogDescription, DialogTitle} from '@formizee/ui';
-import {useState} from 'react';
-import {SidebarProvider} from '@formizee/ui/sidebar';
-import {api} from '@/trpc/client';
-import {SettingsBreadcrumb} from './breadcrumb';
+const Content = lazy(() => import('./content'));
 
-interface Props {
-  workspaceSlug: string;
-  userId: string;
-}
-
-export default function SettingsDialogContent(props: Props) {
-  const user = api.user.get.useQuery({id: props.userId}).data;
-  const [currentRoute, setCurrentRoute] = useState<Route>(
-    ROUTES.accountsGeneral
-  );
-
-  if (!user) {
-    return;
-  }
+export default function SettingsDialog() {
+  const {open, setOpen, workspaceSlug, userId} = useSettings();
 
   return (
-    <>
-      <DialogTitle className="sr-only">Settings</DialogTitle>
-      <DialogDescription className="sr-only">
-        Customize your settings here.
-      </DialogDescription>
-      <SidebarProvider className="items-start">
-        <SettingsSidebar setCurrentRoute={setCurrentRoute} />
-        <main className="relative flex min-h-[700px] md:max-h-[700px] overflow-auto flex-1">
-          <SettingsBreadcrumb route={currentRoute} />
-          <Content
-            currentRoute={currentRoute}
-            userId={user.id}
-            workspaceSlug={props.workspaceSlug}
-          />
-        </main>
-      </SidebarProvider>
-    </>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogContent className="flex overflow-hidden p-0 min-h-[700px] min-w-[500px] md:max-h-[700px] max-w-[500px] sm:max-w-[700px] lg:max-w-[900px]">
+        <Suspense fallback={<DialogLoading />}>
+          <Content workspaceSlug={workspaceSlug} userId={userId} />
+        </Suspense>
+      </DialogContent>
+    </Dialog>
   );
 }

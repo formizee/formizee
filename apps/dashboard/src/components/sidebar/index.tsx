@@ -16,7 +16,7 @@ import {auth} from '@/lib/auth';
 import {redirect} from 'next/navigation';
 import {SearchPalette} from '../command-palette';
 import {FeedbackButton} from './feedback';
-import {Settings} from '../settings';
+import {Settings} from './settings';
 
 interface AppSidebarProps {
   workspaceSlug: string;
@@ -44,10 +44,7 @@ export const AppSidebar = async (props: AppSidebarProps) => {
           <SidebarGroupContent>
             <SidebarMenu>
               <SearchPalette workspaceSlug={props.workspaceSlug} />
-              <Settings
-                userId={session.user.id}
-                workspaceSlug={props.workspaceSlug}
-              />
+              <Settings />
               <FeedbackButton />
               <SidebarMenuItem>
                 <SidebarMenuButton

@@ -27,6 +27,7 @@ import {
 import {ThemeToggle} from '../theme';
 import Link from 'next/link';
 import {logout} from './actions';
+import {useSettings} from '../settings';
 
 interface AccountProps {
   userId: string;
@@ -34,6 +35,7 @@ interface AccountProps {
 
 export const Account = (props: AccountProps) => {
   const {data, isLoading} = api.user.get.useQuery({id: props.userId});
+  const {setOpen} = useSettings();
 
   if (isLoading) {
     return (
@@ -111,7 +113,7 @@ export const Account = (props: AccountProps) => {
                   Homepage
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setOpen(open => !open)}>
                 <SettingsIcon variant="outline" />
                 <span>Settings</span>
               </DropdownMenuItem>

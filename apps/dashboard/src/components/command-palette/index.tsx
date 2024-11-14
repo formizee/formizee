@@ -14,6 +14,7 @@ import {Icon} from '../icon';
 import {type Dispatch, type SetStateAction, useEffect, useState} from 'react';
 import {api} from '@/trpc/client';
 import {useRouter} from 'next/navigation';
+import {useSettings} from '../settings';
 
 interface Props {
   workspaceSlug: string;
@@ -21,23 +22,26 @@ interface Props {
 
 export function SearchPalette(props: Props) {
   const [open, setOpen] = useState(false);
+  const settings = useSettings();
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
-      if (e.key === 'k' && (e.metaKey || e.ctrlKey) && !open) {
-        e.preventDefault();
-        setOpen(true);
-      }
+      if (!settings.open) {
+        if (e.key === 'k' && (e.metaKey || e.ctrlKey) && !open) {
+          e.preventDefault();
+          setOpen(true);
+        }
 
-      if (e.key === 'Escape' && open) {
-        e.preventDefault();
-        setOpen(false);
+        if (e.key === 'Escape' && open) {
+          e.preventDefault();
+          setOpen(false);
+        }
       }
     };
 
     document.addEventListener('keydown', down);
     return () => document.removeEventListener('keydown', down);
-  }, []);
+  }, [settings.open]);
 
   const {data} = api.endpoint.list.useQuery({
     workspaceSlug: props.workspaceSlug

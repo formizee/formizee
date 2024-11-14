@@ -1,39 +1,47 @@
 'use client';
 
-import {SettingsIcon} from '@formizee/ui/icons';
+import {createContext, useContext, useState} from 'react';
+import SettingsDialog from './dialog';
 
-import {SidebarMenuButton, SidebarMenuItem} from '@formizee/ui/sidebar';
-import {Dialog, DialogContent} from '@formizee/ui';
-import {lazy, Suspense, useState} from 'react';
-import {DialogLoading} from './loading';
+interface SettingsContextType {
+  workspaceSlug: string;
+  userId: string;
 
-const SettingsDialogContent = lazy(() => import('./dialog'));
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  open: boolean;
+}
 
-interface Props {
+const SettingsContext = createContext<SettingsContextType | undefined>(
+  undefined
+);
+
+interface SettingsProviderProps {
+  children: React.ReactNode;
   workspaceSlug: string;
   userId: string;
 }
-export function Settings(props: Props) {
+
+export function SettingsProvider({
+  children,
+  userId,
+  workspaceSlug
+}: SettingsProviderProps) {
   const [open, setOpen] = useState(false);
 
   return (
-    <>
-      <SidebarMenuItem>
-        <SidebarMenuButton
-          onClick={() => setOpen(open => !open)}
-          className="transition-colors text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-800"
-        >
-          <SettingsIcon />
-          <span>Settings</span>
-        </SidebarMenuButton>
-      </SidebarMenuItem>
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="flex overflow-hidden p-0 min-h-[700px] min-w-[500px] md:max-h-[700px] max-w-[500px] sm:max-w-[700px] lg:max-w-[900px]">
-          <Suspense fallback={<DialogLoading />}>
-            <SettingsDialogContent {...props} />
-          </Suspense>
-        </DialogContent>
-      </Dialog>
-    </>
+    <SettingsContext.Provider value={{open, setOpen, workspaceSlug, userId}}>
+      <SettingsDialog />
+      {children}
+    </SettingsContext.Provider>
   );
+}
+
+export function useSettings() {
+  const context = useContext(SettingsContext);
+
+  if (!context) {
+    throw new Error('useSettings must be used within a SettingsProvider');
+  }
+
+  return context;
 }
