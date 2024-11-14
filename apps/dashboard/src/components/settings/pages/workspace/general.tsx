@@ -47,7 +47,7 @@ export const SettingsWorkspaceGeneral = (props: Props) => {
           <Input
             id="name"
             className="w-96"
-            value={workspace.name ?? 'Personal Workspace'}
+            defaultValue={workspace.name ?? 'Personal Workspace'}
           />
         </div>
         <Button variant="outline">Update</Button>
@@ -60,7 +60,7 @@ export const SettingsWorkspaceGeneral = (props: Props) => {
           <p className="text-xs text-neutral-600 dark:text-neutral-400">
             This is your URL namespace within Formizee.
           </p>
-          <Input id="slug" className="w-96" value={workspace.slug} />
+          <Input id="slug" className="w-96" defaultValue={workspace.slug} />
         </div>
         <Button variant="outline">Update</Button>
       </div>
@@ -72,7 +72,12 @@ export const SettingsWorkspaceGeneral = (props: Props) => {
           <p className="text-xs text-neutral-600 dark:text-neutral-400">
             This is your user ID within Formizee.
           </p>
-          <Input id="id" disabled className="w-96" value={workspace.id} />
+          <Input
+            id="id"
+            disabled
+            className="w-96"
+            defaultValue={workspace.id}
+          />
         </div>
         <Button variant="outline">Copy</Button>
       </div>

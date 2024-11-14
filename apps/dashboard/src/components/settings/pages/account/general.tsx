@@ -42,7 +42,7 @@ export const SettingsAccountGeneral = (props: Props) => {
           <p className="text-xs text-neutral-600 dark:text-neutral-400">
             This name will be visible by the members of your workspaces.
           </p>
-          <Input id="name" className="w-96" value={user.name} />
+          <Input id="name" className="w-96" defaultValue={user.name} />
         </div>
         <Button variant="outline">Update</Button>
       </div>
@@ -54,7 +54,7 @@ export const SettingsAccountGeneral = (props: Props) => {
           <p className="text-xs text-neutral-600 dark:text-neutral-400">
             This is your URL namespace within Formizee.
           </p>
-          <Input id="slug" className="w-96" value={user.slug} />
+          <Input id="slug" className="w-96" defaultValue={user.slug} />
         </div>
         <Button variant="outline">Update</Button>
       </div>
@@ -66,7 +66,7 @@ export const SettingsAccountGeneral = (props: Props) => {
           <p className="text-xs text-neutral-600 dark:text-neutral-400">
             This is your user ID within Formizee.
           </p>
-          <Input id="id" disabled className="w-96" value={user.id} />
+          <Input id="id" disabled className="w-96" defaultValue={user.id} />
         </div>
         <Button variant="outline">Copy</Button>
       </div>
