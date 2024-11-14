@@ -60,5 +60,27 @@ export const deleteKey = protectedProcedure
       });
     }
 
+    // Ingest audit logs
+    await ctx.analytics.ingestFormizeeAuditLogs({
+      event: 'key.delete',
+      workspaceId: workspace.id,
+      actor: {
+        type: 'user',
+        id: ctx.user.id ?? 'Not available',
+        name: ctx.user.name ?? 'Not available'
+      },
+      resources: [
+        {
+          id: key.id,
+          type: 'key'
+        }
+      ],
+      description: `Deleted ${key.id}`,
+      context: {
+        location: ctx.audit.location,
+        userAgent: ctx.audit.userAgent
+      }
+    });
+
     return {id: deletedKey[0].id};
   });

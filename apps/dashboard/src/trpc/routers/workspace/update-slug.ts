@@ -64,6 +64,28 @@ export const updateWorkspaceSlug = protectedProcedure
         .where(eq(schema.endpoint.id, workspace.id))
         .returning();
 
+      // Ingest audit logs
+      await ctx.analytics.ingestFormizeeAuditLogs({
+        event: 'workspace.update',
+        workspaceId: workspace.id,
+        actor: {
+          type: 'user',
+          id: ctx.user.id ?? 'Not available',
+          name: ctx.user.name ?? 'Not available'
+        },
+        resources: [
+          {
+            id: workspace.id,
+            type: 'workspace'
+          }
+        ],
+        description: `Updated ${workspace.id} slug to ${input.slug}`,
+        context: {
+          location: ctx.audit.location,
+          userAgent: ctx.audit.userAgent
+        }
+      });
+
       return updatedWorkspace[0];
     } catch {
       throw new TRPCError({

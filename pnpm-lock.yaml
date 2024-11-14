@@ -99,6 +99,9 @@ importers:
       '@auth/drizzle-adapter':
         specifier: 1.4.2
         version: 1.4.2
+      '@formizee/analytics':
+        specifier: workspace:*
+        version: link:../../packages/analytics
       '@formizee/db':
         specifier: workspace:*
         version: link:../../packages/db

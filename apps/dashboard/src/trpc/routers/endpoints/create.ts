@@ -79,7 +79,6 @@ export const createEndpoint = protectedProcedure
     }
 
     // Check target emails
-
     const validTargetEmails = input.targetEmails.every(email =>
       workspace.availableEmails.includes(email)
     );
@@ -113,8 +112,26 @@ export const createEndpoint = protectedProcedure
     await database.insert(schema.endpoint).values(data);
 
     // Ingest audit logs
-
-    // Ingest analytics
+    await ctx.analytics.ingestFormizeeAuditLogs({
+      event: 'endpoint.create',
+      workspaceId: workspace.id,
+      actor: {
+        type: 'user',
+        id: ctx.user.id ?? 'Not available',
+        name: ctx.user.name ?? 'Not available'
+      },
+      resources: [
+        {
+          id: data.id,
+          type: 'endpoint'
+        }
+      ],
+      description: `Created ${data.id}`,
+      context: {
+        location: ctx.audit.location,
+        userAgent: ctx.audit.userAgent
+      }
+    });
 
     return {slug: data.slug};
   });

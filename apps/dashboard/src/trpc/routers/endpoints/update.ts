@@ -102,5 +102,26 @@ export const updateEndpoint = protectedProcedure
       });
     }
 
+    await ctx.analytics.ingestFormizeeAuditLogs({
+      event: 'endpoint.update',
+      workspaceId: workspace.id,
+      actor: {
+        type: 'user',
+        id: ctx.user?.id ?? 'Not available',
+        name: ctx.user?.name ?? 'Not available'
+      },
+      resources: [
+        {
+          id: endpoint.id,
+          type: 'endpoint'
+        }
+      ],
+      description: `Updated ${endpoint.id}`,
+      context: {
+        location: ctx.audit.location,
+        userAgent: ctx.audit.userAgent
+      }
+    });
+
     return updateEndpoint[0];
   });
