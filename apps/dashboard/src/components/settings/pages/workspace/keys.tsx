@@ -37,7 +37,7 @@ export const SettingsWorkspaceKeys = (props: Props) => {
   const keys = data ?? [];
 
   return (
-    <div className="flex flex-col w-full">
+    <Transition className="flex flex-col w-full">
       <section className="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full gap-4 mt-4">
         <div className="flex flex-row gap-4">
           <Image
@@ -57,6 +57,6 @@ export const SettingsWorkspaceKeys = (props: Props) => {
         <CreateKeyButton {...props} />
       </section>
       <KeysTable columns={columns} data={keys} />
-    </div>
+    </Transition>
   );
 };
