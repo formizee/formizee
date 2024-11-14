@@ -5,7 +5,7 @@ import {
   BreadcrumbSeparator
 } from '@formizee/ui';
 
-import type {Route} from './pages';
+import type {Route} from '../pages';
 
 interface Props {
   route: Route;
@@ -15,8 +15,8 @@ export const SettingsBreadcrumb = (props: Props) => {
   const routes = props.route.split('.');
 
   return (
-    <Breadcrumb className="absolute bg-neutral-50/40 backdrop-blur dark:bg-neutral-950/40 top-0 left-0 w-full p-4">
-      <BreadcrumbList>
+    <Breadcrumb className="z-50 absolute h-12 items-center flex backdrop-blur bg-white/70 dark:bg-neutral-950/50 top-0 px-4 w-[80%]">
+      <BreadcrumbList className="no-wrap">
         {routes.map((route, index) => {
           const name = route.charAt(0).toUpperCase() + route.slice(1);
 

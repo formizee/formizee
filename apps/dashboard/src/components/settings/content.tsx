@@ -32,7 +32,7 @@ export default function SettingsDialogContent(props: Props) {
       </DialogDescription>
       <SidebarProvider className="items-start">
         <SettingsSidebar setCurrentRoute={setCurrentRoute} />
-        <main className="relative flex min-h-[700px] md:max-h-[700px] overflow-auto flex-1">
+        <main className="static flex min-h-[700px] md:max-h-[700px] overflow-auto overflow-light-style dark:overflow-dark-style flex-1">
           <SettingsBreadcrumb route={currentRoute} />
           <Content
             currentRoute={currentRoute}
