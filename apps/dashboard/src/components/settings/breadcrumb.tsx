@@ -22,7 +22,7 @@ export const SettingsBreadcrumb = (props: Props) => {
 
           if (routes.length - 1 > index) {
             return (
-              <div key={name}>
+              <div className="flex flex-row gap-2 items-center" key={name}>
                 <BreadcrumbItem className="text-neutral-600 dark:text-neutral-400">
                   {name}
                 </BreadcrumbItem>
