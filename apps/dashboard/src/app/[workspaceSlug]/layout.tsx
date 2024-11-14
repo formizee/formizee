@@ -1,5 +1,6 @@
 import {cookies} from 'next/headers';
 
+import {CommandPaletteProvider} from '@/components/command-palette';
 import {SidebarProvider, SidebarTrigger} from '@formizee/ui/sidebar';
 import {SettingsProvider} from '@/components/settings';
 import {AppSidebar} from '@/components/sidebar';
@@ -26,13 +27,15 @@ export default async function DashboardLayout({
         workspaceSlug={params.workspaceSlug}
         userId={session.user.id}
       >
-        <AppSidebar {...params} />
-        <main className="flex w-full h-screen bg-neutral-50 no-overflow dark:bg-neutral-950">
-          <SidebarTrigger className="rounded-none size-6 px-1 h-screen opacity-0 hover:opacity-100" />
-          <div className="flex w-full flex-col p-8 items-center overflow-auto  overflow-light-style dark:overflow-dark-style">
-            {children}
-          </div>
-        </main>
+        <CommandPaletteProvider workspaceSlug={params.workspaceSlug}>
+          <AppSidebar {...params} />
+          <main className="flex w-full h-screen bg-neutral-50 no-overflow dark:bg-neutral-950">
+            <SidebarTrigger className="rounded-none size-6 px-1 h-screen opacity-0 hover:opacity-100" />
+            <div className="flex w-full flex-col p-8 items-center overflow-auto  overflow-light-style dark:overflow-dark-style">
+              {children}
+            </div>
+          </main>
+        </CommandPaletteProvider>
       </SettingsProvider>
     </SidebarProvider>
   );
