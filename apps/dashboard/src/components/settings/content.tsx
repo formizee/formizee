@@ -1,13 +1,13 @@
 'use client';
 
-import {type Route, ROUTES, Content} from './pages';
-import {SettingsSidebar} from './sidebar';
-
 import {DialogDescription, DialogTitle} from '@formizee/ui';
-import {useState} from 'react';
+import {SettingsBreadcrumb} from './components/breadcrumb';
+import {type Route, ROUTES, Content} from './pages';
 import {SidebarProvider} from '@formizee/ui/sidebar';
+import {SettingsSidebar} from './components/sidebar';
+
+import {useState} from 'react';
 import {api} from '@/trpc/client';
-import {SettingsBreadcrumb} from './breadcrumb';
 
 interface Props {
   workspaceSlug: string;
