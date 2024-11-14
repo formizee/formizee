@@ -2,16 +2,41 @@ import {columns, AuditTable} from '../../components/tables/audit';
 import Transition from '@/components/transition';
 import lockIcon from '@/../public/lock.webp';
 import Image from 'next/image';
-import {Button} from '@formizee/ui';
-import {DocumentIcon} from '@formizee/ui/icons';
+import {Skeleton} from '@formizee/ui';
+import {api} from '@/trpc/client';
 
-export const SettingsWorkspaceAudit = () => {
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  const logs: any[] = [];
+interface Props {
+  workspaceSlug: string;
+}
+
+export const SettingsWorkspaceAudit = (props: Props) => {
+  const {data, isLoading} = api.audit.list.useQuery({
+    workspaceSlug: props.workspaceSlug
+  });
+
+  if (isLoading) {
+    return (
+      <Transition className="flex flex-col w-full">
+        <section className="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full gap-4 mt-4">
+          <div className="flex flex-row gap-4">
+            <Skeleton className="size-14 rounded-xl" />
+            <div className="flex flex-col gap-2 items-start">
+              <Skeleton className="h-6 w-16" />
+              <Skeleton className="h-4 w-96" />
+            </div>
+          </div>
+        </section>
+        <Skeleton className="mt-4 w-full h-10" />
+        <Skeleton className="mt-4 w-full h-32" />
+      </Transition>
+    );
+  }
+
+  const logs = data ?? [];
 
   return (
     <Transition className="flex flex-col w-full">
-      <section className="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full gap-4 mt-4">
+      <section className="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full gap-4 my-4">
         <div className="flex flex-row gap-4">
           <Image
             height={48}
@@ -23,13 +48,10 @@ export const SettingsWorkspaceAudit = () => {
           <div className="flex flex-col gap-1 items-start">
             <span className="font-medium">Audit Logs</span>
             <p className="text-sm text-neutral-600 dark:text-neutral-400">
-              Here are logged all the important actions on the workspace.
+              Here are logged all the important actions of the last 7 days.
             </p>
           </div>
         </div>
-        <Button variant="outline">
-          Export <DocumentIcon />
-        </Button>
       </section>
       <AuditTable columns={columns} data={logs} />
     </Transition>

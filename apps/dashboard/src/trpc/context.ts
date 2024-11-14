@@ -18,7 +18,7 @@ export async function createContext({req}: FetchCreateContextFnOptions) {
     },
     analytics: new Analytics({
       tinybirdToken:
-        env().VERCEL_ENV === 'production' ? env().TINYBIRD_TOKEN : undefined,
+        env().VERCEL_ENV === 'development' ? env().TINYBIRD_TOKEN : undefined,
       tinybirdUrl: env().TINYBIRD_URL
     }),
     user: session?.user ?? null
