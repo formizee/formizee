@@ -8,14 +8,14 @@ import {
 } from '@formizee/ui/sidebar';
 import {api} from '@/trpc/client';
 import {EndpointItem, EndpointSkeleton} from './item';
-import Transition from '../transition';
-import {CreateButton} from './create';
+import Transition from '@/components/transition';
+import {Create} from './create';
 
 interface Props {
   workspaceSlug: string;
 }
 
-export const EndpointsContent = (props: Props) => {
+export const Endpoints = (props: Props) => {
   const {data, isLoading} = api.endpoint.list.useQuery({
     workspaceSlug: props.workspaceSlug
   });
@@ -47,7 +47,7 @@ export const EndpointsContent = (props: Props) => {
       <SidebarGroupLabel className="text-neutral-600 dark:text-neutral-300">
         Forms
       </SidebarGroupLabel>
-      <CreateButton workspaceSlug={props.workspaceSlug} />
+      <Create workspaceSlug={props.workspaceSlug} />
       <SidebarGroupContent>
         <SidebarMenu>
           {endpoints.map(endpoint => (

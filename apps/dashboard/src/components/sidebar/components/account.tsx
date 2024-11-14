@@ -24,10 +24,10 @@ import {
   LogoutIcon,
   SettingsIcon
 } from '@formizee/ui/icons';
-import {ThemeToggle} from '../theme';
+import {useSettings} from '@/components/settings';
+import {ThemeToggle} from '@/components/theme';
+import {logout} from '../actions';
 import Link from 'next/link';
-import {logout} from './actions';
-import {useSettings} from '../settings';
 
 interface AccountProps {
   userId: string;

@@ -1,9 +1,9 @@
 'use client';
 
 import {SidebarMenuButton, SidebarMenuItem} from '@formizee/ui/sidebar';
-import {Icon} from '../icon';
-import Link from 'next/link';
+import {Icon} from '@/components/icon';
 import {Skeleton} from '@formizee/ui';
+import Link from 'next/link';
 
 interface EndpointItemProps {
   children: React.ReactNode;

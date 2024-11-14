@@ -35,7 +35,7 @@ const formSchema = z.object({
     .max(2000)
 });
 
-export const FeedbackButton = () => {
+export const Feedback = () => {
   const [isLoading, _setIsLoading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({

@@ -1,9 +1,8 @@
 'use client';
 
-import {SettingsIcon} from '@formizee/ui/icons';
-
 import {SidebarMenuButton, SidebarMenuItem} from '@formizee/ui/sidebar';
-import {useSettings} from '../settings';
+import {useSettings} from '@/components/settings';
+import {SettingsIcon} from '@formizee/ui/icons';
 
 export function Settings() {
   const {setOpen} = useSettings();

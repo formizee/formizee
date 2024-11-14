@@ -41,7 +41,7 @@ const formSchema = z.object({
     .max(64)
 });
 
-export const CreateButton = (props: {workspaceSlug: string}) => {
+export const Create = (props: {workspaceSlug: string}) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
