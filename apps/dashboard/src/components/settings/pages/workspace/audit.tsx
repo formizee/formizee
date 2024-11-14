@@ -2,6 +2,8 @@ import {columns, AuditTable} from '../../components/tables/audit';
 import Transition from '@/components/transition';
 import lockIcon from '@/../public/lock.webp';
 import Image from 'next/image';
+import {Button} from '@formizee/ui';
+import {DocumentIcon} from '@formizee/ui/icons';
 
 export const SettingsWorkspaceAudit = () => {
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
@@ -25,6 +27,9 @@ export const SettingsWorkspaceAudit = () => {
             </p>
           </div>
         </div>
+        <Button variant="outline">
+          Export <DocumentIcon />
+        </Button>
       </section>
       <AuditTable columns={columns} data={logs} />
     </Transition>

@@ -1,6 +1,6 @@
 'use client';
 
-import {CloseIcon, DocumentIcon, ReloadIcon} from '@formizee/ui/icons';
+import {CloseIcon, ReloadIcon} from '@formizee/ui/icons';
 import type {schema} from '@/lib/db';
 import {useState} from 'react';
 
@@ -20,7 +20,6 @@ import {
   TableColumnOptions,
   TableSearchOptions
 } from '@/components';
-import {Button} from '@formizee/ui';
 
 export const columns: ColumnDef<schema.Key>[] = [
   {
@@ -96,9 +95,6 @@ export function AuditTable<TData>({columns, data}: KeysTableProps<TData>) {
           table={table}
           placeholder={'Search logs...'}
         />
-        <Button variant="outline">
-          Export <DocumentIcon />
-        </Button>
         <TableColumnOptions table={table} />
       </TableOptions>
       <Table table={table} columns={columns} />
