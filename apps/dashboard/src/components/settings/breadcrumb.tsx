@@ -22,15 +22,12 @@ export const SettingsBreadcrumb = (props: Props) => {
 
           if (routes.length - 1 > index) {
             return (
-              <>
-                <BreadcrumbItem
-                  className="text-neutral-600 dark:text-neutral-400"
-                  key={name}
-                >
+              <div key={name}>
+                <BreadcrumbItem className="text-neutral-600 dark:text-neutral-400">
                   {name}
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
-              </>
+              </div>
             );
           }
 
