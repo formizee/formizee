@@ -91,12 +91,7 @@ export class Analytics {
         description: z.string().optional(),
         event: z.string(),
         time: z.number().transform(t => new Date(t).getTime())
-      }),
-      opts: {
-        next: {
-          revalidate: 60
-        }
-      }
+      })
     });
 
     try {
