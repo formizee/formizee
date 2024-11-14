@@ -54,6 +54,7 @@ export const DeleteButton = ({endpointId}: {endpointId: string}) => {
   });
 
   const onSubmit = form.handleSubmit(() => {
+    fetch(`/api/vault/endpoint/${endpointId}`, {method: 'DELETE'});
     deleteEndpoint.mutate({id: endpointId});
   });
 

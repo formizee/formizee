@@ -17,7 +17,9 @@ export const Submissions = (props: Props) => {
     // Fetch schema and data from the API
     const fetchSchemaAndData = async () => {
       try {
-        const response = await fetch(`/api/vault/${props.endpointId}`);
+        const response = await fetch(
+          `/api/vault/submissions/${props.endpointId}`
+        );
         const result = await response.json();
 
         setSchema(result._metadata.schema);
