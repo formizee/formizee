@@ -1,4 +1,4 @@
-import type {Route} from './pages';
+import type {Route} from '../pages';
 import {
   CreditCardIcon,
   KeyIcon,
