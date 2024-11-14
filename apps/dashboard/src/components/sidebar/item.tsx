@@ -1,12 +1,9 @@
 'use client';
 
-import {
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarMenuSkeleton
-} from '@formizee/ui/sidebar';
+import {SidebarMenuButton, SidebarMenuItem} from '@formizee/ui/sidebar';
 import {Icon} from '../icon';
 import Link from 'next/link';
+import {Skeleton} from '@formizee/ui';
 
 interface EndpointItemProps {
   children: React.ReactNode;
@@ -37,7 +34,8 @@ export const EndpointItem = (props: EndpointItemProps) => {
 };
 
 export const EndpointSkeleton = () => (
-  <SidebarMenuItem>
-    <SidebarMenuSkeleton showIcon />
+  <SidebarMenuItem className="rounded-md h-8 flex gap-2 px-2 items-center">
+    <Skeleton className="size-4 rounded-md" />
+    <Skeleton className="h-4 w-[80%]" />
   </SidebarMenuItem>
 );
