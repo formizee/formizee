@@ -52,13 +52,6 @@ export const SettingsSidebar = (props: Props) => {
               <SidebarMenu>
                 <Item
                   setCurrentRoute={props.setCurrentRoute}
-                  route="workspace.billing"
-                >
-                  <CreditCardIcon />
-                  Billing
-                </Item>
-                <Item
-                  setCurrentRoute={props.setCurrentRoute}
                   route="workspace.general"
                 >
                   <SettingsIcon />
@@ -66,17 +59,24 @@ export const SettingsSidebar = (props: Props) => {
                 </Item>
                 <Item
                   setCurrentRoute={props.setCurrentRoute}
-                  route="workspace.keys"
-                >
-                  <KeyIcon />
-                  API Keys
-                </Item>
-                <Item
-                  setCurrentRoute={props.setCurrentRoute}
                   route="workspace.members"
                 >
                   <UserGroupIcon />
                   Members
+                </Item>
+                <Item
+                  setCurrentRoute={props.setCurrentRoute}
+                  route="workspace.billing"
+                >
+                  <CreditCardIcon />
+                  Billing
+                </Item>
+                <Item
+                  setCurrentRoute={props.setCurrentRoute}
+                  route="workspace.keys"
+                >
+                  <KeyIcon />
+                  API Keys
                 </Item>
                 <Item
                   setCurrentRoute={props.setCurrentRoute}
