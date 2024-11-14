@@ -77,6 +77,36 @@ export class Analytics {
       console.error(error.message);
     }
   }
+
+  public async queryFormizeeAuditLogs(workspaceId: string) {
+    const queryPipe = this.client.buildPipe({
+      pipe: 'audit_logs__pipe__v1',
+      parameters: z.object({
+        workspaceId: z.string()
+      }),
+      data: z.object({
+        actor_id: z.string(),
+        actor_name: z.string(),
+        actor_type: z.string().optional(),
+        description: z.string().optional(),
+        event: z.string(),
+        time: z.number().transform(t => new Date(t).getTime())
+      }),
+      opts: {
+        next: {
+          revalidate: 60
+        }
+      }
+    });
+
+    try {
+      const response = await queryPipe({workspaceId});
+      return response.data;
+    } catch (e) {
+      const error = e as Error;
+      console.error(error.message);
+    }
+  }
 }
 
 export type FormizeeAuditLog = {
