@@ -102,6 +102,38 @@ export class Analytics {
       console.error(error.message);
     }
   }
+
+  public async queryFormizeeMonthlySubmissions(
+    workspaceId: string,
+    startDate: Date,
+    endDate: Date
+  ) {
+    const queryPipe = this.client.buildPipe({
+      pipe: 'submissions__pipe__v1',
+      parameters: z.object({
+        workspaceId: z.string(),
+        startDate: z.string(),
+        endDate: z.string()
+      }),
+      data: z.object({
+        count: z.number()
+      })
+    });
+
+    try {
+      const response = await queryPipe({
+        workspaceId,
+        startDate: startDate.toISOString().replace('T', ' ').replace('Z', ''),
+        endDate: endDate.toISOString().replace('T', ' ').replace('Z', '')
+      });
+
+      return response.data[0]?.count ?? 0;
+    } catch (e) {
+      const error = e as Error;
+      console.error(error.message);
+    }
+    return 0;
+  }
 }
 
 export type FormizeeAuditLog = {
