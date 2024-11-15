@@ -31,7 +31,7 @@ export const planConfig: Record<
     price: 5,
     limits: {
       support: 'email',
-      endpoints: 'unlimited',
+      endpoints: 1000,
       submissions: 1000,
       storage: 1000,
       members: 1,
@@ -45,12 +45,12 @@ export const planConfig: Record<
     price: 20,
     limits: {
       support: 'custom',
-      endpoints: 'unlimited',
+      endpoints: 10000,
       submissions: 10000,
       storage: 10000,
       members: 10,
-      keys: 'unlimited',
-      apiDailyRequests: 'unlimited'
+      keys: 1000,
+      apiDailyRequests: 1000000
     }
   },
   enterprise: {
