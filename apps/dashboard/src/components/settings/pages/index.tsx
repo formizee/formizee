@@ -4,12 +4,14 @@ import {SettingsWorkspaceBilling} from './workspace/billing';
 import {SettingsWorkspaceGeneral} from './workspace/general';
 import {SettingsWorkspaceKeys} from './workspace/keys';
 import {SettingsWorkspaceMembers} from './workspace/members';
+import {SettingsWorkspacePlans} from './workspace/plans';
 
 export const ROUTES = {
   accountsGeneral: 'account.general',
   accountsSecurity: 'account.security',
 
   workspaceKeys: 'workspace.keys',
+  workspacePlans: 'workspace.plans',
   workspaceAudit: 'workspace.audit',
   workspaceBilling: 'workspace.billing',
   workspaceMembers: 'workspace.members',
@@ -46,5 +48,7 @@ export const Pages = (props: Props) => {
       return <SettingsWorkspaceAudit workspaceSlug={props.workspaceSlug} />;
     case 'workspace.billing':
       return <SettingsWorkspaceBilling workspaceSlug={props.workspaceSlug} />;
+    case 'workspace.plans':
+      return <SettingsWorkspacePlans workspaceSlug={props.workspaceSlug} />;
   }
 };

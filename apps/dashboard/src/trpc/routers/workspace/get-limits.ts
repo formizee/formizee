@@ -65,8 +65,32 @@ export const getWorkspaceLimits = protectedProcedure
       with: {user: true}
     });
 
+    const billingCycleStartDate =
+      workspace.endsAt !== null
+        ? new Date(workspace.endsAt.setMonth(workspace.endsAt.getMonth() - 1))
+        : new Date(
+            new Date(
+              workspace.createdAt.setMonth(new Date().getMonth())
+            ).setFullYear(new Date().getFullYear())
+          );
+
+    const billingCycleEndDate =
+      workspace.endsAt !== null
+        ? workspace.endsAt
+        : new Date(
+            new Date(
+              workspace.createdAt.setMonth(new Date().getMonth() + 1)
+            ).setFullYear(new Date().getFullYear())
+          );
+
+    const submissions = await ctx.analytics.queryFormizeeMonthlySubmissions(
+      workspace.id,
+      billingCycleStartDate,
+      billingCycleEndDate
+    );
+
     return {
-      submissions: 0,
+      submissions,
       apiDailyRequests: 0,
       endpoints: workspaceEndpoints[0].count,
       keys: workspaceKeys[0].count,

@@ -1,0 +1,49 @@
+import {PlanWidget} from '../../components/billing/plan';
+import Transition from '@/components/transition';
+import upgradeIcon from '@/../public/upgrade.webp';
+import {api} from '@/trpc/client';
+import Image from 'next/image';
+
+interface Props {
+  workspaceSlug: string;
+}
+
+export const SettingsWorkspacePlans = (props: Props) => {
+  const workspace = api.workspace.getBySlug.useQuery({
+    slug: props.workspaceSlug
+  }).data;
+
+  if (!workspace) {
+    return;
+  }
+
+  const PRO_PLAN_ID = '81d5c0a4-2dd6-462b-be67-7a828a86304c';
+
+  return (
+    <Transition className="flex flex-col w-full mt-4">
+      <div className="flex flex-row gap-4">
+        <Image
+          height={48}
+          width={48}
+          src={upgradeIcon}
+          alt="Upgrade Icon"
+          className="z-[999] size-14 dark:border-2 rounded-xl border-4 dark:border dark:border-neutral-600 border-neutral-300 shadow-md shadow-neutral-950"
+        />
+        <div className="flex flex-col gap-1 items-start">
+          <span className="font-medium">Formizee Plans</span>
+          <p className="text-sm text-neutral-600 dark:text-neutral-400">
+            What you want, you get it. Priceless options for all sizes
+          </p>
+        </div>
+      </div>
+      <div className="flex flex-row gap-2 mt-8 h-full">
+        <PlanWidget workspacePlan={workspace.plan} plan="hobby" />
+        <PlanWidget
+          workspacePlan={workspace.plan}
+          plan="pro"
+          productId={PRO_PLAN_ID}
+        />
+      </div>
+    </Transition>
+  );
+};
