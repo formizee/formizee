@@ -63,6 +63,7 @@ export {StarIcon} from './star';
 export {SunIcon} from './sun';
 export {ToolsIcon} from './tools';
 export {UndoIcon} from './undo'
+export {UpgradeIcon} from './upgrade';
 export {UserGroupIcon} from './user-group';
 export {UserIcon} from './user';
 export {VideoIcon} from './video';
