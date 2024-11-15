@@ -19,6 +19,11 @@ export const env = () =>
       // Storage
       VAULT_SECRET: z.string().default(''),
 
+      // Billing
+      POLAR_ACCESS_TOKEN: z.string(),
+      POLAR_ORGANIZATION_ID: z.string(),
+      POLAR_WEBHOOK_SECRET: z.string(),
+
       // Analytics
       TINYBIRD_URL: z.string().url().optional(),
       TINYBIRD_TOKEN: z.string().optional(),
