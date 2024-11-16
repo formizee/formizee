@@ -5,6 +5,8 @@
       "@cloudflare/workers-types/experimental",
       "@cloudflare/vitest-pool-workers"
     ],
+    "jsxImportSource": "react",
+    "jsx": "react-jsx",
     "outDir": "dist",
     "baseUrl": ".",
     "paths": {

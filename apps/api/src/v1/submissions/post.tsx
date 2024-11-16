@@ -1,3 +1,8 @@
+import {
+  SubmissionEmail,
+  PlanLimitReached,
+  PlanLimitWarning
+} from '@formizee/email/templates';
 import {SubmissionSchema, EndpointParamsSchema} from './schema';
 import {calculatePlanCycleDates} from '@formizee/plans';
 import type {submissions as submissionsApi} from '.';
@@ -55,7 +60,7 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
         message: "Use one of the supported body types: 'application/json'"
       });
     }
-    //
+
     // biome-ignore lint/suspicious/noExplicitAny:
     const input = await context.req.json<any>();
 
@@ -134,11 +139,18 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
       }
 
       if (context.env.ENVIROMENT === 'production') {
-        await emailService.sendPlanLimitReachedEmail({
-          email: workspaceOwner.email,
-          username: workspaceOwner.name,
-          limitReached: 'submissions',
-          currentPlan: workspacePlan
+        await emailService.emails.send({
+          subject: "Action Required: You've reached the limits of your plan",
+          reply_to: 'Formizee Support <support@formizee.com>',
+          from: 'Formizee Billing <payments@formizee.com>',
+          to: workspaceOwner.email,
+          react: (
+            <PlanLimitReached
+              limit={'submissions'}
+              username={workspaceOwner.name}
+              currentPlan={workspacePlan}
+            />
+          )
         });
       }
       throw new HTTPException(403, {
@@ -173,11 +185,18 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
       }
 
       if (context.env.ENVIROMENT === 'production') {
-        await emailService.sendPlanLimitWarningEmail({
-          email: workspaceOwner.email,
-          username: workspaceOwner.name,
-          limitReached: 'submissions',
-          currentPlan: workspacePlan
+        await emailService.emails.send({
+          subject: "You've reached the 80% monthly usage of your plan",
+          reply_to: 'Formizee Support <support@formizee.com>',
+          from: 'Formizee Billing <payments@formizee.com>',
+          to: workspaceOwner.email,
+          react: (
+            <PlanLimitWarning
+              limit={'submissions'}
+              username={workspaceOwner.name}
+              currentPlan={workspacePlan}
+            />
+          )
         });
       }
     }
@@ -189,27 +208,36 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
       location
     };
 
-    const newSubmission = await database
-      .insert(schema.submission)
-      .values(data)
-      .returning();
-
     await postSubmission(context.env.VAULT_SECRET, {
       endpointId: data.endpointId,
       id: data.id,
       data: input
+    }).catch(error => {
+      throw new HTTPException(error.status, error.body);
     });
+
+    const newSubmission = await database
+      .insert(schema.submission)
+      .values(data)
+      .returning();
 
     if (
       endpoint.emailNotifications &&
       context.env.ENVIROMENT === 'production'
     ) {
       for (const email of endpoint.targetEmails) {
-        await emailService.sendSubmissionEmail({
-          email,
-          data: input,
-          endpointSlug: endpoint.slug,
-          workspaceSlug: workspace.slug
+        await emailService.emails.send({
+          reply_to: 'Formizee Support <support@formizee.com>',
+          from: 'Formizee <noreply@formizee.com>',
+          subject: 'New Form Submission!',
+          to: email,
+          react: (
+            <SubmissionEmail
+              workspaceSlug={workspace.slug}
+              endpointSlug={endpoint.slug}
+              data={input}
+            />
+          )
         });
       }
     }

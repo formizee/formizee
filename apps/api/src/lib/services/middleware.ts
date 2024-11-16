@@ -2,9 +2,9 @@ import type {MiddlewareHandler} from 'hono';
 import type {HonoEnv} from '@/lib/hono';
 import {newId} from '@formizee/id';
 
+import {Resend} from 'resend';
 import {Analytics} from '@formizee/analytics';
 import {KeyService} from '@formizee/keys';
-import {EmailService} from '@formizee/email';
 import {createConnection} from '@formizee/db/api';
 
 export function services(): MiddlewareHandler<HonoEnv> {
@@ -30,10 +30,9 @@ export function services(): MiddlewareHandler<HonoEnv> {
       tinybirdUrl: c.env.TINYBIRD_URL
     });
 
-    const emailService = new EmailService({
-      apiKey:
-        c.env.ENVIROMENT === 'production' ? c.env.RESEND_TOKEN : 're_123456789'
-    });
+    const emailService = new Resend(
+      c.env.ENVIROMENT === 'production' ? c.env.RESEND_TOKEN : 're_123456789'
+    );
 
     const keyService = new KeyService({database});
 
