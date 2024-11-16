@@ -1,8 +1,10 @@
-import {getSchema, generateSchema, uploadSubmission} from '@/lib/helpers';
+import {getSchema, generateSchema, validateData} from '@/lib/helpers';
 import type {submissions as submissionsAPI} from '.';
 import {openApiErrorResponses} from '@/lib/errors';
 import {createRoute, z} from '@hono/zod-openapi';
 import {PostSchema} from './schema';
+import {HTTPException} from 'hono/http-exception';
+import {encode} from 'msgpack-lite';
 
 export const postRoute = createRoute({
   method: 'post',
@@ -44,7 +46,17 @@ export const registerPostSubmission = (api: typeof submissionsAPI) => {
       schema = await generateSchema(endpointId, data, bucket);
     }
 
-    await uploadSubmission(key, data, schema, vault);
+    const submissionValid = validateData(data, schema);
+
+    if (!submissionValid) {
+      throw new HTTPException(403, {
+        message:
+          'The submission structure does not match with the current data structure of the endpoint'
+      });
+    }
+
+    const submission = encode(data);
+    await vault.put(key, submission);
 
     return context.json({}, 201);
   });
