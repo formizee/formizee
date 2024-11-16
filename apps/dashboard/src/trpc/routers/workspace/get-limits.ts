@@ -1,6 +1,7 @@
+import {calculatePlanCycleDates} from '@formizee/plans';
+import {count, database, eq, schema} from '@/lib/db';
 import {protectedProcedure} from '@/trpc';
 import {TRPCError} from '@trpc/server';
-import {count, database, eq, schema} from '@/lib/db';
 import {z} from 'zod';
 
 export const getWorkspaceLimits = protectedProcedure
@@ -65,33 +66,21 @@ export const getWorkspaceLimits = protectedProcedure
       with: {user: true}
     });
 
-    const billingCycleStartDate =
-      workspace.endsAt !== null
-        ? new Date(workspace.endsAt.setMonth(workspace.endsAt.getMonth() - 1))
-        : new Date(
-            new Date(
-              workspace.createdAt.setMonth(new Date().getMonth())
-            ).setFullYear(new Date().getFullYear())
-          );
-
-    const billingCycleEndDate =
-      workspace.endsAt !== null
-        ? workspace.endsAt
-        : new Date(
-            new Date(
-              workspace.createdAt.setMonth(new Date().getMonth() + 1)
-            ).setFullYear(new Date().getFullYear())
-          );
+    const billingCycle = calculatePlanCycleDates(workspace);
 
     const submissions = await ctx.analytics.queryFormizeeMonthlySubmissions(
       workspace.id,
-      billingCycleStartDate,
-      billingCycleEndDate
+      billingCycle.startDate,
+      billingCycle.endDate
+    );
+
+    const apiDailyRequests = await ctx.analytics.queryFormizeeDailyRequests(
+      workspace.id
     );
 
     return {
       submissions,
-      apiDailyRequests: 0,
+      apiDailyRequests,
       endpoints: workspaceEndpoints[0].count,
       keys: workspaceKeys[0].count,
       members: members.length

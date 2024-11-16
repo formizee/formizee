@@ -1,5 +1,5 @@
+import {getLimits, planConfig, calculatePlanCycleDates} from '@formizee/plans';
 import {UsageWidget} from '../../components/billing/usage';
-import {getLimits, planConfig} from '@formizee/plans';
 import Transition from '@/components/transition';
 import {Button, Separator} from '@formizee/ui';
 import cardIcon from '@/../public/card.webp';
@@ -26,18 +26,7 @@ export const SettingsWorkspaceBilling = (props: Props) => {
 
   const currentPlanLimits = getLimits(workspace.plan);
 
-  const getNextPaymentDate = () => {
-    if (workspace.endsAt) {
-      return workspace.endsAt.toDateString();
-    }
-
-    const currentBillingDate = new Date(
-      workspace.createdAt.setMonth(new Date().getMonth())
-    );
-    return new Date(
-      currentBillingDate.setMonth(currentBillingDate.getMonth() + 1)
-    ).toDateString();
-  };
+  const {endDate} = calculatePlanCycleDates(workspace);
 
   return (
     <Transition className="flex flex-col w-full mt-4">
@@ -101,7 +90,7 @@ export const SettingsWorkspaceBilling = (props: Props) => {
         <div>
           <span className="flex flex-row w-full text-sm mt-4 justify-between">
             Next Billing At
-            <span className="text-xs mr-4">{getNextPaymentDate()}</span>
+            <span className="text-xs mr-4">{endDate.toDateString()}</span>
           </span>
           <span className="flex flex-row w-full text-sm my-4 justify-between">
             Total Due
