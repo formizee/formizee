@@ -1,11 +1,12 @@
 import {SubmissionSchema, EndpointParamsSchema} from './schema';
+import {calculatePlanCycleDates} from '@formizee/plans';
 import type {submissions as submissionsApi} from '.';
 import {openApiErrorResponses} from '@/lib/errors';
 import {HTTPException} from 'hono/http-exception';
 import {createRoute} from '@hono/zod-openapi';
-import {eq, count, schema} from '@formizee/db';
-import {newId} from '@formizee/id';
 import {postSubmission} from '@/lib/vault';
+import {schema} from '@formizee/db';
+import {newId} from '@formizee/id';
 
 export const postRoute = createRoute({
   method: 'post',
@@ -74,30 +75,42 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
       });
     }
 
-    // Check plan limits.
-    const submissions = await database
-      .select({count: count()})
-      .from(schema.submission)
-      .innerJoin(
-        schema.endpoint,
-        eq(schema.submission.endpointId, schema.endpoint.id)
-      )
-      .innerJoin(
-        schema.workspace,
-        eq(schema.endpoint.workspaceId, schema.workspace.id)
-      )
-      .where(eq(schema.workspace.id, workspaceId));
+    const workspace = await database.query.workspace.findFirst({
+      where: (table, {eq}) => eq(table.id, workspaceId)
+    });
 
-    if (!submissions[0]) {
-      throw new HTTPException(500, {
-        message: 'Server Internal Error'
+    if (!workspace) {
+      throw new HTTPException(404, {
+        message: 'Workspace not found'
       });
     }
+
+    if (!endpoint.isEnabled) {
+      throw new HTTPException(403, {
+        message: 'The endpoint is currently not accepting submissions'
+      });
+    }
+
+    if (Object.keys(input).length === 0) {
+      throw new HTTPException(400, {
+        message: 'The submission data is empty'
+      });
+    }
+
+    // Check plan limits.
+
+    const billingCycle = calculatePlanCycleDates(workspace);
+
+    const submissionsCount = await analytics.queryFormizeeMonthlySubmissions(
+      workspace.id,
+      billingCycle.startDate,
+      billingCycle.endDate
+    );
 
     // Limit Reached
     if (
       typeof limits.submissions === 'number' &&
-      submissions[0].count >= limits.submissions
+      submissionsCount >= limits.submissions
     ) {
       const workspaceMember = await database.query.usersToWorkspaces.findFirst({
         where: (table, {and, eq}) =>
@@ -136,7 +149,7 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
     // 80% Warning
     if (
       typeof limits.submissions === 'number' &&
-      submissions[0].count >= Math.abs(limits.submissions * 0.8)
+      submissionsCount >= Math.abs(limits.submissions * 0.8)
     ) {
       const workspaceMember = await database.query.usersToWorkspaces.findFirst({
         where: (table, {and, eq}) =>
@@ -167,28 +180,6 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
           currentPlan: workspacePlan
         });
       }
-    }
-
-    const workspace = await database.query.workspace.findFirst({
-      where: (table, {eq}) => eq(table.id, workspaceId)
-    });
-
-    if (!workspace) {
-      throw new HTTPException(404, {
-        message: 'Workspace not found'
-      });
-    }
-
-    if (!endpoint.isEnabled) {
-      throw new HTTPException(403, {
-        message: 'The endpoint is currently not accepting submissions'
-      });
-    }
-
-    if (Object.keys(input).length === 0) {
-      throw new HTTPException(400, {
-        message: 'The submission data is empty'
-      });
     }
 
     const data: schema.InsertSubmission = {
