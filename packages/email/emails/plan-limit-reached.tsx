@@ -31,7 +31,7 @@ interface UsageBreakdownProps {
   currentPlan: WorkspacePlans;
 }
 
-export const UsageBreakdown = (props: UsageBreakdownProps) => {
+const UsageBreakdown = (props: UsageBreakdownProps) => {
   function getLabelForLimit(limit: keyof Limits): string | undefined {
     for (const category of Object.values(pricingTableConfig)) {
       for (const feature of category.features) {

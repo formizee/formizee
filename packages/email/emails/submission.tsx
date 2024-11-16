@@ -76,7 +76,7 @@ export const SubmissionEmail = ({
             )}
             <Button
               className="flex w-48 px-3 border-neutral-300 py-2 justify-center items-center rounded-md my-8 text-neutral-700"
-              href={`https://dashboard.formizee.com/${workspaceSlug}/${endpointSlug}/settings`}
+              href={`https://dashboard.formizee.com/${workspaceSlug}/${endpointSlug}`}
               style={{border: '1px solid #d4d4d4'}}
             >
               <div className="flex gap-2">

@@ -3,8 +3,18 @@
   "author": "Pau García Chiner",
   "version": "1.0.0",
   "license": "Apache-2.0",
-  "main": "src/service.tsx",
-  "types": "src/service.tsx",
+  "exports": {
+    ".": {
+      "types": "./src/service.ts",
+      "import": "./src/service.ts",
+      "require": "./src/service.ts"
+    },
+    "./templates": {
+      "types": "./emails/index.ts",
+      "import": "./emails/index.ts",
+      "require": "./emails/index.ts"
+    }
+  },
   "scripts": {
     "dev": "email dev",
     "test": "vitest run",
@@ -15,7 +25,7 @@
     "@formizee/tsconfig": "workspace:*",
     "@types/node": "22.0.0",
     "@types/react": "18.3.3",
-    "react": "18.3.1",
+    "@types/react-dom": "18.3.0",
     "tailwindcss": "3.4.7",
     "vitest": "1.5.0"
   },
@@ -26,6 +36,8 @@
     "@react-email/render": "1.0.2",
     "@react-email/tailwind": "1.0.1",
     "react-email": "3.0.2",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
     "resend": "3.5.0",
     "zod": "3.23.8"
   }
