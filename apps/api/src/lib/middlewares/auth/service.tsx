@@ -4,10 +4,11 @@ import {codeToStatus} from '@formizee/error';
 import type {MiddlewareHandler} from 'hono';
 import {getLimits} from '@formizee/plans';
 import type {HonoEnv} from '@/lib/hono';
+import { PlanLimitWarning } from '@formizee/email/templates';
 
 export const authentication = (): MiddlewareHandler<HonoEnv> => {
   return async function auth(context, next) {
-    const {keyService, analytics} = context.get('services');
+    const {keyService, analytics, database, emailService} = context.get('services');
 
     const authorization = context.req
       .header('authorization')
@@ -47,6 +48,7 @@ export const authentication = (): MiddlewareHandler<HonoEnv> => {
       val.workspace.id
     );
 
+    // Daily limit reached
     if (
       typeof limits.apiDailyRequests === 'number' &&
       dailyRequests >= limits.apiDailyRequests
@@ -55,6 +57,49 @@ export const authentication = (): MiddlewareHandler<HonoEnv> => {
         message:
           'API Daily rate limit reached, please try again tomorrow or upgrade to a better plan.'
       });
+    }
+
+    // 80% percent warning
+    if (
+      typeof limits.apiDailyRequests === 'number' &&
+      dailyRequests >= Math.abs(limits.apiDailyRequests * 0.8)
+    ) {
+      const workspaceMember = await database.query.usersToWorkspaces.findFirst({
+        where: (table, {and, eq}) =>
+          and(eq(table.workspaceId, val.workspace.id), eq(table.role, 'owner'))
+      });
+
+      if (!workspaceMember) {
+        throw new HTTPException(500, {
+          message: 'Server Internal Error'
+        });
+      }
+
+      const workspaceOwner = await database.query.user.findFirst({
+        where: (table, {eq}) => eq(table.id, workspaceMember.userId)
+      });
+
+      if (!workspaceOwner) {
+        throw new HTTPException(500, {
+          message: 'Server Internal Error'
+        });
+      }
+
+      if (context.env.ENVIROMENT === 'production') {
+        await emailService.emails.send({
+          subject: "You've reached the 80% monthly usage of your plan",
+          reply_to: 'Formizee Support <support@formizee.com>',
+          from: 'Formizee Billing <payments@formizee.com>',
+          to: workspaceOwner.email,
+          react: (
+            <PlanLimitWarning
+              limit={'apiDailyRequests'}
+              username={workspaceOwner.name}
+              currentPlan={val.workspace.plan}
+            />
+          )
+        });
+      }
     }
 
     await next();
