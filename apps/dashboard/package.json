@@ -14,6 +14,7 @@
     "@auth/core": "0.34.2",
     "@auth/drizzle-adapter": "1.4.2",
     "@formizee/analytics": "workspace:*",
+    "@formizee/billing": "workspace:*",
     "@formizee/db": "workspace:*",
     "@formizee/email": "workspace:*",
     "@formizee/id": "workspace:*",
@@ -21,7 +22,6 @@
     "@formizee/plans": "workspace:*",
     "@formizee/ui": "workspace:*",
     "@hookform/resolvers": "3.4.0",
-    "@polar-sh/sdk": "0.16.0",
     "@tanstack/react-query": "4.36.1",
     "@tanstack/react-table": "8.20.1",
     "@trpc/client": "10.45.2",
@@ -35,7 +35,6 @@
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-hook-form": "7.51.4",
-    "standardwebhooks": "1.0.0",
     "superjson": "2.2.1",
     "zod": "3.23.8"
   },

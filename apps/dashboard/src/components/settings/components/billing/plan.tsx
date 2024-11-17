@@ -8,11 +8,12 @@ import {
   ServerIcon,
   UserGroupIcon
 } from '@formizee/ui/icons';
+import Link from 'next/link';
 
 interface Props {
   workspacePlan: WorkspacePlans;
   plan: WorkspacePlans;
-  productId?: string;
+  workspaceId: string;
 }
 
 const getStorageSize = (size: number) => {
@@ -23,6 +24,7 @@ const getStorageSize = (size: number) => {
 };
 
 const UpgradeButton = (props: {
+  workspaceId: string;
   plan: WorkspacePlans;
   workspacePlan: WorkspacePlans;
 }) => {
@@ -48,7 +50,15 @@ const UpgradeButton = (props: {
     }
 
     if (props.plan === 'pro') {
-      return <Button className="w-full">Upgrade</Button>;
+      return (
+        <Button asChild className="w-full">
+          <Link
+            href={`/api/billing/pro/checkout?workspaceId=${props.workspaceId}`}
+          >
+            Upgrade
+          </Link>
+        </Button>
+      );
     }
   }
 
@@ -89,7 +99,7 @@ export const PlanWidget = (props: Props) => {
   return (
     <div
       className={cn(
-        props.plan === 'pro' ? 'border-l' : '',
+        props.plan === 'pro' ? 'border-l dark:border-neutral-800' : '',
         'flex flex-1 flex-col items-center gap-2 p-2 px-4 h-full justify-between'
       )}
     >
@@ -112,7 +122,7 @@ export const PlanWidget = (props: Props) => {
       <Separator className="mb-4" />
       <div className="flex flex-col justify-between h-full w-full">
         <div>
-          <Feature title="Daily Requests" icon={ConsoleIcon}>
+          <Feature title="API Daily Requests" icon={ConsoleIcon}>
             {planConfig[props.plan].limits.apiDailyRequests.toLocaleString()}
           </Feature>
           <Feature title="Forms" icon={DocumentIcon}>
@@ -132,7 +142,7 @@ export const PlanWidget = (props: Props) => {
               planConfig[props.plan].limits.support.slice(1)}
           </Feature>
         </div>
-        <UpgradeButton plan={props.plan} workspacePlan={props.workspacePlan} />
+        <UpgradeButton {...props} />
       </div>
     </div>
   );

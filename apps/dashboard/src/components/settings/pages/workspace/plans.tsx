@@ -17,8 +17,6 @@ export const SettingsWorkspacePlans = (props: Props) => {
     return;
   }
 
-  const PRO_PLAN_ID = '81d5c0a4-2dd6-462b-be67-7a828a86304c';
-
   return (
     <Transition className="flex flex-col w-full mt-4">
       <div className="flex flex-row gap-4">
@@ -37,11 +35,15 @@ export const SettingsWorkspacePlans = (props: Props) => {
         </div>
       </div>
       <div className="flex flex-row gap-2 mt-8 h-full">
-        <PlanWidget workspacePlan={workspace.plan} plan="hobby" />
         <PlanWidget
           workspacePlan={workspace.plan}
+          workspaceId={workspace.id}
+          plan="hobby"
+        />
+        <PlanWidget
+          workspacePlan={workspace.plan}
+          workspaceId={workspace.id}
           plan="pro"
-          productId={PRO_PLAN_ID}
         />
       </div>
     </Transition>

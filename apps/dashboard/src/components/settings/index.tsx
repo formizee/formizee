@@ -2,6 +2,7 @@
 
 import {createContext, useContext, useState} from 'react';
 import SettingsDialog from './dialog';
+import type {Route} from './pages';
 
 interface SettingsContextType {
   workspaceSlug: string;
@@ -9,6 +10,9 @@ interface SettingsContextType {
 
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   open: boolean;
+
+  setRoute: React.Dispatch<React.SetStateAction<Route>>;
+  route: Route;
 }
 
 const SettingsContext = createContext<SettingsContextType | undefined>(
@@ -26,10 +30,13 @@ export function SettingsProvider({
   userId,
   workspaceSlug
 }: SettingsProviderProps) {
+  const [route, setRoute] = useState<Route>('account.general');
   const [open, setOpen] = useState(false);
 
   return (
-    <SettingsContext.Provider value={{open, setOpen, workspaceSlug, userId}}>
+    <SettingsContext.Provider
+      value={{open, setOpen, route, setRoute, workspaceSlug, userId}}
+    >
       <SettingsDialog />
       {children}
     </SettingsContext.Provider>

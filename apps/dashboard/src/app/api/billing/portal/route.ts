@@ -27,30 +27,24 @@ export const GET = auth(async function GET(req) {
     );
   }
 
-  const user = await database.query.user.findFirst({
-    where: (table, {eq}) => eq(table.id, authorized.userId)
+  const workspace = await database.query.workspace.findFirst({
+    where: (table, {eq}) => eq(table.id, authorized.workspaceId)
   });
 
-  if (!user) {
+  if (!workspace) {
     return NextResponse.json(
       {
         code: 'NOT_FOUND',
-        message: 'User not found.'
+        message: 'Workspace not found.'
       },
       {status: 404}
     );
   }
 
-  const confirmationUrl = `${req.nextUrl.protocol}//${req.nextUrl.host}/billing/confirmation`;
-
   try {
-    const responseUrl = await billing.createFormizeeProPlanCheckout({
-      email: user.email,
-      variantId: '467798',
-      redirectUrl: confirmationUrl,
-      workspaceId: authorized.workspaceId,
-      storeId: env().LEMONSQUEEZY_STORE_ID
-    });
+    const responseUrl = await billing.getFormizeeSubscriptionPortalUrl(
+      workspace.subscriptionId ?? ''
+    );
 
     return NextResponse.redirect(responseUrl);
   } catch {

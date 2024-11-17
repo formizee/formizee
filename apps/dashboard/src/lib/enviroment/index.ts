@@ -20,9 +20,9 @@ export const env = () =>
       VAULT_SECRET: z.string().default(''),
 
       // Billing
-      POLAR_ACCESS_TOKEN: z.string(),
-      POLAR_ORGANIZATION_ID: z.string(),
-      POLAR_WEBHOOK_SECRET: z.string(),
+      LEMONSQUEEZY_API_KEY: z.string(),
+      LEMONSQUEEZY_STORE_ID: z.string(),
+      LEMONSQUEEZY_WEBHOOK_SECRET: z.string(),
 
       // Analytics
       TINYBIRD_URL: z.string().url().optional(),

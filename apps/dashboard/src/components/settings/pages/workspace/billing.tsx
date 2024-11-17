@@ -6,12 +6,15 @@ import cardIcon from '@/../public/card.webp';
 import {api} from '@/trpc/client';
 import Image from 'next/image';
 import Link from 'next/link';
+import {useSettings} from '../..';
 
 interface Props {
   workspaceSlug: string;
 }
 
 export const SettingsWorkspaceBilling = (props: Props) => {
+  const {setRoute} = useSettings();
+
   const workspace = api.workspace.getBySlug.useQuery({
     slug: props.workspaceSlug
   }).data;
@@ -45,49 +48,12 @@ export const SettingsWorkspaceBilling = (props: Props) => {
           </p>
         </div>
       </div>
-      <span className="font-semibold mt-8">Current Usage</span>
-      <Separator className="mt-2 w-full" />
-      <UsageWidget
-        currentPlanLimits={currentPlanLimits}
-        planFeature="apiDailyRequests"
-        usage={usage.apiDailyRequests}
-      >
-        API Daily Requests
-      </UsageWidget>
-      <UsageWidget
-        currentPlanLimits={currentPlanLimits}
-        planFeature="submissions"
-        usage={usage.submissions}
-      >
-        Monthly Submissions
-      </UsageWidget>
-      <UsageWidget
-        currentPlanLimits={currentPlanLimits}
-        planFeature="endpoints"
-        usage={usage.endpoints}
-      >
-        Total Forms
-      </UsageWidget>
-      <UsageWidget
-        currentPlanLimits={currentPlanLimits}
-        planFeature="keys"
-        usage={usage.keys}
-      >
-        Total Keys
-      </UsageWidget>
-      <UsageWidget
-        currentPlanLimits={currentPlanLimits}
-        planFeature="members"
-        usage={usage.members}
-      >
-        Members
-      </UsageWidget>
       <span className="font-semibold mt-8">
         {workspace.plan.charAt(0).toUpperCase() + workspace.plan.slice(1)} Plan
       </span>
       <Separator className="mt-2 w-full" />
       <div className="flex flex-col justify-between h-full">
-        <div>
+        <div className="flex flex-col">
           <span className="flex flex-row w-full text-sm mt-4 justify-between">
             Next Billing At
             <span className="text-xs mr-4">{endDate.toDateString()}</span>
@@ -98,12 +64,51 @@ export const SettingsWorkspaceBilling = (props: Props) => {
               ${planConfig[workspace.plan].price}
             </span>
           </span>
+          <span className="font-semibold mt-8">Current Usage</span>
+          <Separator className="mt-2 w-full" />
+          <UsageWidget
+            currentPlanLimits={currentPlanLimits}
+            planFeature="apiDailyRequests"
+            usage={usage.apiDailyRequests}
+          >
+            API Daily Requests
+          </UsageWidget>
+          <UsageWidget
+            currentPlanLimits={currentPlanLimits}
+            planFeature="submissions"
+            usage={usage.submissions}
+          >
+            Monthly Submissions
+          </UsageWidget>
+          <UsageWidget
+            currentPlanLimits={currentPlanLimits}
+            planFeature="endpoints"
+            usage={usage.endpoints}
+          >
+            Total Forms
+          </UsageWidget>
+          <UsageWidget
+            currentPlanLimits={currentPlanLimits}
+            planFeature="keys"
+            usage={usage.keys}
+          >
+            Total Keys
+          </UsageWidget>
+          <UsageWidget
+            currentPlanLimits={currentPlanLimits}
+            planFeature="members"
+            usage={usage.members}
+          >
+            Members
+          </UsageWidget>
         </div>
         <div className="mt-4">
           {workspace.plan === 'hobby' ? (
             <div className="flex flex-row w-full justify-between items-center">
               <div className="flex flex-row gap-2">
-                <Button>Upgrade Plan</Button>
+                <Button onClick={() => setRoute('workspace.plans')}>
+                  Upgrade Plan
+                </Button>
               </div>
               <Link
                 href="mailto:support@formizee.com"
@@ -115,9 +120,17 @@ export const SettingsWorkspaceBilling = (props: Props) => {
           ) : (
             <div className="flex flex-row w-full justify-between items-center">
               <div className="flex flex-row gap-2">
-                <Button>See Plan Features</Button>
-                <Button variant="outline" className="py-2 text-red-500">
-                  Cancel Billing
+                <Button asChild>
+                  <Link href="https://formizee.com/pricing" target="_blank">
+                    See Plan Features
+                  </Link>
+                </Button>
+                <Button asChild variant="outline" className="py-2">
+                  <Link
+                    href={`/api/billing/portal?workspaceId=${workspace.id}`}
+                  >
+                    Manage Subscription
+                  </Link>
                 </Button>
               </div>
               <Link

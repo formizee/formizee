@@ -8,13 +8,18 @@ import {useSettings} from '.';
 const Content = lazy(() => import('./content'));
 
 export default function SettingsDialog() {
-  const {open, setOpen, workspaceSlug, userId} = useSettings();
+  const {open, setOpen, route, setRoute, workspaceSlug, userId} = useSettings();
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="flex overflow-hidden p-0 min-h-[700px] min-w-[500px] md:max-h-[700px] max-w-[500px] sm:max-w-[700px] lg:max-w-[900px]">
         <Suspense fallback={<DialogLoading />}>
-          <Content workspaceSlug={workspaceSlug} userId={userId} />
+          <Content
+            route={route}
+            setRoute={setRoute}
+            workspaceSlug={workspaceSlug}
+            userId={userId}
+          />
         </Suspense>
       </DialogContent>
     </Dialog>

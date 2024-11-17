@@ -1,57 +1,34 @@
-import {Webhook} from 'standardwebhooks';
-
-import type {
-  WebhookCheckoutCreatedPayload,
-  WebhookCheckoutUpdatedPayload,
-  WebhookOrderCreatedPayload,
-  WebhookSubscriptionActivePayload,
-  WebhookSubscriptionCanceledPayload,
-  WebhookSubscriptionCreatedPayload,
-  WebhookSubscriptionRevokedPayload,
-  WebhookSubscriptionUpdatedPayload
-} from '@polar-sh/sdk/models/components';
-import {type NextRequest, NextResponse} from 'next/server';
-import {env} from '@/lib/enviroment';
+import type {Webhook} from '@formizee/billing';
 import {database, eq, schema} from '@/lib/db';
-import type {WorkspacePlans} from '@formizee/plans';
+import {NextResponse} from 'next/server';
+import {env} from '@/lib/enviroment';
+import crypto from 'node:crypto';
 
-type WebhookEvent =
-  | WebhookOrderCreatedPayload
-  | WebhookCheckoutCreatedPayload
-  | WebhookCheckoutUpdatedPayload
-  | WebhookSubscriptionActivePayload
-  | WebhookSubscriptionCreatedPayload
-  | WebhookSubscriptionUpdatedPayload
-  | WebhookSubscriptionRevokedPayload
-  | WebhookSubscriptionCanceledPayload;
+export async function POST(request: Request) {
+  const rawBody = await request.text();
+  const secret = env().LEMONSQUEEZY_WEBHOOK_SECRET;
 
-export async function POST(request: NextRequest) {
-  const requestBody = await request.text();
-
-  const webhookHeaders = {
-    'webhook-id': request.headers.get('webhook-id') ?? '',
-    'webhook-timestamp': request.headers.get('webhook-timestamp') ?? '',
-    'webhook-signature': request.headers.get('webhook-signature') ?? ''
-  };
-
-  const webhookSecret = Buffer.from(env().POLAR_WEBHOOK_SECRET).toString(
-    'base64'
+  const signature = Buffer.from(
+    request.headers.get('X-Signature') ?? '',
+    'hex'
   );
-  const wh = new Webhook(webhookSecret);
-  const webhookPayload = wh.verify(requestBody, webhookHeaders) as WebhookEvent;
 
-  switch (webhookPayload.type) {
-    case 'order.created': {
-      if (
-        webhookPayload.data.billingReason !== 'subscription_cycle' ||
-        !webhookPayload.data.subscription
-      ) {
-        return NextResponse.json({});
-      }
+  const hmac = Buffer.from(
+    crypto.createHmac('sha256', secret).update(rawBody).digest('hex'),
+    'hex'
+  );
 
+  if (!crypto.timingSafeEqual(hmac, signature)) {
+    return new Response('Invalid signature', {status: 400});
+  }
+
+  const data = JSON.parse(rawBody) as Webhook;
+
+  switch (data.meta.event_name) {
+    case 'subscription_payment_success': {
       const workspace = await database.query.workspace.findFirst({
         where: (table, {eq}) =>
-          eq(table.subscriptionId, webhookPayload.data.subscriptionId ?? '')
+          eq(table.id, data.meta.custom_data.workspace_id ?? '')
       });
 
       if (!workspace) {
@@ -67,36 +44,19 @@ export async function POST(request: NextRequest) {
       await database
         .update(schema.workspace)
         .set({
-          endsAt: webhookPayload.data.subscription.currentPeriodEnd,
-          paidUntil: webhookPayload.data.subscription.currentPeriodEnd
+          plan: 'pro',
+          stripeId: data.data.attributes.customer_id.toString(),
+          subscriptionId: data.data.attributes.subscription_id.toString()
         })
         .where(eq(schema.workspace.id, workspace.id));
 
       break;
     }
 
-    case 'subscription.active': {
-      const {plan, workspaceId} = webhookPayload.data.metadata as {
-        plan: WorkspacePlans;
-        workspaceId: string;
-      };
-
-      await database
-        .update(schema.workspace)
-        .set({
-          plan,
-          subscriptionId: webhookPayload.data.id,
-          endsAt: webhookPayload.data.currentPeriodEnd,
-          paidUntil: webhookPayload.data.currentPeriodEnd
-        })
-        .where(eq(schema.workspace.id, workspaceId));
-
-      break;
-    }
-    // Subscription has been revoked/peroid has ended with no renewal
-    case 'subscription.revoked': {
+    case 'subscription_updated': {
       const workspace = await database.query.workspace.findFirst({
-        where: (table, {eq}) => eq(table.subscriptionId, webhookPayload.data.id)
+        where: (table, {eq}) =>
+          eq(table.id, data.meta.custom_data?.workspace_id ?? '')
       });
 
       if (!workspace) {
@@ -112,20 +72,21 @@ export async function POST(request: NextRequest) {
       await database
         .update(schema.workspace)
         .set({
-          plan: 'hobby',
-          subscriptionId: webhookPayload.data.id,
-          endsAt: webhookPayload.data.endedAt,
-          paidUntil: webhookPayload.data.endedAt
+          plan: data.data.attributes.cancelled ? 'hobby' : 'pro',
+          paidUntil: new Date(data.data.attributes.renews_at),
+          endsAt: data.data.attributes.ends_at
+            ? new Date(data.data.attributes.ends_at)
+            : null
         })
         .where(eq(schema.workspace.id, workspace.id));
 
       break;
     }
 
-    // Subscription has been explicitly canceled by the user
-    case 'subscription.canceled': {
+    case 'subscription_cancelled': {
       const workspace = await database.query.workspace.findFirst({
-        where: (table, {eq}) => eq(table.subscriptionId, webhookPayload.data.id)
+        where: (table, {eq}) =>
+          eq(table.id, data.meta.custom_data?.workspace_id ?? '')
       });
 
       if (!workspace) {
@@ -141,13 +102,34 @@ export async function POST(request: NextRequest) {
       await database
         .update(schema.workspace)
         .set({
-          plan: 'hobby',
-          subscriptionId: webhookPayload.data.id,
-          endsAt: webhookPayload.data.endedAt,
-          paidUntil: webhookPayload.data.endedAt
+          plan: 'hobby'
         })
         .where(eq(schema.workspace.id, workspace.id));
+      break;
+    }
 
+    case 'subscription_expired': {
+      const workspace = await database.query.workspace.findFirst({
+        where: (table, {eq}) =>
+          eq(table.id, data.meta.custom_data?.workspace_id ?? '')
+      });
+
+      if (!workspace) {
+        return NextResponse.json(
+          {
+            message:
+              'Workspace not found, please contact with support@formizee.com'
+          },
+          {status: 404}
+        );
+      }
+
+      await database
+        .update(schema.workspace)
+        .set({
+          plan: 'hobby'
+        })
+        .where(eq(schema.workspace.id, workspace.id));
       break;
     }
   }
