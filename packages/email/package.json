@@ -5,9 +5,9 @@
   "license": "Apache-2.0",
   "exports": {
     ".": {
-      "types": "./src/service.ts",
-      "import": "./src/service.ts",
-      "require": "./src/service.ts"
+      "types": "./src/service.tsx",
+      "import": "./src/service.tsx",
+      "require": "./src/service.tsx"
     },
     "./templates": {
       "types": "./emails/index.ts",
