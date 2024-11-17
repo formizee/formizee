@@ -4,11 +4,12 @@ import {codeToStatus} from '@formizee/error';
 import type {MiddlewareHandler} from 'hono';
 import {getLimits} from '@formizee/plans';
 import type {HonoEnv} from '@/lib/hono';
-import { PlanLimitWarning } from '@formizee/email/templates';
+import {PlanLimitWarning} from '@formizee/email/templates';
 
 export const authentication = (): MiddlewareHandler<HonoEnv> => {
   return async function auth(context, next) {
-    const {keyService, analytics, database, emailService} = context.get('services');
+    const {keyService, analytics, database, emailService} =
+      context.get('services');
 
     const authorization = context.req
       .header('authorization')
