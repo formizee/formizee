@@ -12,7 +12,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
   Skeleton
@@ -59,8 +58,8 @@ export const Account = (props: AccountProps) => {
         <SidebarMenuItem>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <SidebarMenuButton className="h-12">
-                <div className="flex flex-row items-center px-4 justify-center size-8 rounded-md bg-neutral-600 dark:bg-neutral-400">
+              <SidebarMenuButton className="h-14">
+                <div className="flex flex-row items-center justify-center size-10 rounded-md bg-neutral-600 dark:bg-neutral-400">
                   <span className="fixed text-lg text-neutral-50 dark:text-neutral-950 font-semibold">
                     {data.name.split('')[0]?.toUpperCase()}
                   </span>
@@ -77,22 +76,6 @@ export const Account = (props: AccountProps) => {
               </SidebarMenuButton>
             </DropdownMenuTrigger>
             <DropdownMenuContent side="right" align="end">
-              <DropdownMenuLabel className="flex flex-row gap-2">
-                <div className="flex select-none items-center justify-center size-10 rounded-md bg-neutral-600 dark:bg-neutral-400">
-                  <span className="fixed text-lg text-neutral-50 dark:text-neutral-950 font-semibold">
-                    {data.name.split('')[0]?.toUpperCase()}
-                  </span>
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-sm font-regular max-w-[15rem] truncate mr-2">
-                    {data.name}
-                  </span>
-                  <span className="text-xs text-neutral-600 dark:text-neutral-400 font-regular max-w-[12.5rem] truncate mt-0.5">
-                    {data.slug}
-                  </span>
-                </div>
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
               <DropdownMenuItem>
                 <Link
                   target="_blank"
