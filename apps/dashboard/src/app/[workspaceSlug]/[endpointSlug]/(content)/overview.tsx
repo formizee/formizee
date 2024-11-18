@@ -25,7 +25,12 @@ export const Overview = ({endpointId}: Props) => {
             Used when interacting with the Formizee API.
           </SettingsCardLabel>
           {endpointId ? (
-            <Input disabled defaultValue={endpointId} className="max-w-96" />
+            <Input
+              name="id"
+              disabled
+              defaultValue={endpointId}
+              className="max-w-96"
+            />
           ) : (
             <Skeleton className="max-w-96 h-9" />
           )}
