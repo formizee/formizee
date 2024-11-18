@@ -34,7 +34,7 @@ interface AccountProps {
 
 export const Account = (props: AccountProps) => {
   const {data, isLoading} = api.user.get.useQuery({id: props.userId});
-  const {setOpen} = useSettings();
+  const {setOpen, setRoute} = useSettings();
 
   if (isLoading) {
     return (
@@ -96,7 +96,12 @@ export const Account = (props: AccountProps) => {
                   Homepage
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setOpen(open => !open)}>
+              <DropdownMenuItem
+                onClick={() => {
+                  setRoute('account.general');
+                  setOpen(open => !open);
+                }}
+              >
                 <SettingsIcon variant="outline" />
                 <span>Settings</span>
               </DropdownMenuItem>
