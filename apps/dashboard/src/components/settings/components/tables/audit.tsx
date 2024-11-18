@@ -53,10 +53,16 @@ export const columns: ColumnDef<any>[] = [
               <Tooltip>
                 <TooltipTrigger className="flex justify-start">
                   <span className="text-xs text-neutral-600 dark:text-neutral-400 truncate">
-                    {String(data.actor_id)}
+                    {data.actor_type === 'user'
+                      ? String(data.actor_id)
+                      : `${String(data.actor_id).slice(0, 6)}${'*'.repeat(19)}`}
                   </span>
                 </TooltipTrigger>
-                <TooltipContent>{String(data.actor_id)}</TooltipContent>
+                <TooltipContent>
+                  {data.actor_type === 'user'
+                    ? String(data.actor_id)
+                    : 'Sensitive content'}
+                </TooltipContent>
               </Tooltip>
             </TooltipProvider>
           </div>
