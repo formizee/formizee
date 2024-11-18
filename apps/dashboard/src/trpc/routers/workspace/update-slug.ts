@@ -61,7 +61,7 @@ export const updateWorkspaceSlug = protectedProcedure
       const updatedWorkspace = await database
         .update(schema.workspace)
         .set({slug: input.slug ?? workspace.slug})
-        .where(eq(schema.endpoint.id, workspace.id))
+        .where(eq(schema.workspace.id, workspace.id))
         .returning();
 
       // Ingest audit logs
@@ -79,7 +79,7 @@ export const updateWorkspaceSlug = protectedProcedure
             type: 'workspace'
           }
         ],
-        description: `Updated ${workspace.id} slug to ${input.slug}`,
+        description: `Updated workspace slug to ${input.slug}`,
         context: {
           location: ctx.audit.location,
           userAgent: ctx.audit.userAgent

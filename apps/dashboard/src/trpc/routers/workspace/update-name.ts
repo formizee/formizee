@@ -7,7 +7,7 @@ export const updateWorkspaceName = protectedProcedure
   .input(
     z.object({
       id: z.string(),
-      name: z.string()
+      name: z.string().optional()
     })
   )
   .mutation(async ({input, ctx}) => {
@@ -25,23 +25,25 @@ export const updateWorkspaceName = protectedProcedure
     const authorized = await database.query.usersToWorkspaces.findFirst({
       where: (table, {and, eq}) =>
         and(
-          eq(table.userId, ctx.user.id ?? ''),
+          eq(table.userId, ctx.user?.id ?? ''),
           eq(table.workspaceId, workspace.id)
         )
     });
 
-    if (!authorized) {
+    if (!authorized || authorized.role !== 'owner') {
       throw new TRPCError({
         code: 'UNAUTHORIZED',
-        message: 'You do not have permission to view this workspace.'
+        message: 'You do not have permission to update this workspace.'
       });
     }
 
     try {
       const updatedWorkspace = await database
         .update(schema.workspace)
-        .set({name: input.name ?? workspace.name})
-        .where(eq(schema.endpoint.id, workspace.id))
+        .set({
+          name: input.name ?? workspace.name
+        })
+        .where(eq(schema.workspace.id, workspace.id))
         .returning();
 
       // Ingest audit logs
@@ -59,7 +61,7 @@ export const updateWorkspaceName = protectedProcedure
             type: 'workspace'
           }
         ],
-        description: `Updated ${workspace.id} name to ${input.name}`,
+        description: `Updated workspace name to ${input.name}`,
         context: {
           location: ctx.audit.location,
           userAgent: ctx.audit.userAgent
