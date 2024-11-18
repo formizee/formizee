@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowRightIcon, LoadingIcon, PlusIcon } from '@formizee/ui/icons';
+import {ArrowRightIcon, LoadingIcon, PlusIcon} from '@formizee/ui/icons';
 import formIcon from '@/../public/form.webp';
 import {
   Input,
@@ -11,9 +11,9 @@ import {
   DialogTitle,
   toast
 } from '@formizee/ui';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+import {zodResolver} from '@hookform/resolvers/zod';
+import {useForm} from 'react-hook-form';
+import {z} from 'zod';
 import {
   Form,
   FormControl,
@@ -23,12 +23,12 @@ import {
   FormLabel,
   FormMessage
 } from '@formizee/ui/form';
-import { api } from '@/trpc/client';
-import { useRouter } from 'next/navigation';
-import { generateSlug } from 'random-word-slugs';
+import {api} from '@/trpc/client';
+import {useRouter} from 'next/navigation';
+import {generateSlug} from 'random-word-slugs';
 import Image from 'next/image';
-import { SidebarGroupAction } from '@formizee/ui/sidebar';
-import { useState } from 'react';
+import {SidebarGroupAction} from '@formizee/ui/sidebar';
+import {useState} from 'react';
 
 const formSchema = z.object({
   name: z
@@ -41,7 +41,7 @@ const formSchema = z.object({
     .max(64)
 });
 
-export const Create = (props: { workspaceSlug: string }) => {
+export const Create = (props: {workspaceSlug: string}) => {
   const [open, setOpen] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -107,7 +107,7 @@ export const Create = (props: { workspaceSlug: string }) => {
               <FormField
                 control={form.control}
                 name="name"
-                render={({ field }) => (
+                render={({field}) => (
                   <FormItem>
                     <FormLabel>Name</FormLabel>
                     <FormMessage className="text-xs text-red-600 dark:text-red-400" />
@@ -123,7 +123,7 @@ export const Create = (props: { workspaceSlug: string }) => {
               <FormField
                 control={form.control}
                 name="slug"
-                render={({ field }) => (
+                render={({field}) => (
                   <FormItem>
                     <FormLabel>Slug</FormLabel>
                     <FormMessage className="text-xs text-red-600 dark:text-red-400" />
