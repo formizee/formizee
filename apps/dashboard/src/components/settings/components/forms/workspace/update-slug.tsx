@@ -16,6 +16,7 @@ import {zodResolver} from '@hookform/resolvers/zod';
 import {useForm} from 'react-hook-form';
 import {api} from '@/trpc/client';
 import {z} from 'zod';
+import {useRouter} from 'next/navigation';
 
 interface Props {
   defaultValue: string;
@@ -41,7 +42,7 @@ export const UpdateWorkspaceSlugForm = (props: Props) => {
     }
   });
 
-  const utils = api.useUtils();
+  const router = useRouter();
 
   const updateworkspace = api.workspace.updateSlug.useMutation({
     onError: error => {
@@ -51,8 +52,7 @@ export const UpdateWorkspaceSlugForm = (props: Props) => {
       });
     },
     onSuccess: () => {
-      utils.workspace.invalidate();
-      setTimeout(() => updateworkspace.reset(), 1500);
+      router.push('/');
     }
   });
 
