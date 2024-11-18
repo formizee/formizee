@@ -1,8 +1,13 @@
-import {Button, Input, Label, Separator} from '@formizee/ui';
+import {
+  UpdateUserNameForm,
+  UpdateUserSlugForm
+} from '../../components/forms/account';
+import {Button, Input, Label, Separator, toast} from '@formizee/ui';
 import Transition from '@/components/transition';
 import accountIcon from '@/../public/user.webp';
 import {api} from '@/trpc/client';
 import Image from 'next/image';
+import {DeleteUserDialog} from '../../components/dialogs/user';
 
 interface Props {
   userId: string;
@@ -34,41 +39,29 @@ export const SettingsAccountGeneral = (props: Props) => {
       </div>
       <h1 className="font-semibold mt-4">Profile Information</h1>
       <Separator className="mt-2 w-full" />
-      <div className="flex items-end gap-2 mt-4">
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="name" className="text-sm">
-            Display Name
-          </Label>
-          <p className="text-xs text-neutral-600 dark:text-neutral-400">
-            This name will be visible by the members of your workspaces.
-          </p>
-          <Input id="name" className="w-96" defaultValue={user.name} />
-        </div>
-        <Button variant="outline">Update</Button>
-      </div>
-      <div className="flex items-end gap-2 mt-8">
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="slug" className="text-sm">
-            Username
-          </Label>
-          <p className="text-xs text-neutral-600 dark:text-neutral-400">
-            This is your URL namespace within Formizee.
-          </p>
-          <Input id="slug" className="w-96" defaultValue={user.slug} />
-        </div>
-        <Button variant="outline">Update</Button>
-      </div>
+      <UpdateUserNameForm userId={user.id} defaultValue={user.name} />
+      <UpdateUserSlugForm userId={user.id} defaultValue={user.slug} />
       <div className="flex items-end gap-2 mt-8">
         <div className="flex flex-col gap-2">
           <Label htmlFor="id" className="text-sm">
             Formizee ID
           </Label>
           <p className="text-xs text-neutral-600 dark:text-neutral-400">
-            This is your user ID within Formizee.
+            This is your user identifier within Formizee.
           </p>
           <Input id="id" disabled className="w-96" defaultValue={user.id} />
         </div>
-        <Button variant="outline">Copy</Button>
+        <Button
+          onClick={async () => {
+            await navigator.clipboard.writeText(user.id);
+            toast({
+              description: 'The User ID is copied to your clipboard!'
+            });
+          }}
+          variant="outline"
+        >
+          Copy
+        </Button>
       </div>
       <div className="flex flex-col items-start gap-2 mt-8">
         <div className="flex flex-col gap-2">
@@ -79,9 +72,7 @@ export const SettingsAccountGeneral = (props: Props) => {
             with caution.
           </p>
         </div>
-        <Button variant="destructive" className="mt-2">
-          Delete Permanently
-        </Button>
+        <DeleteUserDialog userId={user.id} />
       </div>
     </Transition>
   );
