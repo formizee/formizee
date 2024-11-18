@@ -1,8 +1,12 @@
+import {Button, Input, Label, Separator, toast} from '@formizee/ui';
 import Transition from '@/components/transition';
 import workspaceIcon from '@/../public/work.webp';
 import {api} from '@/trpc/client';
 import Image from 'next/image';
-import {Button, Input, Label, Separator} from '@formizee/ui';
+import {
+  UpdateWorkspaceNameForm,
+  UpdateWorkspaceSlugForm
+} from '../../components/forms/workspace';
 
 interface Props {
   workspaceSlug: string;
@@ -44,13 +48,11 @@ export const SettingsWorkspaceGeneral = (props: Props) => {
           <p className="text-xs text-neutral-600 dark:text-neutral-400">
             This name will be visible by the members of the workspace.
           </p>
-          <Input
-            id="name"
-            className="w-96"
-            defaultValue={workspace.name ?? 'Personal Workspace'}
+          <UpdateWorkspaceNameForm
+            workspaceId={workspace.id}
+            defaultValue={workspace.name ?? ''}
           />
         </div>
-        <Button variant="outline">Update</Button>
       </div>
       <div className="flex items-end gap-2 mt-8">
         <div className="flex flex-col gap-2">
@@ -60,9 +62,11 @@ export const SettingsWorkspaceGeneral = (props: Props) => {
           <p className="text-xs text-neutral-600 dark:text-neutral-400">
             This is your URL namespace within Formizee.
           </p>
-          <Input id="slug" className="w-96" defaultValue={workspace.slug} />
+          <UpdateWorkspaceSlugForm
+            workspaceId={workspace.id}
+            defaultValue={workspace.slug ?? ''}
+          />
         </div>
-        <Button variant="outline">Update</Button>
       </div>
       <div className="flex items-end gap-2 mt-8">
         <div className="flex flex-col gap-2">
@@ -70,7 +74,7 @@ export const SettingsWorkspaceGeneral = (props: Props) => {
             Formizee ID
           </Label>
           <p className="text-xs text-neutral-600 dark:text-neutral-400">
-            This is your user ID within Formizee.
+            This is your workspace identifier within Formizee.
           </p>
           <Input
             id="id"
@@ -79,7 +83,17 @@ export const SettingsWorkspaceGeneral = (props: Props) => {
             defaultValue={workspace.id}
           />
         </div>
-        <Button variant="outline">Copy</Button>
+        <Button
+          onClick={async () => {
+            await navigator.clipboard.writeText(workspace.id);
+            toast({
+              description: 'The Workspace ID is copied to your clipboard!'
+            });
+          }}
+          variant="outline"
+        >
+          Copy
+        </Button>
       </div>
       <div className="flex flex-col items-start gap-2 mt-8">
         <div className="flex flex-col gap-2">
@@ -90,7 +104,18 @@ export const SettingsWorkspaceGeneral = (props: Props) => {
             caution.
           </p>
         </div>
-        <Button variant="destructive" className="mt-2">
+        <Button
+          onClick={() =>
+            toast({
+              variant: 'destructive',
+              title: 'Action Not Allowed',
+              description:
+                'You cannot delete your main workspace, instead delete your account if you would.'
+            })
+          }
+          variant="outline"
+          className="text-red-500 dark:hover:bg-red-500 hover:bg-red-500 dark:hover:text-neutral-950 hover:text-neutral-50 mt-2"
+        >
           Delete Permanently
         </Button>
       </div>
