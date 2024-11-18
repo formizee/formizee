@@ -80,9 +80,9 @@ export function MembersTable<TData>({columns, data}: DataTableProps<TData>) {
     <div>
       <TableOptions>
         <TableSearchOptions
-          column="user_email"
+          column="user_name"
           table={table}
-          placeholder="Filter by email..."
+          placeholder="Filter by name..."
         />
         <TableColumnOptions table={table} />
       </TableOptions>
