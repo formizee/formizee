@@ -1,7 +1,6 @@
 'use client';
 
 import {DeleteKeyDialog} from '../dialogs/key';
-import {CloseIcon} from '@formizee/ui/icons';
 import type {schema} from '@/lib/db';
 import {useState} from 'react';
 
@@ -15,12 +14,13 @@ import {
 } from '@tanstack/react-table';
 import {
   Table,
-  TableActions,
   TableOptions,
-  TableActionsItem,
-  TableColumnOptions,
-  TableSearchOptions
+  TableSearchOptions,
+  TableActions,
+  TableActionsItem
 } from '@/components';
+import {ClipboardIcon, CloseIcon} from '@formizee/ui/icons';
+import {toast} from '@formizee/ui';
 
 export const columns: ColumnDef<schema.Key>[] = [
   {
@@ -42,35 +42,51 @@ export const columns: ColumnDef<schema.Key>[] = [
     accessorKey: 'expiresAt',
     header: 'Expires At',
     cell: ({row}) => {
-      const value = row.getValue('expiresAt');
+      const value = row.getValue('expiresAt') as string;
       if (value === 'Never') {
         return <div>Never</div>;
       }
-      return <div>{(value as Date).toLocaleString()}</div>;
+
+      if (new Date(value) < new Date()) {
+        return (
+          <span className="text-xs flex items-center bg-red-200/30 dark:bg-red-800/30 w-20 h-6 border-red-400 justify-center text-red-400 border rounded-xl font-medium">
+            Expired
+          </span>
+        );
+      }
+
+      return <div>{new Date(value).toLocaleString()}</div>;
     }
   },
   {
     id: 'actions',
     cell: ({row}) => {
-      const [deleteDialogVisible, setDeleteDialogVisible] = useState(false);
       const key = row.original;
+      const [deleteOpen, setDeleteOpen] = useState(false);
+
+      const copyKey = async () => {
+        await navigator.clipboard.writeText(key.id);
+        toast({
+          description: 'The API Key is copied to your clipboard'
+        });
+      };
 
       return (
         <>
           <TableActions>
-            <TableActionsItem onClick={() => setDeleteDialogVisible(true)}>
-              <CloseIcon className="fill-red-500" />
+            <TableActionsItem onClick={copyKey}>
+              <ClipboardIcon />
+              Copy Key
+            </TableActionsItem>
+            <TableActionsItem onClick={() => setDeleteOpen(open => !open)}>
+              <CloseIcon className="text-red-400" />
               Delete
             </TableActionsItem>
           </TableActions>
           <DeleteKeyDialog
-            isOpen={deleteDialogVisible}
-            onOpenChange={() =>
-              deleteDialogVisible
-                ? setDeleteDialogVisible(false)
-                : setDeleteDialogVisible(true)
-            }
             keyId={key.id}
+            open={deleteOpen}
+            setOpen={setDeleteOpen}
           />
         </>
       );
@@ -105,7 +121,6 @@ export function KeysTable<TData>({columns, data}: KeysTableProps<TData>) {
           table={table}
           placeholder="Filter API Keys..."
         />
-        <TableColumnOptions table={table} />
       </TableOptions>
       <Table table={table} columns={columns} />
     </div>

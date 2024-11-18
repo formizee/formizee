@@ -25,13 +25,13 @@ import {
   FormLabel,
   FormMessage
 } from '@formizee/ui/form';
-import {useRouter} from 'next/navigation';
 import {useForm} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
+import type {Dispatch, SetStateAction} from 'react';
 
 interface Props {
-  onOpenChange: ((open: boolean) => void) | undefined;
-  isOpen: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+  open: boolean;
   keyId: string;
 }
 
@@ -41,12 +41,12 @@ const formSchema = z.object({
   })
 });
 
-export const DeleteKeyDialog = ({keyId, isOpen, onOpenChange}: Props) => {
+export const DeleteKeyDialog = (props: Props) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema)
   });
 
-  const router = useRouter();
+  const utils = api.useUtils();
 
   const deleteKey = api.key.delete.useMutation({
     onError: error => {
@@ -57,15 +57,16 @@ export const DeleteKeyDialog = ({keyId, isOpen, onOpenChange}: Props) => {
       });
     },
     onSuccess: () => {
-      router.refresh();
+      props.setOpen(false);
+      utils.key.list.invalidate();
     }
   });
 
   const onSubmit = form.handleSubmit(() => {
-    deleteKey.mutate({id: keyId});
+    deleteKey.mutate({id: props.keyId});
   });
   return (
-    <Dialog open={isOpen} onOpenChange={onOpenChange}>
+    <Dialog open={props.open} onOpenChange={props.setOpen}>
       <DialogContent>
         <DialogHeader className="mb-4">
           <DialogTitle className="w-full flex flex-col gap-6 items-center text-left text-xl font-bold">

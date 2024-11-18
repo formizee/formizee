@@ -24,13 +24,13 @@ import {
   FormItem,
   FormMessage
 } from '@formizee/ui/form';
-import {useRouter} from 'next/navigation';
 import {useForm} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
+import type {Dispatch, SetStateAction} from 'react';
 
 interface Props {
-  onOpenChange: ((open: boolean) => void) | undefined;
-  isOpen: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+  open: boolean;
   keyId: string;
 }
 
@@ -41,34 +41,34 @@ const formSchema = z.object({
     .max(64, 'The name should be between 4 and 64 characters')
 });
 
-export const UpdateKeyDialog = ({keyId, isOpen, onOpenChange}: Props) => {
+export const UpdateKeyDialog = (props: Props) => {
   const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema)
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      newName: ''
+    }
   });
-
-  const router = useRouter();
 
   const updateKey = api.key.update.useMutation({
     onError: error => {
       toast({
         variant: 'destructive',
-        description: error.message,
-        title: "Key can't be renamed"
+        description: error.message
       });
     },
     onSuccess: () => {
-      router.refresh();
+      props.setOpen(false);
     }
   });
 
   const onSubmit = form.handleSubmit(data => {
     updateKey.mutate({
-      id: keyId,
+      id: props.keyId,
       name: data.newName
     });
   });
   return (
-    <Dialog open={isOpen} onOpenChange={onOpenChange}>
+    <Dialog open={props.open} onOpenChange={props.setOpen}>
       <DialogContent>
         <DialogHeader className="mb-4">
           <DialogTitle className="w-full flex flex-col gap-6 items-center text-left text-xl font-bold">
@@ -95,6 +95,7 @@ export const UpdateKeyDialog = ({keyId, isOpen, onOpenChange}: Props) => {
                   <FormControl>
                     <Input
                       required
+                      maxLength={64}
                       autoComplete="off"
                       placeholder="My Personal Key..."
                       {...field}

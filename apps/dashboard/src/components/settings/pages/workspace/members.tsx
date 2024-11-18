@@ -1,5 +1,4 @@
 import {columns, MembersTable} from '../../components/tables/members';
-import {AddMemberButton} from '../../components/dialogs/member';
 import workspaceIcon from '@/../public/workspace.webp';
 import Transition from '@/components/transition';
 import {api} from '@/trpc/client';
@@ -26,7 +25,6 @@ export const SettingsWorkspaceMembers = (props: Props) => {
               <Skeleton className="h-4 w-96" />
             </div>
           </div>
-          <Skeleton className="w-36 h-10" />
         </section>
         <Skeleton className="mt-4 w-full h-10" />
         <Skeleton className="mt-4 w-full h-32" />
@@ -50,11 +48,10 @@ export const SettingsWorkspaceMembers = (props: Props) => {
           <div className="flex flex-col gap-1 items-start">
             <span className="font-medium">Members</span>
             <p className="text-sm text-neutral-600 dark:text-neutral-400">
-              This a a feature of the paid plans, upgrade in order to use it.
+              This a a feature of the teams plan, we will add it in the future.
             </p>
           </div>
         </div>
-        <AddMemberButton />
       </section>
       <MembersTable columns={columns} data={members} />
     </Transition>

@@ -23,7 +23,7 @@ export function TableColumnOptions<TData>({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="hidden lg:flex">
+        <Button variant="outline" className="hidden sm:flex">
           Columns
           <ChevronDownIcon />
         </Button>

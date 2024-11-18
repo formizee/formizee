@@ -17,7 +17,6 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
   toast,
   SelectTrigger,
   Select,
@@ -36,7 +35,7 @@ import {
   FormLabel,
   FormMessage
 } from '@formizee/ui/form';
-import {useRouter} from 'next/navigation';
+import {useState} from 'react';
 
 const formSchema = z.object({
   name: z
@@ -47,6 +46,8 @@ const formSchema = z.object({
 });
 
 export const CreateKeyButton = (props: {workspaceSlug: string}) => {
+  const [open, setOpen] = useState(false);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -55,7 +56,7 @@ export const CreateKeyButton = (props: {workspaceSlug: string}) => {
     }
   });
 
-  const router = useRouter();
+  const utils = api.useUtils();
 
   const createKey = api.key.create.useMutation({
     onError: error => {
@@ -67,7 +68,8 @@ export const CreateKeyButton = (props: {workspaceSlug: string}) => {
     },
     onSuccess: async data => {
       await navigator.clipboard.writeText(data.id);
-      router.refresh();
+      setOpen(false);
+      utils.key.list.invalidate();
       toast({
         title: 'Key created!',
         description: 'Your new key has been copied to the clipboard.'
@@ -83,95 +85,95 @@ export const CreateKeyButton = (props: {workspaceSlug: string}) => {
   );
 
   return (
-    <div className="flex flex-col">
-      <Dialog>
-        <DialogTrigger asChild>
-          <Button variant="outline">
-            New Key
-            <PlusIcon />
-          </Button>
-        </DialogTrigger>
-        <DialogContent className="rounded-lg border-neutral-200 dark:border-neutral-800">
-          <DialogHeader>
-            <DialogTitle className="w-full flex flex-col gap-6 items-center text-left text-xl font-bold">
-              <Image
-                src={keyIcon}
-                alt="Key Icon"
-                width={64}
-                height={64}
-                className="dark:rounded-[0.65rem] rounded-xl border-4 dark:border dark:border-neutral-600 border-neutral-300 shadow-md shadow-neutral-950"
-              />
-              Create New Key
-            </DialogTitle>
-          </DialogHeader>
-          <Form {...form}>
-            <form
-              onSubmit={onSubmit}
-              className="flex w-full flex-col justify-between gap-y-4"
-            >
-              <FormField
-                control={form.control}
-                name="name"
-                render={({field}) => (
-                  <FormItem>
-                    <FormLabel>Name</FormLabel>
-                    <FormMessage className="text-xs text-red-600 dark:text-red-400" />
-                    <FormControl>
-                      <Input autoComplete="off" {...field} />
-                    </FormControl>
-                    <FormDescription>
-                      What should your key be called?
-                    </FormDescription>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="expiresAt"
-                render={({field}) => (
-                  <FormItem>
-                    <FormLabel>Expires At</FormLabel>
-                    <FormMessage className="text-xs text-red-600 dark:text-red-400" />
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
+    <>
+      <Button variant="outline" onClick={() => setOpen(open => !open)}>
+        New Key
+        <PlusIcon />
+      </Button>
+      <div className="hidden">
+        <Dialog open={open} onOpenChange={setOpen}>
+          <DialogContent className="rounded-lg border-neutral-200 dark:border-neutral-800">
+            <DialogHeader>
+              <DialogTitle className="w-full flex flex-col gap-6 items-center text-left text-xl font-bold">
+                <Image
+                  src={keyIcon}
+                  alt="Key Icon"
+                  width={64}
+                  height={64}
+                  className="dark:rounded-[0.65rem] rounded-xl border-4 dark:border dark:border-neutral-600 border-neutral-300 shadow-md shadow-neutral-950"
+                />
+                Create New Key
+              </DialogTitle>
+            </DialogHeader>
+            <Form {...form}>
+              <form
+                onSubmit={onSubmit}
+                className="flex w-full flex-col justify-between gap-y-4"
+              >
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({field}) => (
+                    <FormItem>
+                      <FormLabel>Name</FormLabel>
+                      <FormMessage className="text-xs text-red-600 dark:text-red-400" />
                       <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select a date" />
-                        </SelectTrigger>
+                        <Input autoComplete="off" {...field} />
                       </FormControl>
-                      <SelectContent>
-                        <SelectGroup defaultValue="30-days">
-                          <SelectItem value="30-days">30 Days</SelectItem>
-                          <SelectItem value="60-days">60 Days</SelectItem>
-                          <SelectItem value="90-days">90 Days</SelectItem>
-                          <SelectItem value="180-days">180 Days</SelectItem>
-                          <SelectItem value="1-year">1 Year</SelectItem>
-                          <SelectItem value="never">Never</SelectItem>
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                    <FormDescription>
-                      How long this key will work?
-                    </FormDescription>
-                  </FormItem>
-                )}
-              />
-              <Button variant="outline" className="mt-4" type="submit">
-                {createKey.isLoading ? (
-                  <LoadingIcon className="size-8" />
-                ) : (
-                  <div className="group flex flex-row w-full items-center justify-center gap-2">
-                    <span>Create API Key</span>{' '}
-                    <ArrowRightIcon className="transition-all w-0 group-hover:w-6" />
-                  </div>
-                )}
-              </Button>
-            </form>
-          </Form>
-        </DialogContent>
-      </Dialog>
-    </div>
+                      <FormDescription>
+                        What should your key be called?
+                      </FormDescription>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="expiresAt"
+                  render={({field}) => (
+                    <FormItem>
+                      <FormLabel>Expires At</FormLabel>
+                      <FormMessage className="text-xs text-red-600 dark:text-red-400" />
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select a date" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectGroup defaultValue="30-days">
+                            <SelectItem value="30-days">30 Days</SelectItem>
+                            <SelectItem value="60-days">60 Days</SelectItem>
+                            <SelectItem value="90-days">90 Days</SelectItem>
+                            <SelectItem value="180-days">180 Days</SelectItem>
+                            <SelectItem value="1-year">1 Year</SelectItem>
+                            <SelectItem value="never">Never</SelectItem>
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                      <FormDescription>
+                        How long this key will work?
+                      </FormDescription>
+                    </FormItem>
+                  )}
+                />
+                <Button variant="outline" className="mt-4" type="submit">
+                  {createKey.isLoading ? (
+                    <LoadingIcon className="size-8" />
+                  ) : (
+                    <div className="group flex flex-row w-full items-center justify-center gap-2">
+                      <span>Create API Key</span>{' '}
+                      <ArrowRightIcon className="transition-all w-0 group-hover:w-6" />
+                    </div>
+                  )}
+                </Button>
+              </form>
+            </Form>
+          </DialogContent>
+        </Dialog>
+      </div>
+    </>
   );
 };
