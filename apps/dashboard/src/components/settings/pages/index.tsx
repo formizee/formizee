@@ -1,14 +1,15 @@
-import {SettingsAccountGeneral} from './account/general';
-import {SettingsWorkspaceAudit} from './workspace/audit';
 import {SettingsWorkspaceBilling} from './workspace/billing';
 import {SettingsWorkspaceGeneral} from './workspace/general';
-import {SettingsWorkspaceKeys} from './workspace/keys';
 import {SettingsWorkspaceMembers} from './workspace/members';
+import {SettingsWorkspaceAudit} from './workspace/audit';
 import {SettingsWorkspacePlans} from './workspace/plans';
+import {SettingsWorkspaceKeys} from './workspace/keys';
+import {SettingsAccountGeneral} from './account/general';
+import {SettingsAccountInfo} from './account/about';
 
 export const ROUTES = {
-  accountsGeneral: 'account.general',
-  accountsSecurity: 'account.security',
+  accountGeneral: 'account.general',
+  accountInfo: 'account.info',
 
   workspaceKeys: 'workspace.keys',
   workspacePlans: 'workspace.plans',
@@ -38,6 +39,8 @@ export const Pages = (props: Props) => {
   switch (props.currentRoute) {
     case 'account.general':
       return <SettingsAccountGeneral userId={props.userId} />;
+    case 'account.info':
+      return <SettingsAccountInfo />;
     case 'workspace.general':
       return <SettingsWorkspaceGeneral workspaceSlug={props.workspaceSlug} />;
     case 'workspace.members':

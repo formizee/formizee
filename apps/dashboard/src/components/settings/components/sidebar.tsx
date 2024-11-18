@@ -1,6 +1,7 @@
 import type {Route} from '../pages';
 import {
   CreditCardIcon,
+  InfoIcon,
   KeyIcon,
   LockIcon,
   SettingsIcon,
@@ -41,6 +42,13 @@ export const SettingsSidebar = (props: Props) => {
                 >
                   <UserIcon />
                   General
+                </Item>
+                <Item
+                  setCurrentRoute={props.setCurrentRoute}
+                  route="account.info"
+                >
+                  <InfoIcon />
+                  About
                 </Item>
               </SidebarMenu>
             </SidebarGroupContent>
