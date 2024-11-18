@@ -1,6 +1,6 @@
 'use client';
 
-import {ArrowRightIcon, LoadingIcon, PlusIcon} from '@formizee/ui/icons';
+import { ArrowRightIcon, LoadingIcon, PlusIcon } from '@formizee/ui/icons';
 import formIcon from '@/../public/form.webp';
 import {
   Input,
@@ -9,12 +9,11 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
   toast
 } from '@formizee/ui';
-import {zodResolver} from '@hookform/resolvers/zod';
-import {useForm} from 'react-hook-form';
-import {z} from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 import {
   Form,
   FormControl,
@@ -24,11 +23,12 @@ import {
   FormLabel,
   FormMessage
 } from '@formizee/ui/form';
-import {api} from '@/trpc/client';
-import {useRouter} from 'next/navigation';
-import {generateSlug} from 'random-word-slugs';
+import { api } from '@/trpc/client';
+import { useRouter } from 'next/navigation';
+import { generateSlug } from 'random-word-slugs';
 import Image from 'next/image';
-import {SidebarGroupAction} from '@formizee/ui/sidebar';
+import { SidebarGroupAction } from '@formizee/ui/sidebar';
+import { useState } from 'react';
 
 const formSchema = z.object({
   name: z
@@ -41,7 +41,9 @@ const formSchema = z.object({
     .max(64)
 });
 
-export const Create = (props: {workspaceSlug: string}) => {
+export const Create = (props: { workspaceSlug: string }) => {
+  const [open, setOpen] = useState(false);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -61,6 +63,7 @@ export const Create = (props: {workspaceSlug: string}) => {
       });
     },
     onSuccess: newEndpoint => {
+      setOpen(false);
       router.push(`/${props.workspaceSlug}/${newEndpoint.slug}`);
     }
   });
@@ -75,15 +78,14 @@ export const Create = (props: {workspaceSlug: string}) => {
 
   return (
     <div className="flex flex-col">
-      <Dialog>
-        <DialogTrigger asChild className="animate-fade-in">
-          <SidebarGroupAction
-            title="New Form"
-            className="transition-colors bg-transparent hover:bg-neutral-200 dark:hover:bg-neutral-800"
-          >
-            <PlusIcon /> <span className="sr-only">New Form</span>
-          </SidebarGroupAction>
-        </DialogTrigger>
+      <SidebarGroupAction
+        title="New Form"
+        onClick={() => setOpen(open => !open)}
+        className="transition-colors bg-transparent hover:bg-neutral-200 dark:hover:bg-neutral-800"
+      >
+        <PlusIcon /> <span className="sr-only">New Form</span>
+      </SidebarGroupAction>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="rounded-lg border-neutral-200 dark:border-neutral-800">
           <DialogHeader>
             <DialogTitle className="w-full flex flex-col gap-6 items-center text-left text-xl font-bold">
@@ -105,7 +107,7 @@ export const Create = (props: {workspaceSlug: string}) => {
               <FormField
                 control={form.control}
                 name="name"
-                render={({field}) => (
+                render={({ field }) => (
                   <FormItem>
                     <FormLabel>Name</FormLabel>
                     <FormMessage className="text-xs text-red-600 dark:text-red-400" />
@@ -121,7 +123,7 @@ export const Create = (props: {workspaceSlug: string}) => {
               <FormField
                 control={form.control}
                 name="slug"
-                render={({field}) => (
+                render={({ field }) => (
                   <FormItem>
                     <FormLabel>Slug</FormLabel>
                     <FormMessage className="text-xs text-red-600 dark:text-red-400" />
