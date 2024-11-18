@@ -40,34 +40,14 @@ export const SettingsWorkspaceGeneral = (props: Props) => {
       </div>
       <h1 className="font-semibold mt-4">Workspace Information</h1>
       <Separator className="mt-2 w-full" />
-      <div className="flex items-end gap-2 mt-4">
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="name" className="text-sm">
-            Display Name
-          </Label>
-          <p className="text-xs text-neutral-600 dark:text-neutral-400">
-            This name will be visible by the members of the workspace.
-          </p>
-          <UpdateWorkspaceNameForm
-            workspaceId={workspace.id}
-            defaultValue={workspace.name ?? ''}
-          />
-        </div>
-      </div>
-      <div className="flex items-end gap-2 mt-8">
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="slug" className="text-sm">
-            Workspace Slug
-          </Label>
-          <p className="text-xs text-neutral-600 dark:text-neutral-400">
-            This is your URL namespace within Formizee.
-          </p>
-          <UpdateWorkspaceSlugForm
-            workspaceId={workspace.id}
-            defaultValue={workspace.slug ?? ''}
-          />
-        </div>
-      </div>
+      <UpdateWorkspaceNameForm
+        workspaceId={workspace.id}
+        defaultValue={workspace.name ?? ''}
+      />
+      <UpdateWorkspaceSlugForm
+        workspaceId={workspace.id}
+        defaultValue={workspace.slug ?? ''}
+      />
       <div className="flex items-end gap-2 mt-8">
         <div className="flex flex-col gap-2">
           <Label htmlFor="id" className="text-sm">
