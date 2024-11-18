@@ -69,6 +69,7 @@ export function TableSearchOptions<TData>(
   return (
     <Input
       type="search"
+      name="search"
       placeholder={props.placeholder ?? 'Search...'}
       value={
         (props.table.getColumn(props.column)?.getFilterValue() as string) ?? ''
