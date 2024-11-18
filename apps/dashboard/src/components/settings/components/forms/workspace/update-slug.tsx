@@ -5,8 +5,10 @@ import {LoadingIcon} from '@formizee/ui/icons';
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage
 } from '@formizee/ui/form';
 
@@ -70,12 +72,16 @@ export const UpdateWorkspaceSlugForm = (props: Props) => {
   });
   return (
     <Form {...form}>
-      <form onSubmit={onSubmit} className="flex flex-row gap-2">
+      <form onSubmit={onSubmit} className="flex flex-row gap-2 items-end mt-8">
         <FormField
           control={form.control}
           name="newSlug"
           render={({field}) => (
             <FormItem>
+              <FormLabel>Workspace Slug</FormLabel>
+              <FormDescription className="text-xs text-neutral-600 dark:text-neutral-400">
+                This is your URL namespace within Formizee.
+              </FormDescription>
               <FormControl>
                 <Input
                   required

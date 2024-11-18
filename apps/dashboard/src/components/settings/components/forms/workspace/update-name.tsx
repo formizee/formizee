@@ -5,8 +5,10 @@ import {LoadingIcon} from '@formizee/ui/icons';
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage
 } from '@formizee/ui/form';
 
@@ -66,12 +68,17 @@ export const UpdateWorkspaceNameForm = (props: Props) => {
   });
   return (
     <Form {...form}>
-      <form onSubmit={onSubmit} className="flex flex-row gap-2">
+      <form onSubmit={onSubmit} className="flex flex-row gap-2 items-end mt-4">
         <FormField
           control={form.control}
           name="newName"
           render={({field}) => (
             <FormItem>
+              <FormLabel>Display Name</FormLabel>
+              <FormDescription className="text-xs text-neutral-600 dark:text-neutral-400">
+                {' '}
+                This name will be visible by the members of the workspace.
+              </FormDescription>
               <FormControl>
                 <Input
                   required
