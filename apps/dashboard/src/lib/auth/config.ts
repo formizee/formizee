@@ -21,7 +21,7 @@ export const authConfig = {
   ],
   pages: {
     verifyRequest: '/auth/verify',
-    error: 'auth/error',
+    error: '/auth/error',
     signIn: '/login',
     newUser: '/'
   }
