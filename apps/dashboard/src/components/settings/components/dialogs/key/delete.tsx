@@ -36,14 +36,17 @@ interface Props {
 }
 
 const formSchema = z.object({
-  description: z.enum(['delete my key'], {
-    message: 'The input does not match.'
+  description: z.string().regex(/^delete my key/, {
+    message: 'You must type "delete my key" exactly to continue.'
   })
 });
 
 export const DeleteKeyDialog = (props: Props) => {
   const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema)
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      description: ''
+    }
   });
 
   const utils = api.useUtils();
