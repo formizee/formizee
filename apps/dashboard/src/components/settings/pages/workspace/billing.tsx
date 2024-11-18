@@ -1,12 +1,14 @@
 import {getLimits, planConfig, calculatePlanCycleDates} from '@formizee/plans';
+import {WorkspaceBillingPageLoading} from '../../components/skeletons';
 import {UsageWidget} from '../../components/billing/usage';
+import {PageError} from '../../components/error';
 import Transition from '@/components/transition';
 import {Button, Separator} from '@formizee/ui';
 import cardIcon from '@/../public/card.webp';
+import {useSettings} from '../..';
 import {api} from '@/trpc/client';
 import Image from 'next/image';
 import Link from 'next/link';
-import {useSettings} from '../..';
 
 interface Props {
   workspaceSlug: string;
@@ -15,17 +17,28 @@ interface Props {
 export const SettingsWorkspaceBilling = (props: Props) => {
   const {setRoute} = useSettings();
 
-  const workspace = api.workspace.getBySlug.useQuery({
+  const workspaceRequest = api.workspace.getBySlug.useQuery({
     slug: props.workspaceSlug
-  }).data;
+  });
 
-  const usage = api.workspace.getLimits.useQuery({
+  const usageRequest = api.workspace.getLimits.useQuery({
     slug: props.workspaceSlug
-  }).data;
+  });
 
-  if (!workspace || !usage) {
-    return;
+  if (!workspaceRequest.data || workspaceRequest.error) {
+    return <PageError />;
   }
+
+  if (!usageRequest.data || usageRequest.error) {
+    return <PageError />;
+  }
+
+  if (workspaceRequest.isLoading || usageRequest.isLoading) {
+    return <WorkspaceBillingPageLoading />;
+  }
+
+  const workspace = workspaceRequest.data;
+  const usage = usageRequest.data;
 
   const currentPlanLimits = getLimits(workspace.plan);
 

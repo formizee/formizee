@@ -1,35 +1,26 @@
+import {WorkspaceAuditPageLoading} from '../../components/skeletons';
 import {columns, AuditTable} from '../../components/tables/audit';
+import {PageError} from '../../components/error';
 import Transition from '@/components/transition';
 import lockIcon from '@/../public/lock.webp';
-import Image from 'next/image';
-import {Skeleton} from '@formizee/ui';
 import {api} from '@/trpc/client';
+import Image from 'next/image';
 
 interface Props {
   workspaceSlug: string;
 }
 
 export const SettingsWorkspaceAudit = (props: Props) => {
-  const {data, isLoading} = api.audit.list.useQuery({
+  const {data, isLoading, error} = api.audit.list.useQuery({
     workspaceSlug: props.workspaceSlug
   });
 
   if (isLoading) {
-    return (
-      <Transition className="flex flex-col w-full">
-        <section className="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full gap-4 mt-4">
-          <div className="flex flex-row gap-4">
-            <Skeleton className="size-14 rounded-xl" />
-            <div className="flex flex-col gap-2 items-start">
-              <Skeleton className="h-6 w-16" />
-              <Skeleton className="h-4 w-96" />
-            </div>
-          </div>
-        </section>
-        <Skeleton className="mt-4 w-full h-10" />
-        <Skeleton className="mt-4 w-full h-32" />
-      </Transition>
-    );
+    return <WorkspaceAuditPageLoading />;
+  }
+
+  if (!data || error) {
+    return <PageError />;
   }
 
   const logs = data ?? [];

@@ -1,24 +1,33 @@
-import {
-  UpdateUserNameForm,
-  UpdateUserSlugForm
-} from '../../components/forms/account';
 import {Button, Input, Label, Separator, toast} from '@formizee/ui';
+import {AccountGeneralPageLoading} from '../../components/skeletons';
+import {DeleteUserDialog} from '../../components/dialogs/user';
+import {PageError} from '../../components/error';
 import Transition from '@/components/transition';
 import accountIcon from '@/../public/user.webp';
 import {api} from '@/trpc/client';
 import Image from 'next/image';
-import {DeleteUserDialog} from '../../components/dialogs/user';
+
+import {
+  UpdateUserNameForm,
+  UpdateUserSlugForm
+} from '../../components/forms/account';
 
 interface Props {
   userId: string;
 }
 
 export const SettingsAccountGeneral = (props: Props) => {
-  const user = api.user.get.useQuery({id: props.userId}).data;
+  const {data, isLoading, error} = api.user.get.useQuery({id: props.userId});
 
-  if (!user) {
-    return;
+  if (isLoading) {
+    return <AccountGeneralPageLoading />;
   }
+
+  if (!data || error) {
+    return <PageError />;
+  }
+
+  const user = data;
 
   return (
     <Transition className="flex flex-col w-full">
@@ -72,7 +81,7 @@ export const SettingsAccountGeneral = (props: Props) => {
             with caution.
           </p>
         </div>
-        <DeleteUserDialog userId={user.id} />
+        <DeleteUserDialog />
       </div>
     </Transition>
   );

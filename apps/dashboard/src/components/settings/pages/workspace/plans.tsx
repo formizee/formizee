@@ -1,21 +1,29 @@
+import {WorkspacePlansPageLoading} from '../../components/skeletons';
 import {PlanWidget} from '../../components/billing/plan';
 import Transition from '@/components/transition';
 import upgradeIcon from '@/../public/upgrade.webp';
 import {api} from '@/trpc/client';
 import Image from 'next/image';
+import {PageError} from '../../components/error';
 
 interface Props {
   workspaceSlug: string;
 }
 
 export const SettingsWorkspacePlans = (props: Props) => {
-  const workspace = api.workspace.getBySlug.useQuery({
+  const {data, isLoading, error} = api.workspace.getBySlug.useQuery({
     slug: props.workspaceSlug
-  }).data;
+  });
 
-  if (!workspace) {
-    return;
+  if (isLoading) {
+    return <WorkspacePlansPageLoading />;
   }
+
+  if (!data || error) {
+    return <PageError />;
+  }
+
+  const workspace = data;
 
   return (
     <Transition className="flex flex-col w-full mt-4">

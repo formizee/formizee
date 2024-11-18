@@ -1,4 +1,6 @@
+import {WorkspaceGeneralPageLoading} from '../../components/skeletons';
 import {Button, Input, Label, Separator, toast} from '@formizee/ui';
+import {PageError} from '../../components/error';
 import Transition from '@/components/transition';
 import workspaceIcon from '@/../public/work.webp';
 import {api} from '@/trpc/client';
@@ -13,13 +15,19 @@ interface Props {
 }
 
 export const SettingsWorkspaceGeneral = (props: Props) => {
-  const workspace = api.workspace.getBySlug.useQuery({
+  const {data, isLoading, error} = api.workspace.getBySlug.useQuery({
     slug: props.workspaceSlug
-  }).data;
+  });
 
-  if (!workspace) {
-    return;
+  if (isLoading) {
+    return <WorkspaceGeneralPageLoading />;
   }
+
+  if (!data || error) {
+    return <PageError />;
+  }
+
+  const workspace = data;
 
   return (
     <Transition className="flex flex-col w-full">
