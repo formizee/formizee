@@ -2,7 +2,7 @@
   "name": "@formizee/dashboard",
   "author": "Pau García Chiner",
   "license": "Apache-2.0",
-  "version": "0.1.0",
+  "version": "0.8.13",
   "private": true,
   "scripts": {
     "build": "next build",
