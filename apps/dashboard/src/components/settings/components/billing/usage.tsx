@@ -1,4 +1,4 @@
-import {CircleProgress} from '@/components/progress-circle';
+import {CircleProgress} from './progress-circle';
 import type {Limits} from '@formizee/plans';
 import {Label} from '@formizee/ui';
 
