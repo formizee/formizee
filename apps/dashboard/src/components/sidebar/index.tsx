@@ -37,7 +37,10 @@ export const AppSidebar = async (props: AppSidebarProps) => {
             <SidebarMenu>
               <Search />
               <Settings />
-              <Feedback />
+              <Feedback
+                userId={session.user.id}
+                userName={session.user.name ?? 'No Available'}
+              />
               <Documentation />
             </SidebarMenu>
           </SidebarGroupContent>
