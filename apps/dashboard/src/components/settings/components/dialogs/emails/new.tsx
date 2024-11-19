@@ -100,7 +100,7 @@ export const AddLinkedEmailButton = () => {
                       <FormLabel>Email</FormLabel>
                       <FormMessage className="text-xs text-red-600 dark:text-red-400" />
                       <FormControl>
-                        <Input type="email" {...field} />
+                        <Input type="email" autoComplete="email" {...field} />
                       </FormControl>
                     </FormItem>
                   )}
