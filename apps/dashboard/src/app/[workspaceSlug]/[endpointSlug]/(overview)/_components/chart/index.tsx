@@ -58,7 +58,7 @@ export function Chart({id, color}: Props) {
               right: 12
             }}
           >
-            <CartesianGrid vertical={false} />
+            <CartesianGrid vertical={false} strokeOpacity={0.4} />
             <XAxis
               className="dark:border-red-400"
               dataKey="dateTime"
