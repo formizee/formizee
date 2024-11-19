@@ -1,4 +1,5 @@
 export * from './account-general';
+export * from './account-emails';
 
 export * from './workspace-audit';
 export * from './workspace-billing';

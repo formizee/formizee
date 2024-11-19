@@ -4,6 +4,7 @@ import {
   InfoIcon,
   KeyIcon,
   LockIcon,
+  MailIcon,
   SettingsIcon,
   UpgradeIcon,
   UserGroupIcon,
@@ -42,6 +43,13 @@ export const SettingsSidebar = (props: Props) => {
                 >
                   <UserIcon />
                   General
+                </Item>
+                <Item
+                  setCurrentRoute={props.setCurrentRoute}
+                  route="account.emails"
+                >
+                  <MailIcon />
+                  Emails
                 </Item>
                 <Item
                   setCurrentRoute={props.setCurrentRoute}
