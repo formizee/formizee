@@ -105,8 +105,7 @@ export const columns: ColumnDef<any>[] = [
     header: 'Time',
     cell: ({row}) => {
       const data = row.getValue('time');
-      const date = new Date(0);
-      date.setUTCSeconds(Number(data));
+      const date = new Date(Number(data));
 
       return <span>{date.toLocaleString()}</span>;
     }
