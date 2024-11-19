@@ -103,6 +103,9 @@ export class Analytics {
     }
   }
 
+  /*
+   * Used for usage and billing
+   */
   public async queryFormizeeMonthlySubmissions(
     workspaceId: string,
     startDate: Date,
@@ -135,6 +138,9 @@ export class Analytics {
     return 0;
   }
 
+  /*
+   * Used for usage and billing
+   */
   public async queryFormizeeDailyRequests(workspaceId: string) {
     const now = new Date();
 
@@ -183,6 +189,56 @@ export class Analytics {
       console.error(error.message);
     }
     return 0;
+  }
+
+  /*
+   * Used for Charts and Analytics
+   */
+  public async queryFormizeeMetricsSubmissions(
+    endpointId: string,
+    timeRange: '30d' | '24h'
+  ) {
+    const queryMonthPipe = this.client.buildPipe({
+      pipe: 'submissions__metrics__month__pipe__v1',
+      parameters: z.object({
+        endpointId: z.string()
+      }),
+      data: z.object({
+        dateTime: z.string(),
+        submissions: z.number()
+      })
+    });
+
+    const queryDayPipe = this.client.buildPipe({
+      pipe: 'submissions__metrics__day__pipe__v1',
+      parameters: z.object({
+        endpointId: z.string()
+      }),
+      data: z.object({
+        dateTime: z.string(),
+        submissions: z.number()
+      })
+    });
+
+    if (timeRange === '30d') {
+      try {
+        const response = await queryMonthPipe({endpointId});
+
+        return response.data;
+      } catch (e) {
+        const error = e as Error;
+        console.error(error.message);
+      }
+    }
+
+    try {
+      const response = await queryDayPipe({endpointId});
+
+      return response.data;
+    } catch (e) {
+      const error = e as Error;
+      console.error(error.message);
+    }
   }
 }
 
