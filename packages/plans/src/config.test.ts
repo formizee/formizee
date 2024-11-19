@@ -5,6 +5,7 @@ import {planConfig} from './config';
 const expectedPlanKeys: Array<keyof typeof planConfig> = [
   'hobby',
   'pro',
+  'teams',
   'enterprise'
 ];
 
@@ -19,7 +20,7 @@ describe('planConfig', () => {
       const plan = planConfig[planKey];
 
       expect(plan).toHaveProperty('title');
-      expect(['Hobby', 'Pro', 'Enterprise']).toContain(plan.title);
+      expect(['Hobby', 'Pro', 'Teams', 'Enterprise']).toContain(plan.title);
 
       expect(plan).toHaveProperty('description');
       expect(typeof plan.description).toBe('string');
