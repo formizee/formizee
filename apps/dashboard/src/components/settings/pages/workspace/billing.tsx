@@ -25,11 +25,7 @@ export const SettingsWorkspaceBilling = (props: Props) => {
     slug: props.workspaceSlug
   });
 
-  if (!workspaceRequest.data || workspaceRequest.error) {
-    return <PageError />;
-  }
-
-  if (!usageRequest.data || usageRequest.error) {
+  if (usageRequest.error || workspaceRequest.error) {
     return <PageError />;
   }
 

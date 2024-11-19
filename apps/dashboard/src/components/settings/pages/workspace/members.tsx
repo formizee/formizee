@@ -19,7 +19,7 @@ export const SettingsWorkspaceMembers = (props: Props) => {
     return <WorkspaceMembersPageLoading />;
   }
 
-  if (!data || error) {
+  if (error) {
     return <PageError />;
   }
 

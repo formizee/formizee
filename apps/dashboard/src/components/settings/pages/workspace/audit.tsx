@@ -19,7 +19,7 @@ export const SettingsWorkspaceAudit = (props: Props) => {
     return <WorkspaceAuditPageLoading />;
   }
 
-  if (!data || error) {
+  if (error) {
     return <PageError />;
   }
 

@@ -19,11 +19,7 @@ export const SettingsAccountEmails = (props: Props) => {
     return <AccountEmailsPageLoading />;
   }
 
-  if (!emailsRequest.data || emailsRequest.error) {
-    return <PageError />;
-  }
-
-  if (!userRequest.data || userRequest.error) {
+  if (emailsRequest.error || userRequest.error) {
     return <PageError />;
   }
 

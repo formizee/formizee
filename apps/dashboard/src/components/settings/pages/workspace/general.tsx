@@ -23,7 +23,7 @@ export const SettingsWorkspaceGeneral = (props: Props) => {
     return <WorkspaceGeneralPageLoading />;
   }
 
-  if (!data || error) {
+  if (error) {
     return <PageError />;
   }
 

@@ -23,7 +23,7 @@ export const SettingsAccountGeneral = (props: Props) => {
     return <AccountGeneralPageLoading />;
   }
 
-  if (!data || error) {
+  if (error) {
     return <PageError />;
   }
 

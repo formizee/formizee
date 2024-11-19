@@ -20,7 +20,7 @@ export const SettingsWorkspaceKeys = (props: Props) => {
     return <WorkspaceKeysPageLoading />;
   }
 
-  if (!data || error) {
+  if (error) {
     return <PageError />;
   }
 

@@ -19,7 +19,7 @@ export const SettingsWorkspacePlans = (props: Props) => {
     return <WorkspacePlansPageLoading />;
   }
 
-  if (!data || error) {
+  if (error) {
     return <PageError />;
   }
 
