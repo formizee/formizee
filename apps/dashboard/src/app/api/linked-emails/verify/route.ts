@@ -7,10 +7,9 @@ export async function GET(request: NextRequest) {
   const token = request.nextUrl.searchParams.get('token');
 
   if (!token) {
-    return NextResponse.json({
-      code: 'BAD_REQUEST',
-      message: 'Invalid or missing token'
-    });
+    return NextResponse.redirect(
+      `${request.nextUrl.protocol}//${request.nextUrl.host}/auth/error?error=Verification`
+    );
   }
 
   let email = '';
@@ -22,10 +21,9 @@ export async function GET(request: NextRequest) {
     email = payload.email;
     userId = payload.userId;
   } catch {
-    return NextResponse.json({
-      code: 'BAD_REQUEST',
-      message: 'Invalid or missing token'
-    });
+    return NextResponse.redirect(
+      `${request.nextUrl.protocol}//${request.nextUrl.host}/auth/error?error=Verification`
+    );
   }
 
   const emailExists = await database.query.usersToEmails.findFirst({
@@ -33,10 +31,9 @@ export async function GET(request: NextRequest) {
   });
 
   if (!emailExists) {
-    return NextResponse.json({
-      code: 'NOT_FOUND',
-      message: 'Email not found.'
-    });
+    return NextResponse.redirect(
+      `${request.nextUrl.protocol}//${request.nextUrl.host}/auth/error?error=Verification`
+    );
   }
 
   const user = await database.query.user.findFirst({
@@ -44,10 +41,9 @@ export async function GET(request: NextRequest) {
   });
 
   if (!user) {
-    return NextResponse.json({
-      code: 'NOT_FOUND',
-      message: 'User not found.'
-    });
+    return NextResponse.redirect(
+      `${request.nextUrl.protocol}//${request.nextUrl.host}/auth/error?error=Verification`
+    );
   }
 
   // Remove the email
