@@ -26,6 +26,7 @@ export {DatabaseIcon} from './database';
 export {DocumentAddIcon} from './document-add';
 export {DocumentChartIcon} from './document-chart';
 export {DocumentIcon} from './document';
+export {DownloadIcon} from './download';
 export {EllipsisIcon} from './ellipsis';
 export {EyeSlashIcon} from './eye-slash';
 export {EyeIcon} from './eye';
