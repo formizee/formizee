@@ -7,6 +7,7 @@ export * from './components/breadcrumb';
 export * from './components/button';
 export * from './components/card';
 export * from './components/chart';
+export * from './components/checkbox';
 export * from './components/code-block';
 export * from './components/collapsible';
 export * from './components/command';
