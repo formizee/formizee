@@ -60,7 +60,6 @@ export function Chart({id, color}: Props) {
           >
             <CartesianGrid vertical={false} strokeOpacity={0.4} />
             <XAxis
-              className="dark:border-red-400"
               dataKey="dateTime"
               tickLine={false}
               axisLine={false}
@@ -110,7 +109,7 @@ export function Chart({id, color}: Props) {
               }
             />
             <Bar
-              radius={4}
+              radius={[4, 4, 0, 0]}
               dataKey="submissions"
               className={cn(getColor(color, true).fill)}
             />
