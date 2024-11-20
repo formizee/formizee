@@ -1,2 +1,2 @@
+export * from './onboarding';
 export * from './chart';
-export * from './card';

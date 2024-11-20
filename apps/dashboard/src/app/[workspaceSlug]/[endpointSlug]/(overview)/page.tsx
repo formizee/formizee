@@ -1,6 +1,6 @@
 'use client';
 
-import {Chart, WelcomeCard} from './_components';
+import {Chart, OnboardingCard} from './_components';
 import {Transition} from '@/components';
 import ErrorPage from '../error';
 
@@ -26,7 +26,7 @@ export default function Overview({params}: Props) {
 
   return (
     <Transition className="flex flex-col w-full items-start">
-      <WelcomeCard id={data.id} color={data.color} />
+      <OnboardingCard id={data.id} color={data.color} />
       <Chart id={data.id} color={data.color} />
     </Transition>
   );

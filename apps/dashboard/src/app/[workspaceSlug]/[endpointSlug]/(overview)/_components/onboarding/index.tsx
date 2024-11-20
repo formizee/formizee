@@ -9,7 +9,7 @@ interface Props {
   color: Color;
 }
 
-export const WelcomeCard = (props: Props) => {
+export const OnboardingCard = (props: Props) => {
   const endpointUrl = `https://formizee.com/f/${props.id}`;
 
   const copyID = () => {
