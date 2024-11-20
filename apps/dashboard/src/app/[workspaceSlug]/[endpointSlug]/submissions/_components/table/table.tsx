@@ -1,6 +1,7 @@
 'use client';
 
-import {useState} from 'react';
+import {Table} from './primitive';
+import {useEffect, useState} from 'react';
 
 import {
   useReactTable,
@@ -9,8 +10,9 @@ import {
   getPaginationRowModel,
   type ColumnFiltersState
 } from '@tanstack/react-table';
+
 import {
-  Table,
+  Transition,
   TableOptions,
   TableColumnOptions,
   TableSearchOptions,
@@ -39,8 +41,12 @@ export function SubmissionsTable<TData>({
     state: {columnFilters}
   });
 
+  useEffect(() => {
+    table.getColumn('id')?.toggleVisibility(false);
+  }, []);
+
   return (
-    <div>
+    <Transition className="flex flex-col w-full">
       <TableOptions>
         <TableSearchOptions
           column={columns[1].accessorKey}
@@ -51,6 +57,8 @@ export function SubmissionsTable<TData>({
       </TableOptions>
       <Table table={table} columns={columns} />
       {data.length > 20 ? <TablePagination table={table} /> : <div />}
-    </div>
+    </Transition>
   );
 }
+
+export default SubmissionsTable;
