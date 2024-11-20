@@ -102,7 +102,7 @@ export const Feedback = (props: Props) => {
                     <FormLabel>Message</FormLabel>
                     <FormControl>
                       <Textarea
-                        className="h-32"
+                        className="h-32 overflow-light-style dark:overflow-dark-style "
                         placeholder="Ideas to improve this page..."
                         {...field}
                       />
