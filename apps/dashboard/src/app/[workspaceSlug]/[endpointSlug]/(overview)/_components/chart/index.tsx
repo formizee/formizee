@@ -38,7 +38,7 @@ export function Chart({id, color}: Props) {
   const filteredData = filterDataByTimeRange(data, timeRange);
 
   return (
-    <section className="rounded-md border dark:border-neutral-800 w-full mt-4">
+    <section className="rounded-md border dark:border-neutral-800 w-full my-4">
       <ChartHeader
         timeRange={timeRange}
         setTimeRange={setTimeRange}
