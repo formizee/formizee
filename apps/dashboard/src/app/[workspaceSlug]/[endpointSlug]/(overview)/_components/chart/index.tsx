@@ -24,7 +24,7 @@ interface Props {
 }
 
 export function Chart({id, color}: Props) {
-  const {data, isLoading, error} = api.endpoint.getMetrics.useQuery({id});
+  const {data, isLoading, error} = api.endpoint.metrics.useQuery({id});
   const [timeRange, setTimeRange] = useState('30d');
 
   if (isLoading) {

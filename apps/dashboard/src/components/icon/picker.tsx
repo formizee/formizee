@@ -31,20 +31,37 @@ export const IconPicker = ({endpoint}: Props) => {
   const [route, setRoute] = useState<Route>('icons');
   const utils = api.useUtils();
 
-  const updateEndpoint = api.endpoint.update.useMutation({
+  const updateEndpointIcon = api.endpoint.update.icon.useMutation({
     onMutate: () => {
       setIsLoading(true);
     },
     onError: error => {
       toast({
         variant: 'destructive',
-        title: 'Error updating the icon',
         description: error.message
       });
       setTimeout(() => setIsLoading(false), 150);
     },
     onSuccess: () => {
-      utils.endpoint.getBySlug.invalidate();
+      utils.endpoint.get.invalidate();
+      utils.endpoint.list.invalidate();
+      setTimeout(() => setIsLoading(false), 250);
+    }
+  });
+
+  const updateEndpointColor = api.endpoint.update.color.useMutation({
+    onMutate: () => {
+      setIsLoading(true);
+    },
+    onError: error => {
+      toast({
+        variant: 'destructive',
+        description: error.message
+      });
+      setTimeout(() => setIsLoading(false), 150);
+    },
+    onSuccess: () => {
+      utils.endpoint.get.invalidate();
       utils.endpoint.list.invalidate();
       setTimeout(() => setIsLoading(false), 250);
     }
@@ -59,7 +76,12 @@ export const IconPicker = ({endpoint}: Props) => {
       schema.endpointColor[
         Math.floor(Math.random() * schema.endpointColor.length)
       ];
-    updateEndpoint.mutate({id: endpoint.id, color, icon});
+    if (icon) {
+      updateEndpointIcon.mutate({id: endpoint.id, icon});
+    }
+    if (color) {
+      updateEndpointColor.mutate({id: endpoint.id, color});
+    }
   };
 
   const IconsContent = () => (
@@ -69,7 +91,7 @@ export const IconPicker = ({endpoint}: Props) => {
           <Button
             key={icon}
             size="icon"
-            onClick={() => updateEndpoint.mutate({id: endpoint.id, icon})}
+            onClick={() => updateEndpointIcon.mutate({id: endpoint.id, icon})}
             variant={endpoint?.icon !== icon ? 'ghost' : 'outline'}
           >
             <Icon icon={icon} color="gray" selected={true} />
@@ -86,7 +108,7 @@ export const IconPicker = ({endpoint}: Props) => {
           <Button
             key={color}
             size="icon"
-            onClick={() => updateEndpoint.mutate({id: endpoint.id, color})}
+            onClick={() => updateEndpointColor.mutate({id: endpoint.id, color})}
             variant={endpoint?.color !== color ? 'ghost' : 'outline'}
           >
             <svg className="size-4">

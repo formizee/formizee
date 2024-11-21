@@ -18,7 +18,7 @@ interface Props {
 }
 
 export default function PageLayout({params, children}: Props) {
-  const {data, isLoading, error} = api.endpoint.getBySlug.useQuery(params);
+  const {data, isLoading, error} = api.endpoint.get.useQuery(params);
   const currentPath = usePathname();
 
   if (isLoading) {

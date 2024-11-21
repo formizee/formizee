@@ -14,7 +14,7 @@ interface Props {
 }
 
 export default function Overview({params}: Props) {
-  const {data, isLoading, error} = api.endpoint.getBySlug.useQuery(params);
+  const {data, isLoading, error} = api.endpoint.get.useQuery(params);
 
   if (isLoading) {
     return <></>;
