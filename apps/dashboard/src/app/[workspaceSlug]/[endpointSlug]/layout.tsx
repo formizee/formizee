@@ -44,7 +44,7 @@ export default function PageLayout({params, children}: Props) {
     return <ErrorPage />;
   }
   return (
-    <Transition className="container flex flex-col gap-4 items-start mt-16 h-full">
+    <Transition className="container flex flex-col gap-4 items-start mt-10 h-full">
       <Heading endpoint={data} />
       <Tabs
         currentPath={currentPath}
