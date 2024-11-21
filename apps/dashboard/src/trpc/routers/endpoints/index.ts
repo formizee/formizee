@@ -1,7 +1,7 @@
 import {endpointUpdateRouter} from './update';
 import {router} from '@/trpc';
 
-import {getEndpointMetrics} from './get-metrics';
+import {getEndpointMetrics} from './metrics';
 import {getEndpointBySlug} from './get';
 import {deleteEndpoint} from './delete';
 import {createEndpoint} from './create';
