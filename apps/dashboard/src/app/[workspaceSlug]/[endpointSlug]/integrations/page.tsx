@@ -1,5 +1,5 @@
+import {FallbackCard} from './_components';
 import {Transition} from '@/components';
-import {FallbackCard} from './components';
 
 export default function Integrations() {
   return (
