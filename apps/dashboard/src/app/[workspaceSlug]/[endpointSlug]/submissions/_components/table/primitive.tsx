@@ -1,4 +1,4 @@
-import {ColumnHeader} from './header';
+import {ColumnHeader} from './components';
 import type {Color} from '@/lib/colors';
 
 import {
@@ -13,7 +13,6 @@ import {
 
 import {
   type ColumnDef,
-  type Header,
   type Table as DataTable,
   flexRender
 } from '@tanstack/react-table';
@@ -24,27 +23,6 @@ interface DataTableProps<TData> {
   table: DataTable<TData>;
   className?: string;
   color: Color;
-}
-
-function CustomHeader<TData>({
-  color,
-  header
-}: {color: Color; header: Header<TData, unknown>}) {
-  if (header.column.columnDef.id === 'formizee_internal_select') {
-    return flexRender(header.column.columnDef.header, header.getContext());
-  }
-
-  if (header.column.columnDef.id === 'formizee_internal_actions') {
-    return;
-  }
-
-  return (
-    <ColumnHeader
-      color={color}
-      column={header.column}
-      title={header.column.columnDef.header as string}
-    />
-  );
 }
 
 export function Table<TData>({
@@ -71,7 +49,7 @@ export function Table<TData>({
                     key={header.id}
                   >
                     {header.isPlaceholder ? null : (
-                      <CustomHeader color={color} header={header} />
+                      <ColumnHeader header={header} color={color} />
                     )}
                   </TableHead>
                 );

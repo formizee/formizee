@@ -1,9 +1,9 @@
-import {Checkbox, toast} from '@formizee/ui';
-import {useState} from 'react';
-import {DeleteSubmissionDialog} from '../dialogs';
 import {TableActions, TableActionsItem} from '@/components';
 import {ClipboardIcon, CloseIcon} from '@formizee/ui/icons';
+import {DeleteSubmissionDialog} from '../../dialogs';
+import {Checkbox, toast} from '@formizee/ui';
 import type {Color} from '@/lib/colors';
+import {useState} from 'react';
 
 interface Column {
   accessorKey: string;

@@ -8,10 +8,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger
 } from '@formizee/ui';
-import {CloseIcon, EyeIcon, FlagIcon} from '@formizee/ui/icons';
+import {CloseIcon, EyeIcon, FlagIcon, StackIcon} from '@formizee/ui/icons';
 import type {RowModel} from '@tanstack/react-table';
 import {useEffect, useState} from 'react';
-import {DeleteSubmissionGroupDialog} from '../dialogs';
+import {DeleteSubmissionGroupDialog} from '../../dialogs';
 
 interface Props {
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
@@ -41,23 +41,27 @@ export const SelectionButton = (props: Props) => {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
-            className={cn(isVisible ? 'flex' : 'hidden', 'animate-fade-in')}
+            className={cn(
+              isVisible ? 'flex' : 'hidden',
+              'animate-fade-in h-[2.2rem]'
+            )}
           >
             {props.selectedRows.rows.length} Rows Selected
+            <StackIcon />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" sideOffset={8}>
+        <DropdownMenuContent align="end" className="w-44" sideOffset={8}>
           <DropdownMenuItem disabled>
             <EyeIcon />
-            <span>Mark Read</span>
+            <span>Mark As Readed</span>
           </DropdownMenuItem>
           <DropdownMenuItem disabled>
             <FlagIcon />
-            <span>Mark Spam</span>
+            <span>Mark As Spam</span>
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setDeleteVisible(open => !open)}>
             <CloseIcon className="text-red-500" />
-            <span>Delete All</span>
+            <span>Delete Selected</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

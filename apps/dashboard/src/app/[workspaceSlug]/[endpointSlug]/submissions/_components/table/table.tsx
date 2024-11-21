@@ -1,7 +1,8 @@
 'use client';
 
-import type {Color} from '@/lib/colors';
+import {ExportButton, SelectionButton, TableFooter} from './components';
 import {useEffect, useState} from 'react';
+import type {Color} from '@/lib/colors';
 import {Table} from './primitive';
 
 import {
@@ -20,9 +21,6 @@ import {
   TableColumnOptions,
   TableSearchOptions
 } from '@/components';
-import {TableFooter} from './footer';
-import {SelectionButton} from './selection';
-import {ExportButton} from './export';
 
 interface SubmissionsTableProps<TData> {
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>

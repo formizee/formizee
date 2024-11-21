@@ -1,13 +1,15 @@
 'use client';
 
-import {LoadingSkeleton} from './skeleton';
-import {SubmissionsError} from './error';
-import {SubmissionsTable} from './table';
-import {SubmissionsEmpty} from './empty';
 import type {Color} from '@/lib/colors';
-
-import {generateColumns} from './columns';
+import {generateColumns} from './lib';
+import SubmissionsTable from './table';
 import {api} from '@/trpc/client';
+
+import {
+  LoadingSkeleton,
+  SubmissionsEmpty,
+  SubmissionsError
+} from './components';
 
 interface Props {
   color: Color;
