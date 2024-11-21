@@ -11,7 +11,7 @@ interface Props {
 }
 
 export const SettingsWorkspaceMembers = (props: Props) => {
-  const {data, isLoading, error} = api.workspace.getMembers.useQuery({
+  const {data, isLoading, error} = api.workspace.members.useQuery({
     slug: props.workspaceSlug
   });
 

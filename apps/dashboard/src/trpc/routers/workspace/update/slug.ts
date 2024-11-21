@@ -1,6 +1,6 @@
+import {database, eq, schema} from '@/lib/db';
 import {protectedProcedure} from '@/trpc';
 import {TRPCError} from '@trpc/server';
-import {database, eq, schema} from '@/lib/db';
 import {z} from 'zod';
 
 export const updateWorkspaceSlug = protectedProcedure

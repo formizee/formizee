@@ -17,11 +17,11 @@ interface Props {
 export const SettingsWorkspaceBilling = (props: Props) => {
   const {setRoute} = useSettings();
 
-  const workspaceRequest = api.workspace.getBySlug.useQuery({
+  const workspaceRequest = api.workspace.get.useQuery({
     slug: props.workspaceSlug
   });
 
-  const usageRequest = api.workspace.getLimits.useQuery({
+  const usageRequest = api.workspace.limits.useQuery({
     slug: props.workspaceSlug
   });
 

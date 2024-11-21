@@ -44,7 +44,7 @@ export const UpdateWorkspaceSlugForm = (props: Props) => {
 
   const router = useRouter();
 
-  const updateworkspace = api.workspace.updateSlug.useMutation({
+  const updateworkspace = api.workspace.update.slug.useMutation({
     onError: error => {
       toast({
         variant: 'destructive',

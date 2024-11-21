@@ -15,7 +15,7 @@ interface Props {
 }
 
 export const SettingsWorkspaceGeneral = (props: Props) => {
-  const {data, isLoading, error} = api.workspace.getBySlug.useQuery({
+  const {data, isLoading, error} = api.workspace.get.useQuery({
     slug: props.workspaceSlug
   });
 

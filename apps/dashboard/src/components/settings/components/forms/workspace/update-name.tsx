@@ -39,7 +39,7 @@ export const UpdateWorkspaceNameForm = (props: Props) => {
 
   const utils = api.useUtils();
 
-  const updateworkspace = api.workspace.updateName.useMutation({
+  const updateworkspace = api.workspace.update.name.useMutation({
     onError: error => {
       toast({
         variant: 'destructive',

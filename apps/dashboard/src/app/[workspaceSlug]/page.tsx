@@ -17,7 +17,7 @@ const DashboardRedirect = async ({params}: {params: Params}) => {
   }
 
   const workspace = await handleTrpcServerAction(
-    api.workspace.getBySlug.query({slug: params.workspaceSlug})
+    api.workspace.get.query({slug: params.workspaceSlug})
   );
 
   const endpoint = await database.query.endpoint.findFirst({
