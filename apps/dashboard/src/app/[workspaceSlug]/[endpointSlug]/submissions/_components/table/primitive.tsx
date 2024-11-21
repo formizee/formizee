@@ -1,3 +1,6 @@
+import {ColumnHeader} from './header';
+import type {Color} from '@/lib/colors';
+
 import {
   cn,
   Table as Component,
@@ -7,37 +10,48 @@ import {
   TableHeader,
   TableRow
 } from '@formizee/ui';
+
 import {
   type ColumnDef,
   type Header,
   type Table as DataTable,
   flexRender
 } from '@tanstack/react-table';
-import {HeaderIcon} from './icons';
 
 interface DataTableProps<TData> {
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   columns: ColumnDef<TData, any>[];
   table: DataTable<TData>;
   className?: string;
+  color: Color;
 }
 
-function CustomHeader<TData>({header}: {header: Header<TData, unknown>}) {
+function CustomHeader<TData>({
+  color,
+  header
+}: {color: Color; header: Header<TData, unknown>}) {
+  if (header.column.columnDef.id === 'formizee_internal_select') {
+    return flexRender(header.column.columnDef.header, header.getContext());
+  }
+
+  if (header.column.columnDef.id === 'formizee_internal_actions') {
+    return;
+  }
+
   return (
-    <div className="flex items-center">
-      <HeaderIcon
-        icon={header.column.columnDef.header}
-        className="size-[0.7rem] ml-1 mr-2"
-      />
-      {flexRender(header.column.columnDef.header, header.getContext())}
-    </div>
+    <ColumnHeader
+      color={color}
+      column={header.column}
+      title={header.column.columnDef.header as string}
+    />
   );
 }
 
 export function Table<TData>({
   columns,
   table,
-  className
+  className,
+  color
 }: DataTableProps<TData>) {
   return (
     <div
@@ -53,11 +67,11 @@ export function Table<TData>({
               {headerGroup.headers.map(header => {
                 return (
                   <TableHead
-                    className="border-b border-neutral-200 dark:border-neutral-800 py-3"
+                    className="border-b border-neutral-200 dark:border-neutral-800 p-2"
                     key={header.id}
                   >
                     {header.isPlaceholder ? null : (
-                      <CustomHeader header={header} />
+                      <CustomHeader color={color} header={header} />
                     )}
                   </TableHead>
                 );
@@ -67,21 +81,26 @@ export function Table<TData>({
         </TableHeader>
         <TableBody>
           {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map(row => (
-              <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && 'selected'}
-              >
-                {row.getVisibleCells().map(cell => (
-                  <TableCell
-                    key={cell.id}
-                    className="border-t border-neutral-200 dark:border-neutral-800 py-3"
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))
+            table.getRowModel().rows.map(row => {
+              return (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && 'selected'}
+                >
+                  {row.getVisibleCells().map(cell => (
+                    <TableCell
+                      key={cell.id}
+                      className="border-t border-neutral-200 dark:border-neutral-800 py-3 truncate"
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              );
+            })
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">

@@ -9,6 +9,7 @@ import {
   GiftIcon,
   GridIcon,
   HomeIcon,
+  KeyIcon,
   LinkIcon,
   LockIcon,
   MailIcon,
@@ -31,6 +32,9 @@ export const HeaderIcon = (props: {icon: unknown; className?: string}) => {
   } catch {}
 
   switch (value) {
+    case 'id':
+      return <KeyIcon className={props.className} />;
+
     // User Information common fields
     case 'name':
       return <UserIcon className={props.className} />;
@@ -139,6 +143,8 @@ export const HeaderIcon = (props: {icon: unknown; className?: string}) => {
     case 'priority_level':
       return <FlagIcon className={props.className} />;
     case 'comments':
+      return <ChatIcon className={props.className} />;
+    case 'message':
       return <ChatIcon className={props.className} />;
 
     // Other common fields

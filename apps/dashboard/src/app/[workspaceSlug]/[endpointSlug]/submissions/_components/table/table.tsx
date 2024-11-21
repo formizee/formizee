@@ -1,35 +1,46 @@
 'use client';
 
-import {Table} from './primitive';
+import type {Color} from '@/lib/colors';
 import {useEffect, useState} from 'react';
+import {Table} from './primitive';
 
 import {
   useReactTable,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
-  type ColumnFiltersState
+  type ColumnFiltersState,
+  type SortingState,
+  getSortedRowModel
 } from '@tanstack/react-table';
 
 import {
   Transition,
   TableOptions,
   TableColumnOptions,
-  TableSearchOptions,
-  TablePagination
+  TableSearchOptions
 } from '@/components';
+import {TableFooter} from './footer';
+import {SelectionButton} from './selection';
+import {ExportButton} from './export';
 
 interface SubmissionsTableProps<TData> {
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   columns: any;
   data: TData[];
+  color: Color;
+  id: string;
 }
 
 export function SubmissionsTable<TData>({
   columns,
-  data
+  color,
+  data,
+  id
 }: SubmissionsTableProps<TData>) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [rowSelection, setRowSelection] = useState({});
 
   const table = useReactTable({
     data,
@@ -38,25 +49,39 @@ export function SubmissionsTable<TData>({
     getPaginationRowModel: getPaginationRowModel(),
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
-    state: {columnFilters}
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
+    onRowSelectionChange: setRowSelection,
+    state: {
+      sorting,
+      rowSelection,
+      columnFilters
+    }
   });
 
   useEffect(() => {
-    table.getColumn('id')?.toggleVisibility(false);
+    table.getColumn('formizee_internal_id')?.toggleVisibility(false);
   }, []);
 
   return (
     <Transition className="flex flex-col w-full">
       <TableOptions>
         <TableSearchOptions
-          column={columns[1].accessorKey}
           table={table}
-          placeholder={`Filter Submissions by ${columns[1].accessorKey}...`}
+          className="max-w-96"
+          column={columns[2].accessorKey}
+          placeholder={`Filter Submissions by ${columns[2].accessorKey}...`}
         />
+        <SelectionButton
+          endpointId={id}
+          resetSelection={table.resetRowSelection}
+          selectedRows={table.getGroupedSelectedRowModel()}
+        />
+        <ExportButton />
         <TableColumnOptions table={table} />
       </TableOptions>
-      <Table table={table} columns={columns} />
-      {data.length > 20 ? <TablePagination table={table} /> : <div />}
+      <Table color={color} table={table} columns={columns} />
+      <TableFooter table={table} />
     </Transition>
   );
 }

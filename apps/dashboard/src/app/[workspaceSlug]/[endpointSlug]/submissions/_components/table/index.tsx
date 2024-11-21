@@ -1,16 +1,16 @@
 'use client';
 
-import {TableActions, TableActionsItem} from '@/components';
-import {SubmissionsError} from './error';
 import {LoadingSkeleton} from './skeleton';
+import {SubmissionsError} from './error';
 import {SubmissionsTable} from './table';
+import {SubmissionsEmpty} from './empty';
+import type {Color} from '@/lib/colors';
+
+import {generateColumns} from './columns';
 import {api} from '@/trpc/client';
-import {ClipboardIcon, CloseIcon} from '@formizee/ui/icons';
-import {useState} from 'react';
-import {toast} from '@formizee/ui';
-import {DeleteSubmissionDialog} from '../dialogs';
 
 interface Props {
+  color: Color;
   id: string;
 }
 
@@ -27,45 +27,18 @@ export const Table = (props: Props) => {
     return <SubmissionsError />;
   }
 
-  const tableActions = [
-    {
-      id: 'actions',
-      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-      cell: ({row}: any) => {
-        const submission = row.original;
-        const [deleteOpen, setDeleteOpen] = useState(false);
+  if (data.submissions.length < 1) {
+    return <SubmissionsEmpty />;
+  }
 
-        const copyID = async () => {
-          await navigator.clipboard.writeText(submission.id);
-          toast({
-            description: 'The submission ID is copied to your clipboard'
-          });
-        };
+  const columns = generateColumns(data.columns, props.color);
 
-        return (
-          <>
-            <TableActions>
-              <TableActionsItem onClick={copyID}>
-                <ClipboardIcon />
-                Copy ID
-              </TableActionsItem>
-              <TableActionsItem onClick={() => setDeleteOpen(open => !open)}>
-                <CloseIcon className="text-red-400" />
-                Delete
-              </TableActionsItem>
-            </TableActions>
-            <DeleteSubmissionDialog
-              open={deleteOpen}
-              setOpen={setDeleteOpen}
-              submissionId={submission.id}
-            />
-          </>
-        );
-      }
-    }
-  ];
-
-  const columns = [...data.columns, ...tableActions];
-
-  return <SubmissionsTable columns={columns} data={data.submissions} />;
+  return (
+    <SubmissionsTable
+      data={data.submissions}
+      color={props.color}
+      columns={columns}
+      id={props.id}
+    />
+  );
 };

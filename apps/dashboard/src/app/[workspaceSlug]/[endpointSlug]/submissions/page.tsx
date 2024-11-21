@@ -26,7 +26,7 @@ export default function Submissions({params}: Props) {
 
   return (
     <Transition className="flex flex-col w-full items-start">
-      <Table id={data.id} />
+      <Table id={data.id} color={data.color} />
     </Transition>
   );
 }

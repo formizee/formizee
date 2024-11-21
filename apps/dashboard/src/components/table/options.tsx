@@ -59,6 +59,7 @@ export function TableColumnOptions<TData>({
 
 interface TableSearchBarOptionsProps<TData> {
   column: string;
+  className?: string;
   table: Table<TData>;
   placeholder: string;
 }
@@ -70,6 +71,7 @@ export function TableSearchOptions<TData>(
     <Input
       type="search"
       name="search"
+      className={props.className}
       placeholder={props.placeholder ?? 'Search...'}
       value={
         (props.table.getColumn(props.column)?.getFilterValue() as string) ?? ''

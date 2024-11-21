@@ -75,6 +75,7 @@ export const listSubmissions = protectedProcedure
 
     const baseColumns = [
       {
+        id: 'formizee_internal_id',
         accessorKey: 'id',
         header: 'ID'
       }
