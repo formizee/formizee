@@ -51,7 +51,7 @@ export const DeleteEmailDialog = (props: Props) => {
 
   const utils = api.useUtils();
 
-  const deleteEmail = api.user.deleteLinkedEmail.useMutation({
+  const deleteEmail = api.user.emails.delete.useMutation({
     onError: error => {
       toast({
         variant: 'destructive',
@@ -60,7 +60,7 @@ export const DeleteEmailDialog = (props: Props) => {
     },
     onSuccess: () => {
       props.setOpen(false);
-      utils.user.getEmails.invalidate();
+      utils.user.emails.invalidate();
     }
   });
 

@@ -45,7 +45,7 @@ export const AddLinkedEmailButton = () => {
 
   const utils = api.useUtils();
 
-  const addLinkedEmail = api.user.addLinkedEmail.useMutation({
+  const addLinkedEmail = api.user.emails.create.useMutation({
     onError: error => {
       toast({
         variant: 'destructive',
@@ -54,7 +54,7 @@ export const AddLinkedEmailButton = () => {
     },
     onSuccess: async () => {
       setOpen(false);
-      utils.user.getEmails.invalidate();
+      utils.user.emails.invalidate();
       toast({
         title: 'Verify Email',
         description: 'A verification link has been sent to your new email.'

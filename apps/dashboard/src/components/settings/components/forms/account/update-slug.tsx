@@ -43,7 +43,7 @@ export const UpdateUserSlugForm = (props: Props) => {
 
   const utils = api.useUtils();
 
-  const updateUser = api.user.updateSlug.useMutation({
+  const updateUser = api.user.update.slug.useMutation({
     onError: error => {
       toast({
         variant: 'destructive',

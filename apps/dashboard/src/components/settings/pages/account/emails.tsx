@@ -12,7 +12,7 @@ interface Props {
 }
 
 export const SettingsAccountEmails = (props: Props) => {
-  const emailsRequest = api.user.getEmails.useQuery({id: props.userId});
+  const emailsRequest = api.user.emails.get.useQuery({id: props.userId});
   const userRequest = api.user.get.useQuery({id: props.userId});
 
   if (emailsRequest.isLoading || userRequest.isLoading) {
