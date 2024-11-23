@@ -14,7 +14,9 @@ export default async function DashboardLayout({
   params: {workspaceSlug: string};
   children: React.ReactNode;
 }>) {
-  const defaultOpen = cookies().get('sidebar:state')?.value === 'true';
+  const cookiesState = cookies().get('sidebar:state')?.value;
+  const defaultOpen =
+    cookiesState === undefined ? true : cookiesState === 'true';
   const session = await auth();
 
   if (!session?.user?.id) {
