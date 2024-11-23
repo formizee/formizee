@@ -24,7 +24,10 @@ export function services(): MiddlewareHandler<HonoEnv> {
 
     const database = createConnection({
       databaseUrl: c.env.DATABASE_URL,
-      authToken: c.env.ENVIROMENT === 'production' ? c.env.DATABASE_AUTH_TOKEN : undefined
+      authToken:
+        c.env.ENVIROMENT === 'production'
+          ? c.env.DATABASE_AUTH_TOKEN
+          : undefined
     });
 
     const analytics = new Analytics({

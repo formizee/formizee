@@ -12,13 +12,8 @@ export const env = () =>
       DASHBOARD_URL: z.string().default(''),
 
       // Databases
-      DATABASE_URL: z
-        .string()
-        .url()
-        .default('http://localhost:8080'),
-      DATABASE_AUTH_TOKEN: z
-        .string()
-        .default(''),
+      DATABASE_URL: z.string().url().default('http://localhost:8080'),
+      DATABASE_AUTH_TOKEN: z.string().default(''),
 
       // Storage
       VAULT_SECRET: z.string().default(''),
