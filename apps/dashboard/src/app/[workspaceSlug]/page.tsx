@@ -3,6 +3,7 @@ import {redirect} from 'next/navigation';
 import {database} from '@/lib/db';
 import {api} from '@/trpc/server';
 import {auth} from '@/lib/auth';
+import EmptyPage from './empty';
 import 'server-only';
 
 interface Params {
@@ -25,7 +26,7 @@ const DashboardRedirect = async ({params}: {params: Params}) => {
   });
 
   if (!endpoint) {
-    redirect(`/${workspace.slug}/welcome`);
+    return <EmptyPage />
   }
 
   redirect(`/${workspace.slug}/${endpoint.slug}`);

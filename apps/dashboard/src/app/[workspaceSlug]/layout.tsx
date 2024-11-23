@@ -1,10 +1,9 @@
-import {cookies} from 'next/headers';
-
-import {CommandPaletteProvider} from '@/components/command-palette';
 import {SidebarProvider, SidebarTrigger} from '@formizee/ui/sidebar';
+import {CommandPaletteProvider} from '@/components/command-palette';
 import {SettingsProvider} from '@/components/settings';
 import {AppSidebar} from '@/components/sidebar';
 import {redirect} from 'next/navigation';
+import {cookies} from 'next/headers';
 import {auth} from '@/lib/auth';
 
 export default async function DashboardLayout({

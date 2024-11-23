@@ -4,6 +4,7 @@ import {usePathname} from 'next/navigation';
 import {Heading, Tabs} from './_components';
 import {Transition} from '@/components';
 import {Skeleton} from '@formizee/ui';
+import NotFound from './not-found';
 import {api} from '@/trpc/client';
 import ErrorPage from './error';
 
@@ -18,7 +19,7 @@ interface Props {
 }
 
 export default function PageLayout({params, children}: Props) {
-  const {data, isLoading, error} = api.endpoint.get.useQuery(params);
+  const {data, isLoading, error} = api.endpoint.get.useQuery(params, {retry: 1});
   const currentPath = usePathname();
 
   if (isLoading) {
@@ -40,6 +41,9 @@ export default function PageLayout({params, children}: Props) {
   }
 
   if (error) {
+    if(error.shape?.code === -32004) {
+      return <NotFound />
+    }
     console.error(error);
     return <ErrorPage />;
   }
