@@ -15,7 +15,10 @@ export const env = () =>
       DATABASE_URL: z
         .string()
         .url()
-        .default('postgresql://formizee:password@localhost/formizee'),
+        .default('http://localhost:8080'),
+      DATABASE_AUTH_TOKEN: z
+        .string()
+        .default(''),
 
       // Storage
       VAULT_SECRET: z.string().default(''),

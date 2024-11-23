@@ -22,7 +22,10 @@ export function services(): MiddlewareHandler<HonoEnv> {
         ''
     );
 
-    const database = createConnection(c.env.DATABASE_URL, c.env.ENVIROMENT);
+    const database = createConnection({
+      databaseUrl: c.env.DATABASE_URL,
+      authToken: c.env.ENVIROMENT === 'production' ? c.env.DATABASE_AUTH_TOKEN : undefined
+    });
 
     const analytics = new Analytics({
       tinybirdToken:
