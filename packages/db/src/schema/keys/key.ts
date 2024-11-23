@@ -17,8 +17,12 @@ export const key = sqliteTable(
         onDelete: 'cascade'
       }),
 
-    lastAccess: integer('last_access', {mode: 'timestamp'}).notNull().default(sql`(unixepoch())`),
-    createdAt: integer('created_at', {mode: 'timestamp'}).notNull().default(sql`(unixepoch())`),
+    lastAccess: integer('last_access', {mode: 'timestamp'})
+      .notNull()
+      .default(sql`(unixepoch())`),
+    createdAt: integer('created_at', {mode: 'timestamp'})
+      .notNull()
+      .default(sql`(unixepoch())`),
 
     expiresAt: integer('expires_at', {mode: 'timestamp'})
       .notNull()

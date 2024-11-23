@@ -22,8 +22,12 @@ export const user = sqliteTable(
     email: text('email').notNull().unique(),
     emailVerified: integer('email_verified', {mode: 'timestamp'}),
 
-    lastAccess: integer('last_access', {mode: 'timestamp'}).notNull().default(sql`(unixepoch())`),
-    createdAt: integer('created_at', {mode: 'timestamp'}).notNull().default(sql`(unixepoch())`),
+    lastAccess: integer('last_access', {mode: 'timestamp'})
+      .notNull()
+      .default(sql`(unixepoch())`),
+    createdAt: integer('created_at', {mode: 'timestamp'})
+      .notNull()
+      .default(sql`(unixepoch())`),
     updatedAt: integer('updated_at', {mode: 'timestamp'})
       .notNull()
       .default(sql`(unixepoch())`)
@@ -45,7 +49,9 @@ export const userRelations = relations(user, ({many}) => ({
 // Users To Workspaces //
 
 export const roles = text('workspace_role', {enum: workspaceRole});
-export const permissions = text('member_permissions', {enum: memberPermissions});
+export const permissions = text('member_permissions', {
+  enum: memberPermissions
+});
 
 export const usersToWorkspaces = sqliteTable('users_to_workspaces', {
   userId: text('user_id')
@@ -60,7 +66,9 @@ export const usersToWorkspaces = sqliteTable('users_to_workspaces', {
 
   permissions: permissions.notNull().default('read'),
 
-  createdAt: integer('created_at', {mode: 'timestamp'}).notNull().default(sql`(unixepoch())`),
+  createdAt: integer('created_at', {mode: 'timestamp'})
+    .notNull()
+    .default(sql`(unixepoch())`),
 
   updatedAt: integer('updated_at', {mode: 'timestamp'})
     .notNull()
@@ -91,9 +99,13 @@ export const usersToEmails = sqliteTable('users_to_emails', {
 
   email: text('email').notNull(),
 
-  isVerified: integer('is_verified', {mode: 'boolean'}).notNull().default(false),
+  isVerified: integer('is_verified', {mode: 'boolean'})
+    .notNull()
+    .default(false),
 
-  createdAt: integer('created_at', {mode: 'timestamp'}).notNull().default(sql`(unixepoch())`),
+  createdAt: integer('created_at', {mode: 'timestamp'})
+    .notNull()
+    .default(sql`(unixepoch())`),
 
   updatedAt: integer('updated_at', {mode: 'timestamp'})
     .notNull()
@@ -139,15 +151,15 @@ export const session = sqliteTable('sessions', {
   userId: text('user_id')
     .notNull()
     .references(() => user.id, {onDelete: 'cascade'}),
-  expires: integer("expires", { mode: "timestamp_ms" }).notNull(),
+  expires: integer('expires', {mode: 'timestamp_ms'}).notNull()
 });
 
 export const verificationToken = sqliteTable(
   'verificationTokens',
   {
-    identifier: text("identifier").notNull(),
-    token: text("token").notNull(),
-    expires: integer("expires", { mode: "timestamp_ms" }).notNull(),
+    identifier: text('identifier').notNull(),
+    token: text('token').notNull(),
+    expires: integer('expires', {mode: 'timestamp_ms'}).notNull()
   },
   verificationToken => ({
     compositePk: primaryKey({
@@ -167,7 +179,9 @@ export const authenticator = sqliteTable(
     credentialPublicKey: text('credential_public_key').notNull(),
     counter: integer('counter').notNull(),
     credentialDeviceType: text('credential_device_type').notNull(),
-    credentialBackedUp: integer('credential_backed_up', {mode: 'boolean'}).notNull(),
+    credentialBackedUp: integer('credential_backed_up', {
+      mode: 'boolean'
+    }).notNull(),
     transports: text('transports')
   },
   authenticator => ({
