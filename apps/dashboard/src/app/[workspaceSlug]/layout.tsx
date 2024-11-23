@@ -32,7 +32,7 @@ export default async function DashboardLayout({
           <AppSidebar {...params} />
           <main className="flex w-full h-screen bg-neutral-50 no-overflow dark:bg-neutral-950">
             <SidebarTrigger className="rounded-none size-6 px-1 h-screen opacity-0 hover:opacity-100" />
-            <div className="flex w-full flex-col p-8 items-center overflow-auto  overflow-light-style dark:overflow-dark-style">
+            <div className="flex w-full flex-col p-2 sm:p-8 items-center overflow-auto  overflow-light-style dark:overflow-dark-style">
               {children}
             </div>
           </main>
