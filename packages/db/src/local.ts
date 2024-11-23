@@ -1,3 +1,3 @@
-export {drizzle as pgDrizzle} from 'drizzle-orm/node-postgres';
+export {drizzle} from 'drizzle-orm/libsql';
 import * as schema from './schema';
 export {schema};

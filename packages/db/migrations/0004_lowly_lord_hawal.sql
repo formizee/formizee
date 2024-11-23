@@ -1,1 +1,0 @@
-ALTER TABLE "submissions" ADD COLUMN "location" text NOT NULL;

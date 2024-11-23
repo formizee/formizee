@@ -1,6 +1,6 @@
 # DB
 
-We are using `postgres` with `drizzle-orm` as database to store the domain data.
+We are using `sqlite (turso)` with `drizzle-orm` as database to store the domain data.
 
 ## Usage
 

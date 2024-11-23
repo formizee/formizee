@@ -1,12 +1,12 @@
-import {text, unique, timestamp, pgTable, pgEnum} from 'drizzle-orm/pg-core';
+import {text, unique, integer, sqliteTable} from 'drizzle-orm/sqlite-core';
 import {workspacePlans} from './constants';
 import {usersToWorkspaces} from '../users';
 import {sql, relations} from 'drizzle-orm';
 import {endpoint} from '../endpoints';
 
-export const plans = pgEnum('workspace_plans', workspacePlans);
+export const plans = text('workspace_plans', {enum: workspacePlans});
 
-export const workspace = pgTable(
+export const workspace = sqliteTable(
   'workspaces',
   {
     id: text('id').primaryKey(),
@@ -14,22 +14,22 @@ export const workspace = pgTable(
     name: text('name'),
     slug: text('slug').notNull().unique(),
 
-    availableEmails: text('available_emails')
-      .array()
+    availableEmails: text('available_emails', {mode: 'json'})
       .notNull()
-      .default(sql`ARRAY[]::text[]`),
+      .$type<string[]>()
+      .default(sql`(json_array())`),
 
-    plan: plans('plan').notNull().default('hobby'),
+    plan: plans.notNull().default('hobby'),
     subscriptionId: text('subscription_id'),
     stripeId: text('stripe_id').unique(),
-    endsAt: timestamp('ends_at'),
-    paidUntil: timestamp('paid_until'),
+    endsAt: integer('ends_at'),
+    paidUntil: integer('paid_until'),
 
-    createdAt: timestamp('created_at').notNull().defaultNow(),
-    updatedAt: timestamp('updated_at')
+    createdAt: integer('created_at', {mode: 'timestamp'}).notNull().default(sql`(unixepoch())`),
+    updatedAt: integer('updated_at', {mode: 'timestamp'})
       .notNull()
-      .defaultNow()
-      .$onUpdate(() => new Date())
+      .default(sql`(unixepoch())`)
+      .$onUpdate(() => sql`(unixepoch())`)
   },
   table => {
     return {

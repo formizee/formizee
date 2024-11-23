@@ -1,12 +1,12 @@
-import {text, boolean, timestamp, pgEnum, pgTable} from 'drizzle-orm/pg-core';
 import {endpointColor, endpointIcon} from './constants';
 import {workspace} from '../workspaces';
-import {relations} from 'drizzle-orm';
+import {relations, sql} from 'drizzle-orm';
+import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
-export const icons = pgEnum('icons', endpointIcon);
-export const colors = pgEnum('colors', endpointColor);
+export const icons = text('icons', {enum: endpointIcon});
+export const colors = text('colors', {enum: endpointColor});
 
-export const endpoint = pgTable('endpoints', {
+export const endpoint = sqliteTable('endpoints', {
   id: text('id').primaryKey(),
 
   workspaceId: text('workspace_id')
@@ -15,20 +15,24 @@ export const endpoint = pgTable('endpoints', {
 
   name: text('name'),
   slug: text('slug').notNull(),
-  icon: icons('icon').notNull().default('file'),
-  color: colors('color').notNull().default('gray'),
+  icon: icons.notNull().default('file'),
+  color: colors.notNull().default('gray'),
 
-  isEnabled: boolean('is_enabled').notNull().default(true),
-  emailNotifications: boolean('email_notifications').notNull().default(true),
+  isEnabled: integer('is_enabled', {mode: 'boolean'}).notNull().default(true),
+  emailNotifications: integer('email_notifications', {mode: 'boolean'}).notNull().default(true),
 
-  targetEmails: text('target_emails').array().notNull(),
+  targetEmails: text('target_emails', {mode: 'json'})
+      .notNull()
+      .$type<string[]>()
+      .default(sql`(json_array())`),
+
   redirectUrl: text('redirect_url').notNull(),
 
-  createdAt: timestamp('created_at').notNull().defaultNow(),
-  updatedAt: timestamp('updated_at')
+  createdAt: integer('created_at', {mode: 'timestamp'}).notNull().default(sql`(unixepoch())`),
+  updatedAt: integer('updated_at', {mode: 'timestamp'})
     .notNull()
-    .defaultNow()
-    .$onUpdate(() => new Date())
+    .default(sql`(unixepoch())`)
+    .$onUpdate(() => sql`(unixepoch())`)
 });
 
 export const endpointRelations = relations(endpoint, ({one}) => ({

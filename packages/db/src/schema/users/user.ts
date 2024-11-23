@@ -1,20 +1,17 @@
 import {
   text,
   unique,
-  pgEnum,
-  pgTable,
-  boolean,
+  sqliteTable,
   integer,
-  timestamp,
   primaryKey
-} from 'drizzle-orm/pg-core';
+} from 'drizzle-orm/sqlite-core';
 import {workspace, workspaceRole} from '../workspaces';
 // @ts-ignore
 import type {AdapterAccount} from 'next-auth/adapters';
 import {memberPermissions} from './constants';
-import {relations} from 'drizzle-orm';
+import {relations, sql} from 'drizzle-orm';
 
-export const user = pgTable(
+export const user = sqliteTable(
   'users',
   {
     id: text('id').primaryKey(),
@@ -23,14 +20,14 @@ export const user = pgTable(
     image: text('image'),
 
     email: text('email').notNull().unique(),
-    emailVerified: timestamp('email_verified', {mode: 'date'}),
+    emailVerified: integer('email_verified', {mode: 'timestamp'}),
 
-    lastAccess: timestamp('last_access').notNull().defaultNow(),
-    createdAt: timestamp('created_at').notNull().defaultNow(),
-    updatedAt: timestamp('updated_at')
+    lastAccess: integer('last_access', {mode: 'timestamp'}).notNull().default(sql`(unixepoch())`),
+    createdAt: integer('created_at', {mode: 'timestamp'}).notNull().default(sql`(unixepoch())`),
+    updatedAt: integer('updated_at', {mode: 'timestamp'})
       .notNull()
-      .defaultNow()
-      .$onUpdate(() => new Date())
+      .default(sql`(unixepoch())`)
+      .$onUpdate(() => sql`(unixepoch())`)
   },
   table => {
     return {
@@ -47,10 +44,10 @@ export const userRelations = relations(user, ({many}) => ({
 
 // Users To Workspaces //
 
-export const roles = pgEnum('workspace_role', workspaceRole);
-export const permissions = pgEnum('member_permissions', memberPermissions);
+export const roles = text('workspace_role', {enum: workspaceRole});
+export const permissions = text('member_permissions', {enum: memberPermissions});
 
-export const usersToWorkspaces = pgTable('users_to_workspaces', {
+export const usersToWorkspaces = sqliteTable('users_to_workspaces', {
   userId: text('user_id')
     .notNull()
     .references(() => user.id, {onDelete: 'cascade'}),
@@ -59,16 +56,16 @@ export const usersToWorkspaces = pgTable('users_to_workspaces', {
     .notNull()
     .references(() => workspace.id, {onDelete: 'cascade'}),
 
-  role: roles('role').notNull().default('member'),
+  role: roles.notNull().default('member'),
 
-  permissions: permissions('permissions').notNull().default('read'),
+  permissions: permissions.notNull().default('read'),
 
-  createdAt: timestamp('created_at').notNull().defaultNow(),
+  createdAt: integer('created_at', {mode: 'timestamp'}).notNull().default(sql`(unixepoch())`),
 
-  updatedAt: timestamp('updated_at')
+  updatedAt: integer('updated_at', {mode: 'timestamp'})
     .notNull()
-    .defaultNow()
-    .$onUpdate(() => new Date())
+    .default(sql`(unixepoch())`)
+    .$onUpdate(() => sql`(unixepoch())`)
 });
 
 export const usersToWorkspaceRelations = relations(
@@ -87,21 +84,21 @@ export const usersToWorkspaceRelations = relations(
 
 // Users To Emails //
 
-export const usersToEmails = pgTable('users_to_emails', {
+export const usersToEmails = sqliteTable('users_to_emails', {
   userId: text('user_id')
     .notNull()
     .references(() => user.id, {onDelete: 'cascade'}),
 
   email: text('email').notNull(),
 
-  isVerified: boolean('is_verified').notNull().default(false),
+  isVerified: integer('is_verified', {mode: 'boolean'}).notNull().default(false),
 
-  createdAt: timestamp('created_at').notNull().defaultNow(),
+  createdAt: integer('created_at', {mode: 'timestamp'}).notNull().default(sql`(unixepoch())`),
 
-  updatedAt: timestamp('updated_at')
+  updatedAt: integer('updated_at', {mode: 'timestamp'})
     .notNull()
-    .defaultNow()
-    .$onUpdate(() => new Date())
+    .default(sql`(unixepoch())`)
+    .$onUpdate(() => sql`(unixepoch())`)
 });
 
 export const usersToEmailsRelations = relations(usersToEmails, ({one}) => ({
@@ -113,7 +110,7 @@ export const usersToEmailsRelations = relations(usersToEmails, ({one}) => ({
 
 // Auth.js //
 
-export const account = pgTable(
+export const account = sqliteTable(
   'accounts',
   {
     userId: text('user_id')
@@ -137,20 +134,20 @@ export const account = pgTable(
   })
 );
 
-export const session = pgTable('sessions', {
+export const session = sqliteTable('sessions', {
   sessionToken: text('session_token').primaryKey(),
   userId: text('user_id')
     .notNull()
     .references(() => user.id, {onDelete: 'cascade'}),
-  expires: timestamp('expires', {mode: 'date'}).notNull()
+  expires: integer("expires", { mode: "timestamp_ms" }).notNull(),
 });
 
-export const verificationToken = pgTable(
+export const verificationToken = sqliteTable(
   'verificationTokens',
   {
-    identifier: text('identifier').notNull(),
-    token: text('token').notNull(),
-    expires: timestamp('expires', {mode: 'date'}).notNull()
+    identifier: text("identifier").notNull(),
+    token: text("token").notNull(),
+    expires: integer("expires", { mode: "timestamp_ms" }).notNull(),
   },
   verificationToken => ({
     compositePk: primaryKey({
@@ -159,7 +156,7 @@ export const verificationToken = pgTable(
   })
 );
 
-export const authenticator = pgTable(
+export const authenticator = sqliteTable(
   'authenticators',
   {
     credentialID: text('credential_id').notNull().unique(),
@@ -170,7 +167,7 @@ export const authenticator = pgTable(
     credentialPublicKey: text('credential_public_key').notNull(),
     counter: integer('counter').notNull(),
     credentialDeviceType: text('credential_device_type').notNull(),
-    credentialBackedUp: boolean('credential_backed_up').notNull(),
+    credentialBackedUp: integer('credential_backed_up', {mode: 'boolean'}).notNull(),
     transports: text('transports')
   },
   authenticator => ({

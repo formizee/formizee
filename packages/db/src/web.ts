@@ -1,14 +1,14 @@
-import {
-  type NeonHttpDatabase,
-  drizzle as neonDrizzle
-} from 'drizzle-orm/neon-http';
-import {neon} from '@neondatabase/serverless';
+import { type LibSQLDatabase, drizzle as sqlDrizzle } from 'drizzle-orm/libsql';
+import {createClient} from '@libsql/client/web';
 
 import * as schema from './schema';
 
-export const createConnection = (databaseUrl: string): Database => {
-  const client = neon(databaseUrl);
-  return neonDrizzle(client, {schema});
+export const createConnection = (databaseUrl: string, authToken: string): Database => {
+  const client = createClient({
+    url: databaseUrl,
+    authToken 
+  });
+  return sqlDrizzle(client, {schema});
 };
 
-export type Database = NeonHttpDatabase<typeof schema>;
+export type Database = LibSQLDatabase<typeof schema>;

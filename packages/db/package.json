@@ -32,6 +32,7 @@
   "license": "Apache-2.0",
   "scripts": {
     "lint": "biome lint .",
+    "check": "tsc --noEmit",
     "push": "drizzle-kit push",
     "studio": "drizzle-kit studio",
     "migrate": "drizzle-kit migrate",
@@ -47,7 +48,7 @@
   },
   "dependencies": {
     "@formizee/hashing": "workspace:*",
-    "@neondatabase/serverless": "0.9.4",
+    "@libsql/client": "0.14.0",
     "drizzle-orm": "0.32.0",
     "drizzle-zod": "0.5.1",
     "next-auth": "5.0.0-beta.24",

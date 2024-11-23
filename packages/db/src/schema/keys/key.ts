@@ -1,8 +1,8 @@
-import {text, index, timestamp, pgTable} from 'drizzle-orm/pg-core';
+import {text, index, sqliteTable, integer} from 'drizzle-orm/sqlite-core';
 import {workspace} from '../workspaces';
-import {relations} from 'drizzle-orm';
+import {relations, sql} from 'drizzle-orm';
 
-export const key = pgTable(
+export const key = sqliteTable(
   'keys',
   {
     id: text('id').primaryKey(),
@@ -17,11 +17,10 @@ export const key = pgTable(
         onDelete: 'cascade'
       }),
 
-    lastAccess: timestamp('last_access').notNull().defaultNow(),
+    lastAccess: integer('last_access', {mode: 'timestamp'}).notNull().default(sql`(unixepoch())`),
+    createdAt: integer('created_at', {mode: 'timestamp'}).notNull().default(sql`(unixepoch())`),
 
-    createdAt: timestamp('created_at').notNull().defaultNow(),
-
-    expiresAt: timestamp('expires_at')
+    expiresAt: integer('expires_at', {mode: 'timestamp'})
       .notNull()
       .$default(() => new Date(Date.now() + 24 * 60 * 60 * 1000))
   },
