@@ -55,6 +55,28 @@ export const updateKey = protectedProcedure
         .where(eq(schema.endpoint.id, key.id))
         .returning();
 
+      // Ingest audit logs
+      await ctx.analytics.ingestFormizeeAuditLogs({
+        event: 'key.update',
+        workspaceId: workspace.id,
+        actor: {
+          type: 'user',
+          id: ctx.user.id ?? 'Not available',
+          name: ctx.user.name ?? 'Not available'
+        },
+        resources: [
+          {
+            id: key.id,
+            type: 'key'
+          }
+        ],
+        description: `Updated ${key.id} name to ${input.name}`,
+        context: {
+          location: ctx.audit.location,
+          userAgent: ctx.audit.userAgent
+        }
+      });
+
       return updatedKey[0];
     } catch {
       throw new TRPCError({

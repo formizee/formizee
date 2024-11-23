@@ -1,14 +1,14 @@
+import {updateWorkspaceRouter} from './update';
 import {router} from '@/trpc';
 
 //Routes
 import {getWorkspaceBySlug} from './get';
-import {getWorkspaceMembers} from './get-members';
-import {updateWorkspaceName} from './update-name';
-import {updateWorkspaceSlug} from './update-slug';
+import {getWorkspaceMembers} from './members';
+import {getWorkspaceLimits} from './limits';
 
 export const workspaceRouter = router({
-  getBySlug: getWorkspaceBySlug,
-  getMembers: getWorkspaceMembers,
-  updateName: updateWorkspaceName,
-  updateSlug: updateWorkspaceSlug
+  update: updateWorkspaceRouter,
+  members: getWorkspaceMembers,
+  limits: getWorkspaceLimits,
+  get: getWorkspaceBySlug
 });

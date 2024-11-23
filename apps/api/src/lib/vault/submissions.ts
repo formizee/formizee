@@ -21,7 +21,7 @@ export const postSubmission = async (
   VAULT_SECRET: string,
   data: {id: string; endpointId: string; data: object}
 ) => {
-  await fetch(`${VAULT_URL}/submission`, {
+  const response = await fetch(`${VAULT_URL}/submission`, {
     method: 'POST',
     body: JSON.stringify(data),
     headers: {
@@ -29,6 +29,13 @@ export const postSubmission = async (
       'Content-Type': 'application/json'
     }
   });
+
+  if (!response.ok) {
+    Promise.reject({
+      status: response.status,
+      body: response.json()
+    });
+  }
 };
 
 export const deleteSubmission = async (

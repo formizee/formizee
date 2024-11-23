@@ -1,27 +1,26 @@
 'use client';
 
 import {SunIcon, MoonIcon} from '@formizee/ui/icons';
+import {DropdownMenuItem} from '@formizee/ui';
 import {useTheme} from 'next-themes';
-import {Button} from '@formizee/ui';
 
-interface ThemeToggleProps {
-  className?: string;
-}
-
-export const ThemeToggle = (props: ThemeToggleProps) => {
+export const ThemeToggle = () => {
   const {theme, setTheme} = useTheme();
 
   const onClick = () =>
     theme === 'light' ? setTheme('dark') : setTheme('light');
 
   return (
-    <Button
-      size="icon"
-      variant="outline"
+    <DropdownMenuItem
+      className="transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-800"
       onClick={onClick}
-      className={props.className}
     >
-      {theme === 'light' ? <SunIcon /> : <MoonIcon />}
-    </Button>
+      {theme === 'light' ? (
+        <SunIcon variant="outline" />
+      ) : (
+        <MoonIcon variant="outline" />
+      )}
+      Toggle Theme
+    </DropdownMenuItem>
   );
 };

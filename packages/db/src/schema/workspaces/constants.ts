@@ -1,4 +1,4 @@
-export const workspacePlans = ['hobby', 'pro', 'enterprise'] as const;
+export const workspacePlans = ['hobby', 'pro', 'teams', 'enterprise'] as const;
 export type WorkspacePlans = (typeof workspacePlans)[number];
 
 export const workspaceRole = ['owner', 'admin', 'member'] as const;
@@ -10,5 +10,6 @@ export const workspacePlanHierarchy: Record<
 > = {
   hobby: 0,
   pro: 1,
-  enterprise: 2
+  teams: 2,
+  enterprise: 3
 };

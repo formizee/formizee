@@ -23,7 +23,7 @@ export function TableColumnOptions<TData>({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="hidden lg:flex">
+        <Button variant="outline" className="hidden sm:flex">
           Columns
           <ChevronDownIcon />
         </Button>
@@ -59,6 +59,7 @@ export function TableColumnOptions<TData>({
 
 interface TableSearchBarOptionsProps<TData> {
   column: string;
+  className?: string;
   table: Table<TData>;
   placeholder: string;
 }
@@ -69,6 +70,8 @@ export function TableSearchOptions<TData>(
   return (
     <Input
       type="search"
+      name="search"
+      className={props.className}
       placeholder={props.placeholder ?? 'Search...'}
       value={
         (props.table.getColumn(props.column)?.getFilterValue() as string) ?? ''

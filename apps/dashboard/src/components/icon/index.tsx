@@ -41,55 +41,15 @@ import {
   VideoIcon
 } from '@formizee/ui/icons';
 import {cn} from '@formizee/ui';
-
-export const getColor = (color: string, selected: boolean) => {
-  switch (color) {
-    case 'violet':
-      return selected
-        ? 'fill-violet-600 dark:fill-violet-500'
-        : 'fill-violet-600/70 dark:fill-violet-500/70';
-    case 'indigo':
-      return selected
-        ? 'fill-indigo-600 dark:fill-indigo-500'
-        : 'fill-indigo-600/70 dark:fill-indigo-500/70';
-    case 'cyan':
-      return selected
-        ? 'fill-cyan-600 dark:fill-cyan-500'
-        : 'fill-cyan-600/70 dark:fill-cyan-500/70';
-    case 'pink':
-      return selected
-        ? 'fill-pink-600 dark:fill-pink-500'
-        : 'fill-pink-600/70 dark:fill-pink-500/70';
-    case 'amber':
-      return selected
-        ? 'fill-amber-600 dark:fill-amber-500'
-        : 'fill-amber-600/70 dark:fill-amber-500/70';
-    case 'teal':
-      return selected
-        ? 'fill-teal-600 dark:fill-teal-500'
-        : 'fill-teal-600/70 dark:fill-teal-500/70';
-    case 'lime':
-      return selected
-        ? 'fill-lime-600 dark:fill-lime-500'
-        : 'fill-lime-600/70 dark:fill-lime-500/70';
-    case 'red':
-      return selected
-        ? 'fill-red-600 dark:fill-red-500'
-        : 'fill-red-600/70 dark:fill-red-500/70';
-    default:
-      return selected
-        ? 'fill-neutral-950 dark:fill-neutral-50'
-        : 'fill-neutral-500 dark:fill-neutral-400';
-  }
-};
+import {type Color, getColor} from '@/lib/colors';
 
 export const Icon = (props: {
   icon: string;
-  color: string;
+  color: Color;
   selected: boolean;
   className?: string;
 }) => {
-  const color = getColor(props.color, props.selected);
+  const color = getColor(props.color, props.selected).fill;
 
   switch (props.icon) {
     case 'sun':
@@ -170,7 +130,7 @@ export const Icon = (props: {
       return <CreditCardIcon className={cn(props.className, color)} />;
     case 'checkcircle':
       return (
-        <CheckIcon variant="circle" className={cn(props.className, color)} />
+        <CheckIcon variant="outline" className={cn(props.className, color)} />
       );
     default:
       return <DocumentIcon className={cn(props.className, color)} />;

@@ -60,5 +60,26 @@ export const deleteEndpoint = protectedProcedure
       });
     }
 
+    await ctx.analytics.ingestFormizeeAuditLogs({
+      event: 'endpoint.delete',
+      workspaceId: workspace.id,
+      actor: {
+        type: 'user',
+        id: ctx.user.id ?? 'Not available',
+        name: ctx.user.name ?? 'Not available'
+      },
+      resources: [
+        {
+          id: endpoint.id,
+          type: 'endpoint'
+        }
+      ],
+      description: `Deleted ${endpoint.id}`,
+      context: {
+        location: ctx.audit.location,
+        userAgent: ctx.audit.userAgent
+      }
+    });
+
     return {id: deletedEndpoint[0].id};
   });

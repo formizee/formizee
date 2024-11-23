@@ -78,8 +78,26 @@ export const createKey = protectedProcedure
     await database.insert(schema.key).values(data);
 
     // Ingest audit logs
-
-    // Ingest analytics
+    await ctx.analytics.ingestFormizeeAuditLogs({
+      event: 'key.create',
+      workspaceId: workspace.id,
+      actor: {
+        type: 'user',
+        id: ctx.user.id ?? 'Not available',
+        name: ctx.user.name ?? 'Not available'
+      },
+      resources: [
+        {
+          id: data.id,
+          type: 'key'
+        }
+      ],
+      description: `Created ${data.id}`,
+      context: {
+        location: ctx.audit.location,
+        userAgent: ctx.audit.userAgent
+      }
+    });
 
     return data;
   });

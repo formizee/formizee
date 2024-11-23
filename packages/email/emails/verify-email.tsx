@@ -63,7 +63,7 @@ export const AuthVerifyEmail = ({link}: EmailProps) => (
           </Button>
           <Text className="text-neutral-600 leading-[1.4] text-[15px]">
             If you're having trouble with the button above,{' '}
-            <Link className="text-amber-500 underline" href={link}>
+            <Link className="underline" href={link}>
               click here
             </Link>
             .

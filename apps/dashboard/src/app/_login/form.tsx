@@ -71,7 +71,6 @@ export const LoginForm = ({redirectTo}: {redirectTo: string}) => {
               </FormLabel>
               <FormControl>
                 <Input
-                  autoComplete="off"
                   className="text-neutral-900 dark:text-neutral-50"
                   placeholder="you@mail.com"
                   required
@@ -113,7 +112,7 @@ export const LoginForm = ({redirectTo}: {redirectTo: string}) => {
             disabled={isEmailLoading || isGithubLoading || isGoogleLoading}
           >
             {!isGithubLoading ? (
-              <div className="flex flex-row items-center gap-2 w-full">
+              <div className="flex flex-row justify-center items-center gap-2 w-full">
                 <span>Login With Github</span>
                 <svg
                   className="size-4"
@@ -135,7 +134,7 @@ export const LoginForm = ({redirectTo}: {redirectTo: string}) => {
             disabled={isEmailLoading || isGithubLoading || isGoogleLoading}
           >
             {!isGoogleLoading ? (
-              <div className="flex flex-row items-center gap-2 w-full">
+              <div className="flex flex-row justify-center items-center gap-2 w-full">
                 <span>Login With Google</span>
                 <svg
                   className="size-4"

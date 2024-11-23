@@ -1,15 +1,17 @@
+import {endpointUpdateRouter} from './update';
 import {router} from '@/trpc';
 
+import {getEndpointMetrics} from './metrics';
 import {getEndpointBySlug} from './get';
 import {deleteEndpoint} from './delete';
 import {createEndpoint} from './create';
-import {updateEndpoint} from './update';
 import {listEndpoints} from './list';
 
 export const endpointRouter = router({
-  getBySlug: getEndpointBySlug,
+  update: endpointUpdateRouter,
+  metrics: getEndpointMetrics,
+  get: getEndpointBySlug,
   delete: deleteEndpoint,
   create: createEndpoint,
-  update: updateEndpoint,
   list: listEndpoints
 });

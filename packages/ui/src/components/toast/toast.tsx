@@ -22,16 +22,16 @@ const ToastViewport = React.forwardRef<
 ToastViewport.displayName = ToastPrimitives.Viewport.displayName;
 
 const toastVariants = cva(
-  'data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-left-full data-[state=open]:slide-in-from-top-full data-[state=open]:sm:slide-in-from-bottom-full group pointer-events-auto relative flex w-full items-center justify-between space-x-2 overflow-hidden rounded-lg border border-neutral-200 p-4 pr-6 shadow-lg backdrop-blur-sm transition-all data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none dark:border-neutral-800',
+  'data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-left-full data-[state=open]:slide-in-from-top-full data-[state=open]:sm:slide-in-from-bottom-full group pointer-events-auto relative flex w-full items-center justify-between space-x-2 overflow-hidden rounded-lg border border-neutral-200 p-4 pr-6 shadow-lg transition-all data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none dark:border-neutral-800',
   {
     variants: {
       variant: {
         default:
-          'border bg-white text-neutral-950 dark:bg-neutral-950 dark:text-neutral-50',
+          'border bg-neutral-50 border-neutral-300 text-neutral-950 dark:bg-neutral-950 dark:border-neutral-600 dark:text-neutral-50',
         success:
-          'destructive group border-green-500 bg-green-500 text-neutral-50 dark:border-green-900 dark:bg-green-400/10 dark:text-neutral-50',
+          'destructive group border-green-400 bg-green-50 text-green-950 dark:border-green-600 dark:bg-green-950 dark:text-green-50',
         destructive:
-          'destructive group border-red-500 bg-red-500 text-neutral-50 dark:border-red-900 dark:bg-red-400/10 dark:text-neutral-50'
+          'destructive group border-red-400 bg-red-50 text-red-950 dark:border-red-600 dark:bg-red-950 dark:text-red-50'
       }
     },
     defaultVariants: {

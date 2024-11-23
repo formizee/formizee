@@ -1,4 +1,5 @@
 import {
+  cn,
   Table as Component,
   TableBody,
   TableCell,
@@ -16,11 +17,21 @@ interface DataTableProps<TData> {
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   columns: ColumnDef<TData, any>[];
   table: DataTable<TData>;
+  className?: string;
 }
 
-export function Table<TData>({columns, table}: DataTableProps<TData>) {
+export function Table<TData>({
+  columns,
+  table,
+  className
+}: DataTableProps<TData>) {
   return (
-    <div className="rounded-md border border-neutral-200 dark:border-neutral-800">
+    <div
+      className={cn(
+        'rounded-md border border-neutral-200 dark:border-neutral-800',
+        className
+      )}
+    >
       <Component>
         <TableHeader>
           {table.getHeaderGroups().map(headerGroup => (

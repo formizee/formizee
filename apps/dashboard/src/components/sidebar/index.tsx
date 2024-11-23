@@ -1,36 +1,55 @@
-import {WorkspaceSwitch} from './workspace';
-import {CreateButton} from './create';
-import {Endpoints} from './endpoints';
-import {Logo} from '@formizee/ui';
-import {auth} from '@/lib/auth';
 import {redirect} from 'next/navigation';
+import {auth} from '@/lib/auth';
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarMenu
+} from '@formizee/ui/sidebar';
+import {
+  Header,
+  Search,
+  Settings,
+  Feedback,
+  Documentation,
+  Endpoints,
+  Account,
+  New
+} from './components';
 
-interface SidebarProps {
-  workspaceSlug: string;
-  endpointSlug: string;
+interface AppSidebarProps {
+  workspace: string;
 }
 
-export const Sidebar = async (props: SidebarProps) => {
+export const AppSidebar = async (props: AppSidebarProps) => {
   const session = await auth();
 
-  if (!session) {
-    redirect('/');
+  if (!session?.user?.id) {
+    redirect('/login');
   }
 
   return (
-    <div className="p-2 flex flex-col h-screen max-w-56 border-neutral-200 dark:border-r-neutral-800 border-r">
-      <div className="flex flex-row items-center h-14 pl-2 mb-2 gap-5">
-        <Logo />
-        <span className="px-3 border select-none border-neutral-300 dark:border-neutral-700 rounded-xl text-sm tex-neutral-700 dark:text-neutral-100">
-          Beta
-        </span>
-      </div>
-      <WorkspaceSwitch workspaceSlug={props.workspaceSlug} />
-      <Endpoints
-        workspaceSlug={props.workspaceSlug}
-        endpointSlug={props.endpointSlug}
-      />
-      <CreateButton workspaceSlug={props.workspaceSlug} />
-    </div>
+    <Sidebar className="dark:border-neutral-800">
+      <Header />
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <New workspaceSlug={props.workspace} />
+              <Search />
+              <Settings />
+              <Feedback
+                userId={session.user.id}
+                userName={session.user.name ?? 'No Available'}
+              />
+              <Documentation />
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+        <Endpoints workspaceSlug={props.workspace} />
+      </SidebarContent>
+      <Account userId={session.user.id} />
+    </Sidebar>
   );
 };

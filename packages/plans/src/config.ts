@@ -13,7 +13,7 @@ export const planConfig: Record<
 > = {
   hobby: {
     title: 'Hobby',
-    description: 'For personal projects',
+    description: 'For personal stuff',
     price: 0,
     limits: {
       support: 'community',
@@ -27,16 +27,30 @@ export const planConfig: Record<
   },
   pro: {
     title: 'Pro',
-    description: 'For small projects',
+    description: 'For production projects',
     price: 5,
     limits: {
       support: 'email',
-      endpoints: 'unlimited',
+      endpoints: 1000,
       submissions: 1000,
       storage: 1000,
       members: 1,
-      keys: 10,
-      apiDailyRequests: 'unlimited'
+      keys: 100,
+      apiDailyRequests: 100000
+    }
+  },
+  teams: {
+    title: 'Teams',
+    description: 'For startups and teams',
+    price: 20,
+    limits: {
+      support: 'custom',
+      endpoints: 10000,
+      submissions: 10000,
+      storage: 10000,
+      members: 10,
+      keys: 1000,
+      apiDailyRequests: 1000000
     }
   },
   enterprise: {

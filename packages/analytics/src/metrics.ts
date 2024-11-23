@@ -51,6 +51,16 @@ export const metricSchema = z.discriminatedUnion('metric', [
   }),
 
   z.object({
+    metric: z.literal('api.request'),
+    workspaceId: z.string(),
+    time: z.date(),
+    context: z.object({
+      location: z.string(),
+      userAgent: z.string().optional()
+    })
+  }),
+
+  z.object({
     metric: z.literal('endpoint.created'),
     workspaceId: z.string(),
     context: z.object({

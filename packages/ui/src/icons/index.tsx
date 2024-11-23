@@ -26,6 +26,7 @@ export {DatabaseIcon} from './database';
 export {DocumentAddIcon} from './document-add';
 export {DocumentChartIcon} from './document-chart';
 export {DocumentIcon} from './document';
+export {DownloadIcon} from './download';
 export {EllipsisIcon} from './ellipsis';
 export {EyeSlashIcon} from './eye-slash';
 export {EyeIcon} from './eye';
@@ -63,6 +64,7 @@ export {StarIcon} from './star';
 export {SunIcon} from './sun';
 export {ToolsIcon} from './tools';
 export {UndoIcon} from './undo'
+export {UpgradeIcon} from './upgrade';
 export {UserGroupIcon} from './user-group';
 export {UserIcon} from './user';
 export {VideoIcon} from './video';
