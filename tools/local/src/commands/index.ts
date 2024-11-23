@@ -1,2 +1,2 @@
-export * from './web';
-export * from './api';
+export * from './web.js';
+export * from './api.js';

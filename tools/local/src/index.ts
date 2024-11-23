@@ -1,11 +1,11 @@
-import {bootstrapApi, bootstrapWeb} from './commands';
+import {bootstrapApi, bootstrapWeb} from './commands/index.js';
 import {execSync} from 'node:child_process';
 import path, {dirname} from 'node:path';
-import {startContainers} from './docker';
+import {startContainers} from './docker.js';
 import {fileURLToPath} from 'node:url';
 import * as clack from '@clack/prompts';
-import {prepareDatabase} from './db';
-import {run, task} from './util';
+import {prepareDatabase} from './db.js';
+import {run, task} from './util.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);

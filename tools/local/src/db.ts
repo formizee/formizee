@@ -1,9 +1,8 @@
-import {pgDrizzle, schema} from '@formizee/db/local';
+import {createClient} from '@libsql/client';
 import path, {dirname} from 'node:path';
 import {exec} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
-import {task} from './util';
-import pg from 'pg';
+import {task} from './util.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -18,9 +17,9 @@ async function migrateTables() {
     const cwd = path.join(__dirname, '../../../packages/db');
 
     await new Promise((resolve, reject) => {
-      const p = exec('pnpm drizzle-kit push', {
+      const p = exec('pnpm run push', {
         env: {
-          DATABASE_URL: 'postgresql://formizee:password@localhost/formizee',
+          DATABASE_URL: 'http://database:8080',
           ...process.env
         },
         cwd
@@ -42,14 +41,13 @@ async function connectDatabase() {
     let err: Error | undefined = undefined;
     for (let i = 1; i <= 10; i++) {
       try {
-        const connectionString =
-          'postgresql://formizee:password@localhost/formizee';
-        const client = new pg.Client({connectionString});
+        const client = createClient({
+          url: 'http://database:8080'
+        });
 
         s.message('pinging database');
-        await client.connect();
+        client.close();
         s.stop('connected to the database');
-        return pgDrizzle(client, {schema});
       } catch (e) {
         err = e as Error;
         await new Promise(r => setTimeout(r, 1000 * i));

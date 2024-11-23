@@ -3,16 +3,17 @@ name: formizee
 services:
   database:
     container_name: database
-    image: postgres:16.3
+    image: ghcr.io/tursodatabase/libsql-server:latest
+    platform: linux/arm64
     restart: always
     ports:
-      - 5432:5432
+      - "8080:8080"
+      - "5001:5001"
     environment:
-      POSTGRES_DATABASE: formizee
-      POSTGRES_USER: formizee
-      POSTGRES_PASSWORD: password
+      SQLD_NODE: primary
+      SQLD_DB_PATH: /var/lib/sqld/formizee.db
     volumes:
-      - database:/var/lib/postgresql
+      - database:/var/lib/sqld
 
   storage:
     container_name: storage
@@ -39,7 +40,7 @@ services:
       - database
       - storage
     environment:
-      DATABASE_URL: "postgresql://formizee:password@localhost/formizee"
+      DATABASE_URL: "http://localhost:8080"
 
 volumes:
   database:

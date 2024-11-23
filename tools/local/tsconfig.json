@@ -1,9 +1,3 @@
 {
-  "extends": "@formizee/tsconfig/base.json",
-  "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "moduleResolution": "Bundler",
-    "target": "ESNext",
-    "module": "ESNext"
-  }
+  "extends": "@formizee/tsconfig/base.json"
 }

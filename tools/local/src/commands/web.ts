@@ -1,7 +1,7 @@
 import * as clack from '@clack/prompts';
 import path, {dirname} from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {marshalEnv} from '../env';
+import {marshalEnv} from '../env.js';
 import fs from 'node:fs';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -20,8 +20,8 @@ export function bootstrapWeb() {
       API_URL: 'http://localhost:3001'
     },
     Database: {
-      DATABASE_URL: 'postgresql://formizee:password@localhost/formizee',
-      TESTING_DATABASE_URL: 'postgresql://formizee:password@localhost/testing'
+      DATABASE_URL: 'http://database:8080',
+      TESTING_DATABASE_URL: 'http://database:8080'
     }
   });
 
