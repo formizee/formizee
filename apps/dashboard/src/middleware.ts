@@ -55,9 +55,7 @@ export default auth(async req => {
     const endpoints = await getEndpoints(workspace.id);
 
     if (!endpoints[0]) {
-      return NextResponse.redirect(
-        new URL(`/${workspace.slug}/`, req.url)
-      );
+      return NextResponse.redirect(new URL(`/${workspace.slug}/`, req.url));
     }
 
     return NextResponse.redirect(

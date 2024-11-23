@@ -19,7 +19,9 @@ interface Props {
 }
 
 export default function PageLayout({params, children}: Props) {
-  const {data, isLoading, error} = api.endpoint.get.useQuery(params, {retry: 1});
+  const {data, isLoading, error} = api.endpoint.get.useQuery(params, {
+    retry: 1
+  });
   const currentPath = usePathname();
 
   if (isLoading) {
@@ -41,8 +43,8 @@ export default function PageLayout({params, children}: Props) {
   }
 
   if (error) {
-    if(error.shape?.code === -32004) {
-      return <NotFound />
+    if (error.shape?.code === -32004) {
+      return <NotFound />;
     }
     console.error(error);
     return <ErrorPage />;

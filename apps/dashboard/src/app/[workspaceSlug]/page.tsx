@@ -26,7 +26,7 @@ const DashboardRedirect = async ({params}: {params: Params}) => {
   });
 
   if (!endpoint) {
-    return <EmptyPage />
+    return <EmptyPage />;
   }
 
   redirect(`/${workspace.slug}/${endpoint.slug}`);

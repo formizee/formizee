@@ -1,5 +1,5 @@
 import workspaceIcon from '@/../../public/workspace.webp';
-import { Transition } from '@/components';
+import {Transition} from '@/components';
 import Image from 'next/image';
 
 const EmptyPage = () => {
