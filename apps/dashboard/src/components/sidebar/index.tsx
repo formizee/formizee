@@ -19,7 +19,7 @@ import {
 } from './components';
 
 interface AppSidebarProps {
-  workspaceSlug: string;
+  workspace: string;
 }
 
 export const AppSidebar = async (props: AppSidebarProps) => {
@@ -36,7 +36,7 @@ export const AppSidebar = async (props: AppSidebarProps) => {
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
-              <New workspaceSlug={props.workspaceSlug} />
+              <New workspaceSlug={props.workspace} />
               <Search />
               <Settings />
               <Feedback
@@ -47,7 +47,7 @@ export const AppSidebar = async (props: AppSidebarProps) => {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-        <Endpoints workspaceSlug={props.workspaceSlug} />
+        <Endpoints workspaceSlug={props.workspace} />
       </SidebarContent>
       <Account userId={session.user.id} />
     </Sidebar>

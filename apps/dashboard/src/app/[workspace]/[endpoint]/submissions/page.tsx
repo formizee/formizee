@@ -1,20 +1,23 @@
 'use client';
 
-import {Chart, OnboardingCard} from './_components';
 import {Transition} from '@/components';
+import {Table} from './_components';
 import ErrorPage from '../error';
 
 import {api} from '@/trpc/client';
 
 interface Props {
   params: {
-    workspaceSlug: string;
-    endpointSlug: string;
+    workspace: string;
+    endpoint: string;
   };
 }
 
-export default function Overview({params}: Props) {
-  const {data, isLoading, error} = api.endpoint.get.useQuery(params);
+export default function Submissions({params}: Props) {
+  const {data, isLoading, error} = api.endpoint.get.useQuery({
+    workspaceSlug: params.workspace,
+    endpointSlug: params.endpoint
+  });
 
   if (isLoading) {
     return <></>;
@@ -26,8 +29,7 @@ export default function Overview({params}: Props) {
 
   return (
     <Transition className="flex flex-col w-full items-start">
-      <OnboardingCard id={data.id} color={data.color} />
-      <Chart id={data.id} color={data.color} />
+      <Table id={data.id} color={data.color} />
     </Transition>
   );
 }

@@ -10,7 +10,7 @@ export default async function DashboardLayout({
   params,
   children
 }: Readonly<{
-  params: {workspaceSlug: string};
+  params: {workspace: string};
   children: React.ReactNode;
 }>) {
   const cookiesState = cookies().get('sidebar:state')?.value;
@@ -25,10 +25,10 @@ export default async function DashboardLayout({
   return (
     <SidebarProvider defaultOpen={defaultOpen}>
       <SettingsProvider
-        workspaceSlug={params.workspaceSlug}
+        workspaceSlug={params.workspace}
         userId={session.user.id}
       >
-        <CommandPaletteProvider workspaceSlug={params.workspaceSlug}>
+        <CommandPaletteProvider workspaceSlug={params.workspace}>
           <AppSidebar {...params} />
           <main className="flex w-full h-screen bg-neutral-50 no-overflow dark:bg-neutral-950">
             <SidebarTrigger className="rounded-none size-6 px-1 h-screen opacity-0 hover:opacity-100" />

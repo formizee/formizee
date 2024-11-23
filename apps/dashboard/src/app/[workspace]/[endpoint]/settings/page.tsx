@@ -17,16 +17,19 @@ import {LoadingSkeleton} from './_components/skeleton';
 
 interface Props {
   params: {
-    workspaceSlug: string;
-    endpointSlug: string;
+    workspace: string;
+    endpoint: string;
   };
 }
 
 export default function Settings({params}: Props) {
   const workspaceRequest = api.workspace.get.useQuery({
-    slug: params.workspaceSlug
+    slug: params.workspace
   });
-  const endpointRequest = api.endpoint.get.useQuery(params);
+  const endpointRequest = api.endpoint.get.useQuery({
+    workspaceSlug: params.workspace,
+    endpointSlug: params.endpoint
+  });
 
   if (workspaceRequest.isLoading || endpointRequest.isLoading) {
     return <LoadingSkeleton />;
@@ -86,14 +89,16 @@ export default function Settings({params}: Props) {
       <section className="w-full grid grid-cols-1 2xl:grid-cols-2 gap-4">
         <UpdateEndpointNotificationsForm
           defaultValue={endpoint.emailNotifications}
+          workspaceSlug={params.workspace}
+          endpointSlug={params.endpoint}
           id={endpoint.id}
-          {...params}
         />
         <UpdateEndpointTargetEmailsForm
           availableEmails={workspace.availableEmails}
           targetEmails={endpoint.targetEmails}
+          workspaceSlug={params.workspace}
+          endpointSlug={params.endpoint}
           id={endpoint.id}
-          {...params}
         />
       </section>
       <h2 className="font-semibold mt-8 text-red-500">Danger Zone</h2>
@@ -101,8 +106,9 @@ export default function Settings({params}: Props) {
       <section className="w-full grid grid-cols-1 2xl:grid-cols-2 gap-4">
         <UpdateEndpointStatusForm
           defaultValue={endpoint.isEnabled}
+          workspaceSlug={params.workspace}
+          endpointSlug={params.endpoint}
           id={endpoint.id}
-          {...params}
         />
         <div className="flex flex-col items-start gap-2 mt-4 pb-4">
           <div className="flex flex-col gap-2">

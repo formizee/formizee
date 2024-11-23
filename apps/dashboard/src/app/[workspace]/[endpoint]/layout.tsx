@@ -9,8 +9,8 @@ import {api} from '@/trpc/client';
 import ErrorPage from './error';
 
 interface Params {
-  workspaceSlug: string;
-  endpointSlug: string;
+  workspace: string;
+  endpoint: string;
 }
 
 interface Props {
@@ -19,9 +19,12 @@ interface Props {
 }
 
 export default function PageLayout({params, children}: Props) {
-  const {data, isLoading, error} = api.endpoint.get.useQuery(params, {
-    retry: 1
-  });
+  const {data, isLoading, error} = api.endpoint.get.useQuery(
+    {workspaceSlug: params.workspace, endpointSlug: params.endpoint},
+    {
+      retry: 1
+    }
+  );
   const currentPath = usePathname();
 
   if (isLoading) {
@@ -54,8 +57,8 @@ export default function PageLayout({params, children}: Props) {
       <Heading endpoint={data} />
       <Tabs
         currentPath={currentPath}
-        endpointSlug={params.endpointSlug}
-        workspaceSlug={params.workspaceSlug}
+        endpointSlug={params.endpoint}
+        workspaceSlug={params.workspace}
       />
       <main className="flex w-full h-full">{children}</main>
     </Transition>
