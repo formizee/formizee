@@ -49,7 +49,7 @@ const UsageBreakdown = (props: UsageBreakdownProps) => {
   return (
     <div
       style={{border: '1px solid #d4d4d4'}}
-      className="flex flex-row justify-between items-center rounded-md px-4 h-10"
+      className="flex flex-row justify-between items-center rounded-md px-4 mt-2 h-10"
     >
       <Text className="p-0 m-0 font-medium text-neutral-950 text-ellipsis overflow-hidden whitespace-nowrap">
         {label}
@@ -93,7 +93,7 @@ export const PlanLimitWarning = (props: EmailProps) => (
             <span className="font-medium text-neutral-950">
               Upgrade Benefits:
             </span>
-            <ul className="text-amber-500 pl-4 m-0">
+            <ul className="text-neutral-950 pl-4 m-0">
               <li>
                 <span className="text-neutral-600">Unlimited endpoints</span>
               </li>
@@ -110,9 +110,9 @@ export const PlanLimitWarning = (props: EmailProps) => (
           </Text>
           <UsageBreakdown limit={props.limit} currentPlan={props.currentPlan} />
           <Button
-            className="flex w-40 px-3 border-neutral-300 py-2 justify-center items-center rounded-md mt-3 mb-8 text-neutral-700"
+            className="flex w-40 px-3 border-neutral-300 py-2 justify-center items-center rounded-md mt-4 mb-8 text-neutral-700"
             style={{border: '1px solid #d4d4d4'}}
-            href="https://dashboard.formizee.com/settings/billing"
+            href="https://formizee.com/pricing"
           >
             <div className="flex gap-2">
               <span className="font-medium text-sm">See Upgrade Plans</span>
@@ -134,7 +134,7 @@ export const PlanLimitWarning = (props: EmailProps) => (
           </Button>
           <Text className="text-neutral-600 leading-[1.4] text-[15px]">
             Need help? Please reach out to{' '}
-            <Link className="text-amber-500" href="mailto:support@formizee.com">
+            <Link className="underline" href="mailto:support@formizee.com">
               support@formizee.com
             </Link>{' '}
             or just reply this email.

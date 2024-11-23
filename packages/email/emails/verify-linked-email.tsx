@@ -39,7 +39,7 @@ export const AuthVerifyLinkedEmail = ({email, link}: EmailProps) => (
           </Heading>
           <Text className="text-neutral-600 leading-[1.4] text-[15px]">
             We noticed you're adding{' '}
-            <Link href={`mailto:${email}`} className="text-amber-500">
+            <Link href={`mailto:${email}`} className="underline">
               {email}
             </Link>{' '}
             to your Formizee account. To finish setting this up, click the

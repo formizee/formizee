@@ -48,7 +48,7 @@ export const SubmissionEmail = ({
               Someone made a new submission to your form{' '}
               <Link
                 href={`https://dashboard.formizee.com/${workspaceSlug}/${endpointSlug}`}
-                className="text-amber-500 font-medium"
+                className="underline font-medium"
               >
                 {endpointSlug}
               </Link>
