@@ -13,6 +13,7 @@ import {
   UpdateEndpointStatusForm,
   UpdateEndpointTargetEmailsForm
 } from './_components/forms';
+import {LoadingSkeleton} from './_components/skeleton';
 
 interface Props {
   params: {
@@ -28,7 +29,7 @@ export default function Settings({params}: Props) {
   const endpointRequest = api.endpoint.get.useQuery(params);
 
   if (workspaceRequest.isLoading || endpointRequest.isLoading) {
-    return <>Loading</>;
+    return <LoadingSkeleton />;
   }
 
   if (workspaceRequest.error || endpointRequest.error) {
