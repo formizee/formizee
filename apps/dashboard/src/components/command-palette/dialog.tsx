@@ -10,10 +10,11 @@ import {
 } from '@formizee/ui';
 import {Icon} from '../icon';
 import {type Dispatch, type SetStateAction, useEffect} from 'react';
-import {api} from '@/trpc/client';
+import type {Color} from '@/lib/colors';
 import {useRouter} from 'next/navigation';
 import {useSettings} from '../settings';
 import {useCommandPalette} from '.';
+import {api} from '@/trpc/client';
 
 export function CommandPalette() {
   const {open, setOpen, workspaceSlug} = useCommandPalette();
@@ -107,7 +108,7 @@ export function CommandPalette() {
 interface ItemProps {
   setOpen: Dispatch<SetStateAction<boolean>>;
   children: React.ReactNode;
-  color: string;
+  color: Color;
   href: string;
   icon: string;
 }
