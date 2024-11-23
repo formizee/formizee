@@ -14,7 +14,8 @@ import {
   Feedback,
   Documentation,
   Endpoints,
-  Account
+  Account,
+  New
 } from './components';
 
 interface AppSidebarProps {
@@ -35,6 +36,7 @@ export const AppSidebar = async (props: AppSidebarProps) => {
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
+              <New workspaceSlug={props.workspaceSlug} />
               <Search />
               <Settings />
               <Feedback

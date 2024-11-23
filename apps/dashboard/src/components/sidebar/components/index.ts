@@ -6,3 +6,4 @@ export * from './account';
 export * from './create';
 export * from './search';
 export * from './header';
+export * from './new';
