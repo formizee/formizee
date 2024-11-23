@@ -31,7 +31,8 @@ export const user = sqliteTable(
     updatedAt: integer('updated_at', {mode: 'timestamp'})
       .notNull()
       .default(sql`(unixepoch())`)
-      .$onUpdate(() => sql`(unixepoch())`)
+      .$onUpdateFn(() => new Date())
+      .$type<Date>()
   },
   table => {
     return {
@@ -73,7 +74,8 @@ export const usersToWorkspaces = sqliteTable('users_to_workspaces', {
   updatedAt: integer('updated_at', {mode: 'timestamp'})
     .notNull()
     .default(sql`(unixepoch())`)
-    .$onUpdate(() => sql`(unixepoch())`)
+    .$onUpdateFn(() => new Date())
+    .$type<Date>()
 });
 
 export const usersToWorkspaceRelations = relations(
@@ -110,7 +112,8 @@ export const usersToEmails = sqliteTable('users_to_emails', {
   updatedAt: integer('updated_at', {mode: 'timestamp'})
     .notNull()
     .default(sql`(unixepoch())`)
-    .$onUpdate(() => sql`(unixepoch())`)
+    .$onUpdateFn(() => new Date())
+    .$type<Date>()
 });
 
 export const usersToEmailsRelations = relations(usersToEmails, ({one}) => ({

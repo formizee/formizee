@@ -36,7 +36,8 @@ export const endpoint = sqliteTable('endpoints', {
   updatedAt: integer('updated_at', {mode: 'timestamp'})
     .notNull()
     .default(sql`(unixepoch())`)
-    .$onUpdate(() => sql`(unixepoch())`)
+    .$onUpdateFn(() => new Date())
+    .$type<Date>()
 });
 
 export const endpointRelations = relations(endpoint, ({one}) => ({

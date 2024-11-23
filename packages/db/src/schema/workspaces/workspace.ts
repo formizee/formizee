@@ -31,7 +31,8 @@ export const workspace = sqliteTable(
     updatedAt: integer('updated_at', {mode: 'timestamp'})
       .notNull()
       .default(sql`(unixepoch())`)
-      .$onUpdate(() => sql`(unixepoch())`)
+      .$onUpdateFn(() => new Date())
+      .$type<Date>()
   },
   table => {
     return {

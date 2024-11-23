@@ -3,13 +3,13 @@ import {createClient} from '@libsql/client/web';
 
 import * as schema from './schema';
 
-export const createConnection = (
-  databaseUrl: string,
-  authToken: string
-): Database => {
+export const createConnection = (opts: {
+  databaseUrl: string;
+  authToken?: string;
+}): Database => {
   const client = createClient({
-    url: databaseUrl,
-    authToken
+    url: opts.databaseUrl,
+    authToken: opts.authToken ?? undefined
   });
   return sqlDrizzle(client, {schema});
 };
