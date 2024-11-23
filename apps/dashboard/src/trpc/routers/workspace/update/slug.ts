@@ -3,6 +3,8 @@ import {protectedProcedure} from '@/trpc';
 import {TRPCError} from '@trpc/server';
 import {z} from 'zod';
 
+const RESERVED_SLUGS = ['api', 'auth', 'billing', 'login', 'acme', 'formizee'];
+
 export const updateWorkspaceSlug = protectedProcedure
   .input(
     z.object({
@@ -20,6 +22,13 @@ export const updateWorkspaceSlug = protectedProcedure
     })
   )
   .mutation(async ({input, ctx}) => {
+    if (RESERVED_SLUGS.includes(input.slug)) {
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: `The slug "${input.slug}" is reserved and cannot be used.`
+      });
+    }
+
     const workspace = await database.query.workspace.findFirst({
       where: (table, {eq}) => eq(table.id, input.id)
     });
