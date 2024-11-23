@@ -1,6 +1,7 @@
 'use client';
 
 import {SidebarMenuButton, SidebarMenuItem} from '@formizee/ui/sidebar';
+import type {Color} from '@/lib/colors';
 import {Icon} from '@/components/icon';
 import {Skeleton} from '@formizee/ui';
 import Link from 'next/link';
@@ -8,7 +9,7 @@ import Link from 'next/link';
 interface EndpointItemProps {
   children: React.ReactNode;
   selected: boolean;
-  color: string;
+  color: Color;
   icon: string;
   href: string;
 }
