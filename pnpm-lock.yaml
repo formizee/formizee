@@ -731,9 +731,6 @@ importers:
 
   tools/local:
     dependencies:
-      '@libsql/client':
-        specifier: 0.14.0
-        version: 0.14.0
       execa:
         specifier: 9.3.0
         version: 9.3.0
