@@ -8,7 +8,6 @@ services:
     restart: always
     ports:
       - "8080:8080"
-      - "5001:5001"
     environment:
       SQLD_NODE: primary
       SQLD_DB_PATH: /var/lib/sqld/formizee.db
@@ -21,8 +20,7 @@ services:
     platform: linux/arm64
     restart: always
     ports:
-      - "8081:8081"
-      - "5002:5002"
+      - "8081:8080"
     environment:
       SQLD_NODE: primary
       SQLD_DB_PATH: /var/lib/sqld/submissions.db
