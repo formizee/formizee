@@ -5,7 +5,7 @@ import {z} from 'zod';
 export const insertDatabaseSchema = createInsertSchema(database, {
   id: z.string().uuid(),
   url: z.string().url(),
-  token: z.string(),
+  token: z.string()
 });
 export const selectDatabaseSchema = createSelectSchema(database);
 

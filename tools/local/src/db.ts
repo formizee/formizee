@@ -13,8 +13,12 @@ export async function prepareDatabase(database: DatabaseType): Promise<void> {
 }
 
 async function migrateTables(database: DatabaseType) {
-  const packageDir = database === 'main' ? '../../../packages/db-main' : '../../../packages/db-submissions';
-  const dataseUrl = database === 'main' ? "http://locahost:8080" : "http://localhost:8081";
+  const packageDir =
+    database === 'main'
+      ? '../../../packages/db-main'
+      : '../../../packages/db-submissions';
+  const dataseUrl =
+    database === 'main' ? 'http://locahost:8080' : 'http://localhost:8081';
 
   await task('migrating tables', async s => {
     const cwd = path.join(__dirname, packageDir);

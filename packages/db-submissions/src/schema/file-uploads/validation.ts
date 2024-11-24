@@ -8,12 +8,13 @@ export const insertFileUploadSchema = createInsertSchema(fileUpload, {
   }),
   fileKey: z.string(),
   submissionId: z.string().regex(/^[a-zA-Z]+_[a-zA-Z0-9]+$/, {
-    message: 'Invalid submission identifier, please check that is correctly typed.'
+    message:
+      'Invalid submission identifier, please check that is correctly typed.'
   }),
   workspaceId: z.string().regex(/^[a-zA-Z]+_[a-zA-Z0-9]+$/, {
     message:
       'Invalid workspace identifier, please check that is correctly typed.'
-  }),
+  })
 });
 
 export const selectFileUploadSchema = createSelectSchema(fileUpload);
