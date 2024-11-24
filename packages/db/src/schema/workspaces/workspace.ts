@@ -22,8 +22,8 @@ export const workspace = sqliteTable(
     plan: plans.notNull().default('hobby'),
     subscriptionId: text('subscription_id'),
     stripeId: text('stripe_id').unique(),
-    endsAt: integer('ends_at'),
-    paidUntil: integer('paid_until'),
+    endsAt: integer('ends_at', {mode: 'timestamp'}),
+    paidUntil: integer('paid_until', {mode: 'timestamp'}),
 
     createdAt: integer('created_at', {mode: 'timestamp'})
       .notNull()
