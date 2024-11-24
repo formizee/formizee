@@ -38,6 +38,18 @@ services:
       - 8787:8787
     depends_on:
       - database
+    environment:
+      DATABASE_URL: "http://localhost:8080"
+
+  vault:
+    container_name: vault
+    build:
+      context: ..
+      dockerfile: ./apps/vault/Dockerfile
+    ports:
+      - 9000:9000
+    depends_on:
+      - database
       - storage
     environment:
       DATABASE_URL: "http://localhost:8080"
