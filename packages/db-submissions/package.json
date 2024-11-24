@@ -1,0 +1,43 @@
+{
+  "name": "@formizee/submissions-db",
+  "author": "Pau García Chiner",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts",
+      "require": "./src/index.ts"
+    },
+    "./schema": {
+      "types": "./src/schema/index.ts",
+      "import": "./src/schema/index.ts",
+      "require": "./src/schema/index.ts"
+    },
+    "./vault": {
+      "types": "./src/vault.ts",
+      "import": "./src/vault.ts",
+      "require": "./src/vault.ts"
+    }
+  },
+  "version": "1.0.0",
+  "license": "Apache-2.0",
+  "scripts": {
+    "lint": "biome lint .",
+    "check": "tsc --noEmit",
+    "push": "drizzle-kit push",
+    "studio": "drizzle-kit studio",
+    "migrate": "drizzle-kit migrate",
+    "generate": "drizzle-kit generate"
+  },
+  "devDependencies": {
+    "@formizee/tsconfig": "workspace:*",
+    "@types/node": "22.7.9",
+    "drizzle-kit": "0.23.0",
+    "tsx": "4.16.2"
+  },
+  "dependencies": {
+    "@libsql/client": "0.14.0",
+    "drizzle-orm": "0.32.0",
+    "drizzle-zod": "0.5.1",
+    "zod": "3.23.8"
+  }
+}

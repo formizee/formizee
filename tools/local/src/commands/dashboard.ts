@@ -1,7 +1,7 @@
 import * as clack from '@clack/prompts';
 import path, {dirname} from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {marshalEnv} from '../env.js';
+import {marshalEnv} from '../env';
 import fs from 'node:fs';
 
 const __filename = fileURLToPath(import.meta.url);

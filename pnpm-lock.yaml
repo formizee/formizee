@@ -37,7 +37,7 @@ importers:
         version: link:../../packages/analytics
       '@formizee/db':
         specifier: workspace:*
-        version: link:../../packages/db
+        version: link:../../packages/db-main
       '@formizee/email':
         specifier: workspace:*
         version: link:../../packages/email
@@ -122,7 +122,7 @@ importers:
         version: link:../../packages/billing
       '@formizee/db':
         specifier: workspace:*
-        version: link:../../packages/db
+        version: link:../../packages/db-main
       '@formizee/email':
         specifier: workspace:*
         version: link:../../packages/email
@@ -242,6 +242,9 @@ importers:
       '@formizee/analytics':
         specifier: workspace:*
         version: link:../../packages/analytics
+      '@formizee/db':
+        specifier: workspace:*
+        version: link:../../packages/db-main
       '@formizee/error':
         specifier: workspace:*
         version: link:../../packages/error
@@ -385,7 +388,7 @@ importers:
         specifier: 22.0.0
         version: 22.0.0
 
-  packages/db:
+  packages/db-main:
     dependencies:
       '@formizee/hashing':
         specifier: workspace:*
@@ -412,15 +415,37 @@ importers:
       '@types/node':
         specifier: 22.7.9
         version: 22.7.9
-      '@types/pg':
-        specifier: 8.11.6
-        version: 8.11.6
       drizzle-kit:
         specifier: 0.23.0
         version: 0.23.0
-      pg:
-        specifier: 8.12.0
-        version: 8.12.0
+      tsx:
+        specifier: 4.16.2
+        version: 4.16.2
+
+  packages/db-submissions:
+    dependencies:
+      '@libsql/client':
+        specifier: 0.14.0
+        version: 0.14.0
+      drizzle-orm:
+        specifier: 0.32.0
+        version: 0.32.0(@cloudflare/workers-types@4.20241022.0)(@libsql/client@0.14.0)(@neondatabase/serverless@0.9.4)(@types/pg@8.11.6)(@types/react@18.3.3)(pg@8.12.0)(react@18.3.1)
+      drizzle-zod:
+        specifier: 0.5.1
+        version: 0.5.1(drizzle-orm@0.32.0(@cloudflare/workers-types@4.20241022.0)(@libsql/client@0.14.0)(@neondatabase/serverless@0.9.4)(@types/pg@8.11.6)(@types/react@18.3.3)(pg@8.12.0)(react@18.3.1))(zod@3.23.8)
+      zod:
+        specifier: 3.23.8
+        version: 3.23.8
+    devDependencies:
+      '@formizee/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      '@types/node':
+        specifier: 22.7.9
+        version: 22.7.9
+      drizzle-kit:
+        specifier: 0.23.0
+        version: 0.23.0
       tsx:
         specifier: 4.16.2
         version: 4.16.2
@@ -572,7 +597,7 @@ importers:
     dependencies:
       '@formizee/db':
         specifier: workspace:*
-        version: link:../db
+        version: link:../db-main
       '@formizee/error':
         specifier: workspace:*
         version: link:../error
@@ -597,7 +622,7 @@ importers:
     dependencies:
       '@formizee/db':
         specifier: workspace:*
-        version: link:../db
+        version: link:../db-main
       zod:
         specifier: 3.23.8
         version: 3.23.8
@@ -738,9 +763,6 @@ importers:
       '@clack/prompts':
         specifier: 0.7.0
         version: 0.7.0
-      '@formizee/db':
-        specifier: workspace:^
-        version: link:../../packages/db
       '@formizee/id':
         specifier: workspace:^
         version: link:../../packages/id
@@ -10636,6 +10658,7 @@ snapshots:
       '@types/node': 22.9.0
       pg-protocol: 1.6.1
       pg-types: 4.0.2
+    optional: true
 
   '@types/prismjs@1.26.4': {}
 
@@ -14255,7 +14278,8 @@ snapshots:
       has-symbols: 1.0.3
       object-keys: 1.1.1
 
-  obuf@1.1.2: {}
+  obuf@1.1.2:
+    optional: true
 
   ohash@1.1.4: {}
 
@@ -14438,17 +14462,22 @@ snapshots:
   pg-cloudflare@1.1.1:
     optional: true
 
-  pg-connection-string@2.6.4: {}
+  pg-connection-string@2.6.4:
+    optional: true
 
-  pg-int8@1.0.1: {}
+  pg-int8@1.0.1:
+    optional: true
 
-  pg-numeric@1.0.2: {}
+  pg-numeric@1.0.2:
+    optional: true
 
   pg-pool@3.6.2(pg@8.12.0):
     dependencies:
       pg: 8.12.0
+    optional: true
 
-  pg-protocol@1.6.1: {}
+  pg-protocol@1.6.1:
+    optional: true
 
   pg-types@2.2.0:
     dependencies:
@@ -14457,6 +14486,7 @@ snapshots:
       postgres-bytea: 1.0.0
       postgres-date: 1.0.7
       postgres-interval: 1.2.0
+    optional: true
 
   pg-types@4.0.2:
     dependencies:
@@ -14467,6 +14497,7 @@ snapshots:
       postgres-date: 2.1.0
       postgres-interval: 3.0.0
       postgres-range: 1.1.4
+    optional: true
 
   pg@8.12.0:
     dependencies:
@@ -14477,10 +14508,12 @@ snapshots:
       pgpass: 1.0.5
     optionalDependencies:
       pg-cloudflare: 1.1.1
+    optional: true
 
   pgpass@1.0.5:
     dependencies:
       split2: 4.2.0
+    optional: true
 
   picocolors@1.0.1: {}
 
@@ -14558,27 +14591,36 @@ snapshots:
       picocolors: 1.0.1
       source-map-js: 1.2.0
 
-  postgres-array@2.0.0: {}
+  postgres-array@2.0.0:
+    optional: true
 
-  postgres-array@3.0.2: {}
+  postgres-array@3.0.2:
+    optional: true
 
-  postgres-bytea@1.0.0: {}
+  postgres-bytea@1.0.0:
+    optional: true
 
   postgres-bytea@3.0.0:
     dependencies:
       obuf: 1.1.2
+    optional: true
 
-  postgres-date@1.0.7: {}
+  postgres-date@1.0.7:
+    optional: true
 
-  postgres-date@2.1.0: {}
+  postgres-date@2.1.0:
+    optional: true
 
   postgres-interval@1.2.0:
     dependencies:
       xtend: 4.0.2
+    optional: true
 
-  postgres-interval@3.0.0: {}
+  postgres-interval@3.0.0:
+    optional: true
 
-  postgres-range@1.1.4: {}
+  postgres-range@1.1.4:
+    optional: true
 
   preact-render-to-string@5.2.3(preact@10.11.3):
     dependencies:
@@ -16288,7 +16330,8 @@ snapshots:
 
   xmlbuilder@11.0.1: {}
 
-  xtend@4.0.2: {}
+  xtend@4.0.2:
+    optional: true
 
   xxhash-wasm@1.0.2: {}
 

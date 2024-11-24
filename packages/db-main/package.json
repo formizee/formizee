@@ -7,6 +7,11 @@
       "import": "./src/index.ts",
       "require": "./src/index.ts"
     },
+    "./schema": {
+      "types": "./src/schema/index.ts",
+      "import": "./src/schema/index.ts",
+      "require": "./src/schema/index.ts"
+    },
     "./web": {
       "types": "./src/web.ts",
       "import": "./src/web.ts",
@@ -16,16 +21,6 @@
       "types": "./src/api.ts",
       "import": "./src/api.ts",
       "require": "./src/api.ts"
-    },
-    "./schema": {
-      "types": "./src/schema/index.ts",
-      "import": "./src/schema/index.ts",
-      "require": "./src/schema/index.ts"
-    },
-    "./local": {
-      "types": "./src/local.ts",
-      "import": "./src/local.ts",
-      "require": "./src/local.ts"
     }
   },
   "version": "1.0.0",
@@ -41,9 +36,7 @@
   "devDependencies": {
     "@formizee/tsconfig": "workspace:*",
     "@types/node": "22.7.9",
-    "@types/pg": "8.11.6",
     "drizzle-kit": "0.23.0",
-    "pg": "8.12.0",
     "tsx": "4.16.2"
   },
   "dependencies": {

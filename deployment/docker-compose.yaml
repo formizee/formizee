@@ -1,8 +1,8 @@
 name: formizee
 
 services:
-  database:
-    container_name: database
+  main-database:
+    container_name: main-database
     image: ghcr.io/tursodatabase/libsql-server:latest
     platform: linux/arm64
     restart: always
@@ -13,7 +13,21 @@ services:
       SQLD_NODE: primary
       SQLD_DB_PATH: /var/lib/sqld/formizee.db
     volumes:
-      - database:/var/lib/sqld
+      - main-database:/var/lib/sqld
+
+  submissions-database:
+    container_name: submissions-database
+    image: ghcr.io/tursodatabase/libsql-server:latest
+    platform: linux/arm64
+    restart: always
+    ports:
+      - "8081:8081"
+      - "5002:5002"
+    environment:
+      SQLD_NODE: primary
+      SQLD_DB_PATH: /var/lib/sqld/submissions.db
+    volumes:
+      - submissions-database:/var/lib/sqld
 
   storage:
     container_name: storage
@@ -37,7 +51,7 @@ services:
     ports:
       - 8787:8787
     depends_on:
-      - database
+      - main-database
     environment:
       DATABASE_URL: "http://localhost:8080"
 
@@ -49,11 +63,12 @@ services:
     ports:
       - 9000:9000
     depends_on:
-      - database
+      - submissions-database
       - storage
     environment:
       DATABASE_URL: "http://localhost:8080"
 
 volumes:
-  database:
+  submissions-database:
+  main-database:
   storage:

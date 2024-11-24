@@ -9,6 +9,7 @@ export const key = sqliteTable(
 
     name: text('name').notNull(),
 
+    key: text('key').notNull(),
     hash: text('hash').notNull(),
 
     workspaceId: text('workspace_id')

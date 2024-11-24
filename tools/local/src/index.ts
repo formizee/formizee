@@ -1,16 +1,17 @@
+import {execSync} from 'node:child_process';
+import {startContainers} from './docker';
+import path, {dirname} from 'node:path';
+import * as clack from '@clack/prompts';
+import {fileURLToPath} from 'node:url';
+import {prepareDatabase} from './db';
+import {run, task} from './util';
+
 import {
   bootstrapApi,
   bootstrapWeb,
   bootstrapDashboard,
   bootstrapVault
-} from './commands/index.js';
-import {execSync} from 'node:child_process';
-import path, {dirname} from 'node:path';
-import {startContainers} from './docker.js';
-import {fileURLToPath} from 'node:url';
-import * as clack from '@clack/prompts';
-import {prepareDatabase} from './db.js';
-import {run, task} from './util.js';
+} from './commands';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -52,25 +53,25 @@ async function main() {
 
   switch (app) {
     case 'api': {
-      await startContainers(['database']);
+      await startContainers(['main-database']);
+      await prepareDatabase('main');
 
-      await prepareDatabase();
       await bootstrapApi();
       break;
     }
 
     case 'dashboard': {
-      await startContainers(['database']);
+      await startContainers(['main-database']);
+      await prepareDatabase('main');
 
-      await prepareDatabase();
       bootstrapDashboard();
       break;
     }
 
     case 'vault': {
-      await startContainers(['database', 'storage']);
+      await startContainers(['submissions-database', 'storage']);
+      await prepareDatabase('submissions');
 
-      await prepareDatabase();
       bootstrapVault();
       break;
     }
@@ -80,9 +81,9 @@ async function main() {
     }
 
     case 'web': {
-      await startContainers(['database']);
+      await startContainers(['main-database']);
+      await prepareDatabase('main');
 
-      await prepareDatabase();
       bootstrapWeb();
       break;
     }
