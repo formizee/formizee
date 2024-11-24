@@ -21,7 +21,9 @@ export abstract class Harness {
     const {DATABASE_URL} = databaseEnv.parse(process.env);
 
     this.resources = this.createResources();
-    this.db = createConnection(DATABASE_URL);
+    this.db = createConnection({
+      databaseUrl: DATABASE_URL
+    });
 
     t.onTestFinished(async () => {
       await this.teardown();
