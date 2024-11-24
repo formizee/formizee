@@ -1,4 +1,9 @@
-import {bootstrapApi, bootstrapWeb} from './commands/index.js';
+import {
+  bootstrapApi,
+  bootstrapWeb,
+  bootstrapDashboard,
+  bootstrapVault
+} from './commands/index.js';
 import {execSync} from 'node:child_process';
 import path, {dirname} from 'node:path';
 import {startContainers} from './docker.js';
@@ -26,21 +31,56 @@ async function main() {
         label: 'Web',
         value: 'web',
         hint: 'formizee.com'
+      },
+      {
+        label: 'Docs',
+        value: 'docs',
+        hint: 'docs.formizee.com'
+      },
+      {
+        label: 'Vault',
+        value: 'vault',
+        hint: 'vault.formizee.com'
+      },
+      {
+        label: 'Dashboard',
+        value: 'dashboard',
+        hint: 'dashboard.formizee.com'
       }
     ]
   });
 
   switch (app) {
     case 'api': {
-      await startContainers(['database', 'storage']);
+      await startContainers(['database']);
 
       await prepareDatabase();
       await bootstrapApi();
       break;
     }
 
-    case 'web': {
+    case 'dashboard': {
+      await startContainers(['database']);
+
+      await prepareDatabase();
+      bootstrapDashboard();
+      break;
+    }
+
+    case 'vault': {
       await startContainers(['database', 'storage']);
+
+      await prepareDatabase();
+      bootstrapVault();
+      break;
+    }
+
+    case 'docs': {
+      break;
+    }
+
+    case 'web': {
+      await startContainers(['database']);
 
       await prepareDatabase();
       bootstrapWeb();
