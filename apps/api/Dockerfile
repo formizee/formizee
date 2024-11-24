@@ -15,11 +15,11 @@ RUN pnpm install --offline -r
 WORKDIR /app/apps/api
 RUN pnpm wrangler deploy --outdir=dist --dry-run
 
-RUN pnpm workerd compile ./worker.capnp > formizee
+RUN pnpm workerd compile ./worker.capnp > formizee-api
 
 
 FROM ubuntu:latest
-COPY --from=compile /app/apps/api/formizee /usr/bin/formizee
+COPY --from=compile /app/apps/api/formizee-api /usr/bin/formizee-api
 
 EXPOSE 8787
-CMD ["formizee"]
+CMD ["formizee-api"]
