@@ -7,7 +7,7 @@ export const insertEndpointMappingSchema = createInsertSchema(mapping, {
     message: 'Invalid form identifier, please check that is correctly typed.'
   }),
 
-  databaseId: z.string().uuid()
+  databaseId: z.string()
 });
 export const selectEndpointMappingSchema = createSelectSchema(mapping);
 

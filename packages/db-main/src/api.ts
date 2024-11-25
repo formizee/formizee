@@ -1,5 +1,5 @@
 import {type LibSQLDatabase, drizzle as sqlDrizzle} from 'drizzle-orm/libsql';
-import {createClient} from '@libsql/client';
+import {createClient} from '@libsql/client/web';
 
 import * as schema from './schema';
 

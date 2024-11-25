@@ -31,12 +31,12 @@
   "devDependencies": {
     "@formizee/tsconfig": "workspace:*",
     "@types/node": "22.7.9",
-    "drizzle-kit": "0.23.0",
+    "drizzle-kit": "0.28.1",
     "tsx": "4.16.2"
   },
   "dependencies": {
     "@libsql/client": "0.14.0",
-    "drizzle-orm": "0.32.0",
+    "drizzle-orm": "0.36.4",
     "drizzle-zod": "0.5.1",
     "zod": "3.23.8"
   }
