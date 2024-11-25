@@ -1,3 +1,10 @@
+import {
+  decryptDEK,
+  encryptDEK,
+  getLatestMasterKey,
+  getMasterKey
+} from './helpers';
+import type {Env} from '@/lib/enviroment';
 import type {DEK} from './types';
 
 export class Keys {
@@ -5,6 +12,39 @@ export class Keys {
 
   constructor(opts: {client: KVNamespace}) {
     this.client = opts.client;
+  }
+
+  /*
+   * This function handles the entire proccess
+   * - Generate Keys if not exists
+   * - Rotate keys if the master key changes
+   * - Encrypt and Decrypt keys
+   * */
+  public async getEndpointDEK(env: Env, endpointId: string) {
+    const existentDek = await this.getDEK(endpointId);
+
+    if (existentDek) {
+      // Decrypt existent deck
+      const masterKey = await getMasterKey(env, existentDek.metadata.version);
+      const {key} = await decryptDEK(existentDek, masterKey);
+
+      // Check if the masterKey is the latest
+      const latestMasterKey = await getLatestMasterKey(env);
+      if (latestMasterKey.version > masterKey.version) {
+        // In case the master key is newer, encrypt with the lastest
+        const {dek} = await encryptDEK(latestMasterKey);
+        await this.storeDEK(endpointId, dek);
+      }
+
+      return Promise.resolve(key);
+    }
+
+    // Otherwise, generate a new key with the latest master key
+    const latestMasterKey = await getLatestMasterKey(env);
+    const {key, dek} = await encryptDEK(latestMasterKey);
+    await this.storeDEK(endpointId, dek);
+
+    return Promise.resolve(key);
   }
 
   public async getDEK(endpointId: string): Promise<DEK | null> {
