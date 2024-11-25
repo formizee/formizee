@@ -15,8 +15,6 @@
     "deploy:prod": "pnpm build && wrangler deploy --minify --env=production --keep-vars=true"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "3.699.0",
-    "@aws-sdk/s3-request-presigner": "3.699.0",
     "@formizee/analytics": "workspace:*",
     "@formizee/db-submissions": "workspace:*",
     "@formizee/encryption": "workspace:*",
@@ -24,15 +22,14 @@
     "@formizee/id": "workspace:*",
     "@formizee/tsconfig": "workspace:*",
     "@hono/zod-openapi": "0.16.4",
+    "aws4fetch": "1.0.20",
     "hono": "4.6.6",
     "hono-rate-limiter": "0.4.0",
-    "msgpack-lite": "0.1.26",
     "zod": "3.23.8"
   },
   "devDependencies": {
     "@cloudflare/vitest-pool-workers": "0.5.22",
     "@cloudflare/workers-types": "4.20241022.0",
-    "@types/msgpack-lite": "0.1.11",
     "@types/node": "22.7.9",
     "dotenv": "16.4.5",
     "typescript": "5.4.5",

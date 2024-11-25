@@ -1,5 +1,7 @@
-import {GetObjectCommand, PutObjectCommand, S3Client} from '@aws-sdk/client-s3';
-import {getSignedUrl} from '@aws-sdk/s3-request-presigner';
+import type {Database} from '@formizee/db-submissions/vault';
+import {schema} from '@formizee/db-submissions';
+import {AwsClient} from 'aws4fetch';
+import {newId} from '@formizee/id';
 
 interface ClientOptions {
   secretAccessKey: string;
@@ -17,23 +19,54 @@ interface FileUpload {
 }
 
 export class Storage {
-  private readonly client: S3Client;
+  private readonly client: AwsClient;
+  private readonly endpoint: string;
   private readonly bucket: string;
 
   constructor(opts: ClientOptions) {
-    this.client = new S3Client({
-      region: 'auto',
-      endpoint: opts.endpoint,
-      credentials: {
-        accessKeyId: opts.accessKeyId,
-        secretAccessKey: opts.secretAccessKey
-      }
+    this.client = new AwsClient({
+      service: 's3',
+      region: 'us-east-1',
+      accessKeyId: opts.accessKeyId,
+      secretAccessKey: opts.secretAccessKey
     });
 
+    this.endpoint = opts.endpoint;
     this.bucket = opts.bucket;
   }
 
-  public async putFileUpload(
+  public async handleFileUploads(
+    database: Database,
+    fileUploads: File | File[],
+    endpointId: string,
+    submissionId: string
+  ) {
+    const files = Array.isArray(fileUploads) ? fileUploads : [fileUploads];
+
+    if (files.length > 0) {
+      for (const file of files) {
+        const fileId = newId('fileUpload');
+
+        const {fileKey} = await this.putFileUpload(file, {
+          id: fileId,
+          submissionId,
+          endpointId
+        });
+
+        if (fileKey) {
+          await database.insert(schema.fileUpload).values({
+            id: fileId,
+            name: file.name,
+            fileKey: fileKey,
+            submissionId,
+            endpointId
+          });
+        }
+      }
+    }
+  }
+
+  private async putFileUpload(
     file: File,
     keys: {
       id: string;
@@ -41,57 +74,53 @@ export class Storage {
       endpointId: string;
     }
   ) {
-    const fileKey = `${keys.endpointId}/${keys.submissionId}/${keys.id}`;
-
-    const command = new PutObjectCommand({
-      Bucket: this.bucket,
-      Key: fileKey,
-      Body: file.stream(),
-      Metadata: {
-        contentType: file.type,
-        fileName: file.name
-      }
-    });
+    const extension =
+      file.name.substring(file.name.lastIndexOf('.') + 1, file.name.length) ||
+      file.name;
+    const fileKey = `${keys.endpointId}/${keys.submissionId}/${keys.id}.${extension}`;
 
     try {
-      await this.client.send(command);
+      const arrayBuffer = await file.arrayBuffer();
+      const fileBuffer = new Uint8Array(arrayBuffer);
+
+      const command = new Request(
+        `${this.endpoint}/${this.bucket}/${fileKey}`,
+        {
+          method: 'put',
+          headers: {
+            'Content-Type': file.type,
+            'x-amz-meta-file-name': file.name
+          },
+          body: fileBuffer
+        }
+      );
+
+      await this.client.fetch(command);
       return Promise.resolve({fileKey, error: null});
-    } catch (error) {
-      console.error(error);
-      return Promise.resolve({fileKey: null, error});
+    } catch (e) {
+      return Promise.resolve({fileKey: null, e});
     }
   }
 
   public async getFileUpload(
     fileKey: string,
     expirationTime = 3600
-  ): Promise<FileUpload | null> {
-    const command = new GetObjectCommand({Bucket: this.bucket, Key: fileKey});
-    const object = await this.client.send(command);
-
-    if (object.Body === undefined) {
-      return Promise.resolve(null);
-    }
-
-    if (
-      object.Metadata?.contentType === undefined ||
-      object.Metadata?.fileName === undefined
-    ) {
-      return Promise.resolve(null);
-    }
-
-    const url = await getSignedUrl(this.client, command, {
-      expiresIn: expirationTime
-    });
-
-    const result: FileUpload = {
-      url,
-      metadata: {
-        contentType: object.Metadata.contentType,
-        fileName: object.Metadata.fileName
+  ): Promise<FileUpload> {
+    const signedUrl = await this.client.sign(
+      new Request(
+        `${this.endpoint}/${this.bucket}/${fileKey}?X-Amz-Expires=${expirationTime}`
+      ),
+      {
+        aws: {signQuery: true}
       }
-    };
+    );
 
-    return Promise.resolve(result);
+    return Promise.resolve({
+      url: signedUrl.url.toString(),
+      metadata: {
+        contentType: signedUrl.headers.get('Content-Type') ?? '',
+        fileName: signedUrl.headers.get('x-amz-meta-file-name') ?? ''
+      }
+    });
   }
 }
