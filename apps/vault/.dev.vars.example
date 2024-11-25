@@ -1,1 +1,13 @@
-VAULT_SECRET = "openssl rand -base64 33"
+# Databases
+DATABASE_URL="http://localhost:8080"
+DATABASE_AUTH_TOKEN=""
+
+# Analytics
+TINYBIRD_URL=""
+TINYBIRD_TOKEN=""
+
+# Storage
+STORAGE_ACCESS_KEY_ID=""
+STORAGE_SECRET_ACCESS_KEY=""
+STORAGE_ENDPOINT=""
+STORAGE_BUCKET=""

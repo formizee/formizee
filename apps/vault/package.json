@@ -11,11 +11,15 @@
     "lint": "biome lint src",
     "test": "vitest run --bail=1",
     "test:watch": "vitest --bail=1",
-    "dev": "wrangler dev --show-interactive-dev-session=false",
+    "dev": "wrangler dev --show-interactive-dev-session=false --port=9000",
     "deploy:prod": "pnpm build && wrangler deploy --minify --env=production --keep-vars=true"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "3.699.0",
+    "@aws-sdk/s3-request-presigner": "3.699.0",
     "@formizee/analytics": "workspace:*",
+    "@formizee/db-submissions": "workspace:*",
+    "@formizee/encryption": "workspace:*",
     "@formizee/error": "workspace:*",
     "@formizee/id": "workspace:*",
     "@formizee/tsconfig": "workspace:*",

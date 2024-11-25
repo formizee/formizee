@@ -1,32 +1,25 @@
 name = "vault"
 node_compat = true
+workers_dev = true
 main = "src/index.ts"
 compatibility_date = "2024-01-01"
-
 account_id = "3050f3e2ff24fe0361c8aaa26369afd0"
-workers_dev = true
-
-[observability]
-enabled = true
-head_sampling_rate = 1
 
 [vars]
-DOCS_URL = "https://docs.formizee.com"
+DOCS_URL="https://docs.formizee.com"
 ENVIROMENT = "development"
-VERSION = "1.0.0"
+VERSION="1.0.0"
+
+[observability] 
+head_sampling_rate = 1
+enabled = true
+
+kv_namespaces = [
+  { binding = "cache", id = "493409011a8949828b21390d8f7b97ca", preview_id = "6ea570481e4e445899b0e2de5bfd4edb" },
+  { binding = "keys", id = "874a0492b9c74e9cb4d006dc33557faa", preview_id = "4d3e368addca454eae318dab26cd23b8" }
+]
 
 [env.production]
-vars = { ENVIROMENT = "production", DOCS_URL="https://docs.formizee.com", VERSION="1.0.0" }
-kv_namespaces = [ { binding = "VAULT", id = "03dacbed06b542a69a4abbfb52b72d2e" } ]
-r2_buckets = [ { binding = "BUCKET", bucket_name = "vault" } ]
 name = "vault"
-
-[[r2_buckets]]
-binding = "BUCKET"
-bucket_name = "vault"
-preview_bucket_name = "preview"
-
-[[kv_namespaces]]
-binding = "VAULT"
-id = "03dacbed06b542a69a4abbfb52b72d2e"
-preview_id = "c23ba34f403241089cdc39003e023788"
+kv_namespaces = [ { binding = "cache", id = "493409011a8949828b21390d8f7b97ca" }, { binding = "keys", id = "874a0492b9c74e9cb4d006dc33557faa" } ]
+vars = { ENVIROMENT = "production", DOCS_URL="https://docs.formizee.com", VERSION="1.0.0" }
