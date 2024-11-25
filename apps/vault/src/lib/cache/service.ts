@@ -1,8 +1,38 @@
+import type {Submission} from '@formizee/db-submissions/schema';
+
 export class Cache {
   public readonly client: KVNamespace;
 
   constructor(opts: {client: KVNamespace}) {
     this.client = opts.client;
+  }
+
+  public async getSubmission(submissionId: string): Promise<Submission | null> {
+    const raw = await this.client.get(`submission:${submissionId}`);
+    if (!raw) {
+      return Promise.resolve(null);
+    }
+
+    try {
+      const data = JSON.parse(raw) as Submission;
+      return Promise.resolve(data);
+    } catch {
+      return Promise.resolve(null);
+    }
+  }
+
+  public async storeSubmission(data: Submission) {
+    return await this.client.put(
+      `submission:${data.id}`,
+      JSON.stringify(data),
+      {
+        expirationTtl: 86400
+      }
+    );
+  }
+
+  public async deleteSubmission(submissionId: string) {
+    return await this.client.delete(`submission:${submissionId}`);
   }
 
   public async getEndpointMapping(endpointId: string) {
