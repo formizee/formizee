@@ -10,12 +10,13 @@ export const insertSubmissionSchema = createInsertSchema(submission, {
     message:
       'Invalid endpoint identifier, please check that is correctly typed.'
   }),
-  location: z.string(),
-  data: z.object({}).passthrough()
+
+  iv: z.string(),
+  cipherText: z.string(),
+
+  location: z.string()
 });
-export const selectSubmissionSchema = createSelectSchema(submission, {
-  data: z.object({}).passthrough()
-});
+export const selectSubmissionSchema = createSelectSchema(submission);
 
 export type InsertSubmission = z.infer<typeof insertSubmissionSchema>;
 export type Submission = z.infer<typeof selectSubmissionSchema>;

@@ -3,7 +3,7 @@ import {database} from './database';
 import {z} from 'zod';
 
 export const insertDatabaseSchema = createInsertSchema(database, {
-  id: z.string().uuid(),
+  id: z.string(),
   url: z.string().url(),
   token: z.string()
 });

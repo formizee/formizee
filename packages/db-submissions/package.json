@@ -1,5 +1,5 @@
 {
-  "name": "@formizee/submissions-db",
+  "name": "@formizee/db-submissions",
   "author": "Pau García Chiner",
   "exports": {
     ".": {

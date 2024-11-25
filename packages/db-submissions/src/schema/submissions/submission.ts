@@ -6,7 +6,9 @@ export const submission = sqliteTable('submissions', {
 
   endpointId: text('endpoint_id').notNull(),
 
-  data: text('data', {mode: 'json'}).notNull().$type<object>(),
+  iv: text('data_iv').notNull(),
+
+  cipherText: text('data_cipher_text').notNull(),
 
   isSpam: integer('is_spam', {mode: 'boolean'}).notNull().default(false),
 

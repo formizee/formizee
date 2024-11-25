@@ -13,7 +13,7 @@ export const fileUpload = sqliteTable('file_uploads', {
     .notNull()
     .references(() => submission.id, {onDelete: 'cascade'}),
 
-  workspaceId: text('workspace_id').notNull(),
+  endpointId: text('endpoint_id').notNull(),
 
   createdAt: integer('created_at', {mode: 'timestamp'})
     .notNull()

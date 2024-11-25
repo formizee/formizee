@@ -11,9 +11,9 @@ export const insertFileUploadSchema = createInsertSchema(fileUpload, {
     message:
       'Invalid submission identifier, please check that is correctly typed.'
   }),
-  workspaceId: z.string().regex(/^[a-zA-Z]+_[a-zA-Z0-9]+$/, {
+  endpointId: z.string().regex(/^[a-zA-Z]+_[a-zA-Z0-9]+$/, {
     message:
-      'Invalid workspace identifier, please check that is correctly typed.'
+      'Invalid endpoint identifier, please check that is correctly typed.'
   })
 });
 
