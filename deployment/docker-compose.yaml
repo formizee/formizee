@@ -32,12 +32,13 @@ services:
     image: bitnami/minio:latest
     ports:
       - 3902:3902
-      - 2903:2903
+      - 3903:3903
     environment:
       MINIO_ROOT_USER: minio_root_user
       MINIO_ROOT_PASSWORD: minio_root_password
       MINIO_API_PORT_NUMBER: 3902
       MINIO_CONSOLE_PORT_NUMBER: 3903
+      MINIO_DEFAULT_BUCKETS: storage
     volumes:
       - storage:/data
 
@@ -59,12 +60,16 @@ services:
       context: ..
       dockerfile: ./apps/vault/Dockerfile
     ports:
-      - 9000:9000
+      - 9000:8787
     depends_on:
       - submissions-database
       - storage
     environment:
       DATABASE_URL: "http://localhost:8080"
+      STORAGE_ACCESS_KEY_ID: minio_root_user
+      STORAGE_SECRET_ACCESS_KEY: minio_root_password
+      STORAGE_ENDPOINT: http://storage:3902
+      STORAGE_BUCKET: storage
 
 volumes:
   submissions-database:
