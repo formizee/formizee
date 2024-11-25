@@ -10,14 +10,6 @@ interface ClientOptions {
   bucket: string;
 }
 
-interface FileUpload {
-  url: string;
-  metadata: {
-    contentType: string;
-    fileName: string;
-  };
-}
-
 export class Storage {
   private readonly client: AwsClient;
   private readonly endpoint: string;
@@ -105,7 +97,7 @@ export class Storage {
   public async getFileUpload(
     fileKey: string,
     expirationTime = 3600
-  ): Promise<FileUpload> {
+  ): Promise<string> {
     const signedUrl = await this.client.sign(
       new Request(
         `${this.endpoint}/${this.bucket}/${fileKey}?X-Amz-Expires=${expirationTime}`
@@ -115,12 +107,6 @@ export class Storage {
       }
     );
 
-    return Promise.resolve({
-      url: signedUrl.url.toString(),
-      metadata: {
-        contentType: signedUrl.headers.get('Content-Type') ?? '',
-        fileName: signedUrl.headers.get('x-amz-meta-file-name') ?? ''
-      }
-    });
+    return Promise.resolve(signedUrl.url.toString());
   }
 }
