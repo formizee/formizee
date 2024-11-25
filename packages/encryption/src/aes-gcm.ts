@@ -4,7 +4,7 @@ async function encrypt(
   plainText: string,
   key: CryptoKey
 ): Promise<{iv: string; cipherText: string}> {
-  const iv = crypto.getRandomValues(new Uint8Array(12)); // Generate a random initialization vector
+  const iv = crypto.getRandomValues(new Uint8Array(12));
   const encodedText = new TextEncoder().encode(plainText);
 
   const cipherText = await crypto.subtle.encrypt(
@@ -50,7 +50,25 @@ async function generateKey(): Promise<CryptoKey> {
       name: 'AES-GCM',
       length: 256
     },
-    true, // whether the key is extractable (i.e. can be used in exportKey)
+    true,
+    ['encrypt', 'decrypt']
+  );
+}
+
+async function exportKey(key: CryptoKey): Promise<string> {
+  const exported = await crypto.subtle.exportKey('jwk', key);
+  return JSON.stringify(exported);
+}
+
+async function importKey(keyString: string): Promise<CryptoKey> {
+  const jwk = JSON.parse(keyString);
+  return await crypto.subtle.importKey(
+    'jwk',
+    jwk,
+    {
+      name: 'AES-GCM'
+    },
+    true,
     ['encrypt', 'decrypt']
   );
 }
@@ -58,5 +76,7 @@ async function generateKey(): Promise<CryptoKey> {
 export const aes = {
   encrypt,
   decrypt,
+  exportKey,
+  importKey,
   generateKey
 };

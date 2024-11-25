@@ -16,4 +16,13 @@ describe('@formizee/encryption', () => {
     const result = await aes.decrypt(encrypted, key);
     expect(result).toBe(plainText);
   });
+
+  it('Should export/import keys (AES-GCM)', async () => {
+    const key = await aes.generateKey();
+
+    const keyString = await aes.exportKey(key);
+    const result = await aes.importKey(keyString);
+
+    expect(result).toStrictEqual(key);
+  });
 });
