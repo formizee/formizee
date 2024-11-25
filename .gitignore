@@ -45,3 +45,4 @@ next-env.d.ts
 # editors
 .vscode
 .idea
+apps/vault/wrangler.toml
