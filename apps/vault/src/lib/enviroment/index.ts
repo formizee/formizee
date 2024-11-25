@@ -23,7 +23,7 @@ export const zEnv = z.object({
   STORAGE_ACCESS_KEY_ID: z.string().default('minio_root_user'),
   STORAGE_SECRET_ACCESS_KEY: z.string().default('minio_root_password'),
   STORAGE_ENDPOINT: z.string().url().default('http://localhost:3902'),
-  STORAGE_BUCKET: z.string(),
+  STORAGE_BUCKET: z.string().default('storage'),
 
   /* --- Secrets --- */
   // Used to encrypt the dek's that encrypts submissions
