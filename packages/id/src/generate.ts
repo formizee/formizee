@@ -13,7 +13,8 @@ const prefixes = {
   auditlog: 'log',
   workspace: 'ws',
   endpoint: 'enp',
-  submission: 'sub'
+  submission: 'sub',
+  fileUpload: 'file'
 } as const;
 
 export const newId = <T extends keyof typeof prefixes>(prefix: T) => {
