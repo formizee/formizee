@@ -21,7 +21,7 @@ export async function bootstrapVault() {
       VERSION: '1.0.0'
     },
     Database: {
-      DATABASE_URL: 'http://database:8081'
+      DATABASE_URL: 'http://localhost:8081'
     }
   });
 

@@ -20,7 +20,7 @@ export function bootstrapDashboard() {
       API_URL: 'http://localhost:3001'
     },
     Database: {
-      DATABASE_URL: 'http://database:8080'
+      DATABASE_URL: 'http://localhost:8080'
     }
   });
 
