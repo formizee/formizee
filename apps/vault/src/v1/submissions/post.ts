@@ -75,10 +75,7 @@ export const registerPostSubmission = (api: typeof submissionsAPI) => {
     // Encrypt submission
     const key = await keys.getEndpointDEK(context.env, input.endpointId);
 
-    const encryptedSubmission = await aes.encrypt(
-      JSON.stringify(input.data),
-      key
-    );
+    const encryptedSubmission = await aes.encrypt(input.data, key);
 
     // Store submission
     const submissionData: schema.Submission = {
@@ -105,7 +102,7 @@ export const registerPostSubmission = (api: typeof submissionsAPI) => {
     // Handle file uploads
     if (input.fileUploads) {
       await storage.handleFileUploads(
-        database,
+        originDatabase,
         input.fileUploads,
         input.endpointId,
         input.id
