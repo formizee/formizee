@@ -69,7 +69,10 @@ export class Storage {
     }
   }
 
-  public async getFileUploads(originDatabase: Database, submissionId: string) {
+  public async getDownloadLinks(
+    originDatabase: Database,
+    submissionId: string
+  ) {
     const fileUploads = await originDatabase.query.fileUpload.findMany({
       where: (table, {eq}) => eq(table.submissionId, submissionId)
     });

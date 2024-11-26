@@ -69,7 +69,7 @@ export const registerGetSubmission = (api: typeof submissionsAPI) => {
     );
 
     // Check for file uploads
-    const fileUploads = await storage.getFileUploads(
+    const fileUploads = await storage.getDownloadLinks(
       originDatabase,
       submission.id
     );
