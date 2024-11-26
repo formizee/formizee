@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "158f23db-24a5-4fa0-be96-e621035f15c0",
+  "id": "94c48134-2e90-4e55-a2a6-f94db291744a",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "form_mappings": {
@@ -20,22 +20,61 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch())"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch())"
         }
       },
       "indexes": {},
-      "foreignKeys": {
-        "form_mappings_database_id_databases_id_fk": {
-          "name": "form_mappings_database_id_databases_id_fk",
-          "tableFrom": "form_mappings",
-          "tableTo": "databases",
-          "columnsFrom": ["database_id"],
-          "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "endpoint_schemas": {
+      "name": "endpoint_schemas",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "schema": {
+          "name": "schema",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch())"
         }
       },
+      "indexes": {},
+      "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "file_uploads": {
       "name": "file_uploads",
@@ -68,8 +107,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "workspace_id": {
-          "name": "workspace_id",
+        "endpoint_id": {
+          "name": "endpoint_id",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
@@ -97,7 +136,8 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "submissions": {
       "name": "submissions",
@@ -116,8 +156,15 @@
           "notNull": true,
           "autoincrement": false
         },
-        "data": {
-          "name": "data",
+        "data_iv": {
+          "name": "data_iv",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "data_cipher_text": {
+          "name": "data_cipher_text",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
@@ -158,7 +205,8 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "databases": {
       "name": "databases",
@@ -196,9 +244,11 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     }
   },
+  "views": {},
   "enums": {},
   "_meta": {
     "schemas": {},
