@@ -87,7 +87,7 @@ export class Storage {
             'Content-Type': contentType,
             'x-amz-meta-file-name': file.name,
             'X-Content-Type-Options': 'nosniff',
-            'Content-Disposition': `attachment; file-name="${file.name}"`,
+            'Content-Disposition': `attachment; filename="${file.name}"`,
             'Content-Security-Policy':
               "default-src 'none'; script-src 'none'; object-src 'none'"
           },
