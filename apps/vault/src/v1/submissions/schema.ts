@@ -21,6 +21,30 @@ export const ParamsSchema = z.object({
     })
 });
 
+export const PutSchema = z.object({
+  id: z
+    .string()
+    .regex(/^[a-zA-Z]+_[a-zA-Z0-9]+$/, {
+      message: 'Invalid identifier, please check that is correctly typed.'
+    })
+    .openapi({
+      description: 'The id of the submission',
+      example: 'sub_4VjHrJoEwAFC6itz8oUBW9NW2bia'
+    }),
+  endpointId: z
+    .string()
+    .regex(/^[a-zA-Z]+_[a-zA-Z0-9]+$/, {
+      message:
+        'Invalid endpoint identifier, please check that is correctly typed.'
+    })
+    .openapi({
+      description: 'The id of the endpoint',
+      example: 'enp_4VjHrJoEwAFC6itz8oUBW9NW2bia'
+    }),
+  isRead: z.boolean().optional(),
+  isSpam: z.boolean().optional()
+});
+
 export const PostSchema = z.object({
   endpointId: z
     .string()
@@ -114,5 +138,5 @@ export const SubmissionSchema = z.object({
   isSpam: z.boolean(),
   isRead: z.boolean(),
   location: z.string(),
-  createdAt: z.string().datetime()
+  createdAt: z.date()
 });
