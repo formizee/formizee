@@ -1,5 +1,6 @@
 import type {Database} from '@formizee/db-submissions/vault';
 import {schema} from '@formizee/db-submissions';
+import {fileTypeFromBlob} from 'file-type';
 import {AwsClient} from 'aws4fetch';
 import {newId} from '@formizee/id';
 
@@ -71,6 +72,9 @@ export class Storage {
       file.name;
     const fileKey = `${keys.endpointId}/${keys.submissionId}/${keys.id}.${extension}`;
 
+    const fileType = await fileTypeFromBlob(file);
+    const contentType = await this.parseDangerousFiles(fileType?.mime);
+
     try {
       const arrayBuffer = await file.arrayBuffer();
       const fileBuffer = new Uint8Array(arrayBuffer);
@@ -80,8 +84,12 @@ export class Storage {
         {
           method: 'put',
           headers: {
-            'Content-Type': file.type,
-            'x-amz-meta-file-name': file.name
+            'Content-Type': contentType,
+            'x-amz-meta-file-name': file.name,
+            'X-Content-Type-Options': 'nosniff',
+            'Content-Disposition': `attachment; file-name="${file.name}"`,
+            'Content-Security-Policy':
+              "default-src 'none'; script-src 'none'; object-src 'none'"
           },
           body: fileBuffer
         }
@@ -92,6 +100,38 @@ export class Storage {
     } catch (e) {
       return Promise.resolve({fileKey: null, e});
     }
+  }
+
+  private async parseDangerousFiles(mime: string | undefined) {
+    const dangerousFileTypes = [
+      // Executable Files
+      'application/x-msdownload',
+      'application/x-httpd-php',
+      'application/javascript',
+      'application/xhtml+xml',
+      'application/x-sh',
+      'text/x-python',
+      'text/x-perl',
+      'text/html',
+
+      // Media Files
+      'application/json',
+      'application/pdf',
+      'image/svg+xml',
+      'image/x-icon',
+      'image/gif',
+
+      // Office Specific
+      'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    ];
+
+    if (mime !== undefined && !dangerousFileTypes.includes(mime)) {
+      return mime;
+    }
+
+    return 'application/octet-stream';
   }
 
   public async getFileUpload(
