@@ -77,14 +77,12 @@ export const registerGetSubmission = (api: typeof submissionsAPI) => {
     try {
       const submissionData = JSON.parse(decryptedSubmission);
 
-      // Ensure that fileUploads is not undefined and merge it
+      // Merge file uploads with the data
       const data = (fileUploads || []).reduce(
-        (acc, fileObj) => {
-          // Ensure that fileObj is a valid object and not empty
-          if (fileObj && Object.keys(fileObj).length > 0) {
-            // Iterate over the entries of fileObj
-            for (const [key, value] of Object.entries(fileObj)) {
-              acc[key] = value; // Add the key-value pair to the accumulator
+        (acc, file) => {
+          if (file && Object.keys(file).length > 0) {
+            for (const [key, value] of Object.entries(file)) {
+              acc[key] = value;
             }
           }
           return acc;
