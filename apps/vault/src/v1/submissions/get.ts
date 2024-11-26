@@ -75,11 +75,27 @@ export const registerGetSubmission = (api: typeof submissionsAPI) => {
     );
 
     try {
+      const submissionData = JSON.parse(decryptedSubmission);
+
+      // Ensure that fileUploads is not undefined and merge it
+      const data = (fileUploads || []).reduce(
+        (acc, fileObj) => {
+          // Ensure that fileObj is a valid object and not empty
+          if (fileObj && Object.keys(fileObj).length > 0) {
+            // Iterate over the entries of fileObj
+            for (const [key, value] of Object.entries(fileObj)) {
+              acc[key] = value; // Add the key-value pair to the accumulator
+            }
+          }
+          return acc;
+        },
+        {...submissionData}
+      );
+
       const response = {
         id: submission.id,
         endpointId: submission.endpointId,
-        data: JSON.parse(decryptedSubmission),
-        fileUploads,
+        data,
         isSpam: submission.isSpam,
         isRead: submission.isRead,
         location: submission.location,

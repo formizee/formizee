@@ -6,7 +6,8 @@ import {validateSubmission} from '@/lib/schemas';
 import {schema} from '@formizee/db-submissions';
 import {createRoute} from '@hono/zod-openapi';
 import {aes} from '@formizee/encryption';
-import {PostSchema} from './schema';
+import {PostResponseSchema, PostSchema} from './schema';
+import {newId} from '@formizee/id';
 
 export const postRoute = createRoute({
   method: 'post',
@@ -16,7 +17,7 @@ export const postRoute = createRoute({
   request: {
     body: {
       content: {
-        'multipart/form-data': {
+        'application/json': {
           schema: PostSchema
         }
       }
@@ -27,7 +28,7 @@ export const postRoute = createRoute({
       description: 'Create a submission',
       content: {
         'application/json': {
-          schema: schema.selectSubmissionSchema
+          schema: PostResponseSchema
         }
       }
     },
@@ -37,8 +38,8 @@ export const postRoute = createRoute({
 
 export const registerPostSubmission = (api: typeof submissionsAPI) => {
   return api.openapi(postRoute, async context => {
-    const {database, cache, keys, storage} = context.get('services');
-    const input = context.req.valid('form');
+    const {database, cache, storage, keys} = context.get('services');
+    const input = context.req.valid('json');
 
     // Assign the database to handle this endpoint
     const originDatabase = await assignOriginDatabase(
@@ -49,17 +50,6 @@ export const registerPostSubmission = (api: typeof submissionsAPI) => {
     if (!originDatabase) {
       throw new HTTPException(404, {
         message: 'Origin database not found'
-      });
-    }
-
-    // Check if submission already exists
-    const submissionExists = await originDatabase.query.submission.findFirst({
-      where: (table, {eq}) => eq(table.id, input.id)
-    });
-
-    if (submissionExists) {
-      throw new HTTPException(409, {
-        message: 'Submission already exists'
       });
     }
 
@@ -75,11 +65,13 @@ export const registerPostSubmission = (api: typeof submissionsAPI) => {
     // Encrypt submission
     const key = await keys.getEndpointDEK(context.env, input.endpointId);
 
-    const encryptedSubmission = await aes.encrypt(input.data, key);
+    const encryptedSubmission = await aes.encrypt(
+      JSON.stringify(input.data),
+      key
+    );
 
-    // Store submission
     const submissionData: schema.Submission = {
-      id: input.id,
+      id: newId('submission'),
       endpointId: input.endpointId,
       iv: encryptedSubmission.iv,
       cipherText: encryptedSubmission.cipherText,
@@ -89,25 +81,22 @@ export const registerPostSubmission = (api: typeof submissionsAPI) => {
       createdAt: new Date()
     };
 
-    const [submission] = await Promise.all([
-      originDatabase
-        .insert(schema.submission)
-        .values(submissionData)
-        .returning(),
+    await Promise.all([
+      originDatabase.insert(schema.submission).values(submissionData),
       cache.storeSubmission(submissionData)
     ]);
 
-    const response = schema.selectSubmissionSchema.parse(submission[0]);
+    const pendingUploads = await storage.getUploadLinks(
+      originDatabase,
+      input.fileUploads,
+      input.endpointId,
+      submissionData.id
+    );
 
-    // Handle file uploads
-    if (input.fileUploads) {
-      await storage.handleFileUploads(
-        originDatabase,
-        input.fileUploads,
-        input.endpointId,
-        input.id
-      );
-    }
+    const response = PostResponseSchema.parse({
+      ...submissionData,
+      pendingUploads: pendingUploads
+    });
 
     return context.json(response, 201);
   });

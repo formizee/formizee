@@ -7,6 +7,8 @@ export const fileUpload = sqliteTable('file_uploads', {
 
   name: text('name').notNull(),
 
+  field: text('field').notNull(),
+
   fileKey: text('file_key').notNull(),
 
   submissionId: text('submission_id')

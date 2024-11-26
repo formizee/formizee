@@ -4,20 +4,22 @@ import {schema} from '@formizee/db-submissions';
 
 export const validateSubmission = async (
   database: Database,
-  input: {data: string; endpointId: string}
+  input: {
+    data: Record<string, string>;
+    fileUploads: {field: string; name: string}[];
+    endpointId: string;
+  }
 ) => {
   try {
-    const data = JSON.parse(input.data);
-
     const endpointSchema = await database.query.endpointSchema.findFirst({
       where: (table, {eq}) => eq(table.id, input.endpointId)
     });
 
     if (endpointSchema) {
-      return compareSchema(data, endpointSchema);
+      return compareSchema(input, endpointSchema);
     }
 
-    const newSchema = generateSchema(data, input.endpointId);
+    const newSchema = generateSchema(input, input.endpointId);
     await database.insert(schema.endpointSchema).values(newSchema);
     return true;
   } catch {
@@ -26,15 +28,23 @@ export const validateSubmission = async (
 };
 
 export const generateSchema = (
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  submissionData: Record<string, any>,
+  input: {
+    data: Record<string, string>;
+    fileUploads: {field: string; name: string}[];
+  },
   endpointId: string
 ): EndpointSchema => {
   const schema: Record<string, string> = {};
-  for (const [key, value] of Object.entries(submissionData)) {
+
+  for (const [key, value] of Object.entries(input.data)) {
     const type = typeof value;
     schema[key] = type; // Store the type as a string
   }
+
+  for (const file of input.fileUploads) {
+    schema[file.field] = 'string';
+  }
+
   return {
     id: endpointId,
     schema: JSON.stringify(schema),
@@ -43,20 +53,29 @@ export const generateSchema = (
 };
 
 export const compareSchema = (
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  submissionData: Record<string, any>,
+  input: {
+    data: Record<string, string>;
+    fileUploads: {field: string; name: string}[];
+  },
   endpointSchema: EndpointSchema
 ): boolean => {
   try {
+    const data = {
+      ...input.data, // Spread the data from the first object
+      ...Object.fromEntries(
+        input.fileUploads.map(file => [file.field, file.name])
+      ) // Convert fileUploads array to an object
+    };
+
     const schema = JSON.parse(endpointSchema.schema); // Parse the stringified schema into an object
     for (const [key, expectedType] of Object.entries(schema)) {
-      const actualType = typeof submissionData[key];
+      const actualType = typeof data[key];
       if (actualType !== expectedType) {
         return false; // If the type doesn't match, return false
       }
     }
     // Check if there are extra keys in submissionData not in schema
-    for (const key of Object.keys(submissionData)) {
+    for (const key of Object.keys(data)) {
       if (!(key in schema)) {
         return false; // If there's an unexpected key, return false
       }

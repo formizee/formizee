@@ -1,6 +1,5 @@
 import type {Database} from '@formizee/db-submissions/vault';
 import {schema} from '@formizee/db-submissions';
-import {fileTypeFromBlob} from 'file-type';
 import {AwsClient} from 'aws4fetch';
 import {newId} from '@formizee/id';
 
@@ -9,6 +8,11 @@ interface ClientOptions {
   accessKeyId: string;
   endpoint: string;
   bucket: string;
+}
+
+interface FileUpload {
+  name: string;
+  field: string;
 }
 
 export class Storage {
@@ -28,38 +32,40 @@ export class Storage {
     this.bucket = opts.bucket;
   }
 
-  public async handleFileUploads(
+  public async getUploadLinks(
     originDatabase: Database,
-    fileUploads: File | File[],
+    fileUploads: FileUpload[],
     endpointId: string,
     submissionId: string
   ) {
-    const files = Array.isArray(fileUploads) ? fileUploads : [fileUploads];
-
     try {
-      await Promise.all(
-        files.map(async file => {
+      const response = await Promise.all(
+        fileUploads.map(async ({field, name}) => {
           const fileId = newId('fileUpload');
+          const extension = name.includes('.') ? `.${name.split('.')[1]}` : '';
+          const fileKey = `${endpointId}/${submissionId}/${fileId}${extension}`;
 
-          const {fileKey} = await this.putFileUpload(file, {
+          await originDatabase.insert(schema.fileUpload).values({
             id: fileId,
+            fileKey,
+            field,
+            name,
             submissionId,
             endpointId
           });
 
-          if (fileKey) {
-            await originDatabase.insert(schema.fileUpload).values({
-              id: fileId,
-              name: file.name,
-              fileKey: fileKey,
-              submissionId,
-              endpointId
-            });
-          }
+          const url = await this.getUploadLink(fileKey);
+
+          return {
+            url,
+            field
+          };
         })
       );
+      return Promise.resolve(response);
     } catch (error) {
       console.error('Error while handling file uploads:', error);
+      return Promise.resolve([]);
     }
   }
 
@@ -75,11 +81,13 @@ export class Storage {
     try {
       const response = await Promise.all(
         fileUploads.map(async file => {
-          const url = await this.getFileUpload(file.fileKey);
+          const url = await this.getDownloadLink(file.fileKey);
 
           return {
-            url,
-            name: file.name
+            [file.field]: {
+              url,
+              name: file.name
+            }
           };
         })
       );
@@ -92,6 +100,40 @@ export class Storage {
     return Promise.resolve([]);
   }
 
+  private async getDownloadLink(
+    fileKey: string,
+    expirationTime = 3600
+  ): Promise<string> {
+    const signedUrl = await this.client.sign(
+      new Request(
+        `${this.endpoint}/${this.bucket}/${fileKey}?X-Amz-Expires=${expirationTime}`
+      ),
+      {
+        aws: {signQuery: true}
+      }
+    );
+
+    return Promise.resolve(signedUrl.url.toString());
+  }
+
+  private async getUploadLink(
+    fileKey: string,
+    expirationTime = 300
+  ): Promise<string> {
+    const signedUrl = await this.client.sign(
+      new Request(
+        `${this.endpoint}/${this.bucket}/${fileKey}?X-Amz-Expires=${expirationTime}`,
+        {method: 'PUT'}
+      ),
+      {
+        aws: {signQuery: true}
+      }
+    );
+
+    return Promise.resolve(signedUrl.url.toString());
+  }
+
+  /*
   private async putFileUpload(
     file: File,
     keys: {
@@ -129,9 +171,9 @@ export class Storage {
       );
 
       await this.client.fetch(command);
-      return Promise.resolve({fileKey, error: null});
+      return Promise.resolve({ fileKey, error: null });
     } catch (e) {
-      return Promise.resolve({fileKey: null, e});
+      return Promise.resolve({ fileKey: null, e });
     }
   }
 
@@ -166,20 +208,5 @@ export class Storage {
 
     return 'application/octet-stream';
   }
-
-  private async getFileUpload(
-    fileKey: string,
-    expirationTime = 3600
-  ): Promise<string> {
-    const signedUrl = await this.client.sign(
-      new Request(
-        `${this.endpoint}/${this.bucket}/${fileKey}?X-Amz-Expires=${expirationTime}`
-      ),
-      {
-        aws: {signQuery: true}
-      }
-    );
-
-    return Promise.resolve(signedUrl.url.toString());
-  }
+  */
 }
