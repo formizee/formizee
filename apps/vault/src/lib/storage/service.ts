@@ -36,26 +36,30 @@ export class Storage {
   ) {
     const files = Array.isArray(fileUploads) ? fileUploads : [fileUploads];
 
-    if (files.length > 0) {
-      for (const file of files) {
-        const fileId = newId('fileUpload');
+    try {
+      await Promise.all(
+        files.map(async file => {
+          const fileId = newId('fileUpload');
 
-        const {fileKey} = await this.putFileUpload(file, {
-          id: fileId,
-          submissionId,
-          endpointId
-        });
-
-        if (fileKey) {
-          await database.insert(schema.fileUpload).values({
+          const {fileKey} = await this.putFileUpload(file, {
             id: fileId,
-            name: file.name,
-            fileKey: fileKey,
             submissionId,
             endpointId
           });
-        }
-      }
+
+          if (fileKey) {
+            await database.insert(schema.fileUpload).values({
+              id: fileId,
+              name: file.name,
+              fileKey: fileKey,
+              submissionId,
+              endpointId
+            });
+          }
+        })
+      );
+    } catch (error) {
+      console.error('Error while handling file uploads:', error);
     }
   }
 
