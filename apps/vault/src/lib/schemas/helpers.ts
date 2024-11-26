@@ -25,8 +25,8 @@ export const validateSubmission = async (
   }
 };
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export const generateSchema = (
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   submissionData: Record<string, any>,
   endpointId: string
 ): EndpointSchema => {
@@ -42,8 +42,8 @@ export const generateSchema = (
   };
 };
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export const compareSchema = (
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   submissionData: Record<string, any>,
   endpointSchema: EndpointSchema
 ): boolean => {
