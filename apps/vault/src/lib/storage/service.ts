@@ -32,6 +32,40 @@ export class Storage {
     this.bucket = opts.bucket;
   }
 
+  public async getDownloadLinks(
+    originDatabase: Database,
+    submissionId: string
+  ) {
+    const fileUploads = await originDatabase.query.fileUpload.findMany({
+      where: (table, {eq}) => eq(table.submissionId, submissionId)
+    });
+
+    if (fileUploads.length < 1) {
+      return Promise.resolve([]);
+    }
+
+    try {
+      const response = await Promise.all(
+        fileUploads.map(async file => {
+          const url = await this.getDownloadLink(file.fileKey);
+
+          return {
+            [file.field]: {
+              url,
+              name: file.name
+            }
+          };
+        })
+      );
+
+      return Promise.resolve(response);
+    } catch (error) {
+      console.error('Error while handling file uploads:', error);
+    }
+
+    return Promise.resolve([]);
+  }
+
   public async getUploadLinks(
     originDatabase: Database,
     fileUploads: FileUpload[],
@@ -69,7 +103,7 @@ export class Storage {
     }
   }
 
-  public async getDownloadLinks(
+  public async deleteSubmissionData(
     originDatabase: Database,
     submissionId: string
   ) {
@@ -78,29 +112,14 @@ export class Storage {
     });
 
     if (fileUploads.length < 1) {
-      return Promise.resolve([]);
+      return;
     }
 
-    try {
-      const response = await Promise.all(
-        fileUploads.map(async file => {
-          const url = await this.getDownloadLink(file.fileKey);
-
-          return {
-            [file.field]: {
-              url,
-              name: file.name
-            }
-          };
-        })
-      );
-
-      return Promise.resolve(response);
-    } catch (error) {
-      console.error('Error while handling file uploads:', error);
-    }
-
-    return Promise.resolve([]);
+    await Promise.all(
+      fileUploads.map(async file => {
+        await this.deleteObject(file.fileKey);
+      })
+    );
   }
 
   private async getDownloadLink(
@@ -134,6 +153,21 @@ export class Storage {
     );
 
     return Promise.resolve(signedUrl.url.toString());
+  }
+
+  private async deleteObject(fileKey: string) {
+    try {
+      const command = new Request(
+        `${this.endpoint}/${this.bucket}/${fileKey}`,
+        {
+          method: 'DELETE'
+        }
+      );
+
+      await this.client.fetch(command);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   /*
