@@ -29,7 +29,7 @@ export class Storage {
   }
 
   public async handleFileUploads(
-    database: Database,
+    originDatabase: Database,
     fileUploads: File | File[],
     endpointId: string,
     submissionId: string
@@ -48,7 +48,7 @@ export class Storage {
           });
 
           if (fileKey) {
-            await database.insert(schema.fileUpload).values({
+            await originDatabase.insert(schema.fileUpload).values({
               id: fileId,
               name: file.name,
               fileKey: fileKey,
@@ -61,6 +61,35 @@ export class Storage {
     } catch (error) {
       console.error('Error while handling file uploads:', error);
     }
+  }
+
+  public async getFileUploads(originDatabase: Database, submissionId: string) {
+    const fileUploads = await originDatabase.query.fileUpload.findMany({
+      where: (table, {eq}) => eq(table.submissionId, submissionId)
+    });
+
+    if (fileUploads.length < 1) {
+      return Promise.resolve([]);
+    }
+
+    try {
+      const response = await Promise.all(
+        fileUploads.map(async file => {
+          const url = await this.getFileUpload(file.fileKey);
+
+          return {
+            url,
+            name: file.name
+          };
+        })
+      );
+
+      return Promise.resolve(response);
+    } catch (error) {
+      console.error('Error while handling file uploads:', error);
+    }
+
+    return Promise.resolve([]);
   }
 
   private async putFileUpload(
@@ -138,7 +167,7 @@ export class Storage {
     return 'application/octet-stream';
   }
 
-  public async getFileUpload(
+  private async getFileUpload(
     fileKey: string,
     expirationTime = 3600
   ): Promise<string> {
