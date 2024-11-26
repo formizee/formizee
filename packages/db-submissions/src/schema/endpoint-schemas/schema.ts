@@ -4,7 +4,7 @@ import {sql} from 'drizzle-orm';
 export const endpointSchema = sqliteTable('endpoint_schemas', {
   id: text('id').notNull().primaryKey(),
 
-  schema: text('schema', {mode: 'json'}).notNull(),
+  schema: text('schema', {mode: 'json'}).notNull().$type<string>(),
 
   createdAt: integer('created_at', {mode: 'timestamp'})
     .notNull()

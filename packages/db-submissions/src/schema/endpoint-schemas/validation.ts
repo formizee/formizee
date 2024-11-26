@@ -7,10 +7,10 @@ export const insertEndpointSchemaSchema = createInsertSchema(endpointSchema, {
     message:
       'Invalid endpoint identifier, please check that is correctly typed.'
   }),
-  schema: z.custom<Record<string, string>>().array()
+  schema: z.string()
 });
 export const selectEndpointSchemaSchema = createSelectSchema(endpointSchema, {
-  schema: z.custom<Record<string, string>>().array()
+  schema: z.string()
 });
 
 export type InsertEndpointSchema = z.infer<typeof insertEndpointSchemaSchema>;
