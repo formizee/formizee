@@ -29,6 +29,23 @@ services:
     volumes:
       - storage:/data
 
+  vault:
+    container_name: vault
+    build:
+      context: ..
+      dockerfile: ./apps/vault/Dockerfile
+    ports:
+      - 8888:8888
+    depends_on:
+      - database
+      - storage
+    environment:
+      STORAGE_SECRET_ACCESS_KEY: "minio_root_password"
+      STORAGE_ACCESS_KEY_ID: "minio_root_user"
+      STORAGE_ENDPOINT: "http://storage:3902"
+      DATABASE_URL: "http://localhost:8080"
+      STORAGE_BUCKET: "storage"
+
   api:
     container_name: api
     build:
@@ -38,12 +55,9 @@ services:
       - 8787:8787
     depends_on:
       - database
+      - vault
     environment:
-      STORAGE_SECRET_ACCESS_KEY: "minio_root_password"
-      STORAGE_ACCESS_KEY_ID: "minio_root_user"
-      STORAGE_ENDPOINT: "http://storage:3902"
       DATABASE_URL: "http://localhost:8080"
-      STORAGE_BUCKET: "storage"
 
 volumes:
   database:
