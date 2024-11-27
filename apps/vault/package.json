@@ -11,7 +11,7 @@
     "lint": "biome lint src",
     "test": "vitest run --bail=1",
     "test:watch": "vitest --bail=1",
-    "dev": "wrangler dev --show-interactive-dev-session=false --port=9000",
+    "dev": "wrangler dev --show-interactive-dev-session=false --port=8888",
     "deploy:prod": "pnpm build && wrangler deploy --minify --env=production --keep-vars=true"
   },
   "dependencies": {
