@@ -37,17 +37,17 @@ export function services(): MiddlewareHandler<HonoEnv> {
           : undefined
     });
 
-    const emailService = new Resend(
+    const email = new Resend(
       c.env.ENVIROMENT === 'production' ? c.env.RESEND_TOKEN : 're_123456789'
     );
 
-    const keyService = new KeyService({database});
+    const apiKeys = new KeyService({database});
 
     c.set('services', {
-      database,
       analytics,
-      keyService,
-      emailService
+      database,
+      apiKeys,
+      email
     });
 
     await next();

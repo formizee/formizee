@@ -8,8 +8,7 @@ import {PlanLimitWarning} from '@formizee/email/templates';
 
 export const authentication = (): MiddlewareHandler<HonoEnv> => {
   return async function auth(context, next) {
-    const {keyService, analytics, database, emailService} =
-      context.get('services');
+    const {apiKeys, analytics, database, email} = context.get('services');
 
     const authorization = context.req
       .header('authorization')
@@ -21,7 +20,7 @@ export const authentication = (): MiddlewareHandler<HonoEnv> => {
       });
     }
 
-    const {val, err} = await keyService.verifyKey(authorization);
+    const {val, err} = await apiKeys.verifyKey(authorization);
 
     if (err || !val) {
       throw new HTTPException(codeToStatus(err.code) as StatusCode, {
@@ -87,7 +86,7 @@ export const authentication = (): MiddlewareHandler<HonoEnv> => {
       }
 
       if (context.env.ENVIROMENT === 'production') {
-        await emailService.emails.send({
+        await email.emails.send({
           subject: "You've reached the 80% monthly usage of your plan",
           reply_to: 'Formizee Support <support@formizee.com>',
           from: 'Formizee Billing <payments@formizee.com>',

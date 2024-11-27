@@ -48,7 +48,7 @@ export const postRoute = createRoute({
 
 export const registerPostSubmission = (api: typeof submissionsApi) => {
   return api.openapi(postRoute, async context => {
-    const {analytics, database, emailService} = context.get('services');
+    const {analytics, database, email: emailService} = context.get('services');
     const workspacePlan = context.get('workspace').plan;
     const workspaceId = context.get('workspace').id;
     const location = context.get('location');

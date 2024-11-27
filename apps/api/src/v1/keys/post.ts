@@ -35,7 +35,7 @@ export const postRoute = createRoute({
 
 export const registerPostKey = (api: typeof keysAPI) => {
   return api.openapi(postRoute, async context => {
-    const {analytics, database, keyService} = context.get('services');
+    const {analytics, database, apiKeys} = context.get('services');
     const workspace = context.get('workspace');
     const input = context.req.valid('json');
     const limits = context.get('limits');
@@ -59,7 +59,7 @@ export const registerPostKey = (api: typeof keysAPI) => {
       });
     }
 
-    const {val, err} = await keyService.createKey(input.expiresAt);
+    const {val, err} = await apiKeys.createKey(input.expiresAt);
 
     if (err || !val) {
       throw new HTTPException(500, {
