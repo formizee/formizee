@@ -1,14 +1,19 @@
 # General
+DASHBOARD_URL="The url where the dashboard is running"
 WEB_URL="The url where the webpage is running"
 DOCS_URL="The url where the docs is running"
 API_URL="The url where the api is running"
 ENVIROMENT="development"
-VERSION="1.0.0"
+
+# Databases
+DATABASE_AUTH_TOKEN="Your sqlite compatible database auth token"
+DATABASE_URL="Your sqlite compatible database connection url"
 
 # Storage
-DATABASE_URL="Your sqlite compatible database connection url"
-DATABASE_AUTH_TOKEN="Your sqlite compatible database auth token"
-VAULT_SECRET="The Formizee Vault secret"
+STORAGE_SECRET_ACCESS_KEY="Your s3 compatible storage secret key"
+STORAGE_ACCESS_KEY_ID="Your s3 compatible storage access key"
+STORAGE_ENDPOINT="Your s3 endpoint"
+STORAGE_BUCKET="Your s3 bucket"
 
 # Analytics
 TINYBIRD_URL="Your proxy tinybird url"
