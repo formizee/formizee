@@ -6,7 +6,12 @@ import {fileURLToPath} from 'node:url';
 import {prepareDatabase} from './db';
 import {run, task} from './util';
 
-import {bootstrapApi, bootstrapWeb, bootstrapDashboard} from './commands';
+import {
+  bootstrapApi,
+  bootstrapWeb,
+  bootstrapVault,
+  bootstrapDashboard
+} from './commands';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -34,6 +39,11 @@ async function main() {
         hint: 'docs.formizee.com'
       },
       {
+        label: 'vault',
+        value: 'vault',
+        hint: 'vault.formizee.com'
+      },
+      {
         label: 'dashboard',
         value: 'dashboard',
         hint: 'dashboard.formizee.com'
@@ -48,10 +58,18 @@ async function main() {
     }
 
     case 'api': {
-      await startContainers(['database', 'storage']);
+      await startContainers(['database', 'vault']);
       await prepareDatabase();
 
       await bootstrapApi();
+      break;
+    }
+
+    case 'vault': {
+      await startContainers(['database', 'storage']);
+      await prepareDatabase();
+
+      await bootstrapVault();
       break;
     }
 

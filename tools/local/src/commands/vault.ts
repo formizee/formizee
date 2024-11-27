@@ -7,19 +7,20 @@ import fs from 'node:fs';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const appPath = path.join(__dirname, '../../../../apps/api');
+const appPath = path.join(__dirname, '../../../../apps/vault');
 
 const envPath = path.join(appPath, '.dev.vars');
 
-export async function bootstrapApi() {
+export async function bootstrapVault() {
   const env = marshalEnv({
     General: {
-      DASHBOARD_URL: 'http://localhost:3001',
-      VAULT_URL: 'http://localhost:8888',
-      DOCS_URL: 'http://localhost:3002',
-      WEB_URL: 'http://localhost:3000',
-      API_URL: 'http://localhost:8787',
       ENVIROMENT: 'development'
+    },
+    Storage: {
+      STORAGE_SECRET_ACCESS_KEY: 'minio_root_password',
+      STORAGE_ACCESS_KEY_ID: 'minio_root_user',
+      STORAGE_ENDPOINT: 'http://storage:3902',
+      STORAGE_BUCKET: 'storage'
     },
     Database: {
       DATABASE_URL: 'http://localhost:8080'
