@@ -5,12 +5,11 @@ services:
     container_name: database
     image: ghcr.io/tursodatabase/libsql-server:latest
     platform: linux/arm64
-    restart: always
     ports:
       - "8080:8080"
     environment:
       SQLD_NODE: primary
-      SQLD_DB_PATH: /var/lib/sqld/formizee.db
+      SQLD_DB_PATH: /var/lib/sqld/formizee
     volumes:
       - database:/var/lib/sqld
 
