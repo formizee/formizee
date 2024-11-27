@@ -1,0 +1,22 @@
+{
+  "name": "@formizee/storage",
+  "author": "Pau García Chiner",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "version": "1.0.0",
+  "license": "Apache-2.0",
+  "scripts": {
+    "lint": "biome lint .",
+    "check": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@formizee/tsconfig": "workspace:*",
+    "@types/node": "22.10.0"
+  },
+  "dependencies": {
+    "@formizee/db": "workspace:*",
+    "@formizee/id": "workspace:*",
+    "aws4fetch": "1.0.20",
+    "file-type": "19.6.0"
+  }
+}

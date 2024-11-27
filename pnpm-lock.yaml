@@ -260,12 +260,6 @@ importers:
       '@hono/zod-openapi':
         specifier: 0.16.4
         version: 0.16.4(hono@4.6.6)(zod@3.23.8)
-      aws4fetch:
-        specifier: 1.0.20
-        version: 1.0.20
-      file-type:
-        specifier: 19.6.0
-        version: 19.6.0
       hono:
         specifier: 4.6.6
         version: 4.6.6
@@ -639,6 +633,28 @@ importers:
       vitest:
         specifier: 1.5.0
         version: 1.5.0(@types/node@20.14.11)(terser@5.31.3)
+
+  packages/storage:
+    dependencies:
+      '@formizee/db':
+        specifier: workspace:*
+        version: link:../db
+      '@formizee/id':
+        specifier: workspace:*
+        version: link:../id
+      aws4fetch:
+        specifier: 1.0.20
+        version: 1.0.20
+      file-type:
+        specifier: 19.6.0
+        version: 19.6.0
+    devDependencies:
+      '@formizee/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      '@types/node':
+        specifier: 22.10.0
+        version: 22.10.0
 
   packages/tailwind:
     devDependencies:
