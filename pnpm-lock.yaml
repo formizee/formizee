@@ -254,6 +254,9 @@ importers:
       '@formizee/id':
         specifier: workspace:*
         version: link:../../packages/id
+      '@formizee/storage':
+        specifier: workspace:*
+        version: link:../../packages/storage
       '@formizee/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig

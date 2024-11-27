@@ -1,6 +1,6 @@
 import type {Database} from '@formizee/db-submissions/vault';
 import type {Analytics} from '@formizee/analytics';
-import type {Storage} from '@/lib/storage';
+import type {Storage} from '@formizee/storage';
 import type {Cache} from '@/lib/cache';
 import type {Keys} from '@/lib/keys';
 

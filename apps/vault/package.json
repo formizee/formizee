@@ -20,10 +20,9 @@
     "@formizee/encryption": "workspace:*",
     "@formizee/error": "workspace:*",
     "@formizee/id": "workspace:*",
+    "@formizee/storage": "workspace:*",
     "@formizee/tsconfig": "workspace:*",
     "@hono/zod-openapi": "0.16.4",
-    "aws4fetch": "1.0.20",
-    "file-type": "19.6.0",
     "hono": "4.6.6",
     "hono-rate-limiter": "0.4.0",
     "zod": "3.23.8"

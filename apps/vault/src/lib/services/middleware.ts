@@ -3,7 +3,7 @@ import type {HonoEnv} from '@/lib/hono';
 
 import {createConnection} from '@formizee/db-submissions/vault';
 import {Analytics} from '@formizee/analytics';
-import {Storage} from '@/lib/storage';
+import {Storage} from '@formizee/storage';
 import {Cache} from '@/lib/cache';
 import {Keys} from '@/lib/keys';
 
