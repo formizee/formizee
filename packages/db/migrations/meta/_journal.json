@@ -5,15 +5,8 @@
     {
       "idx": 0,
       "version": "6",
-      "when": 1732373639587,
-      "tag": "0000_sudden_purifiers",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "6",
-      "when": 1732478725869,
-      "tag": "0001_glossy_karma",
+      "when": 1732693088195,
+      "tag": "0000_shallow_alex_power",
       "breakpoints": true
     }
   ]

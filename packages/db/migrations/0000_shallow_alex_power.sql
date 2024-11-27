@@ -1,7 +1,18 @@
+CREATE TABLE `file_uploads` (
+	`id` text PRIMARY KEY NOT NULL,
+	`name` text NOT NULL,
+	`field` text NOT NULL,
+	`file_key` text NOT NULL,
+	`submission_id` text NOT NULL,
+	`created_at` integer DEFAULT (unixepoch()) NOT NULL,
+	FOREIGN KEY (`submission_id`) REFERENCES `submissions`(`id`) ON UPDATE no action ON DELETE cascade
+);
+--> statement-breakpoint
 CREATE TABLE `submissions` (
 	`id` text PRIMARY KEY NOT NULL,
 	`endpoint_id` text NOT NULL,
-	`data` text NOT NULL,
+	`data_iv` text NOT NULL,
+	`data_cipher_text` text NOT NULL,
 	`is_spam` integer DEFAULT false NOT NULL,
 	`is_read` integer DEFAULT false NOT NULL,
 	`location` text NOT NULL,
@@ -23,11 +34,15 @@ CREATE TABLE `workspaces` (
 	`updated_at` integer DEFAULT (unixepoch()) NOT NULL
 );
 --> statement-breakpoint
+CREATE UNIQUE INDEX `workspaces_slug_unique` ON `workspaces` (`slug`);--> statement-breakpoint
+CREATE UNIQUE INDEX `workspaces_stripe_id_unique` ON `workspaces` (`stripe_id`);--> statement-breakpoint
+CREATE UNIQUE INDEX `slug` ON `workspaces` (`slug`);--> statement-breakpoint
 CREATE TABLE `endpoints` (
 	`id` text PRIMARY KEY NOT NULL,
 	`workspace_id` text NOT NULL,
 	`name` text,
 	`slug` text NOT NULL,
+	`schema` text NOT NULL,
 	`icons` text DEFAULT 'file' NOT NULL,
 	`colors` text DEFAULT 'gray' NOT NULL,
 	`is_enabled` integer DEFAULT true NOT NULL,
@@ -64,10 +79,11 @@ CREATE TABLE `authenticators` (
 	`credential_device_type` text NOT NULL,
 	`credential_backed_up` integer NOT NULL,
 	`transports` text,
-	PRIMARY KEY(`credential_id`, `user_id`),
+	PRIMARY KEY(`user_id`, `credential_id`),
 	FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE cascade
 );
 --> statement-breakpoint
+CREATE UNIQUE INDEX `authenticators_credential_id_unique` ON `authenticators` (`credential_id`);--> statement-breakpoint
 CREATE TABLE `sessions` (
 	`session_token` text PRIMARY KEY NOT NULL,
 	`user_id` text NOT NULL,
@@ -87,6 +103,10 @@ CREATE TABLE `users` (
 	`updated_at` integer DEFAULT (unixepoch()) NOT NULL
 );
 --> statement-breakpoint
+CREATE UNIQUE INDEX `users_slug_unique` ON `users` (`slug`);--> statement-breakpoint
+CREATE UNIQUE INDEX `users_email_unique` ON `users` (`email`);--> statement-breakpoint
+CREATE UNIQUE INDEX `slug` ON `users` (`slug`);--> statement-breakpoint
+CREATE UNIQUE INDEX `email` ON `users` (`email`);--> statement-breakpoint
 CREATE TABLE `users_to_emails` (
 	`user_id` text NOT NULL,
 	`email` text NOT NULL,
@@ -117,6 +137,7 @@ CREATE TABLE `verificationTokens` (
 CREATE TABLE `keys` (
 	`id` text PRIMARY KEY NOT NULL,
 	`name` text NOT NULL,
+	`key` text NOT NULL,
 	`hash` text NOT NULL,
 	`workspace_id` text NOT NULL,
 	`last_access` integer DEFAULT (unixepoch()) NOT NULL,
@@ -125,12 +146,4 @@ CREATE TABLE `keys` (
 	FOREIGN KEY (`workspace_id`) REFERENCES `workspaces`(`id`) ON UPDATE no action ON DELETE cascade
 );
 --> statement-breakpoint
-CREATE UNIQUE INDEX `workspaces_slug_unique` ON `workspaces` (`slug`);--> statement-breakpoint
-CREATE UNIQUE INDEX `workspaces_stripe_id_unique` ON `workspaces` (`stripe_id`);--> statement-breakpoint
-CREATE UNIQUE INDEX `slug` ON `workspaces` (`slug`);--> statement-breakpoint
-CREATE UNIQUE INDEX `authenticators_credential_id_unique` ON `authenticators` (`credential_id`);--> statement-breakpoint
-CREATE UNIQUE INDEX `users_slug_unique` ON `users` (`slug`);--> statement-breakpoint
-CREATE UNIQUE INDEX `users_email_unique` ON `users` (`email`);--> statement-breakpoint
-CREATE UNIQUE INDEX `slug` ON `users` (`slug`);--> statement-breakpoint
-CREATE UNIQUE INDEX `email` ON `users` (`email`);--> statement-breakpoint
 CREATE INDEX `hash` ON `keys` (`hash`);
