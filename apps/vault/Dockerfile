@@ -21,5 +21,5 @@ RUN pnpm workerd compile ./worker.capnp > formizee-vault
 FROM ubuntu:latest
 COPY --from=compile /app/apps/vault/formizee-vault /usr/bin/formizee-vault
 
-EXPOSE 9000
+EXPOSE 8888
 CMD ["formizee-vault"]
