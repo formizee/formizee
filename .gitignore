@@ -15,6 +15,7 @@ out/
 
 # wrangler
 .wrangler
+apps/api/wrangler.toml
 
 # production
 build
@@ -45,4 +46,3 @@ next-env.d.ts
 # editors
 .vscode
 .idea
-apps/vault/wrangler.toml
