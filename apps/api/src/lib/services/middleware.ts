@@ -13,14 +13,21 @@ export function services(): MiddlewareHandler<HonoEnv> {
     const requestId = newId('request');
     c.set('requestId', requestId);
     c.set('userAgent', c.req.header('User-Agent') ?? '');
-    c.res.headers.set('Formizee-Request-Id', requestId);
+    c.res.headers.set('formizee-request-id', requestId);
     c.set(
       'location',
-      c.req.header('True-Client-IP') ??
-        c.req.header('CF-Connecting-IP') ??
-        String(c.req.raw?.cf?.colo) ??
+      c.req.header('x-real-ip') ??
+        c.req.header('cf-connecting-ip') ??
+        String(c.req.raw?.cf?.city) ??
+        String(c.req.raw?.cf?.country) ??
         ''
     );
+
+    const analytics = new Analytics({
+      tinybirdToken:
+        c.env.ENVIROMENT === 'production' ? c.env.TINYBIRD_TOKEN : undefined,
+      tinybirdUrl: c.env.TINYBIRD_URL
+    });
 
     const database = createConnection({
       databaseUrl: c.env.DATABASE_URL,
@@ -28,12 +35,6 @@ export function services(): MiddlewareHandler<HonoEnv> {
         c.env.ENVIROMENT === 'production'
           ? c.env.DATABASE_AUTH_TOKEN
           : undefined
-    });
-
-    const analytics = new Analytics({
-      tinybirdToken:
-        c.env.ENVIROMENT === 'production' ? c.env.TINYBIRD_TOKEN : undefined,
-      tinybirdUrl: c.env.TINYBIRD_URL
     });
 
     const emailService = new Resend(
