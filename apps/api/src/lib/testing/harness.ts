@@ -1,4 +1,4 @@
-import {type Database, createConnection} from '@formizee/db/api';
+import {type Database, createConnection} from '@formizee/db';
 import {eq, schema} from '@formizee/db';
 import {databaseEnv} from './enviroment';
 import type {TaskContext} from 'vitest';

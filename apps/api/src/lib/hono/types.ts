@@ -1,4 +1,4 @@
-import type {Key, Workspace} from '@formizee/db/schema';
+import type {schema} from '@formizee/db';
 import type {Pagination} from '@/lib/pagination';
 import type {Services} from '@/lib/services';
 import type {Limits} from '@formizee/plans';
@@ -11,9 +11,9 @@ export type HonoVariables = {
   location: string;
 
   // Authentication
-  workspace: Workspace;
+  workspace: schema.Workspace;
   limits: Limits;
-  key: Pick<Key, 'id' | 'name'>;
+  key: Pick<schema.Key, 'id' | 'name'>;
 
   // Context
   pagination: Pagination;
