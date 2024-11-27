@@ -10,13 +10,12 @@
     "local": "tsx ./src/index.ts"
   },
   "devDependencies": {
-    "@clack/prompts": "0.7.0",
-    "@formizee/id": "workspace:^",
+    "@clack/prompts": "0.8.2",
     "@formizee/tsconfig": "workspace:^",
-    "@types/node": "20.14.11",
-    "tsx": "4.16.2"
+    "@types/node": "22.10.0",
+    "tsx": "4.19.2"
   },
   "dependencies": {
-    "execa": "9.3.0"
+    "execa": "9.5.1"
   }
 }
