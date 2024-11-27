@@ -36,7 +36,6 @@ export const user = sqliteTable(
   },
   table => {
     return {
-      slug: unique('slug').on(table.slug),
       email: unique('email').on(table.email)
     };
   }
