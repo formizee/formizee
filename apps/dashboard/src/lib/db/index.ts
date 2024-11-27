@@ -1,4 +1,4 @@
-import {createConnection} from '@formizee/db/web';
+import {createConnection} from '@formizee/db';
 import {env} from '@/lib/enviroment';
 
 export const database = createConnection({
