@@ -6,12 +6,7 @@ import {fileURLToPath} from 'node:url';
 import {prepareDatabase} from './db';
 import {run, task} from './util';
 
-import {
-  bootstrapApi,
-  bootstrapWeb,
-  bootstrapDashboard,
-  bootstrapVault
-} from './commands';
+import {bootstrapApi, bootstrapWeb, bootstrapDashboard} from './commands';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -24,27 +19,22 @@ async function main() {
     maxItems: 1,
     options: [
       {
-        label: 'API',
-        value: 'api',
-        hint: 'api.formizee.com'
-      },
-      {
-        label: 'Web',
+        label: 'web',
         value: 'web',
         hint: 'formizee.com'
       },
       {
-        label: 'Docs',
+        label: 'api',
+        value: 'api',
+        hint: 'api.formizee.com'
+      },
+      {
+        label: 'docs',
         value: 'docs',
         hint: 'docs.formizee.com'
       },
       {
-        label: 'Vault',
-        value: 'vault',
-        hint: 'vault.formizee.com'
-      },
-      {
-        label: 'Dashboard',
+        label: 'dashboard',
         value: 'dashboard',
         hint: 'dashboard.formizee.com'
       }
@@ -52,39 +42,24 @@ async function main() {
   });
 
   switch (app) {
+    case 'web': {
+      bootstrapWeb();
+      break;
+    }
+
     case 'api': {
-      await startContainers(['main-database']);
-      await prepareDatabase('main');
+      await startContainers(['database', 'storage']);
+      await prepareDatabase();
 
       await bootstrapApi();
       break;
     }
 
     case 'dashboard': {
-      await startContainers(['main-database']);
-      await prepareDatabase('main');
+      await startContainers(['database', 'api']);
+      await prepareDatabase();
 
       bootstrapDashboard();
-      break;
-    }
-
-    case 'vault': {
-      await startContainers(['submissions-database', 'storage']);
-      await prepareDatabase('submissions');
-
-      bootstrapVault();
-      break;
-    }
-
-    case 'docs': {
-      break;
-    }
-
-    case 'web': {
-      await startContainers(['main-database']);
-      await prepareDatabase('main');
-
-      bootstrapWeb();
       break;
     }
 

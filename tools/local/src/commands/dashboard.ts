@@ -15,9 +15,10 @@ const envPath = path.join(appPath, '.env.local');
 export function bootstrapDashboard() {
   const env = marshalEnv({
     General: {
+      DASHBOARD_URL: 'http://localhost:3001',
       DOCS_URL: 'http://localhost:3002',
       WEB_URL: 'http://localhost:3000',
-      API_URL: 'http://localhost:3001'
+      API_URL: 'http://localhost:8787'
     },
     Database: {
       DATABASE_URL: 'http://localhost:8080'
