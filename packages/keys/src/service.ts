@@ -1,5 +1,5 @@
 import {ErrorCodeEnum, BaseError, Err, Ok, type Result} from '@formizee/error';
-import type {Database} from '@formizee/db/api';
+import type {Database} from '@formizee/db';
 import {eq, schema} from '@formizee/db';
 import {sha256} from '@formizee/hashing';
 import {newKey} from './utils';
