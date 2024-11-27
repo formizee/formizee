@@ -1,8 +1,8 @@
 name: formizee
 
 services:
-  main-database:
-    container_name: main-database
+  database:
+    container_name: database
     image: ghcr.io/tursodatabase/libsql-server:latest
     platform: linux/arm64
     restart: always
@@ -12,20 +12,7 @@ services:
       SQLD_NODE: primary
       SQLD_DB_PATH: /var/lib/sqld/formizee.db
     volumes:
-      - main-database:/var/lib/sqld
-
-  submissions-database:
-    container_name: submissions-database
-    image: ghcr.io/tursodatabase/libsql-server:latest
-    platform: linux/arm64
-    restart: always
-    ports:
-      - "8081:8080"
-    environment:
-      SQLD_NODE: primary
-      SQLD_DB_PATH: /var/lib/sqld/submissions.db
-    volumes:
-      - submissions-database:/var/lib/sqld
+      - database:/var/lib/sqld
 
   storage:
     container_name: storage
@@ -34,11 +21,11 @@ services:
       - 3902:3902
       - 3903:3903
     environment:
-      MINIO_ROOT_USER: minio_root_user
-      MINIO_ROOT_PASSWORD: minio_root_password
-      MINIO_API_PORT_NUMBER: 3902
-      MINIO_CONSOLE_PORT_NUMBER: 3903
-      MINIO_DEFAULT_BUCKETS: storage
+      MINIO_ROOT_PASSWORD: "minio_root_password"
+      MINIO_ROOT_USER: "minio_root_user"
+      MINIO_CONSOLE_PORT_NUMBER: "3903"
+      MINIO_DEFAULT_BUCKETS: "storage"
+      MINIO_API_PORT_NUMBER: "3902"
     volumes:
       - storage:/data
 
@@ -50,28 +37,14 @@ services:
     ports:
       - 8787:8787
     depends_on:
-      - main-database
+      - database
     environment:
+      STORAGE_SECRET_ACCESS_KEY: "minio_root_password"
+      STORAGE_ACCESS_KEY_ID: "minio_root_user"
+      STORAGE_ENDPOINT: "http://storage:3902"
       DATABASE_URL: "http://localhost:8080"
-
-  vault:
-    container_name: vault
-    build:
-      context: ..
-      dockerfile: ./apps/vault/Dockerfile
-    ports:
-      - 9000:8787
-    depends_on:
-      - submissions-database
-      - storage
-    environment:
-      DATABASE_URL: "http://localhost:8080"
-      STORAGE_ACCESS_KEY_ID: minio_root_user
-      STORAGE_SECRET_ACCESS_KEY: minio_root_password
-      STORAGE_ENDPOINT: http://storage:3902
-      STORAGE_BUCKET: storage
+      STORAGE_BUCKET: "storage"
 
 volumes:
-  submissions-database:
-  main-database:
+  database:
   storage:
