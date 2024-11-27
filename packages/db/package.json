@@ -35,9 +35,9 @@
   },
   "devDependencies": {
     "@formizee/tsconfig": "workspace:*",
-    "@types/node": "22.7.9",
+    "@types/node": "22.10.0",
     "drizzle-kit": "0.28.1",
-    "tsx": "4.16.2"
+    "tsx": "4.19.2"
   },
   "dependencies": {
     "@formizee/hashing": "workspace:*",
