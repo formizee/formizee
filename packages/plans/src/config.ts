@@ -1,9 +1,10 @@
-import type {WorkspacePlans} from '@formizee/db/schema';
+import type {schema} from '@formizee/db';
 import type {Limits} from './types';
-export type {WorkspacePlans};
+
+export type WorkspacePlans = schema.WorkspacePlans;
 
 export const planConfig: Record<
-  WorkspacePlans,
+  schema.WorkspacePlans,
   {
     title: 'Hobby' | 'Pro' | 'Teams' | 'Enterprise';
     description: string;
