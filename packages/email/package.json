@@ -18,8 +18,9 @@
   "scripts": {
     "dev": "email dev",
     "test": "vitest run",
+    "lint": "biome lint .",
     "test:watch": "vitest",
-    "lint": "biome lint ."
+    "check": "tsc --noEmit"
   },
   "devDependencies": {
     "@formizee/tsconfig": "workspace:*",
