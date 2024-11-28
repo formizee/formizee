@@ -1,4 +1,4 @@
-import {SubmissionSchema, PutSchema} from './schema';
+import {SubmissionSchema, PutSchema, ParamsSchema} from './schema';
 import type {submissions as submissionsAPI} from '.';
 import {openApiErrorResponses} from '@/lib/errors';
 import {HTTPException} from 'hono/http-exception';
@@ -9,8 +9,9 @@ export const putRoute = createRoute({
   method: 'put',
   tags: ['Submissions'],
   summary: 'Update a submission',
-  path: '/',
+  path: '/{endpointId}/{id}',
   request: {
+    params: ParamsSchema,
     body: {
       content: {
         'application/json': {
@@ -35,11 +36,12 @@ export const putRoute = createRoute({
 export const registerPutSubmission = (api: typeof submissionsAPI) => {
   return api.openapi(putRoute, async context => {
     const {database, cache} = context.get('services');
+    const {id} = context.req.valid('param');
     const input = context.req.valid('json');
 
     // Query submission
     const submission = await database.query.submission.findFirst({
-      where: (table, {eq}) => eq(table.id, input.id)
+      where: (table, {eq}) => eq(table.id, id)
     });
 
     if (!submission) {

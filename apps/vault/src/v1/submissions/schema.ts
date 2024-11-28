@@ -22,25 +22,6 @@ export const ParamsSchema = z.object({
 });
 
 export const PutSchema = z.object({
-  id: z
-    .string()
-    .regex(/^[a-zA-Z]+_[a-zA-Z0-9]+$/, {
-      message: 'Invalid identifier, please check that is correctly typed.'
-    })
-    .openapi({
-      description: 'The id of the submission',
-      example: 'sub_4VjHrJoEwAFC6itz8oUBW9NW2bia'
-    }),
-  endpointId: z
-    .string()
-    .regex(/^[a-zA-Z]+_[a-zA-Z0-9]+$/, {
-      message:
-        'Invalid endpoint identifier, please check that is correctly typed.'
-    })
-    .openapi({
-      description: 'The id of the endpoint',
-      example: 'enp_4VjHrJoEwAFC6itz8oUBW9NW2bia'
-    }),
   isRead: z.boolean().optional(),
   isSpam: z.boolean().optional()
 });
@@ -140,3 +121,8 @@ export const SubmissionSchema = z.object({
   location: z.string(),
   createdAt: z.date()
 });
+
+export type RequestPutSubmission = z.infer<typeof PutSchema>;
+export type RequestPostSubmission = z.infer<typeof PostSchema>;
+export type ResponseSubmission = z.infer<typeof SubmissionSchema>;
+export type ResponsePostSubmission = z.infer<typeof PostResponseSchema>;

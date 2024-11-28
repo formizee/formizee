@@ -45,7 +45,7 @@ export const registerPostSubmission = (api: typeof submissionsAPI) => {
 
     if (!submissionIsValid) {
       throw new HTTPException(403, {
-        message: 'The submision does not match the current endpoint schema'
+        message: 'The submission does not match the current endpoint schema'
       });
     }
 
