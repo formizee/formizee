@@ -15,7 +15,6 @@ export const insertEndpointSchema = createInsertSchema(endpoint, {
       message:
         'The name must contain only lowercase letters, numbers adn hyphens, with no space or special characters.'
     }),
-  schema: z.string(),
   isEnabled: z.boolean().default(true),
   emailNotifications: z.boolean().default(true),
   redirectUrl: z.string().url({
@@ -32,8 +31,7 @@ export const insertEndpointSchema = createInsertSchema(endpoint, {
 });
 
 export const selectEndpointSchema = createSelectSchema(endpoint, {
-  targetEmails: z.string().email().array(),
-  schema: z.string()
+  targetEmails: z.string().email().array()
 });
 
 export type InsertEndpoint = z.infer<typeof insertEndpointSchema>;

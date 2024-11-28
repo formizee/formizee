@@ -1,7 +1,7 @@
 import {text, sqliteTable, integer} from 'drizzle-orm/sqlite-core';
 import {sql} from 'drizzle-orm';
 
-export const mapping = sqliteTable('mappings', {
+export const mappings = sqliteTable('mappings', {
   endpointId: text('endpoint_id').notNull().primaryKey(),
 
   databaseId: text('database_id').notNull(),

@@ -16,8 +16,6 @@ export const endpoint = sqliteTable('endpoints', {
   name: text('name'),
   slug: text('slug').notNull(),
 
-  schema: text('schema', {mode: 'json'}).notNull().$type<string>(),
-
   icon: icons.notNull().default('file'),
   color: colors.notNull().default('gray'),
 
