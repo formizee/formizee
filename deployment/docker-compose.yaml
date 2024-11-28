@@ -13,6 +13,18 @@ services:
     volumes:
       - database:/var/lib/sqld
 
+  submissions-database:
+    container_name: submissions-database
+    image: ghcr.io/tursodatabase/libsql-server:latest
+    platform: linux/arm64
+    ports:
+      - "8081:8080"
+    environment:
+      SQLD_NODE: primary
+      SQLD_DB_PATH: /var/lib/sqld/submissions
+    volumes:
+      - database:/var/lib/sqld
+
   storage:
     container_name: storage
     image: bitnami/minio:latest
@@ -36,7 +48,7 @@ services:
     ports:
       - 8888:8888
     depends_on:
-      - database
+      - submissions-database
       - storage
     environment:
       STORAGE_SECRET_ACCESS_KEY: "minio_root_password"
