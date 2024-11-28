@@ -20,7 +20,7 @@ const getDatabaseIdFromMappings = async (
     return cachedDatabaseId;
   }
 
-  const mapping = await database.query.mapping.findFirst({
+  const mapping = await database.query.mappings.findFirst({
     where: (table, {eq}) => eq(table.endpointId, endpointId)
   });
 
@@ -30,7 +30,7 @@ const getDatabaseIdFromMappings = async (
       databaseId: 'default'
     };
 
-    await database.insert(schema.mapping).values(newMapping);
+    await database.insert(schema.mappings).values(newMapping);
     await cache.storeEndpointMapping(newMapping);
     return newMapping.databaseId;
   }

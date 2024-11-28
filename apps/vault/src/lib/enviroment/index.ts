@@ -12,7 +12,7 @@ export const zEnv = z.object({
   keys: z.custom<KVNamespace>(),
 
   // Databases
-  DATABASE_URL: z.string().url().default('http://localhost:8080'),
+  DATABASE_URL: z.string().url().default('http://localhost:8081'),
   DATABASE_AUTH_TOKEN: z.string().optional(),
 
   // Storage

@@ -9,8 +9,8 @@ export const validateSubmission = async (
   }
 ) => {
   try {
-    const endpointSchema = await database.query.schemas.findFirst({
-      where: (table, {eq}) => eq(table.endpointId, input.endpointId)
+    const endpointSchema = await database.query.endpoint.findFirst({
+      where: (table, {eq}) => eq(table.id, input.endpointId)
     });
 
     if (endpointSchema) {
@@ -18,7 +18,7 @@ export const validateSubmission = async (
     }
 
     const newSchema = generateSchema(input, input.endpointId);
-    await database.insert(schema.schemas).values(newSchema);
+    await database.insert(schema.endpoint).values(newSchema);
     return true;
   } catch {
     console.error('Unexpected problem validating the endpoint schema');
@@ -31,7 +31,7 @@ export const generateSchema = (
     fileUploads: {field: string; name: string}[];
   },
   endpointId: string
-): schema.EndpointSchema => {
+): schema.Endpoint => {
   const schema: Record<string, string> = {};
 
   for (const [key, value] of Object.entries(input.data)) {
@@ -44,7 +44,7 @@ export const generateSchema = (
   }
 
   return {
-    endpointId,
+    id: endpointId,
     schema: JSON.stringify(schema),
     createdAt: new Date()
   };
@@ -55,7 +55,7 @@ export const compareSchema = (
     data: Record<string, string>;
     fileUploads: {field: string; name: string}[];
   },
-  endpointSchema: schema.EndpointSchema
+  endpointSchema: schema.Endpoint
 ): boolean => {
   try {
     const data = {
