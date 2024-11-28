@@ -1,4 +1,4 @@
-import type {Submission} from '@formizee/db-submissions/schema';
+import type {schema} from '@formizee/db/submissions';
 
 export class Cache {
   public readonly client: KVNamespace;
@@ -7,21 +7,23 @@ export class Cache {
     this.client = opts.client;
   }
 
-  public async getSubmission(submissionId: string): Promise<Submission | null> {
+  public async getSubmission(
+    submissionId: string
+  ): Promise<schema.Submission | null> {
     const raw = await this.client.get(`submission:${submissionId}`);
     if (!raw) {
       return Promise.resolve(null);
     }
 
     try {
-      const data = JSON.parse(raw) as Submission;
+      const data = JSON.parse(raw) as schema.Submission;
       return Promise.resolve(data);
     } catch {
       return Promise.resolve(null);
     }
   }
 
-  public async storeSubmission(data: Submission) {
+  public async storeSubmission(data: schema.Submission) {
     return await this.client.put(
       `submission:${data.id}`,
       JSON.stringify(data),

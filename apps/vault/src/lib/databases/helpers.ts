@@ -1,5 +1,8 @@
-import {createConnection, type Database} from '@formizee/db-submissions/vault';
-import {schema} from '@formizee/db-submissions';
+import {
+  schema,
+  createConnection,
+  type Database
+} from '@formizee/db/submissions';
 import type {Cache} from '@/lib/cache';
 
 interface Bindings {

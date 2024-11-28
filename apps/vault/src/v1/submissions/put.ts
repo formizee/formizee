@@ -1,9 +1,8 @@
-import {assignOriginDatabase} from '@/lib/databases';
 import {SubmissionSchema, PutSchema} from './schema';
 import type {submissions as submissionsAPI} from '.';
 import {openApiErrorResponses} from '@/lib/errors';
 import {HTTPException} from 'hono/http-exception';
-import {schema} from '@formizee/db-submissions';
+import {schema} from '@formizee/db/submissions';
 import {createRoute} from '@hono/zod-openapi';
 
 export const putRoute = createRoute({
@@ -38,20 +37,8 @@ export const registerPutSubmission = (api: typeof submissionsAPI) => {
     const {database, cache} = context.get('services');
     const input = context.req.valid('json');
 
-    // Assign the database to handle this endpoint
-    const originDatabase = await assignOriginDatabase(
-      {database, cache},
-      input.endpointId
-    );
-
-    if (!originDatabase) {
-      throw new HTTPException(404, {
-        message: 'Origin database not found'
-      });
-    }
-
     // Query submission
-    const submission = await originDatabase.query.submission.findFirst({
+    const submission = await database.query.submission.findFirst({
       where: (table, {eq}) => eq(table.id, input.id)
     });
 
@@ -69,7 +56,7 @@ export const registerPutSubmission = (api: typeof submissionsAPI) => {
     };
 
     await Promise.all([
-      originDatabase.update(schema.submission).set({
+      database.update(schema.submission).set({
         isSpam: newSubmissionData.isSpam,
         isRead: newSubmissionData.isRead
       }),

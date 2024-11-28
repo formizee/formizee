@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@formizee/analytics": "workspace:*",
-    "@formizee/db-submissions": "workspace:*",
+    "@formizee/db": "workspace:*",
     "@formizee/encryption": "workspace:*",
     "@formizee/error": "workspace:*",
     "@formizee/id": "workspace:*",

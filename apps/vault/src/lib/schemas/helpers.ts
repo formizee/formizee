@@ -1,6 +1,4 @@
-import type {EndpointSchema} from '@formizee/db-submissions/schema';
-import type {Database} from '@formizee/db-submissions/vault';
-import {schema} from '@formizee/db-submissions';
+import {schema, type Database} from '@formizee/db/submissions';
 
 export const validateSubmission = async (
   database: Database,
@@ -11,8 +9,8 @@ export const validateSubmission = async (
   }
 ) => {
   try {
-    const endpointSchema = await database.query.endpointSchema.findFirst({
-      where: (table, {eq}) => eq(table.id, input.endpointId)
+    const endpointSchema = await database.query.schemas.findFirst({
+      where: (table, {eq}) => eq(table.endpointId, input.endpointId)
     });
 
     if (endpointSchema) {
@@ -20,7 +18,7 @@ export const validateSubmission = async (
     }
 
     const newSchema = generateSchema(input, input.endpointId);
-    await database.insert(schema.endpointSchema).values(newSchema);
+    await database.insert(schema.schemas).values(newSchema);
     return true;
   } catch {
     console.error('Unexpected problem validating the endpoint schema');
@@ -33,7 +31,7 @@ export const generateSchema = (
     fileUploads: {field: string; name: string}[];
   },
   endpointId: string
-): EndpointSchema => {
+): schema.EndpointSchema => {
   const schema: Record<string, string> = {};
 
   for (const [key, value] of Object.entries(input.data)) {
@@ -46,7 +44,7 @@ export const generateSchema = (
   }
 
   return {
-    id: endpointId,
+    endpointId,
     schema: JSON.stringify(schema),
     createdAt: new Date()
   };
@@ -57,7 +55,7 @@ export const compareSchema = (
     data: Record<string, string>;
     fileUploads: {field: string; name: string}[];
   },
-  endpointSchema: EndpointSchema
+  endpointSchema: schema.EndpointSchema
 ): boolean => {
   try {
     const data = {

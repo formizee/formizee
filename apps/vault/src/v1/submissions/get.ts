@@ -1,5 +1,4 @@
 import {ParamsSchema, SubmissionSchema} from './schema';
-import {assignOriginDatabase} from '@/lib/databases';
 import type {submissions as submissionsAPI} from '.';
 import {openApiErrorResponses} from '@/lib/errors';
 import {HTTPException} from 'hono/http-exception';
@@ -32,22 +31,10 @@ export const registerGetSubmission = (api: typeof submissionsAPI) => {
     const {database, storage, cache, keys} = context.get('services');
     const input = context.req.valid('param');
 
-    // Assign the database to handle this endpoint
-    const originDatabase = await assignOriginDatabase(
-      {database, cache},
-      input.endpointId
-    );
-
-    if (!originDatabase) {
-      throw new HTTPException(404, {
-        message: 'Origin database not found'
-      });
-    }
-
     // Query submission
     let submission = await cache.getSubmission(input.id);
     if (!submission) {
-      const data = await originDatabase.query.submission.findFirst({
+      const data = await database.query.submission.findFirst({
         where: (table, {eq}) => eq(table.id, input.id)
       });
 
@@ -69,10 +56,7 @@ export const registerGetSubmission = (api: typeof submissionsAPI) => {
     );
 
     // Check for file uploads
-    const fileUploads = await storage.getDownloadLinks(
-      originDatabase,
-      submission.id
-    );
+    const fileUploads = await storage.getDownloadLinks(database, submission.id);
 
     try {
       const submissionData = JSON.parse(decryptedSubmission);
