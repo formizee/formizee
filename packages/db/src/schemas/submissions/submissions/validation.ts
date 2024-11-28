@@ -3,9 +3,6 @@ import {submission} from './submission';
 import {z} from 'zod';
 
 export const insertSubmissionSchema = createInsertSchema(submission, {
-  id: z.string().regex(/^[a-zA-Z]+_[a-zA-Z0-9]+$/, {
-    message: 'Invalid identifier, please check that is correctly typed.'
-  }),
   endpointId: z.string().regex(/^[a-zA-Z]+_[a-zA-Z0-9]+$/, {
     message:
       'Invalid endpoint identifier, please check that is correctly typed.'

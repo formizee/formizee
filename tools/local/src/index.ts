@@ -58,24 +58,26 @@ async function main() {
     }
 
     case 'api': {
-      await startContainers(['database', 'vault']);
-      await prepareDatabase();
+      await startContainers(['database', 'submissions-database']);
+      await prepareDatabase('submissions');
+      await prepareDatabase('main');
 
       await bootstrapApi();
       break;
     }
 
     case 'vault': {
-      await startContainers(['database', 'storage']);
-      await prepareDatabase();
+      await startContainers(['submissions-database', 'storage']);
+      await prepareDatabase('submissions');
 
       await bootstrapVault();
       break;
     }
 
     case 'dashboard': {
-      await startContainers(['database', 'api']);
-      await prepareDatabase();
+      await startContainers(['database', 'submissions-database', 'api']);
+      await prepareDatabase('submissions');
+      await prepareDatabase('main');
 
       bootstrapDashboard();
       break;

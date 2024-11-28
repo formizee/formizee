@@ -23,7 +23,7 @@ export async function bootstrapVault() {
       STORAGE_BUCKET: 'storage'
     },
     Database: {
-      DATABASE_URL: 'http://localhost:8080'
+      DATABASE_URL: 'http://localhost:8081'
     }
   });
 

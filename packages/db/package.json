@@ -1,17 +1,31 @@
 {
   "name": "@formizee/db",
   "author": "Pau García Chiner",
-  "main": "src/index.ts",
-  "types": "src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts",
+      "require": "./src/index.ts"
+    },
+    "./submissions": {
+      "types": "./src/submissions.ts",
+      "import": "./src/submissions.ts",
+      "require": "./src/submissions.ts"
+    }
+  },
   "version": "1.0.0",
   "license": "Apache-2.0",
   "scripts": {
     "lint": "biome lint .",
     "check": "tsc --noEmit",
-    "push": "drizzle-kit push",
-    "studio": "drizzle-kit studio",
-    "migrate": "drizzle-kit migrate",
-    "generate": "drizzle-kit generate"
+    "push:main": "drizzle-kit push --config src/schemas/main/drizzle.config.ts",
+    "studio:main": "drizzle-kit studio --config src/schemas/main/drizzle.config.ts",
+    "migrate:main": "drizzle-kit migrate --config src/schemas/main/drizzle.config.ts",
+    "generate:main": "drizzle-kit generate --config src/schemas/main/drizzle.config.ts",
+    "push:submissions": "drizzle-kit push --config src/schemas/submissions/drizzle.config.ts",
+    "studio:submissions": "drizzle-kit studio --config src/schemas/submissions/drizzle.config.ts",
+    "migrate:submissions": "drizzle-kit migrate --config src/schemas/submissions/drizzle.config.ts",
+    "generate:submissions": "drizzle-kit generate --config src/schemas/submissions/drizzle.config.ts"
   },
   "devDependencies": {
     "@formizee/tsconfig": "workspace:*",

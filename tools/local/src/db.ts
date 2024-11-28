@@ -6,24 +6,28 @@ import {task} from './util';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-export async function prepareDatabase(): Promise<void> {
-  await migrateTables();
+export async function prepareDatabase(database: 'main' | 'submissions'): Promise<void> {
+  if(database === 'main') {
+    await migrateTables(database, "http://localhost:8080", 'pnpm push:main');
+  }
+
+  if(database === 'submissions') {
+    await migrateTables(database, "http://localhost:8081", 'pnpm push:submissions');
+  }
 }
 
-async function migrateTables() {
+async function migrateTables(database: string, databaseUrl: string, pushCommand: string) {
   const packageDir = '../../../packages/db';
-  const dataseUrl = 'http://locahost:8080';
 
   await task('migrating tables', async s => {
     const cwd = path.join(__dirname, packageDir);
-
     await new Promise((resolve, reject) => {
-      const p = exec('pnpm run push', {
+      const p = exec(pushCommand, {
         env: {
-          DATABASE_URL: dataseUrl,
+          DATABASE_URL: databaseUrl,
           ...process.env
         },
-        cwd
+        cwd,
       });
       p.on('exit', code => {
         if (code === 0) {
@@ -32,7 +36,8 @@ async function migrateTables() {
           reject(code);
         }
       });
+
     });
-    s.stop('database ready.');
+    s.stop(`${database} database ready.`);
   });
 }

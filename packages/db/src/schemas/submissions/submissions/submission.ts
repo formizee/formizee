@@ -1,13 +1,10 @@
 import {text, integer, sqliteTable} from 'drizzle-orm/sqlite-core';
-import {relations, sql} from 'drizzle-orm';
-import {endpoint} from '../endpoints';
+import {sql} from 'drizzle-orm';
 
 export const submission = sqliteTable('submissions', {
   id: text('id').primaryKey(),
 
-  endpointId: text('endpoint_id')
-    .notNull()
-    .references(() => endpoint.id, {onDelete: 'cascade'}),
+  endpointId: text('endpoint_id').notNull(),
 
   iv: text('data_iv').notNull(),
 
@@ -23,10 +20,3 @@ export const submission = sqliteTable('submissions', {
     .notNull()
     .default(sql`(unixepoch())`)
 });
-
-export const submissionRelations = relations(submission, ({one}) => ({
-  endpoint: one(endpoint, {
-    fields: [submission.endpointId],
-    references: [endpoint.id]
-  })
-}));

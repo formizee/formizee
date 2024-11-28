@@ -1,8 +1,8 @@
 import type {Config} from 'drizzle-kit';
 
 export default {
-  schema: './src/schema/index.ts',
-  out: './migrations',
+  schema: './src/schemas/main/index.ts',
+  out: './migrations/main/',
   dialect: 'turso',
   dbCredentials: {
     url: process.env.DATABASE_URL!,

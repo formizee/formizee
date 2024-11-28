@@ -2,7 +2,7 @@ import {type LibSQLDatabase, drizzle as sqlDrizzle} from 'drizzle-orm/libsql';
 import {createClient} from '@libsql/client/web';
 
 // Drizzle utilities & schemas
-import * as schema from './schemas/main';
+import * as schema from './schemas/submissions';
 export * from 'drizzle-orm';
 export {schema};
 
