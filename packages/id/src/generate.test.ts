@@ -33,6 +33,7 @@ describe('ids are k-sorted by time', () => {
       const sorted = [...ids].sort();
 
       for (let i = 0; i < ids.length; i++) {
+        //@ts-ignore
         expect(Math.abs(ids.indexOf(sorted[i]) - i)).toBeLessThanOrEqual(tc.k);
       }
     });

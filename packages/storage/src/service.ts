@@ -1,4 +1,4 @@
-import {type Database, schema} from '@formizee/db';
+import {type Database, schema} from '@formizee/db/submissions';
 import {BaseStorage} from './storage';
 import {newId} from '@formizee/id';
 
