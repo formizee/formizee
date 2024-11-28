@@ -23,6 +23,7 @@ export const zEnv = z.object({
   STORAGE_ENDPOINT: z.string().url().default('http://localhost:3902'),
   STORAGE_ACCESS_KEY_ID: z.string().default('minio_root_user'),
   STORAGE_BUCKET: z.string().default('storage'),
+  VAULT_SECRET: z.string().default(''),
 
   // Analytics
   TINYBIRD_URL: z.string().url().optional(),
