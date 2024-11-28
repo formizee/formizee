@@ -1,10 +1,7 @@
 import {z} from 'zod';
 
 export const databaseEnv = z.object({
-  DATABASE_URL: z
-    .string()
-    .url()
-    .default('postgresql://formizee:password@localhost/formizee')
+  DATABASE_URL: z.string().url().default('http://localhost:8080')
 });
 
 export const integrationTestEnv = databaseEnv.merge(

@@ -6,7 +6,6 @@ import {newKey} from '@formizee/keys';
 import {newId} from '@formizee/id';
 
 export type Resources = {
-  submission: schema.Submission;
   workspace: schema.Workspace;
   endpoint: schema.Endpoint;
   user: schema.User;
@@ -124,18 +123,7 @@ export abstract class Harness {
       updatedAt: new Date()
     };
 
-    const submission: schema.Submission = {
-      id: newId('test'),
-      data: {},
-      endpointId: endpoint.id,
-      createdAt: new Date(),
-      location: 'Spain',
-      isSpam: false,
-      isRead: false
-    };
-
     return {
-      submission,
       workspace,
       endpoint,
       user,
@@ -147,7 +135,6 @@ export abstract class Harness {
     await this.db.insert(schema.user).values(this.resources.user);
     await this.db.insert(schema.workspace).values(this.resources.workspace);
     await this.db.insert(schema.endpoint).values(this.resources.endpoint);
-    await this.db.insert(schema.submission).values(this.resources.submission);
     await this.db.insert(schema.key).values(this.resources.key);
   }
 }
