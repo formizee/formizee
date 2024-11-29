@@ -30,7 +30,7 @@ export function services(): MiddlewareHandler<HonoEnv> {
       bucket: c.env.STORAGE_BUCKET
     });
 
-    const cache = new Cache({client: c.env.cache});
+    const cache = new Cache({client: c.env.cache, analytics});
     const keys = new Keys({client: c.env.keys});
 
     c.set('services', {
