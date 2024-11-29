@@ -1,10 +1,13 @@
-import {createConnection} from '@formizee/db';
+import {createClient} from '@libsql/client/web';
+import {schema, drizzle} from '@formizee/db/web';
 import {env} from '@/lib/enviroment';
 
-export const database = createConnection({
-  databaseUrl: env().DATABASE_URL,
+const client = createClient({
+  url: env().DATABASE_URL,
   authToken:
     env().VERCEL_ENV === 'development' ? undefined : env().DATABASE_AUTH_TOKEN
 });
 
-export * from '@formizee/db';
+export const database = drizzle(client, {schema});
+
+export * from '@formizee/db/web';

@@ -7,6 +7,11 @@
       "import": "./src/index.ts",
       "require": "./src/index.ts"
     },
+    "./web": {
+      "types": "./src/web.ts",
+      "import": "./src/web.ts",
+      "require": "./src/web.ts"
+    },
     "./submissions": {
       "types": "./src/submissions.ts",
       "import": "./src/submissions.ts",

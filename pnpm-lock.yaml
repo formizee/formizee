@@ -141,6 +141,9 @@ importers:
       '@hookform/resolvers':
         specifier: 3.4.0
         version: 3.4.0(react-hook-form@7.51.4(react@18.3.1))
+      '@libsql/client':
+        specifier: 0.14.0
+        version: 0.14.0
       '@tanstack/react-query':
         specifier: 4.36.1
         version: 4.36.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
