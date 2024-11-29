@@ -7,6 +7,8 @@ export class Cache {
     this.client = opts.client;
   }
 
+  // Submissions
+
   public async getSubmission(
     submissionId: string
   ): Promise<schema.Submission | null> {
@@ -36,6 +38,8 @@ export class Cache {
   public async deleteSubmission(submissionId: string) {
     return await this.client.delete(`submission:${submissionId}`);
   }
+
+  // List Submissions
 
   public async getSubmissions(input: {
     endpointId: string;
@@ -93,6 +97,8 @@ export class Cache {
     );
   }
 
+  // Endpoint Mappings
+
   public async getEndpointMapping(endpointId: string) {
     return await this.client.get(`endpoint:${endpointId}`);
   }
@@ -112,5 +118,37 @@ export class Cache {
 
   public async deleteEndpointMapping(endpointId: string) {
     return await this.client.delete(`endpoint:${endpointId}`);
+  }
+
+  // Databases
+
+  public async getDatabase(
+    databaseId: string
+  ): Promise<schema.Database | null> {
+    const raw = await this.client.get(`database:${databaseId}`);
+    if (!raw) {
+      return Promise.resolve(null);
+    }
+
+    try {
+      const data = JSON.parse(raw) as schema.Database;
+      return Promise.resolve(data);
+    } catch {
+      return Promise.resolve(null);
+    }
+  }
+
+  public async storeDatabase(input: schema.Database) {
+    return await this.client.put(
+      `database:${input.id}`,
+      JSON.stringify(input),
+      {
+        expirationTtl: 86400
+      }
+    );
+  }
+
+  public async deleteDatabase(databaseId: string) {
+    return await this.client.delete(`database:${databaseId}`);
   }
 }

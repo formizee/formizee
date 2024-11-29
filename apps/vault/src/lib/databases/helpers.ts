@@ -53,12 +53,18 @@ export const assignOriginDatabase = async (
     return Promise.resolve(database);
   }
 
-  const originDatabase = await database.query.database.findFirst({
-    where: (table, {eq}) => eq(table.id, databaseId)
-  });
+  let originDatabase = await cache.getDatabase(databaseId);
 
   if (!originDatabase) {
-    return Promise.resolve(null);
+    const response = await database.query.database.findFirst({
+      where: (table, {eq}) => eq(table.id, databaseId)
+    });
+
+    if (!response) {
+      return Promise.resolve(null);
+    }
+
+    originDatabase = response;
   }
 
   const response = createConnection({
