@@ -82,28 +82,14 @@ export const metricSchema = z.discriminatedUnion('metric', [
     latency: z.number()
   }),
   z.object({
-    metric: z.literal('vault.db.read'),
+    metric: z.literal('vault.latency'),
     query: z.enum([
-      'schemas.get',
-      'mappings.get',
-      'databases.get',
       'submissions.get',
       'submissions.list',
-      'fileUploads.get',
-      'fileUploads.list'
-    ]),
-    latency: z.number()
-  }),
-  z.object({
-    metric: z.literal('vault.db.write'),
-    mutation: z.enum([
-      'schemas.post',
-      'databases.post',
-      'endpoints.delete',
-      'fileUploads.post',
-      'submissions.put',
       'submissions.post',
-      'submissions.delete'
+      'submissions.put',
+      'submissions.delete',
+      'endpoints.delete'
     ]),
     latency: z.number()
   }),
