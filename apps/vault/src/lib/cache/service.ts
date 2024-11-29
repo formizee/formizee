@@ -37,6 +37,62 @@ export class Cache {
     return await this.client.delete(`submission:${submissionId}`);
   }
 
+  public async getSubmissions(input: {
+    endpointId: string;
+    page: number;
+    pageSize: number;
+  }): Promise<{data: schema.Submission[]; totalItems: number} | null> {
+    const raw = await this.client.get(
+      `${input.endpointId}:submissions_page_${input.page}_size_${input.pageSize}`
+    );
+    if (!raw) {
+      return Promise.resolve(null);
+    }
+
+    try {
+      const data = JSON.parse(raw) as {
+        data: schema.Submission[];
+        totalItems: number;
+      };
+      return Promise.resolve(data);
+    } catch {
+      return Promise.resolve(null);
+    }
+  }
+
+  public async storeSubmissions(
+    input: {
+      endpointId: string;
+      page: number;
+      pageSize: number;
+      totalItems: number;
+    },
+    data: schema.Submission[]
+  ) {
+    return await this.client.put(
+      `${input.endpointId}:submissions_page_${input.page}_size_${input.pageSize}`,
+      JSON.stringify({
+        data,
+        totalItems: input.totalItems
+      }),
+      {
+        expirationTtl: 3600
+      }
+    );
+  }
+
+  public async invalidateSubmissions(input: {endpointId: string}) {
+    const {keys} = await this.client.list({
+      prefix: `${input.endpointId}:submissions_page_`
+    });
+
+    Promise.all(
+      keys.map(async key => {
+        await this.client.delete(key.name);
+      })
+    );
+  }
+
   public async getEndpointMapping(endpointId: string) {
     return await this.client.get(`endpoint:${endpointId}`);
   }
