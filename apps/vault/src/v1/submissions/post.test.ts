@@ -74,7 +74,7 @@ describe('Create a submission', () => {
     expect(res.status).toBe(201);
   });
 
-  it('Should get 403 on bad schema', async context => {
+  it('Should get 201 on bad schema', async context => {
     const harness = await IntegrationHarness.init(context);
     const {id} = harness.resources.endpoint;
 
@@ -97,11 +97,59 @@ describe('Create a submission', () => {
     });
 
     expect(res.body).toStrictEqual({
-      code: 'FORBIDDEN',
-      docs: `${harness.env.DOCS_URL}/api-references/errors/code/FORBIDDEN`,
-      message: 'The submission does not match the current endpoint schema'
+      pendingUploads: [],
+      id: res.body.id,
+      endpointId: res.body.endpointId,
+      location: res.body.location,
+      createdAt: res.body.createdAt,
+      isRead: res.body.isRead,
+      isSpam: res.body.isSpam
     });
-    expect(res.status).toBe(403);
+    expect(res.status).toBe(201);
+  });
+
+  it('Should get 201 on bad files schema', async context => {
+    const harness = await IntegrationHarness.init(context);
+    const {id} = harness.resources.filesEndpoint;
+
+    const res = await harness.post<
+      RequestPostSubmission,
+      ResponsePostSubmission
+    >({
+      headers: {
+        'content-type': 'application/json'
+      },
+      url: '/v1/submission',
+      body: {
+        endpointId: id,
+        data: {
+          badSchema: 'pau'
+        },
+        fileUploads: [
+          {
+            name: 'example.txt',
+            field: 'filed'
+          }
+        ],
+        location: '0.0.0.0'
+      }
+    });
+
+    expect(res.body).toStrictEqual({
+      pendingUploads: [
+        {
+          field: 'file',
+          url: null
+        }
+      ],
+      id: res.body.id,
+      endpointId: res.body.endpointId,
+      location: res.body.location,
+      createdAt: res.body.createdAt,
+      isRead: res.body.isRead,
+      isSpam: res.body.isSpam
+    });
+    expect(res.status).toBe(201);
   });
 
   it('Should get 400 on bad request', async context => {

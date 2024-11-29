@@ -55,11 +55,12 @@ export const registerPostSubmission = (api: typeof submissionsAPI) => {
     }
 
     // Schema validation
-    const submissionIsValid = await validateSubmission(originDatabase, input);
+    const validInput = await validateSubmission(originDatabase, input);
 
-    if (!submissionIsValid) {
-      throw new HTTPException(403, {
-        message: 'The submission does not match the current endpoint schema'
+    if (validInput === null) {
+      throw new HTTPException(500, {
+        message:
+          'Error parsing the submission, please contact support@formizee.com'
       });
     }
 
@@ -67,7 +68,7 @@ export const registerPostSubmission = (api: typeof submissionsAPI) => {
     const key = await keys.getEndpointDEK(context.env, input.endpointId);
 
     const encryptedSubmission = await aes.encrypt(
-      JSON.stringify(input.data),
+      JSON.stringify(validInput.data),
       key
     );
 
@@ -90,7 +91,7 @@ export const registerPostSubmission = (api: typeof submissionsAPI) => {
 
     const pendingUploads = await storage.getUploadLinks(
       originDatabase,
-      input.fileUploads,
+      validInput.fileUploads,
       input.endpointId,
       submissionData.id
     );

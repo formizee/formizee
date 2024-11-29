@@ -83,7 +83,7 @@ export abstract class Harness {
       schema: JSON.stringify({
         name: 'string',
         email: 'string',
-        file: 'string'
+        file: 'file'
       }),
       createdAt: new Date()
     };

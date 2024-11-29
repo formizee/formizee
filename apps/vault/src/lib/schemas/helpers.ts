@@ -19,9 +19,10 @@ export const validateSubmission = async (
 
     const newSchema = generateSchema(input, input.endpointId);
     await originDatabase.insert(schema.endpoint).values(newSchema);
-    return true;
+    return input;
   } catch {
     console.error('Unexpected problem validating the endpoint schema');
+    return null;
   }
 };
 
@@ -40,7 +41,7 @@ export const generateSchema = (
   }
 
   for (const file of input.fileUploads) {
-    schema[file.field] = 'string';
+    schema[file.field] = 'file';
   }
 
   return {
@@ -56,31 +57,59 @@ export const compareSchema = (
     fileUploads: {field: string; name: string}[];
   },
   endpointSchema: schema.Endpoint
-): boolean => {
+): {
+  data: Record<string, string>;
+  fileUploads: {field: string; name: string}[];
+} | null => {
   try {
     const data = {
-      ...input.data, // Spread the data from the first object
+      ...input.data,
       ...Object.fromEntries(
         input.fileUploads.map(file => [file.field, file.name])
-      ) // Convert fileUploads array to an object
+      )
     };
 
-    const schema = JSON.parse(endpointSchema.schema); // Parse the stringified schema into an object
+    const schema = JSON.parse(endpointSchema.schema) as Record<
+      string,
+      'string' | 'file'
+    >;
+
+    const validatedData: Record<string, string> = {};
+    const validatedFileUploads: {field: string; name: string}[] = [];
+
     for (const [key, expectedType] of Object.entries(schema)) {
-      const actualType = typeof data[key];
-      if (actualType !== expectedType) {
-        return false; // If the type doesn't match, return false
+      if (expectedType === 'string') {
+        const actualValue = data[key];
+        const actualType = typeof actualValue;
+
+        if (actualType === expectedType) {
+          validatedData[key] = actualValue ?? '';
+        } else {
+          validatedData[key] = '';
+        }
+      } else {
+        let keyAssigned = false;
+        for (const file of input.fileUploads) {
+          if (key === file.field) {
+            validatedFileUploads.push(file);
+            keyAssigned = true;
+          }
+        }
+        if (!keyAssigned) {
+          validatedFileUploads.push({
+            name: '',
+            field: key
+          });
+        }
       }
     }
-    // Check if there are extra keys in submissionData not in schema
-    for (const key of Object.keys(data)) {
-      if (!(key in schema)) {
-        return false; // If there's an unexpected key, return false
-      }
-    }
-    return true; // If all checks pass, the submissionData is valid
+
+    return {
+      data: validatedData,
+      fileUploads: validatedFileUploads
+    };
   } catch (e) {
     console.error('Error parsing schema:', e);
-    return false; // Return false if schema parsing fails
+    return null;
   }
 };

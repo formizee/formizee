@@ -17,6 +17,13 @@ export class Storage extends BaseStorage {
     try {
       const response = await Promise.all(
         fileUploads.map(async ({field, name}) => {
+          if (name === '') {
+            return {
+              field,
+              url: null
+            };
+          }
+
           const fileId = newId('fileUpload');
           const extension = name.includes('.') ? `.${name.split('.')[1]}` : '';
           const fileKey = `${endpointId}/${submissionId}/${fileId}${extension}`;

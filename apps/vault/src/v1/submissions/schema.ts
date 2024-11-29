@@ -91,7 +91,7 @@ export const PostResponseSchema = z.object({
   pendingUploads: z
     .object({
       field: z.string(),
-      url: z.string().url()
+      url: z.string().url().nullable()
     })
     .array()
     .openapi({
