@@ -29,8 +29,9 @@ export const getRoute = createRoute({
 
 export const registerGetSubmission = (api: typeof submissionsAPI) => {
   return api.openapi(getRoute, async context => {
-    const {database, storage, cache, keys} = context.get('services');
+    const {analytics, database, storage, cache, keys} = context.get('services');
     const input = context.req.valid('param');
+    const queryStart = performance.now();
 
     const originDatabase = await assignOriginDatabase(
       {database, cache},
@@ -50,7 +51,6 @@ export const registerGetSubmission = (api: typeof submissionsAPI) => {
       const data = await originDatabase.query.submission.findFirst({
         where: (table, {eq}) => eq(table.id, input.id)
       });
-
       if (!data) {
         throw new HTTPException(404, {
           message: 'Submission not found'
@@ -99,6 +99,12 @@ export const registerGetSubmission = (api: typeof submissionsAPI) => {
         location: submission.location,
         createdAt: submission.createdAt
       };
+
+      analytics.ingestFormizeeMetrics({
+        metric: 'vault.latency',
+        query: 'submissions.get',
+        latency: performance.now() - queryStart
+      });
 
       return context.json(response, 200);
     } catch (error) {

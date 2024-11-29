@@ -38,8 +38,9 @@ export const postRoute = createRoute({
 
 export const registerPostSubmission = (api: typeof submissionsAPI) => {
   return api.openapi(postRoute, async context => {
-    const {database, cache, storage, keys} = context.get('services');
+    const {analytics, database, cache, storage, keys} = context.get('services');
     const input = context.req.valid('json');
+    const mutationStart = performance.now();
 
     // Assign database
     const originDatabase = await assignOriginDatabase(
@@ -99,6 +100,12 @@ export const registerPostSubmission = (api: typeof submissionsAPI) => {
     const response = PostResponseSchema.parse({
       ...submissionData,
       pendingUploads: pendingUploads
+    });
+
+    analytics.ingestFormizeeMetrics({
+      metric: 'vault.latency',
+      query: 'submissions.post',
+      latency: performance.now() - mutationStart
     });
 
     return context.json(response, 201);

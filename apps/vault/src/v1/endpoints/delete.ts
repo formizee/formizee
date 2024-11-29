@@ -29,8 +29,9 @@ export const deleteRoute = createRoute({
 
 export const registerDeleteEndpoint = (api: typeof endpointsAPI) => {
   return api.openapi(deleteRoute, async context => {
-    const {database, storage, cache} = context.get('services');
+    const {analytics, database, storage, cache} = context.get('services');
     const input = context.req.valid('param');
+    const mutationStart = performance.now();
 
     const originDatabase = await assignOriginDatabase(
       {database, cache},
@@ -78,6 +79,12 @@ export const registerDeleteEndpoint = (api: typeof endpointsAPI) => {
         .delete(schema.mappings)
         .where(eq(schema.mappings.endpointId, endpoint.id))
     ]);
+
+    analytics.ingestFormizeeMetrics({
+      metric: 'vault.latency',
+      query: 'endpoints.delete',
+      latency: performance.now() - mutationStart
+    });
 
     return context.json({}, 200);
   });
