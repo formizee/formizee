@@ -43,7 +43,7 @@ describe('Delete a submission', () => {
   it('Should get 404', async context => {
     const harness = await IntegrationHarness.init(context);
 
-    const res = await harness.get<ResponseSubmission>({
+    const res = await harness.delete<ResponseSubmission>({
       url: '/v1/submission/enp_123456789/sub_123456789'
     });
 
