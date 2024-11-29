@@ -3,6 +3,12 @@ import type {Services} from '@/lib/services';
 import type {Env} from '@/lib/enviroment';
 
 export type HonoVariables = {
+  // Metrics
+  requestId: string;
+  userAgent: string;
+  location: string;
+
+  // Context
   pagination: Pagination;
   services: Services;
 };

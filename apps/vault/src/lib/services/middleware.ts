@@ -6,9 +6,23 @@ import {Analytics} from '@formizee/analytics';
 import {Storage} from '@formizee/storage';
 import {Cache} from '@/lib/cache';
 import {Keys} from '@/lib/keys';
+import {newId} from '@formizee/id';
 
 export function services(): MiddlewareHandler<HonoEnv> {
   return async (c, next) => {
+    // Metrics
+    const requestId = newId('request');
+    c.set('requestId', requestId);
+    c.set('userAgent', c.req.header('User-Agent') ?? '');
+    c.res.headers.set('formizee-request-id', requestId);
+    c.set(
+      'location',
+      c.req.header('x-real-ip') ??
+        c.req.header('cf-connecting-ip') ??
+        String(c.req.raw?.cf?.city) ??
+        String(c.req.raw?.cf?.country) ??
+        ''
+    );
     const analytics = new Analytics({
       tinybirdToken:
         c.env.ENVIROMENT === 'production' ? c.env.TINYBIRD_TOKEN : undefined,
