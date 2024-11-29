@@ -30,11 +30,12 @@ const getDatabaseIdFromMappings = async (
       databaseId: 'default'
     };
 
-    await database.insert(schema.mappings).values(newMapping);
-    await cache.storeEndpointMapping(newMapping);
+    await Promise.all([
+      database.insert(schema.mappings).values(newMapping),
+      cache.storeEndpointMapping(newMapping)
+    ]);
     return newMapping.databaseId;
   }
-
   await cache.storeEndpointMapping(mapping);
   return mapping.databaseId;
 };
