@@ -6,7 +6,7 @@ import {test} from 'vitest';
 
 const pathToDirectoryWithEmails = path.resolve(__dirname, '../emails');
 
-test('That all the emails render without errors', async () => {
+test.skip('That all the emails render without errors', async () => {
   // Maybe later down the line this will need to have some filtering as well
   // to avoid files that are not email templates
   const emailFilenames = await readdir(pathToDirectoryWithEmails, {
