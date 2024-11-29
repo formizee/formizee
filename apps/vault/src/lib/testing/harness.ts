@@ -25,7 +25,8 @@ export abstract class Harness {
     this.resources = this.createResources();
 
     this.db = createConnection({
-      databaseUrl: this.env.DATABASE_URL
+      databaseUrl: this.env.DATABASE_URL,
+      authToken: this.env.DATABASE_AUTH_TOKEN
     });
 
     t.onTestFinished(async () => {
