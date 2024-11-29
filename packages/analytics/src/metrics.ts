@@ -24,15 +24,85 @@ export const metricSchema = z.discriminatedUnion('metric', [
     context: z.record(z.unknown())
   }),
 
+  // Cache metrics
+  z.object({
+    metric: z.literal('vault.cache.read'),
+    hit: z.boolean(),
+    key: z.string(),
+    latency: z.number()
+  }),
+  z.object({
+    metric: z.literal('vault.cache.write'),
+    key: z.string(),
+    latency: z.number()
+  }),
+  z.object({
+    metric: z.literal('vault.cache.delete'),
+    key: z.string(),
+    latency: z.number()
+  }),
+
   // Database metrics
   z.object({
-    metric: z.literal('db.read'),
+    metric: z.literal('main.db.read'),
     query: z.enum([
+      'users.get',
+      'users.list',
+
+      'keys.list',
       'keys.verify',
 
-      'submissions.load',
-      'submissions.create',
-      'submissions.update',
+      'endpoints.get',
+      'endpoints.list',
+
+      'workspaces.get',
+      'workspaces.list'
+    ]),
+    latency: z.number()
+  }),
+  z.object({
+    metric: z.literal('main.db.write'),
+    mutation: z.enum([
+      'users.put',
+      'users.post',
+      'users.delete',
+
+      'keys.put',
+      'keys.post',
+      'keys.delete',
+
+      'endpoints.put',
+      'endpoints.post',
+      'endpoints.delete',
+
+      'workspaces.put',
+      'workspaces.post',
+      'workspaces.delete'
+    ]),
+    latency: z.number()
+  }),
+  z.object({
+    metric: z.literal('vault.db.read'),
+    query: z.enum([
+      'schemas.get',
+      'mappings.get',
+      'databases.get',
+      'submissions.get',
+      'submissions.list',
+      'fileUploads.get',
+      'fileUploads.list'
+    ]),
+    latency: z.number()
+  }),
+  z.object({
+    metric: z.literal('vault.db.write'),
+    mutation: z.enum([
+      'schemas.post',
+      'databases.post',
+      'endpoints.delete',
+      'fileUploads.post',
+      'submissions.put',
+      'submissions.post',
       'submissions.delete'
     ]),
     latency: z.number()
@@ -51,6 +121,24 @@ export const metricSchema = z.discriminatedUnion('metric', [
   }),
 
   z.object({
+    metric: z.literal('endpoint.created'),
+    workspaceId: z.string(),
+    context: z.object({
+      location: z.string(),
+      userAgent: z.string().optional()
+    })
+  }),
+
+  z.object({
+    metric: z.literal('user.created'),
+    workspaceId: z.string(),
+    context: z.object({
+      location: z.string(),
+      userAgent: z.string().optional()
+    })
+  }),
+
+  z.object({
     metric: z.literal('api.request'),
     workspaceId: z.string(),
     time: z.date(),
@@ -61,8 +149,8 @@ export const metricSchema = z.discriminatedUnion('metric', [
   }),
 
   z.object({
-    metric: z.literal('endpoint.created'),
-    workspaceId: z.string(),
+    metric: z.literal('vault.request'),
+    time: z.date(),
     context: z.object({
       location: z.string(),
       userAgent: z.string().optional()
