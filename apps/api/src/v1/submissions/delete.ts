@@ -1,10 +1,9 @@
+import {deleteSubmission, getSubmission} from '@/lib/vault';
 import type {submissions as submissionsApi} from '.';
 import {openApiErrorResponses} from '@/lib/errors';
 import {HTTPException} from 'hono/http-exception';
 import {createRoute, z} from '@hono/zod-openapi';
-import {eq, schema} from '@formizee/db';
 import {ParamsSchema} from './schema';
-import {deleteSubmission} from '@/lib/vault';
 
 export const deleteRoute = createRoute({
   method: 'delete',
@@ -33,10 +32,7 @@ export const registerDeleteSubmission = (api: typeof submissionsApi) => {
     const {database} = context.get('services');
     const {id} = context.req.valid('param');
 
-    const submission = await database.query.submission.findFirst({
-      where: (table, {eq}) => eq(table.id, id)
-    });
-
+    const submission = await getSubmission(context.env.VAULT_SECRET, id);
     if (!submission) {
       throw new HTTPException(404, {
         message: 'Submission not found'
@@ -59,15 +55,7 @@ export const registerDeleteSubmission = (api: typeof submissionsApi) => {
       });
     }
 
-    await database
-      .delete(schema.submission)
-      .where(eq(schema.submission.id, submission.id));
-
-    await deleteSubmission(
-      context.env.VAULT_SECRET,
-      endpoint.id,
-      submission.id
-    );
+    await deleteSubmission(context.env.VAULT_SECRET, submission.id);
 
     return context.json({}, 200);
   });

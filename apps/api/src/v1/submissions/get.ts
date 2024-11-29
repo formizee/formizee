@@ -33,10 +33,8 @@ export const registerGetSubmission = (api: typeof submissionsApi) => {
     const {id} = context.req.valid('param');
 
     const dbStart = performance.now();
-    const submission = await database.query.submission.findFirst({
-      where: (table, {eq}) => eq(table.id, id)
-    });
 
+    const submission = await getSubmission(context.env.VAULT_SECRET, id);
     if (!submission) {
       throw new HTTPException(404, {
         message: 'Submission not found'
@@ -59,22 +57,13 @@ export const registerGetSubmission = (api: typeof submissionsApi) => {
       });
     }
 
-    const content = await getSubmission(
-      context.env.VAULT_SECRET,
-      endpoint.id,
-      id
-    );
-
     await analytics.ingestFormizeeMetrics({
       metric: 'db.read',
       query: 'submissions.load',
       latency: performance.now() - dbStart
     });
 
-    const response = SubmissionSchema.parse({
-      ...submission,
-      data: content.data
-    });
+    const response = SubmissionSchema.parse(submission);
 
     return context.json(response, 200);
   });

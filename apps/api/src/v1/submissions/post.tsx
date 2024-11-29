@@ -10,8 +10,6 @@ import {openApiErrorResponses} from '@/lib/errors';
 import {HTTPException} from 'hono/http-exception';
 import {createRoute} from '@hono/zod-openapi';
 import {postSubmission} from '@/lib/vault';
-import {schema} from '@formizee/db';
-import {newId} from '@formizee/id';
 
 export const postRoute = createRoute({
   method: 'post',
@@ -201,25 +199,13 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
       }
     }
 
-    const data: schema.InsertSubmission = {
-      id: newId('submission'),
+    const newSubmission = await postSubmission(context.env.VAULT_SECRET, {
       endpointId: endpoint.id,
-      data: {},
+      data: input,
       location
-    };
-
-    await postSubmission(context.env.VAULT_SECRET, {
-      endpointId: data.endpointId,
-      id: data.id,
-      data: input
     }).catch(error => {
       throw new HTTPException(error.status, error.body);
     });
-
-    const newSubmission = await database
-      .insert(schema.submission)
-      .values(data)
-      .returning();
 
     if (
       endpoint.emailNotifications &&
@@ -253,7 +239,7 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
       }
     });
 
-    const response = SubmissionSchema.parse({...newSubmission[0], data: input});
+    const response = SubmissionSchema.parse(newSubmission);
     return context.json(response, 201);
   });
 };

@@ -8,8 +8,7 @@ import type {listSubmissions as submissionsApi} from '.';
 import {openApiErrorResponses} from '@/lib/errors';
 import {HTTPException} from 'hono/http-exception';
 import {createRoute, z} from '@hono/zod-openapi';
-import {count, eq, schema} from '@formizee/db';
-import {getSubmission} from '@/lib/vault';
+import {listSubmissions} from '@/lib/vault';
 
 export const listRoute = createRoute({
   method: 'get',
@@ -56,50 +55,23 @@ export const registerListSubmissions = (api: typeof submissionsApi) => {
 
     const endpointId = endpoint.id;
 
-    const submissions = await database.query.submission.findMany({
-      where: (table, {eq}) => eq(table.endpointId, endpointId),
-      offset: (page - 1) * limit,
-      limit
-    });
-
+    const submissions = await listSubmissions(
+      context.env.VAULT_SECRET,
+      endpointId
+    );
     if (!submissions) {
       throw new HTTPException(404, {
         message: 'Submissions not found'
       });
     }
 
-    const submissionsData = await Promise.all(
-      submissions.map(async submission => {
-        const content = await getSubmission(
-          context.env.VAULT_SECRET,
-          endpointId,
-          submission.id
-        );
-        return {...submission, data: content.data};
-      })
-    );
-
-    async function countTotalItems(): Promise<number> {
-      const data = await database
-        .select({totalItems: count()})
-        .from(schema.submission)
-        .where(eq(schema.submission.endpointId, endpointId));
-
-      if (!data[0]) {
-        throw new HTTPException(404, {
-          message: 'Submissions not found'
-        });
-      }
-
-      return data[0].totalItems;
-    }
-
-    const totalItems = await countTotalItems();
+    const totalItems = submissions.length;
     const totalPages = calculateTotalPages(page, totalItems, limit);
 
-    const response = submissionsData.map(submission =>
+    const response = submissions.map(submission =>
       SubmissionSchema.parse(submission)
     );
+
     return context.json(
       {
         _metadata: {

@@ -1,9 +1,9 @@
+import {getSubmission, putSubmission} from '@/lib/vault';
 import {SubmissionSchema, ParamsSchema} from './schema';
 import type {submissions as submissionsApi} from '.';
 import {openApiErrorResponses} from '@/lib/errors';
 import {HTTPException} from 'hono/http-exception';
 import {createRoute} from '@hono/zod-openapi';
-import {eq, schema} from '@formizee/db';
 
 export const putRoute = createRoute({
   method: 'put',
@@ -40,9 +40,7 @@ export const registerPutSubmission = (api: typeof submissionsApi) => {
     const {id} = context.req.valid('param');
     const input = context.req.valid('json');
 
-    const submission = await database.query.submission.findFirst({
-      where: (table, {eq}) => eq(table.id, id)
-    });
+    const submission = await getSubmission(context.env.VAULT_SECRET, id);
 
     if (!submission) {
       throw new HTTPException(404, {
@@ -66,22 +64,13 @@ export const registerPutSubmission = (api: typeof submissionsApi) => {
       });
     }
 
-    if (Object.keys(input).length === 0) {
-      throw new HTTPException(400, {
-        message: "There's no fields to update"
-      });
-    }
+    const newSubmission = await putSubmission(
+      context.env.VAULT_SECRET,
+      id,
+      input
+    );
 
-    const newSubmission = await database
-      .update(schema.submission)
-      .set({
-        isRead: input.isRead ?? submission.isRead,
-        isSpam: input.isSpam ?? submission.isSpam
-      })
-      .where(eq(schema.submission.id, submission.id))
-      .returning();
-
-    const response = SubmissionSchema.parse(newSubmission[0]);
+    const response = SubmissionSchema.parse(newSubmission);
     return context.json(response, 200);
   });
 };
