@@ -21,6 +21,19 @@ export const ParamsSchema = z.object({
     })
 });
 
+export const ListParams = z.object({
+  endpointId: z
+    .string()
+    .regex(/^[a-zA-Z]+_[a-zA-Z0-9]+$/, {
+      message:
+        'Invalid endpoint identifier, please check that is correctly typed.'
+    })
+    .openapi({
+      description: 'The id of the endpoint',
+      example: 'enp_4VjHrJoEwAFC6itz8oUBW9NW2bia'
+    })
+});
+
 export const PutSchema = z.object({
   isRead: z.boolean().optional(),
   isSpam: z.boolean().optional()
