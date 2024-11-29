@@ -1,7 +1,7 @@
 import {schema, type Database} from '@formizee/db/submissions';
 
 export const validateSubmission = async (
-  database: Database,
+  originDatabase: Database,
   input: {
     data: Record<string, string>;
     fileUploads: {field: string; name: string}[];
@@ -9,7 +9,7 @@ export const validateSubmission = async (
   }
 ) => {
   try {
-    const endpointSchema = await database.query.endpoint.findFirst({
+    const endpointSchema = await originDatabase.query.endpoint.findFirst({
       where: (table, {eq}) => eq(table.id, input.endpointId)
     });
 
@@ -18,7 +18,7 @@ export const validateSubmission = async (
     }
 
     const newSchema = generateSchema(input, input.endpointId);
-    await database.insert(schema.endpoint).values(newSchema);
+    await originDatabase.insert(schema.endpoint).values(newSchema);
     return true;
   } catch {
     console.error('Unexpected problem validating the endpoint schema');

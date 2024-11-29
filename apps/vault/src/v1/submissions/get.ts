@@ -4,6 +4,7 @@ import {openApiErrorResponses} from '@/lib/errors';
 import {HTTPException} from 'hono/http-exception';
 import {createRoute} from '@hono/zod-openapi';
 import {aes} from '@formizee/encryption';
+import {assignOriginDatabase} from '@/lib/databases';
 
 export const getRoute = createRoute({
   method: 'get',
@@ -31,10 +32,22 @@ export const registerGetSubmission = (api: typeof submissionsAPI) => {
     const {database, storage, cache, keys} = context.get('services');
     const input = context.req.valid('param');
 
+    const originDatabase = await assignOriginDatabase(
+      {database, cache},
+      input.endpointId
+    );
+
+    if (!originDatabase) {
+      throw new HTTPException(404, {
+        message:
+          'Origin database not found, please contact support@formizee.com'
+      });
+    }
+
     // Query submission
     let submission = await cache.getSubmission(input.id);
     if (!submission) {
-      const data = await database.query.submission.findFirst({
+      const data = await originDatabase.query.submission.findFirst({
         where: (table, {eq}) => eq(table.id, input.id)
       });
 
@@ -56,7 +69,10 @@ export const registerGetSubmission = (api: typeof submissionsAPI) => {
     );
 
     // Check for file uploads
-    const fileUploads = await storage.getDownloadLinks(database, submission.id);
+    const fileUploads = await storage.getDownloadLinks(
+      originDatabase,
+      submission.id
+    );
 
     try {
       const submissionData = JSON.parse(decryptedSubmission);

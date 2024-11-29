@@ -4,6 +4,7 @@ import {eq, schema} from '@formizee/db/submissions';
 import {HTTPException} from 'hono/http-exception';
 import {createRoute, z} from '@hono/zod-openapi';
 import {ParamsSchema} from './schema';
+import {assignOriginDatabase} from '@/lib/databases';
 
 export const deleteRoute = createRoute({
   method: 'delete',
@@ -31,8 +32,20 @@ export const registerDeleteSubmission = (api: typeof submissionsAPI) => {
     const {database, storage, cache} = context.get('services');
     const input = context.req.valid('param');
 
+    const originDatabase = await assignOriginDatabase(
+      {database, cache},
+      input.endpointId
+    );
+
+    if (!originDatabase) {
+      throw new HTTPException(404, {
+        message:
+          'Origin database not found, please contact support@formizee.com'
+      });
+    }
+
     // Query submission
-    const submission = await database.query.submission.findFirst({
+    const submission = await originDatabase.query.submission.findFirst({
       where: (table, {eq}) => eq(table.id, input.id)
     });
 
@@ -43,14 +56,15 @@ export const registerDeleteSubmission = (api: typeof submissionsAPI) => {
     }
 
     // Delete file uploads
-    await storage.deleteSubmissionData(database, submission.id);
+    await storage.deleteSubmissionData(originDatabase, submission.id);
 
     // Delete submission and cache
     await Promise.all([
-      database
+      originDatabase
         .delete(schema.submission)
         .where(eq(schema.submission.id, submission.id)),
-      cache.deleteSubmission(submission.id)
+      cache.deleteSubmission(submission.id),
+      cache.invalidateSubmissions(input)
     ]);
 
     return context.json({}, 200);

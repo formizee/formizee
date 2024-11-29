@@ -4,6 +4,7 @@ import {openApiErrorResponses} from '@/lib/errors';
 import {HTTPException} from 'hono/http-exception';
 import {schema} from '@formizee/db/submissions';
 import {createRoute} from '@hono/zod-openapi';
+import {assignOriginDatabase} from '@/lib/databases';
 
 export const putRoute = createRoute({
   method: 'put',
@@ -36,11 +37,23 @@ export const putRoute = createRoute({
 export const registerPutSubmission = (api: typeof submissionsAPI) => {
   return api.openapi(putRoute, async context => {
     const {database, cache} = context.get('services');
-    const {id} = context.req.valid('param');
+    const {endpointId, id} = context.req.valid('param');
     const input = context.req.valid('json');
 
+    const originDatabase = await assignOriginDatabase(
+      {database, cache},
+      endpointId
+    );
+
+    if (!originDatabase) {
+      throw new HTTPException(404, {
+        message:
+          'Origin database not found, please contact support@formizee.com'
+      });
+    }
+
     // Query submission
-    const submission = await database.query.submission.findFirst({
+    const submission = await originDatabase.query.submission.findFirst({
       where: (table, {eq}) => eq(table.id, id)
     });
 
@@ -58,10 +71,11 @@ export const registerPutSubmission = (api: typeof submissionsAPI) => {
     };
 
     await Promise.all([
-      database.update(schema.submission).set({
+      originDatabase.update(schema.submission).set({
         isSpam: newSubmissionData.isSpam,
         isRead: newSubmissionData.isRead
       }),
+      cache.invalidateSubmissions({endpointId}),
       cache.storeSubmission(newSubmissionData)
     ]);
 
