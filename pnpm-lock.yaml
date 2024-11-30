@@ -16,7 +16,7 @@ importers:
         version: 19.2.2
       '@formizee/tsconfig':
         specifier: workspace:*
-        version: link:packages/tsconfig
+        version: link:internal/tsconfig
       commitlint:
         specifier: 19.3.0
         version: 19.3.0(@types/node@22.10.1)(typescript@5.4.5)
@@ -34,28 +34,28 @@ importers:
     dependencies:
       '@formizee/analytics':
         specifier: workspace:*
-        version: link:../../packages/analytics
+        version: link:../../internal/analytics
       '@formizee/db':
         specifier: workspace:*
-        version: link:../../packages/db
+        version: link:../../internal/db
       '@formizee/email':
         specifier: workspace:*
-        version: link:../../packages/email
+        version: link:../../internal/email
       '@formizee/error':
         specifier: workspace:*
-        version: link:../../packages/error
+        version: link:../../internal/error
       '@formizee/id':
         specifier: workspace:*
-        version: link:../../packages/id
+        version: link:../../internal/id
       '@formizee/keys':
         specifier: workspace:*
-        version: link:../../packages/keys
+        version: link:../../internal/keys
       '@formizee/plans':
         specifier: workspace:*
-        version: link:../../packages/plans
+        version: link:../../internal/plans
       '@formizee/tsconfig':
         specifier: workspace:*
-        version: link:../../packages/tsconfig
+        version: link:../../internal/tsconfig
       '@hono/zod-openapi':
         specifier: 0.16.4
         version: 0.16.4(hono@4.6.6)(zod@3.23.8)
@@ -116,28 +116,28 @@ importers:
         version: 1.4.2
       '@formizee/analytics':
         specifier: workspace:*
-        version: link:../../packages/analytics
+        version: link:../../internal/analytics
       '@formizee/billing':
         specifier: workspace:*
-        version: link:../../packages/billing
+        version: link:../../internal/billing
       '@formizee/db':
         specifier: workspace:*
-        version: link:../../packages/db
+        version: link:../../internal/db
       '@formizee/email':
         specifier: workspace:*
-        version: link:../../packages/email
+        version: link:../../internal/email
       '@formizee/id':
         specifier: workspace:*
-        version: link:../../packages/id
+        version: link:../../internal/id
       '@formizee/keys':
         specifier: workspace:*
-        version: link:../../packages/keys
+        version: link:../../internal/keys
       '@formizee/plans':
         specifier: workspace:*
-        version: link:../../packages/plans
+        version: link:../../internal/plans
       '@formizee/ui':
         specifier: workspace:*
-        version: link:../../packages/ui
+        version: link:../../internal/ui
       '@hookform/resolvers':
         specifier: 3.4.0
         version: 3.4.0(react-hook-form@7.51.4(react@18.3.1))
@@ -201,10 +201,10 @@ importers:
     devDependencies:
       '@formizee/tailwind':
         specifier: workspace:*
-        version: link:../../packages/tailwind
+        version: link:../../internal/tailwind
       '@formizee/tsconfig':
         specifier: workspace:*
-        version: link:../../packages/tsconfig
+        version: link:../../internal/tsconfig
       '@types/jsonwebtoken':
         specifier: 9.0.7
         version: 9.0.7
@@ -256,34 +256,34 @@ importers:
     dependencies:
       '@formizee/cache':
         specifier: workspace:*
-        version: link:../../packages/cache
+        version: link:../../internal/cache
       '@formizee/db':
         specifier: workspace:*
-        version: link:../../packages/db
+        version: link:../../internal/db
       '@formizee/encoding':
         specifier: workspace:*
-        version: link:../../packages/encoding
+        version: link:../../internal/encoding
       '@formizee/encryption':
         specifier: workspace:*
-        version: link:../../packages/encryption
+        version: link:../../internal/encryption
       '@formizee/error':
         specifier: workspace:*
-        version: link:../../packages/error
+        version: link:../../internal/error
       '@formizee/id':
         specifier: workspace:*
-        version: link:../../packages/id
+        version: link:../../internal/id
       '@formizee/logger':
         specifier: workspace:*
-        version: link:../../packages/logger
+        version: link:../../internal/logger
       '@formizee/metrics':
         specifier: workspace:*
-        version: link:../../packages/metrics
+        version: link:../../internal/metrics
       '@formizee/storage':
         specifier: workspace:*
-        version: link:../../packages/storage
+        version: link:../../internal/storage
       '@formizee/tsconfig':
         specifier: workspace:*
-        version: link:../../packages/tsconfig
+        version: link:../../internal/tsconfig
       '@hono/zod-openapi':
         specifier: 0.16.4
         version: 0.16.4(hono@4.6.6)(zod@3.23.8)
@@ -323,7 +323,7 @@ importers:
     dependencies:
       '@formizee/ui':
         specifier: workspace:*
-        version: link:../../packages/ui
+        version: link:../../internal/ui
       '@hookform/resolvers':
         specifier: 3.4.0
         version: 3.4.0(react-hook-form@7.51.4(react@18.3.1))
@@ -332,7 +332,7 @@ importers:
         version: 1.3.1(next@14.2.16(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       domain:
         specifier: workspace:*
-        version: link:../../packages/domain
+        version: link:../../internal/domain
       next:
         specifier: 14.2.16
         version: 14.2.16(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -354,10 +354,10 @@ importers:
     devDependencies:
       '@formizee/tailwind':
         specifier: workspace:*
-        version: link:../../packages/tailwind
+        version: link:../../internal/tailwind
       '@formizee/tsconfig':
         specifier: workspace:*
-        version: link:../../packages/tsconfig
+        version: link:../../internal/tsconfig
       '@types/node':
         specifier: 20.12.12
         version: 20.12.12
@@ -380,7 +380,7 @@ importers:
         specifier: 5.4.5
         version: 5.4.5
 
-  packages/analytics:
+  internal/analytics:
     dependencies:
       '@chronark/zod-bird':
         specifier: 0.3.9
@@ -399,7 +399,7 @@ importers:
         specifier: 22.0.0
         version: 22.0.0
 
-  packages/billing:
+  internal/billing:
     dependencies:
       '@lemonsqueezy/lemonsqueezy.js':
         specifier: 4.0.0
@@ -412,7 +412,7 @@ importers:
         specifier: 22.0.0
         version: 22.0.0
 
-  packages/cache:
+  internal/cache:
     dependencies:
       '@formizee/db':
         specifier: workspace:*
@@ -431,7 +431,7 @@ importers:
         specifier: 22.0.0
         version: 22.0.0
 
-  packages/db:
+  internal/db:
     dependencies:
       '@formizee/hashing':
         specifier: workspace:*
@@ -465,7 +465,7 @@ importers:
         specifier: 4.19.2
         version: 4.19.2
 
-  packages/domain:
+  internal/domain:
     devDependencies:
       '@formizee/tsconfig':
         specifier: workspace:*
@@ -474,7 +474,7 @@ importers:
         specifier: 5.4.5
         version: 5.4.5
 
-  packages/email:
+  internal/email:
     dependencies:
       '@formizee/plans':
         specifier: workspace:*
@@ -526,7 +526,7 @@ importers:
         specifier: 1.5.0
         version: 1.5.0(@types/node@22.0.0)(terser@5.31.3)
 
-  packages/encoding:
+  internal/encoding:
     devDependencies:
       '@formizee/tsconfig':
         specifier: workspace:*
@@ -538,7 +538,7 @@ importers:
         specifier: 1.5.0
         version: 1.5.0(@types/node@20.14.11)(terser@5.31.3)
 
-  packages/encryption:
+  internal/encryption:
     dependencies:
       '@formizee/encoding':
         specifier: workspace:*
@@ -554,7 +554,7 @@ importers:
         specifier: 1.5.0
         version: 1.5.0(@types/node@20.14.11)(terser@5.31.3)
 
-  packages/error:
+  internal/error:
     dependencies:
       '@hono/zod-openapi':
         specifier: 0.14.8
@@ -573,7 +573,7 @@ importers:
         specifier: 1.5.0
         version: 1.5.0(@types/node@20.14.11)(terser@5.31.3)
 
-  packages/hashing:
+  internal/hashing:
     dependencies:
       '@formizee/encoding':
         specifier: workspace:*
@@ -589,7 +589,7 @@ importers:
         specifier: 1.5.0
         version: 1.5.0(@types/node@20.14.11)(terser@5.31.3)
 
-  packages/id:
+  internal/id:
     dependencies:
       base-x:
         specifier: 5.0.0
@@ -605,7 +605,7 @@ importers:
         specifier: 1.5.0
         version: 1.5.0(@types/node@20.14.11)(terser@5.31.3)
 
-  packages/keys:
+  internal/keys:
     dependencies:
       '@formizee/db':
         specifier: workspace:*
@@ -630,7 +630,7 @@ importers:
         specifier: 1.5.0
         version: 1.5.0(@types/node@20.14.11)(terser@5.31.3)
 
-  packages/logger:
+  internal/logger:
     dependencies:
       '@cloudflare/workers-types':
         specifier: 4.20241127.0
@@ -649,7 +649,7 @@ importers:
         specifier: 22.10.1
         version: 22.10.1
 
-  packages/metrics:
+  internal/metrics:
     dependencies:
       '@chronark/zod-bird':
         specifier: 0.3.10
@@ -665,7 +665,7 @@ importers:
         specifier: 22.10.1
         version: 22.10.1
 
-  packages/plans:
+  internal/plans:
     dependencies:
       '@formizee/db':
         specifier: workspace:*
@@ -684,7 +684,7 @@ importers:
         specifier: 1.5.0
         version: 1.5.0(@types/node@20.14.11)(terser@5.31.3)
 
-  packages/storage:
+  internal/storage:
     dependencies:
       '@formizee/db':
         specifier: workspace:*
@@ -706,7 +706,7 @@ importers:
         specifier: 22.10.0
         version: 22.10.0
 
-  packages/tailwind:
+  internal/tailwind:
     devDependencies:
       tailwindcss:
         specifier: 3.4.7
@@ -715,9 +715,9 @@ importers:
         specifier: 1.0.7
         version: 1.0.7(tailwindcss@3.4.7)
 
-  packages/tsconfig: {}
+  internal/tsconfig: {}
 
-  packages/ui:
+  internal/ui:
     dependencies:
       '@radix-ui/react-checkbox':
         specifier: 1.1.2
@@ -823,7 +823,7 @@ importers:
         specifier: 5.4.5
         version: 5.4.5
 
-  packages/vault:
+  internal/vault:
     dependencies:
       '@formizee/db':
         specifier: workspace:*
@@ -840,7 +840,7 @@ importers:
     devDependencies:
       '@formizee/tsconfig':
         specifier: workspace:^
-        version: link:../../packages/tsconfig
+        version: link:../../internal/tsconfig
       '@types/node':
         specifier: 20.14.11
         version: 20.14.11
@@ -859,7 +859,7 @@ importers:
         version: 0.8.2
       '@formizee/tsconfig':
         specifier: workspace:^
-        version: link:../../packages/tsconfig
+        version: link:../../internal/tsconfig
       '@types/node':
         specifier: 22.10.0
         version: 22.10.0
@@ -11218,7 +11218,7 @@ snapshots:
       caniuse-lite: 1.0.30001651
       fraction.js: 4.3.7
       normalize-range: 0.1.2
-      picocolors: 1.0.1
+      picocolors: 1.1.1
       postcss: 8.4.41
       postcss-value-parser: 4.2.0
 
@@ -14908,8 +14908,8 @@ snapshots:
   postcss@8.4.41:
     dependencies:
       nanoid: 3.3.7
-      picocolors: 1.0.1
-      source-map-js: 1.2.0
+      picocolors: 1.1.1
+      source-map-js: 1.2.1
 
   postgres-array@2.0.0:
     optional: true
@@ -15868,7 +15868,7 @@ snapshots:
       micromatch: 4.0.7
       normalize-path: 3.0.0
       object-hash: 3.0.0
-      picocolors: 1.0.1
+      picocolors: 1.1.1
       postcss: 8.4.41
       postcss-import: 15.1.0(postcss@8.4.41)
       postcss-js: 4.0.1(postcss@8.4.41)
@@ -16016,7 +16016,7 @@ snapshots:
       execa: 5.1.1
       globby: 11.1.0
       joycon: 3.1.1
-      picocolors: 1.0.1
+      picocolors: 1.1.1
       postcss-load-config: 6.0.1(jiti@1.21.6)(postcss@8.4.41)(tsx@4.19.2)(yaml@2.5.0)
       resolve-from: 5.0.0
       rollup: 4.19.1
