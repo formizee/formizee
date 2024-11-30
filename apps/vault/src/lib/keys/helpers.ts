@@ -1,6 +1,7 @@
 import type {Env} from '@/lib/enviroment';
 import {aes} from '@formizee/encryption';
 import type {DEK, MasterKey} from './types';
+import { base64 } from '@formizee/encoding';
 
 export async function getLatestMasterKey(env: Env): Promise<MasterKey> {
   // Dynamically find keys matching "MASTER_KEY_"
@@ -30,7 +31,8 @@ export async function getLatestMasterKey(env: Env): Promise<MasterKey> {
     : 1;
 
   try {
-    const key = await aes.importKey(latestKey);
+    const decodedKey = new TextDecoder().decode(base64.decode(latestKey));
+    const key = await aes.importKey(decodedKey);
     return {key, version};
   } catch {
     throw new Error(`Master Key (${latestKeyName}) can't be imported`);
@@ -49,7 +51,8 @@ export async function getMasterKey(
   }
 
   try {
-    const key = await aes.importKey(keyString);
+    const decodedKey = new TextDecoder().decode(base64.decode(keyString));
+    const key = await aes.importKey(decodedKey);
     return {
       key,
       version

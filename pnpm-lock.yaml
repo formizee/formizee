@@ -260,6 +260,9 @@ importers:
       '@formizee/db':
         specifier: workspace:*
         version: link:../../packages/db
+      '@formizee/encoding':
+        specifier: workspace:*
+        version: link:../../packages/encoding
       '@formizee/encryption':
         specifier: workspace:*
         version: link:../../packages/encryption
