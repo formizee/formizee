@@ -18,7 +18,7 @@
       "outputs": ["dist/**"],
       "cache": true
     },
-    "@formizee/web#build": {
+    "web#build": {
       "outputs": [".next/**", "!.next/cache/**"],
       "dependsOn": ["^build"]
     },
