@@ -1,5 +1,5 @@
-import { cn } from '../lib/ui';
-import type { IconProps } from './types';
+import {cn} from '../lib/ui';
+import type {IconProps} from './types';
 
 export function CartIcon(props: IconProps): JSX.Element {
   return (

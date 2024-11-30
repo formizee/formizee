@@ -38,12 +38,12 @@ export {GridIcon} from './grid';
 export {HeartIcon} from './heart';
 export {HomeIcon} from './home';
 export {InboxIcon} from './inbox';
-export {InfoIcon} from './info'
+export {InfoIcon} from './info';
 export {KeyIcon} from './key';
 export {LightbulbIcon} from './lightbulb';
 export {LinkIcon} from './link';
 export {LoadingIcon} from './loading';
-export {LockIcon} from './lock'
+export {LockIcon} from './lock';
 export {LogoutIcon} from './logout';
 export {MailIcon} from './mail';
 export {MapsIcon} from './maps';
@@ -63,7 +63,7 @@ export {StackIcon} from './stack';
 export {StarIcon} from './star';
 export {SunIcon} from './sun';
 export {ToolsIcon} from './tools';
-export {UndoIcon} from './undo'
+export {UndoIcon} from './undo';
 export {UpgradeIcon} from './upgrade';
 export {UserGroupIcon} from './user-group';
 export {UserIcon} from './user';
