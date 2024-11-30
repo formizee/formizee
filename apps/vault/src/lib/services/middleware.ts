@@ -5,8 +5,8 @@ import {createConnection} from '@formizee/db/submissions';
 import {ConsoleLogger} from '@formizee/logger';
 import {Metrics} from '@formizee/metrics';
 import {Storage} from '@formizee/storage';
+import {Cache} from '@formizee/cache';
 import {newId} from '@formizee/id';
-import {Cache} from '@/lib/cache';
 import {Keys} from '@/lib/keys';
 
 /**

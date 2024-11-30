@@ -1,0 +1,21 @@
+{
+  "name": "@formizee/cache",
+  "author": "Pau García Chiner",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "version": "1.0.0",
+  "license": "Apache-2.0",
+  "scripts": {
+    "lint": "biome lint .",
+    "check": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "4.20241022.0",
+    "@formizee/tsconfig": "workspace:*",
+    "@types/node": "22.0.0"
+  },
+  "dependencies": {
+    "@formizee/metrics": "workspace:*",
+    "@formizee/db": "workspace:*"
+  }
+}

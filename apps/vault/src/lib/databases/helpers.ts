@@ -3,7 +3,7 @@ import {
   createConnection,
   type Database
 } from '@formizee/db/submissions';
-import type {Cache} from '@/lib/cache';
+import type {Cache} from '@formizee/cache';
 
 interface Bindings {
   database: Database;

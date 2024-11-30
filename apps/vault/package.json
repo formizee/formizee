@@ -16,6 +16,7 @@
     "deploy:prod": "pnpm build && wrangler deploy --minify --env=production --keep-vars=true"
   },
   "dependencies": {
+    "@formizee/cache": "workspace:*",
     "@formizee/db": "workspace:*",
     "@formizee/encryption": "workspace:*",
     "@formizee/error": "workspace:*",
