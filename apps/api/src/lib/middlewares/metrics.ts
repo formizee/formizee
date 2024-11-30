@@ -1,4 +1,4 @@
-import type {Metric} from '@formizee/analytics';
+import type {Metric} from '@formizee/metrics';
 import type {MiddlewareHandler} from 'hono';
 import type {HonoEnv} from '@/lib/hono';
 
@@ -18,7 +18,7 @@ export function metrics(): MiddlewareHandler<HonoEnv> {
     if (!isolateId) {
       isolateId = crypto.randomUUID();
     }
-    const {analytics} = c.get('services');
+    const services = c.get('services');
 
     const start = performance.now();
 
@@ -64,7 +64,7 @@ export function metrics(): MiddlewareHandler<HonoEnv> {
         };
 
         c.executionCtx.waitUntil(
-          analytics.ingestSdkTelemetry(event).catch(err => {
+          services.metrics.ingestSdkTelemetry(event).catch(err => {
             console.error('Error ingesting SDK telemetry', {
               method: c.req.method,
               path: c.req.path,
@@ -90,7 +90,7 @@ export function metrics(): MiddlewareHandler<HonoEnv> {
       m.serviceLatency = performance.now() - start;
       c.res.headers.append('Formizee-Latency', `service=${m.serviceLatency}ms`);
       c.res.headers.append('Formizee-Version', c.env.VERSION);
-      await analytics.ingestFormizeeMetrics(m);
+      services.metrics.emit(m);
     }
   };
 }

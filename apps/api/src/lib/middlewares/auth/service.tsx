@@ -8,7 +8,8 @@ import {PlanLimitWarning} from '@formizee/email/templates';
 
 export const authentication = (): MiddlewareHandler<HonoEnv> => {
   return async function auth(context, next) {
-    const {apiKeys, analytics, database, email} = context.get('services');
+    const {apiKeys, analytics, metrics, database, email} =
+      context.get('services');
 
     const authorization = context.req
       .header('authorization')
@@ -34,7 +35,7 @@ export const authentication = (): MiddlewareHandler<HonoEnv> => {
     context.set('key', {id: val.id, name: val.name});
     context.set('limits', limits);
 
-    await analytics.ingestFormizeeMetrics({
+    metrics.emit({
       metric: 'api.request',
       workspaceId: val.workspace.id,
       time: new Date(),

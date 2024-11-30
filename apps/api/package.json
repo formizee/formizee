@@ -21,6 +21,7 @@
     "@formizee/error": "workspace:*",
     "@formizee/id": "workspace:*",
     "@formizee/keys": "workspace:*",
+    "@formizee/metrics": "workspace:*",
     "@formizee/plans": "workspace:*",
     "@formizee/tsconfig": "workspace:*",
     "@hono/zod-openapi": "0.16.4",

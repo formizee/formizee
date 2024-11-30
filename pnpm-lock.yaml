@@ -50,6 +50,9 @@ importers:
       '@formizee/keys':
         specifier: workspace:*
         version: link:../../internal/keys
+      '@formizee/metrics':
+        specifier: workspace:*
+        version: link:../../internal/metrics
       '@formizee/plans':
         specifier: workspace:*
         version: link:../../internal/plans

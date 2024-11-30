@@ -2,10 +2,11 @@ import type {MiddlewareHandler} from 'hono';
 import type {HonoEnv} from '@/lib/hono';
 import {newId} from '@formizee/id';
 
-import {Resend} from 'resend';
 import {Analytics} from '@formizee/analytics';
-import {KeyService} from '@formizee/keys';
 import {createConnection} from '@formizee/db';
+import {Metrics} from '@formizee/metrics';
+import {KeyService} from '@formizee/keys';
+import {Resend} from 'resend';
 
 export function services(): MiddlewareHandler<HonoEnv> {
   return async (c, next) => {
@@ -29,6 +30,12 @@ export function services(): MiddlewareHandler<HonoEnv> {
       tinybirdUrl: c.env.TINYBIRD_URL
     });
 
+    const metrics = new Metrics({
+      tinybirdToken:
+        c.env.ENVIROMENT === 'production' ? c.env.TINYBIRD_TOKEN : undefined,
+      tinybirdUrl: c.env.TINYBIRD_URL
+    });
+
     const database = createConnection({
       databaseUrl: c.env.DATABASE_URL,
       authToken:
@@ -46,6 +53,7 @@ export function services(): MiddlewareHandler<HonoEnv> {
     c.set('services', {
       analytics,
       database,
+      metrics,
       apiKeys,
       email
     });
