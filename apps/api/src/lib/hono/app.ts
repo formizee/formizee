@@ -4,7 +4,6 @@ import {services} from '@/lib/services';
 import type {HonoEnv} from './types';
 import {
   cors,
-  csrf,
   logger,
   timeout,
   bodyLimit,
@@ -43,7 +42,6 @@ export const newApp = (): OpenAPIHono<HonoEnv> => {
   app.use(metrics());
   app.use(timeout);
   app.use(logger);
-  app.use(csrf());
   app.use(cors());
 
   // Openapi

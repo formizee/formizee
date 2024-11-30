@@ -2,7 +2,7 @@ import {IntegrationHarness} from '@/lib/testing';
 import type {ResponseKey} from './schema';
 import {describe, it, expect} from 'vitest';
 
-describe.skip('Delete a key', () => {
+describe('Delete a key', () => {
   it('Should get 200', async context => {
     const harness = await IntegrationHarness.init(context);
     const {id} = harness.resources.key;
