@@ -2,7 +2,7 @@
 
 ## Project Structure
 ```
-󰝰  @formizee/vault 
+󰝰  vault 
    󰝰  src
   │  󰉋  lib         <-- Utility libraries
   │  󰉋  v1      
