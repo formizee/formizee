@@ -4,6 +4,8 @@ import type {Env} from '@/lib/enviroment';
 
 export type HonoVariables = {
   // Metrics
+  isolateCreatedAt: number;
+  isolateId: string;
   requestId: string;
   userAgent: string;
   location: string;

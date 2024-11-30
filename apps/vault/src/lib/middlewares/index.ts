@@ -9,6 +9,3 @@ export {bodyLimit} from './security/body-limit';
 export {timeout} from './security/timeout';
 export {cors} from './security/cors';
 export {csrf} from 'hono/csrf';
-
-// Services
-export {logger} from './logger';

@@ -21,6 +21,7 @@
     "@formizee/encryption": "workspace:*",
     "@formizee/error": "workspace:*",
     "@formizee/id": "workspace:*",
+    "@formizee/logger": "workspace:*",
     "@formizee/storage": "workspace:*",
     "@formizee/tsconfig": "workspace:*",
     "@hono/zod-openapi": "0.16.4",

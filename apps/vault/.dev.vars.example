@@ -14,3 +14,7 @@ STORAGE_BUCKET="Your s3 bucket"
 # Analytics
 TINYBIRD_URL="Your proxy tinybird url"
 TINYBIRD_TOKEN="Your tiny bird token"
+
+# Logs
+LOGTAIL_TOKEN="Your logtail token"
+EMIT_LOGS="true"

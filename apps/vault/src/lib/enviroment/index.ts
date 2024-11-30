@@ -25,6 +25,10 @@ export const zEnv = z.object({
   TINYBIRD_URL: z.string().url().optional(),
   TINYBIRD_TOKEN: z.string().optional(),
 
+  // Logs
+  LOGTAIL_TOKEN: z.string(),
+  EMIT_LOGS: z.boolean(),
+
   /* --- Secrets --- */
   // Used to encrypt the dek's that encrypts submissions
   MASTER_KEY_V1: z.string(),
