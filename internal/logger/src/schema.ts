@@ -13,7 +13,7 @@ const commonFields = z.object({
     'production',
     'unknown'
   ]),
-  application: z.enum(['api', 'semantic-cache', 'agent', 'logdrain', 'vault']),
+  application: z.enum(['api', 'logdrain', 'vault']),
   isolateId: z.string().optional(),
   requestId: z.string(),
   time: z.number()
