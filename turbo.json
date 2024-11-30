@@ -22,7 +22,7 @@
       "outputs": [".next/**", "!.next/cache/**"],
       "dependsOn": ["^build"]
     },
-    "@formizee/api#build": {
+    "api#build": {
       "outputs": ["dist/**"],
       "dependsOn": ["^build"],
       "cache": true

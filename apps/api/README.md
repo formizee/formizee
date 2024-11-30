@@ -2,7 +2,7 @@
 
 ## Project Structure
 ```
-  @formizee/api 
+  api 
   ╰ src
     │ lib           <-- Utility libraries
     │ v1            <-- Each version has it's own directory
