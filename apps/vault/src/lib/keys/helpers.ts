@@ -1,7 +1,7 @@
 import type {Env} from '@/lib/enviroment';
 import {aes} from '@formizee/encryption';
 import type {DEK, MasterKey} from './types';
-import { base64 } from '@formizee/encoding';
+import {base64} from '@formizee/encoding';
 
 export async function getLatestMasterKey(env: Env): Promise<MasterKey> {
   // Dynamically find keys matching "MASTER_KEY_"

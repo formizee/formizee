@@ -18,6 +18,7 @@
   "dependencies": {
     "@formizee/cache": "workspace:*",
     "@formizee/db": "workspace:*",
+    "@formizee/encoding": "workspace:*",
     "@formizee/encryption": "workspace:*",
     "@formizee/error": "workspace:*",
     "@formizee/id": "workspace:*",
