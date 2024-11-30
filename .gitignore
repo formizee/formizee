@@ -16,6 +16,7 @@ out/
 # wrangler
 .wrangler
 apps/api/wrangler.toml
+apps/logdrain/wrangler.toml
 
 # production
 build
