@@ -58,7 +58,7 @@ async function main() {
     }
 
     case 'api': {
-      await startContainers(['database', 'submissions-database']);
+      await startContainers(['database', 'submissions-database', 'vault']);
       await prepareDatabase('submissions');
       await prepareDatabase('main');
 
@@ -75,7 +75,7 @@ async function main() {
     }
 
     case 'dashboard': {
-      await startContainers(['database', 'submissions-database', 'api']);
+      await startContainers(['database', 'submissions-database', 'api', 'vault']);
       await prepareDatabase('submissions');
       await prepareDatabase('main');
 

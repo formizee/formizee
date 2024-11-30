@@ -13,13 +13,14 @@ RUN rm .dev.vars || true
 RUN pnpm install --offline -r
 
 WORKDIR /app/apps/vault
-RUN pnpm wrangler deploy --outdir=dist --dry-run
+RUN pnpm build
+RUN pnpm wrangler deploy --minify --outdir=dist --dry-run
 
-RUN pnpm workerd compile ./worker.capnp > formizee-vault
+RUN pnpm workerd compile ./worker.capnp > vault
 
 
 FROM ubuntu:latest
-COPY --from=compile /app/apps/vault/formizee-vault /usr/bin/formizee-vault
+COPY --from=compile /app/apps/vault/vault /usr/bin/vault
 
 EXPOSE 8888
-CMD ["formizee-vault"]
+CMD ["vault"]

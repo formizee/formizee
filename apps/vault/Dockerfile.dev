@@ -1,0 +1,40 @@
+FROM node:lts AS base
+
+RUN npm i -g pnpm turbo
+RUN corepack enable
+
+
+FROM base AS builder
+
+# Set working directory
+WORKDIR /formizee
+
+COPY . .
+RUN turbo prune @formizee/vault --docker
+
+# Add lockfile and package.json's of isolated subworkspace
+FROM base AS installer
+WORKDIR /formizee
+
+# First install dependencies (as they change less often)
+COPY .gitignore .gitignore
+COPY --from=builder /formizee/out/json/ .
+COPY --from=builder /formizee/out/pnpm-lock.yaml ./pnpm-lock.yaml
+RUN pnpm install
+
+# Build the project and its dependencies
+COPY --from=builder /formizee/out/full/ .
+COPY turbo.json turbo.json
+
+RUN pnpm turbo build --filter=@formizee/vault
+
+FROM base AS runner
+WORKDIR /formizee
+
+COPY --from=installer /formizee .
+
+WORKDIR /formizee/apps/vault
+
+RUN rm .dev.vars || true
+
+CMD pnpm wrangler dev 

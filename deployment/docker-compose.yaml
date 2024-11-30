@@ -44,18 +44,30 @@ services:
     container_name: vault
     build:
       context: ..
-      dockerfile: ./apps/vault/Dockerfile
+      dockerfile: ./apps/vault/Dockerfile.dev
     ports:
-      - 8888:8888
+      - 8888:8787
+    command:
+      [
+        "pnpm",
+        "wrangler",
+        "dev",
+        "--ip=0.0.0.0",
+        "--var=MASTER_KEY_V1:eyJrZXlfb3BzIjpbImVuY3J5cHQiLCJkZWNyeXB0Il0sImV4dCI6dHJ1ZSwia3R5Ijoib2N0IiwiayI6ImdzTVRJc3ZGVzI0WEJqV0dSZk50ZjZFbUxGTXlHNWNlRnlsb2E3MEwyanMiLCJhbGciOiJBMjU2R0NNIn0",
+        "--var=TINYBIRD_URL:https://api.eu-central-1.aws.tinybird.co",
+        "--var=STORAGE_SECRET_ACCESS_KEY:minio_root_password",
+        "--var=STORAGE_ACCESS_KEY_ID:minio_root_user",
+        "--var=STORAGE_ENDPOINT:http://storage:3902",
+        "--var=DATABASE_URL:http://submissions-database:8080",
+        "--var=ENVIROMENT:development",
+        "--var=STORAGE_BUCKET:storage",
+        "--var=LOGTAIL_TOKEN:example",
+        "--var=VAULT_SECRET:example",
+        "--var=EMIT_LOGS:false",
+      ]
     depends_on:
       - submissions-database
       - storage
-    environment:
-      STORAGE_SECRET_ACCESS_KEY: "minio_root_password"
-      STORAGE_ACCESS_KEY_ID: "minio_root_user"
-      STORAGE_ENDPOINT: "http://storage:3902"
-      DATABASE_URL: "http://localhost:8080"
-      STORAGE_BUCKET: "storage"
 
   api:
     container_name: api
