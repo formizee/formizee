@@ -7,6 +7,7 @@ import {createConnection} from '@formizee/db';
 import {Metrics} from '@formizee/metrics';
 import {KeyService} from '@formizee/keys';
 import {Resend} from 'resend';
+import {ConsoleLogger} from '@formizee/logger';
 
 export function services(): MiddlewareHandler<HonoEnv> {
   return async (c, next) => {
@@ -23,6 +24,16 @@ export function services(): MiddlewareHandler<HonoEnv> {
         String(c.req.raw?.cf?.country) ??
         ''
     );
+
+    const logger = new ConsoleLogger({
+      requestId,
+      application: 'api',
+      ctx: c.executionCtx,
+      emitLogs: c.env.EMIT_LOGS,
+      environment: c.env.ENVIROMENT,
+      logtailToken: c.env.LOGTAIL_TOKEN,
+      defaultFields: {environment: c.env.ENVIROMENT}
+    });
 
     const analytics = new Analytics({
       tinybirdToken:
@@ -59,6 +70,7 @@ export function services(): MiddlewareHandler<HonoEnv> {
       database,
       metrics,
       apiKeys,
+      logger,
       email
     });
 

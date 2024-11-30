@@ -65,7 +65,7 @@ export function metrics(): MiddlewareHandler<HonoEnv> {
 
         c.executionCtx.waitUntil(
           services.metrics.ingestSdkTelemetry(event).catch(err => {
-            console.error('Error ingesting SDK telemetry', {
+            services.logger.error('Error ingesting SDK telemetry', {
               method: c.req.method,
               path: c.req.path,
               error: err.message,
@@ -79,7 +79,7 @@ export function metrics(): MiddlewareHandler<HonoEnv> {
       await next();
     } catch (e) {
       m.error = (e as Error).message;
-      console.error('request', {
+      services.logger.error('request', {
         method: c.req.method,
         path: c.req.path,
         error: e

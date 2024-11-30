@@ -26,7 +26,7 @@ export const zEnv = z.object({
   TINYBIRD_TOKEN: z.string().optional(),
 
   // Logs
-  LOGTAIL_TOKEN: z.string().optional(),
+  LOGTAIL_TOKEN: z.string(),
   EMIT_LOGS: z
     .string()
     .toLowerCase()

@@ -13,4 +13,3 @@ export {csrf} from 'hono/csrf';
 // Services
 export {authentication} from './auth';
 export {metrics} from './metrics';
-export {logger} from './logger';
