@@ -1,0 +1,29 @@
+name = "api"
+workers_dev = true
+main = "src/index.ts"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+account_id = ""
+
+[observability]
+enabled = true
+head_sampling_rate = 1
+
+[[kv_namespaces]]
+binding = "cache"
+id = ""
+preview_id = ""
+
+[env.development]
+name = "api-development"
+vars = { ENVIROMENT = "development" }
+
+[env.preview]
+name = "api-preview"
+vars = { ENVIROMENT = "preview" }
+kv_namespaces = [{ binding = "cache", id = "", preview_id = "" }]
+
+[env.production]
+name = "api"
+vars = { ENVIROMENT = "production", DASHBOARD_URL="https://dashboard.formizee.com", API_URL="https://api.formizee.com", DOCS_URL="https://docs.formizee.com", WEB_URL="https://formizee.com" }
+kv_namespaces = [{ binding = "cache", id = "", preview_id = "" }]
