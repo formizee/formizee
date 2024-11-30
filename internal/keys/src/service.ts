@@ -1,7 +1,8 @@
 import {ErrorCodeEnum, BaseError, Err, Ok, type Result} from '@formizee/error';
-import type {Database} from '@formizee/db';
-import {eq, schema} from '@formizee/db';
+import {type Database, eq, schema} from '@formizee/db';
+import type {Metrics} from '@formizee/metrics';
 import {sha256} from '@formizee/hashing';
+import {Cache} from '@formizee/cache';
 import {newKey} from './utils';
 import {KeyV1} from './v1';
 
@@ -28,15 +29,27 @@ interface VerifyKeyResult extends Key {
 
 export class KeyService {
   private readonly database: Database;
+  private readonly cache: Cache;
 
-  constructor(options: {database: Database}) {
+  constructor(options: {
+    database: Database;
+    cache: KVNamespace;
+    metrics: Metrics;
+  }) {
     this.database = options.database;
+    this.cache = new Cache({client: options.cache, metrics: options.metrics});
   }
 
   public async verifyKey(
     keyToVerify: string
   ): Promise<Result<VerifyKeyResult, VerifyKeyError>> {
     try {
+      const cachedKey = await this.cache.getKeyResponse(keyToVerify);
+
+      if (cachedKey) {
+        return Ok(cachedKey);
+      }
+
       try {
         KeyV1.fromString(keyToVerify);
       } catch {
@@ -87,13 +100,17 @@ export class KeyService {
         .set({lastAccess: new Date()})
         .where(eq(schema.key.id, key.id));
 
-      return Ok({
+      const keyResponse = {
         id: key.id,
         name: key.name,
         workspace: workspace,
         lastAccess: key.lastAccess,
         expiresAt: key.expiresAt
-      });
+      };
+
+      await this.cache.storeKeyResponse(keyToVerify, keyResponse);
+
+      return Ok(keyResponse);
     } catch (e) {
       const error = e as Error;
       throw error;

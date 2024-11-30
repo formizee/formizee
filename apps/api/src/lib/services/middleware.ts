@@ -48,7 +48,11 @@ export function services(): MiddlewareHandler<HonoEnv> {
       c.env.ENVIROMENT === 'production' ? c.env.RESEND_TOKEN : 're_123456789'
     );
 
-    const apiKeys = new KeyService({database});
+    const apiKeys = new KeyService({
+      database,
+      cache: c.env.cache,
+      metrics
+    });
 
     c.set('services', {
       analytics,

@@ -1,5 +1,11 @@
+import type {schema as mainSchema} from '@formizee/db';
 import type {schema} from '@formizee/db/submissions';
 import type {Metrics} from '@formizee/metrics';
+
+type Key = Omit<mainSchema.Key, 'hash' | 'createdAt' | 'workspaceId'>;
+interface VerifyKeyResult extends Key {
+  workspace: mainSchema.Workspace;
+}
 
 export class Cache {
   public readonly client: KVNamespace;
@@ -8,6 +14,64 @@ export class Cache {
   constructor(opts: {client: KVNamespace; metrics: Metrics}) {
     this.client = opts.client;
     this.metrics = opts.metrics;
+  }
+
+  // Root Keys
+  public async getKeyResponse(
+    keyToVerify: string
+  ): Promise<VerifyKeyResult | null> {
+    const queryStart = performance.now();
+    const raw = await this.client.get(`rootKey:${keyToVerify}`);
+
+    this.metrics.emit({
+      metric: 'vault.cache.read',
+      hit: raw !== null,
+      key: `rootKey:${keyToVerify}`,
+      latency: performance.now() - queryStart
+    });
+
+    if (!raw) {
+      return Promise.resolve(null);
+    }
+
+    try {
+      const data = JSON.parse(raw);
+      const response: VerifyKeyResult = {
+        ...data,
+        lastAccess: new Date(data.lastAccess),
+        expiresAt: new Date(data.expiresAt)
+      };
+
+      return Promise.resolve(response);
+    } catch {
+      return Promise.resolve(null);
+    }
+  }
+
+  public async storeKeyResponse(keyToVerify: string, data: VerifyKeyResult) {
+    const mutationStart = performance.now();
+
+    await this.client.put(`rootKey:${keyToVerify}`, JSON.stringify(data), {
+      expirationTtl: 300
+    });
+
+    this.metrics.emit({
+      metric: 'vault.cache.write',
+      key: `rootKey:${keyToVerify}`,
+      latency: performance.now() - mutationStart
+    });
+  }
+
+  public async deleteKeyResponse(keyToVerify: string) {
+    const mutationStart = performance.now();
+
+    await this.client.delete(`rootKey:${keyToVerify}`);
+
+    this.metrics.emit({
+      metric: 'vault.cache.delete',
+      key: `rootKey:${keyToVerify}`,
+      latency: performance.now() - mutationStart
+    });
   }
 
   // Submissions

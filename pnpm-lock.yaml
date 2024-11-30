@@ -610,6 +610,9 @@ importers:
 
   internal/keys:
     dependencies:
+      '@formizee/cache':
+        specifier: workspace:*
+        version: link:../cache
       '@formizee/db':
         specifier: workspace:*
         version: link:../db
@@ -619,10 +622,16 @@ importers:
       '@formizee/hashing':
         specifier: workspace:*
         version: link:../hashing
+      '@formizee/metrics':
+        specifier: workspace:*
+        version: link:../metrics
       base-x:
         specifier: 5.0.0
         version: 5.0.0
     devDependencies:
+      '@cloudflare/workers-types':
+        specifier: 4.20241022.0
+        version: 4.20241022.0
       '@formizee/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
