@@ -58,7 +58,8 @@ describe('Retrieve a submission', () => {
     expect(res.body).toStrictEqual({
       code: 'NOT_FOUND',
       message: 'Submission not found',
-      docs: `${harness.env.DOCS_URL}/api-references/errors/code/NOT_FOUND`
+      docs: `${harness.env.DOCS_URL}/api-references/errors/code/NOT_FOUND`,
+      requestId: res.headers['formizee-request-id']
     });
   });
 });

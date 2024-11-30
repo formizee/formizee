@@ -1,10 +1,10 @@
 import {ParamsSchema, SubmissionSchema} from './schema';
 import type {submissions as submissionsAPI} from '.';
+import {assignOriginDatabase} from '@/lib/databases';
 import {openApiErrorResponses} from '@/lib/errors';
 import {HTTPException} from 'hono/http-exception';
 import {createRoute} from '@hono/zod-openapi';
 import {aes} from '@formizee/encryption';
-import {assignOriginDatabase} from '@/lib/databases';
 
 export const getRoute = createRoute({
   method: 'get',
@@ -29,7 +29,8 @@ export const getRoute = createRoute({
 
 export const registerGetSubmission = (api: typeof submissionsAPI) => {
   return api.openapi(getRoute, async context => {
-    const {analytics, database, storage, cache, keys} = context.get('services');
+    const {analytics, logger, database, storage, cache, keys} =
+      context.get('services');
     const input = context.req.valid('param');
     const queryStart = performance.now();
 
@@ -108,7 +109,7 @@ export const registerGetSubmission = (api: typeof submissionsAPI) => {
 
       return context.json(response, 200);
     } catch (error) {
-      console.error(error);
+      logger.error(String(error));
       throw new HTTPException(500, {
         message:
           'Unexpected error parsing the submssion data, please contact with support@formizee.com'

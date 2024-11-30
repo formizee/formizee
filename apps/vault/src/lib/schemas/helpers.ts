@@ -1,7 +1,9 @@
 import {schema, type Database} from '@formizee/db/submissions';
+import type {ConsoleLogger} from '@formizee/logger';
 
 export const validateSubmission = async (
   originDatabase: Database,
+  logger: ConsoleLogger,
   input: {
     data: Record<string, string>;
     fileUploads: {field: string; name: string}[];
@@ -14,14 +16,14 @@ export const validateSubmission = async (
     });
 
     if (endpointSchema) {
-      return compareSchema(input, endpointSchema);
+      return compareSchema(logger, input, endpointSchema);
     }
 
     const newSchema = generateSchema(input, input.endpointId);
     await originDatabase.insert(schema.endpoint).values(newSchema);
     return input;
-  } catch {
-    console.error('Unexpected problem validating the endpoint schema');
+  } catch (error) {
+    logger.error('Unexpected problem validating the endpoint schema', {error});
     return null;
   }
 };
@@ -52,6 +54,7 @@ export const generateSchema = (
 };
 
 export const compareSchema = (
+  logger: ConsoleLogger,
   input: {
     data: Record<string, string>;
     fileUploads: {field: string; name: string}[];
@@ -108,8 +111,8 @@ export const compareSchema = (
       data: validatedData,
       fileUploads: validatedFileUploads
     };
-  } catch (e) {
-    console.error('Error parsing schema:', e);
+  } catch (error) {
+    logger.error('Error parsing schema:', {error});
     return null;
   }
 };

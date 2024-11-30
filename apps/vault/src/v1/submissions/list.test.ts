@@ -90,7 +90,8 @@ describe('List submissions', () => {
       code: 'NOT_FOUND',
       docs: `${harness.env.DOCS_URL}/api-references/errors/code/NOT_FOUND`,
       message:
-        'The requested page 999 does not exist. There are only 1 pages available'
+        'The requested page 999 does not exist. There are only 1 pages available',
+      requestId: res.headers['formizee-request-id']
     });
   });
 
@@ -106,7 +107,8 @@ describe('List submissions', () => {
     expect(res.body).toStrictEqual({
       code: 'BAD_REQUEST',
       docs: `${harness.env.DOCS_URL}/api-references/errors/code/BAD_REQUEST`,
-      message: "invalid_type in 'page': Expected number, received nan"
+      message: "invalid_type in 'page': Expected number, received nan",
+      requestId: res.headers['formizee-request-id']
     });
   });
 });

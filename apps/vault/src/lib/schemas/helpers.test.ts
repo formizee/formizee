@@ -1,6 +1,16 @@
+import {compareSchema, generateSchema} from './helpers';
+import {ConsoleLogger} from '@formizee/logger';
 import {schema} from '@formizee/db/submissions';
 import {describe, it, expect} from 'vitest';
-import {compareSchema, generateSchema} from './helpers';
+
+const logger = new ConsoleLogger({
+  ctx: null,
+  requestId: '',
+  emitLogs: false,
+  environment: 'test',
+  application: 'vault',
+  logtailToken: '<test-token>'
+});
 
 describe('compare schema', () => {
   it('Should return valid schemas', () => {
@@ -21,7 +31,7 @@ describe('compare schema', () => {
       fileUploads: []
     };
 
-    const response = compareSchema(input, schema);
+    const response = compareSchema(logger, input, schema);
     expect(response).toStrictEqual(input);
   });
 
@@ -42,7 +52,7 @@ describe('compare schema', () => {
       fileUploads: []
     };
 
-    const response = compareSchema(input, schema);
+    const response = compareSchema(logger, input, schema);
 
     expect(response).toStrictEqual({
       ...input,
@@ -77,7 +87,7 @@ describe('compare schema', () => {
       ]
     };
 
-    const response = compareSchema(input, schema);
+    const response = compareSchema(logger, input, schema);
     expect(response).toStrictEqual(input);
   });
 
@@ -99,7 +109,7 @@ describe('compare schema', () => {
       fileUploads: []
     };
 
-    const response = compareSchema(input, schema);
+    const response = compareSchema(logger, input, schema);
     expect(response).toStrictEqual({
       data: {
         name: 'example',

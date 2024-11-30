@@ -38,7 +38,8 @@ export const postRoute = createRoute({
 
 export const registerPostSubmission = (api: typeof submissionsAPI) => {
   return api.openapi(postRoute, async context => {
-    const {analytics, database, cache, storage, keys} = context.get('services');
+    const {analytics, logger, database, cache, storage, keys} =
+      context.get('services');
     const input = context.req.valid('json');
     const mutationStart = performance.now();
 
@@ -56,7 +57,7 @@ export const registerPostSubmission = (api: typeof submissionsAPI) => {
     }
 
     // Schema validation
-    const validInput = await validateSubmission(originDatabase, input);
+    const validInput = await validateSubmission(originDatabase, logger, input);
 
     if (validInput === null) {
       throw new HTTPException(500, {

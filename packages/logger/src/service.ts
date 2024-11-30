@@ -7,7 +7,7 @@ import {Logtail} from '@logtail/edge';
 export class ConsoleLogger implements Logger {
   private readonly environment: LogSchema['environment'];
   private readonly application: LogSchema['application'];
-  private readonly client: EdgeWithExecutionContext;
+  private readonly client: EdgeWithExecutionContext | null;
   private readonly defaultFields: Fields;
   private requestId: string;
 
@@ -15,8 +15,8 @@ export class ConsoleLogger implements Logger {
     emitLogs: boolean;
     requestId: string;
     logtailToken: string;
-    ctx: ExecutionContext;
     defaultFields?: Fields;
+    ctx: ExecutionContext | null;
     environment: LogSchema['environment'];
     application: LogSchema['application'];
   }) {
@@ -30,7 +30,8 @@ export class ConsoleLogger implements Logger {
       sendLogsToConsoleOutput: false,
       ignoreExceptions: true
     });
-    this.client = baseLogger.withExecutionContext(opts.ctx);
+    this.client =
+      opts.ctx !== null ? baseLogger.withExecutionContext(opts.ctx) : null;
   }
 
   private marshal(
@@ -52,27 +53,27 @@ export class ConsoleLogger implements Logger {
 
   public debug(message: string, fields?: Fields): void {
     const marshal = this.marshal('debug', message, fields);
-    this.client.debug(marshal);
+    this.client?.debug(marshal);
     console.debug(marshal);
   }
   public info(message: string, fields?: Fields): void {
     const marshal = this.marshal('info', message, fields);
-    this.client.info(marshal);
+    this.client?.info(marshal);
     console.info(marshal);
   }
   public warn(message: string, fields?: Fields): void {
     const marshal = this.marshal('warn', message, fields);
-    this.client.warn(marshal);
+    this.client?.warn(marshal);
     console.warn(marshal);
   }
   public error(message: string, fields?: Fields): void {
     const marshal = this.marshal('error', message, fields);
-    this.client.error(marshal);
+    this.client?.error(marshal);
     console.error(marshal);
   }
   public fatal(message: string, fields?: Fields): void {
     const marshal = this.marshal('error', message, fields);
-    this.client.error(marshal);
+    this.client?.error(marshal);
     console.error(marshal);
   }
 

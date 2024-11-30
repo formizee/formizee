@@ -27,7 +27,11 @@ export const zEnv = z.object({
 
   // Logs
   LOGTAIL_TOKEN: z.string(),
-  EMIT_LOGS: z.boolean(),
+  EMIT_LOGS: z
+    .string()
+    .toLowerCase()
+    .transform(x => x === 'true')
+    .pipe(z.boolean()),
 
   /* --- Secrets --- */
   // Used to encrypt the dek's that encrypts submissions

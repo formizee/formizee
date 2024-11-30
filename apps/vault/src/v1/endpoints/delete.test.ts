@@ -25,7 +25,8 @@ describe('Delete a submission', () => {
     expect(res.body).toStrictEqual({
       code: 'NOT_FOUND',
       message: 'Endpoint not found',
-      docs: `${harness.env.DOCS_URL}/api-references/errors/code/NOT_FOUND`
+      docs: `${harness.env.DOCS_URL}/api-references/errors/code/NOT_FOUND`,
+      requestId: res.headers['formizee-request-id']
     });
   });
 });
