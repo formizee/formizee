@@ -30,7 +30,8 @@ describe('Delete a key', () => {
     expect(res.body).toStrictEqual({
       code: 'NOT_FOUND',
       message: 'Key not found',
-      docs: `${harness.docsUrl}/api-references/errors/code/NOT_FOUND`
+      docs: `${harness.docsUrl}/api-references/errors/code/NOT_FOUND`,
+      requestId: res.headers['formizee-request-id']
     });
   });
 });

@@ -42,7 +42,8 @@ describe('Verify a key', () => {
     expect(res.body).toStrictEqual({
       code: 'UNAUTHORIZED',
       message: 'The API key is not valid',
-      docs: `${harness.docsUrl}/api-references/errors/code/UNAUTHORIZED`
+      docs: `${harness.docsUrl}/api-references/errors/code/UNAUTHORIZED`,
+      requestId: res.headers['formizee-request-id']
     });
   });
 });

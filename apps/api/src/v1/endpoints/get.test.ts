@@ -30,7 +30,8 @@ describe('Retrieve a endpoint', () => {
     expect(res.body).toStrictEqual({
       code: 'NOT_FOUND',
       message: 'Endpoint not found',
-      docs: `${harness.docsUrl}/api-references/errors/code/NOT_FOUND`
+      docs: `${harness.docsUrl}/api-references/errors/code/NOT_FOUND`,
+      requestId: res.headers['formizee-request-id']
     });
   });
 });

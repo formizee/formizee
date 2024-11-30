@@ -50,7 +50,8 @@ describe('Update a endpoint', () => {
     expect(res.body).toStrictEqual({
       code: 'BAD_REQUEST',
       message: "There's no fields to update",
-      docs: `${harness.docsUrl}/api-references/errors/code/BAD_REQUEST`
+      docs: `${harness.docsUrl}/api-references/errors/code/BAD_REQUEST`,
+      requestId: res.headers['formizee-request-id']
     });
   });
 
@@ -76,7 +77,8 @@ describe('Update a endpoint', () => {
       code: 'FORBIDDEN',
       message:
         'All the target emails needs to be available in the current workspace',
-      docs: `${harness.docsUrl}/api-references/errors/code/FORBIDDEN`
+      docs: `${harness.docsUrl}/api-references/errors/code/FORBIDDEN`,
+      requestId: res.headers['formizee-request-id']
     });
   });
 });

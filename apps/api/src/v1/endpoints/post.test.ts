@@ -53,6 +53,7 @@ describe('Create a endpoint', () => {
     expect(res.status).toBe(403);
     expect(res.body).toStrictEqual({
       code: 'FORBIDDEN',
+      requestId: res.headers['formizee-request-id'],
       message:
         'All the target emails needs to be available in the current workspace',
       docs: `${harness.docsUrl}/api-references/errors/code/FORBIDDEN`
@@ -79,7 +80,8 @@ describe('Create a endpoint', () => {
     expect(res.body).toStrictEqual({
       code: 'METHOD_NOT_ALLOWED',
       message: 'Slug has to be unique and has already been taken',
-      docs: `${harness.docsUrl}/api-references/errors/code/METHOD_NOT_ALLOWED`
+      docs: `${harness.docsUrl}/api-references/errors/code/METHOD_NOT_ALLOWED`,
+      requestId: res.headers['formizee-request-id']
     });
   });
 });
