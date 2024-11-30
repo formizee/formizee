@@ -37,15 +37,24 @@ export const listRoute = createRoute({
 
 export const registerListSubmissions = (api: typeof submissionsApi) => {
   return api.openapi(listRoute, async context => {
+    const {database, metrics} = context.get('services');
     const {page, limit} = context.get('pagination');
-    const {database} = context.get('services');
     const workspace = context.get('workspace');
     const {id} = context.req.valid('param');
 
-    const endpoint = await database.query.endpoint.findFirst({
-      where: (table, {and, eq}) =>
-        and(eq(table.workspaceId, workspace.id), eq(table.id, id))
-    });
+    const queryStart = performance.now();
+    const endpoint = await database.query.endpoint
+      .findFirst({
+        where: (table, {and, eq}) =>
+          and(eq(table.workspaceId, workspace.id), eq(table.id, id))
+      })
+      .finally(() => {
+        metrics.emit({
+          metric: 'main.db.read',
+          query: 'endpoints.get',
+          latency: performance.now() - queryStart
+        });
+      });
 
     if (!endpoint) {
       throw new HTTPException(404, {

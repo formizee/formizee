@@ -29,7 +29,7 @@ export const deleteRoute = createRoute({
 export const registerDeleteSubmission = (api: typeof submissionsApi) => {
   return api.openapi(deleteRoute, async context => {
     const workspaceId = context.get('workspace').id;
-    const {database} = context.get('services');
+    const {database, metrics} = context.get('services');
     const {id} = context.req.valid('param');
 
     const submission = await getSubmission(context.env.VAULT_SECRET, id);
@@ -39,9 +39,18 @@ export const registerDeleteSubmission = (api: typeof submissionsApi) => {
       });
     }
 
-    const endpoint = await database.query.endpoint.findFirst({
-      where: (table, {eq}) => eq(table.id, submission.endpointId)
-    });
+    const queryStart = performance.now();
+    const endpoint = await database.query.endpoint
+      .findFirst({
+        where: (table, {eq}) => eq(table.id, submission.endpointId)
+      })
+      .finally(() => {
+        metrics.emit({
+          metric: 'main.db.read',
+          query: 'endpoints.get',
+          latency: performance.now() - queryStart
+        });
+      });
 
     if (!endpoint) {
       throw new HTTPException(404, {

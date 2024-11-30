@@ -36,7 +36,7 @@ export const putRoute = createRoute({
 export const registerPutSubmission = (api: typeof submissionsApi) => {
   return api.openapi(putRoute, async context => {
     const workspaceId = context.get('workspace').id;
-    const {database} = context.get('services');
+    const {database, metrics} = context.get('services');
     const {id} = context.req.valid('param');
     const input = context.req.valid('json');
 
@@ -48,9 +48,18 @@ export const registerPutSubmission = (api: typeof submissionsApi) => {
       });
     }
 
-    const endpoint = await database.query.endpoint.findFirst({
-      where: (table, {eq}) => eq(table.id, submission.endpointId)
-    });
+    const queryStart = performance.now();
+    const endpoint = await database.query.endpoint
+      .findFirst({
+        where: (table, {eq}) => eq(table.id, submission.endpointId)
+      })
+      .finally(() => {
+        metrics.emit({
+          metric: 'main.db.read',
+          query: 'endpoints.get',
+          latency: performance.now() - queryStart
+        });
+      });
 
     if (!endpoint) {
       throw new HTTPException(404, {

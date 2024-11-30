@@ -41,12 +41,12 @@ export const registerVerifyKey = (api: typeof keysApi) => {
     const rootKey = context.get('key');
 
     const dbStart = performance.now();
-    const {val, err} = await apiKeys.verifyKey(key);
-
-    metrics.emit({
-      metric: 'main.db.read',
-      query: 'keys.verify',
-      latency: performance.now() - dbStart
+    const {val, err} = await apiKeys.verifyKey(key).finally(() => {
+      metrics.emit({
+        metric: 'main.db.read',
+        query: 'keys.verify',
+        latency: performance.now() - dbStart
+      });
     });
 
     if (err || !val) {

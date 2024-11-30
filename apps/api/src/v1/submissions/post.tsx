@@ -67,9 +67,18 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
     // biome-ignore lint/suspicious/noExplicitAny:
     const input = await context.req.json<any>();
 
-    const endpoint = await database.query.endpoint.findFirst({
-      where: (table, {eq}) => eq(table.id, id)
-    });
+    const queryEndpointStart = performance.now();
+    const endpoint = await database.query.endpoint
+      .findFirst({
+        where: (table, {eq}) => eq(table.id, id)
+      })
+      .finally(() => {
+        metrics.emit({
+          metric: 'main.db.read',
+          query: 'endpoints.get',
+          latency: performance.now() - queryEndpointStart
+        });
+      });
 
     if (!endpoint) {
       throw new HTTPException(404, {
@@ -83,9 +92,18 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
       });
     }
 
-    const workspace = await database.query.workspace.findFirst({
-      where: (table, {eq}) => eq(table.id, workspaceId)
-    });
+    const queryWorkspaceStart = performance.now();
+    const workspace = await database.query.workspace
+      .findFirst({
+        where: (table, {eq}) => eq(table.id, workspaceId)
+      })
+      .finally(() => {
+        metrics.emit({
+          metric: 'main.db.read',
+          query: 'endpoints.get',
+          latency: performance.now() - queryWorkspaceStart
+        });
+      });
 
     if (!workspace) {
       throw new HTTPException(404, {
