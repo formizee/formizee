@@ -27,7 +27,7 @@ export class ConsoleLogger implements Logger {
 
     const baseLogger = new Logtail(opts.logtailToken, {
       sendLogsToBetterStack: opts.emitLogs,
-      sendLogsToConsoleOutput: true,
+      sendLogsToConsoleOutput: false,
       ignoreExceptions: true
     });
     this.client = baseLogger.withExecutionContext(opts.ctx);
@@ -51,19 +51,29 @@ export class ConsoleLogger implements Logger {
   }
 
   public debug(message: string, fields?: Fields): void {
-    this.client.debug(this.marshal('debug', message, fields));
+    const marshal = this.marshal('debug', message, fields);
+    this.client.debug(marshal);
+    console.debug(marshal);
   }
   public info(message: string, fields?: Fields): void {
-    this.client.info(this.marshal('info', message, fields));
+    const marshal = this.marshal('info', message, fields);
+    this.client.info(marshal);
+    console.info(marshal);
   }
   public warn(message: string, fields?: Fields): void {
-    this.client.warn(this.marshal('warn', message, fields));
+    const marshal = this.marshal('warn', message, fields);
+    this.client.warn(marshal);
+    console.warn(marshal);
   }
   public error(message: string, fields?: Fields): void {
-    this.client.error(this.marshal('error', message, fields));
+    const marshal = this.marshal('error', message, fields);
+    this.client.error(marshal);
+    console.error(marshal);
   }
   public fatal(message: string, fields?: Fields): void {
-    this.client.error(this.marshal('fatal', message, fields));
+    const marshal = this.marshal('error', message, fields);
+    this.client.error(marshal);
+    console.error(marshal);
   }
 
   public setRequestId(requestId: string): void {
