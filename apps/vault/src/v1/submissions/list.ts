@@ -27,7 +27,11 @@ export const listRoute = createRoute({
       content: {
         'application/json': {
           schema: z.object({
-            _metadata: MetadataSchema,
+            _metadata: MetadataSchema.merge(
+              z.object({
+                schema: z.custom<Record<string, string>>()
+              })
+            ),
             submissions: SubmissionSchema.array()
           })
         }
@@ -39,7 +43,8 @@ export const listRoute = createRoute({
 
 export const registerListSubmissions = (api: typeof submissionsAPI) => {
   return api.openapi(listRoute, async context => {
-    const {metrics, database, storage, cache, keys} = context.get('services');
+    const {metrics, logger, database, storage, cache, keys} =
+      context.get('services');
     const {page, limit} = context.get('pagination');
     const input = context.req.valid('param');
     const queryStart = performance.now();
@@ -53,6 +58,16 @@ export const registerListSubmissions = (api: typeof submissionsAPI) => {
       throw new HTTPException(404, {
         message:
           'Origin database not found, please contact support@formizee.com'
+      });
+    }
+
+    const endpoint = await originDatabase.query.endpoint.findFirst({
+      where: (table, {eq}) => eq(table.id, input.endpointId)
+    });
+
+    if (!endpoint) {
+      throw new HTTPException(404, {
+        message: 'Endpoint not found'
       });
     }
 
@@ -141,24 +156,35 @@ export const registerListSubmissions = (api: typeof submissionsAPI) => {
       })
     );
 
-    const totalPages = calculateTotalPages(page, submissions.totalItems, limit);
+    try {
+      const totalPages = calculateTotalPages(
+        page,
+        submissions.totalItems,
+        limit
+      );
+      const endpointSchema = JSON.parse(endpoint.schema);
 
-    metrics.emit({
-      metric: 'vault.latency',
-      query: 'submissions.list',
-      latency: performance.now() - queryStart
-    });
+      metrics.emit({
+        metric: 'vault.latency',
+        query: 'submissions.list',
+        latency: performance.now() - queryStart
+      });
 
-    return context.json(
-      {
-        _metadata: {
-          page,
-          totalPages,
-          itemsPerPage: limit
+      return context.json(
+        {
+          _metadata: {
+            page,
+            totalPages,
+            itemsPerPage: limit,
+            schema: endpointSchema
+          },
+          submissions: response
         },
-        submissions: response
-      },
-      200
-    );
+        200
+      );
+    } catch (error) {
+      logger.error('Unexpected error listing submissions', {error});
+      throw error;
+    }
   });
 };

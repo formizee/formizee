@@ -42,7 +42,12 @@ describe('List submissions', () => {
       _metadata: {
         page: 1,
         totalPages: 1,
-        itemsPerPage: 100
+        itemsPerPage: 100,
+        schema: {
+          name: 'string',
+          email: 'string',
+          message: 'string'
+        }
       },
       submissions: [
         {
@@ -71,7 +76,12 @@ describe('List submissions', () => {
       _metadata: {
         page: 1,
         totalPages: 1,
-        itemsPerPage: 100
+        itemsPerPage: 100,
+        schema: {
+          name: 'string',
+          email: 'string',
+          message: 'string'
+        }
       },
       submissions: []
     });
