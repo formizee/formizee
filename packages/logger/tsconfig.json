@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "@formizee/tsconfig/base.json",
+  "exclude": ["dist", "node_modules"],
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "Bundler",
+    "target": "ESNext",
+    "module": "ESNext"
+  }
+}
