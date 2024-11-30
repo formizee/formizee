@@ -49,6 +49,7 @@ export const metricSchema = z.discriminatedUnion('metric', [
       'users.get',
       'users.list',
 
+      'keys.get',
       'keys.list',
       'keys.verify',
 
