@@ -835,9 +835,6 @@ importers:
       '@types/node':
         specifier: 22.0.0
         version: 22.0.0
-      vitest:
-        specifier: 1.5.0
-        version: 1.5.0(@types/node@22.0.0)(terser@5.31.3)
 
   tools/keys:
     devDependencies:

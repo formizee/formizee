@@ -1,11 +1,11 @@
 # Vault
 
-This package is a typed api to access the @formizee/vault service
+This package is a typed api to access the Formizee Vault service.
 
 ## Usage
 
 ```typescript
-import {Vault} from '@formizee/vault-api';
+import {Vault} from '@formizee/vault';
 
 const vault = new Vault({
   url: "http://localhost:8888",
