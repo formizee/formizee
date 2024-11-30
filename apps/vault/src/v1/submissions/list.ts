@@ -39,7 +39,7 @@ export const listRoute = createRoute({
 
 export const registerListSubmissions = (api: typeof submissionsAPI) => {
   return api.openapi(listRoute, async context => {
-    const {analytics, database, storage, cache, keys} = context.get('services');
+    const {metrics, database, storage, cache, keys} = context.get('services');
     const {page, limit} = context.get('pagination');
     const input = context.req.valid('param');
     const queryStart = performance.now();
@@ -143,7 +143,7 @@ export const registerListSubmissions = (api: typeof submissionsAPI) => {
 
     const totalPages = calculateTotalPages(page, submissions.totalItems, limit);
 
-    analytics.ingestFormizeeMetrics({
+    metrics.emit({
       metric: 'vault.latency',
       query: 'submissions.list',
       latency: performance.now() - queryStart

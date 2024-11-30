@@ -36,7 +36,7 @@ export const putRoute = createRoute({
 
 export const registerPutSubmission = (api: typeof submissionsAPI) => {
   return api.openapi(putRoute, async context => {
-    const {analytics, database, cache} = context.get('services');
+    const {metrics, database, cache} = context.get('services');
     const {endpointId, id} = context.req.valid('param');
     const input = context.req.valid('json');
     const mutationStart = performance.now();
@@ -80,7 +80,7 @@ export const registerPutSubmission = (api: typeof submissionsAPI) => {
       cache.storeSubmission(newSubmissionData)
     ]);
 
-    analytics.ingestFormizeeMetrics({
+    metrics.emit({
       metric: 'vault.latency',
       query: 'submissions.put',
       latency: performance.now() - mutationStart

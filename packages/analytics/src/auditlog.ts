@@ -1,5 +1,25 @@
 import {z} from 'zod';
 
+export type FormizeeAuditLog = {
+  workspaceId: string;
+  event: z.infer<typeof formizeeAuditLogEvents>;
+  description: string;
+  actor: {
+    type: 'user' | 'key';
+    name?: string;
+    id: string;
+  };
+  resources: Array<{
+    type: 'key' | 'auth' | 'user' | 'endpoint' | 'workspace';
+    id: string;
+    meta?: Record<string, string | number | boolean | null | undefined>;
+  }>;
+  context: {
+    userAgent?: string;
+    location: string;
+  };
+};
+
 export const formizeeAuditLogEvents = z.enum([
   // Workspace
   'workspace.create',

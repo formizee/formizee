@@ -29,7 +29,7 @@ export const deleteRoute = createRoute({
 
 export const registerDeleteSubmission = (api: typeof submissionsAPI) => {
   return api.openapi(deleteRoute, async context => {
-    const {analytics, database, storage, cache} = context.get('services');
+    const {metrics, database, storage, cache} = context.get('services');
     const input = context.req.valid('param');
     const mutationStart = performance.now();
 
@@ -68,7 +68,7 @@ export const registerDeleteSubmission = (api: typeof submissionsAPI) => {
       cache.invalidateSubmissions(input)
     ]);
 
-    analytics.ingestFormizeeMetrics({
+    metrics.emit({
       metric: 'vault.latency',
       query: 'submissions.delete',
       latency: performance.now() - mutationStart

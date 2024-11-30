@@ -29,7 +29,7 @@ export const getRoute = createRoute({
 
 export const registerGetSubmission = (api: typeof submissionsAPI) => {
   return api.openapi(getRoute, async context => {
-    const {analytics, logger, database, storage, cache, keys} =
+    const {metrics, logger, database, storage, cache, keys} =
       context.get('services');
     const input = context.req.valid('param');
     const queryStart = performance.now();
@@ -101,7 +101,7 @@ export const registerGetSubmission = (api: typeof submissionsAPI) => {
         createdAt: submission.createdAt
       };
 
-      analytics.ingestFormizeeMetrics({
+      metrics.emit({
         metric: 'vault.latency',
         query: 'submissions.get',
         latency: performance.now() - queryStart

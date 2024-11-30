@@ -1,13 +1,13 @@
 import type {schema} from '@formizee/db/submissions';
-import type {Analytics} from '@formizee/analytics';
+import type {Metrics} from '@formizee/metrics';
 
 export class Cache {
   public readonly client: KVNamespace;
-  public readonly analytics: Analytics;
+  public readonly metrics: Metrics;
 
-  constructor(opts: {client: KVNamespace; analytics: Analytics}) {
+  constructor(opts: {client: KVNamespace; metrics: Metrics}) {
     this.client = opts.client;
-    this.analytics = opts.analytics;
+    this.metrics = opts.metrics;
   }
 
   // Submissions
@@ -18,7 +18,7 @@ export class Cache {
     const queryStart = performance.now();
     const raw = await this.client.get(`submission:${submissionId}`);
 
-    this.analytics.ingestFormizeeMetrics({
+    this.metrics.emit({
       metric: 'vault.cache.read',
       hit: raw !== null,
       key: `submission:${submissionId}`,
@@ -44,7 +44,7 @@ export class Cache {
       expirationTtl: 86400
     });
 
-    this.analytics.ingestFormizeeMetrics({
+    this.metrics.emit({
       metric: 'vault.cache.write',
       key: `submission:${data.id}`,
       latency: performance.now() - mutationStart
@@ -56,7 +56,7 @@ export class Cache {
 
     await this.client.delete(`submission:${submissionId}`);
 
-    this.analytics.ingestFormizeeMetrics({
+    this.metrics.emit({
       metric: 'vault.cache.delete',
       key: `submission:${submissionId}`,
       latency: performance.now() - mutationStart
@@ -76,7 +76,7 @@ export class Cache {
       `${input.endpointId}:submissions_page_${input.page}_size_${input.pageSize}`
     );
 
-    this.analytics.ingestFormizeeMetrics({
+    this.metrics.emit({
       metric: 'vault.cache.read',
       hit: raw !== null,
       key: `${input.endpointId}:submissions_page_${input.page}_size_${input.pageSize}`,
@@ -120,7 +120,7 @@ export class Cache {
       }
     );
 
-    this.analytics.ingestFormizeeMetrics({
+    this.metrics.emit({
       metric: 'vault.cache.write',
       key: `${input.endpointId}:submissions_page_${input.page}_size_${input.pageSize}`,
       latency: performance.now() - mutationStart
@@ -137,7 +137,7 @@ export class Cache {
     Promise.all(
       keys.map(async key => {
         await this.client.delete(key.name);
-        await this.analytics.ingestFormizeeMetrics({
+        this.metrics.emit({
           key: key.name,
           metric: 'vault.cache.delete',
           latency: performance.now() - mutationStart
@@ -153,7 +153,7 @@ export class Cache {
 
     const data = await this.client.get(`endpoint:${endpointId}`);
 
-    this.analytics.ingestFormizeeMetrics({
+    this.metrics.emit({
       metric: 'vault.cache.read',
       hit: data !== null,
       key: `endpoint:${endpointId}`,
@@ -173,7 +173,7 @@ export class Cache {
       expirationTtl: 86400
     });
 
-    this.analytics.ingestFormizeeMetrics({
+    this.metrics.emit({
       metric: 'vault.cache.write',
       key: `endpoint:${data.endpointId}`,
       latency: performance.now() - mutationStart
@@ -185,7 +185,7 @@ export class Cache {
 
     await this.client.delete(`endpoint:${endpointId}`);
 
-    this.analytics.ingestFormizeeMetrics({
+    this.metrics.emit({
       key: `endpoint:${endpointId}`,
       metric: 'vault.cache.delete',
       latency: performance.now() - mutationStart
@@ -201,7 +201,7 @@ export class Cache {
 
     const raw = await this.client.get(`database:${databaseId}`);
 
-    this.analytics.ingestFormizeeMetrics({
+    this.metrics.emit({
       metric: 'vault.cache.read',
       hit: raw !== null,
       key: `database:${databaseId}`,
@@ -227,7 +227,7 @@ export class Cache {
       expirationTtl: 86400
     });
 
-    this.analytics.ingestFormizeeMetrics({
+    this.metrics.emit({
       metric: 'vault.cache.write',
       key: `database:${input.id}`,
       latency: performance.now() - mutationStart
@@ -239,7 +239,7 @@ export class Cache {
 
     await this.client.delete(`database:${databaseId}`);
 
-    this.analytics.ingestFormizeeMetrics({
+    this.metrics.emit({
       key: `database:${databaseId}`,
       metric: 'vault.cache.delete',
       latency: performance.now() - mutationStart

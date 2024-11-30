@@ -44,7 +44,7 @@ export const registerVerifyKey = (api: typeof keysApi) => {
     const {val, err} = await apiKeys.verifyKey(key);
 
     analytics.ingestFormizeeMetrics({
-      metric: 'db.read',
+      metric: 'main.db.read',
       query: 'keys.verify',
       latency: performance.now() - dbStart
     });

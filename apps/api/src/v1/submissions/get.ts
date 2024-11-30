@@ -28,11 +28,9 @@ export const getRoute = createRoute({
 
 export const registerGetSubmission = (api: typeof submissionsApi) => {
   return api.openapi(getRoute, async context => {
-    const {analytics, database} = context.get('services');
     const workspaceId = context.get('workspace').id;
+    const {database} = context.get('services');
     const {id} = context.req.valid('param');
-
-    const dbStart = performance.now();
 
     const submission = await getSubmission(context.env.VAULT_SECRET, id);
     if (!submission) {
@@ -56,12 +54,6 @@ export const registerGetSubmission = (api: typeof submissionsApi) => {
         message: 'This submission belongs to another workspace'
       });
     }
-
-    await analytics.ingestFormizeeMetrics({
-      metric: 'db.read',
-      query: 'submissions.load',
-      latency: performance.now() - dbStart
-    });
 
     const response = SubmissionSchema.parse(submission);
 
