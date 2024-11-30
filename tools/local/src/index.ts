@@ -75,7 +75,12 @@ async function main() {
     }
 
     case 'dashboard': {
-      await startContainers(['database', 'submissions-database', 'api', 'vault']);
+      await startContainers([
+        'database',
+        'submissions-database',
+        'api',
+        'vault'
+      ]);
       await prepareDatabase('submissions');
       await prepareDatabase('main');
 
