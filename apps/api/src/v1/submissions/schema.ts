@@ -1,3 +1,4 @@
+import {MetadataSchema} from '@/lib/pagination';
 import {z} from '@hono/zod-openapi';
 
 export const ParamsSchema = z.object({
@@ -77,6 +78,14 @@ const SubmissionDataSchema = z
     example: {exampleValue: 'foo'}
   });
 
+const ListSubmissionsSchema = z.object({
+  schema: z.object({
+    _metadata: MetadataSchema,
+    submissions: SubmissionSchema.array()
+  })
+});
+
 export type RequestPostSubmission = z.infer<typeof SubmissionDataSchema>;
 export type RequestPutSubmission = z.infer<typeof UpdateSubmissionSchema>;
+export type ResponseListSubmissions = z.infer<typeof ListSubmissionsSchema>;
 export type ResponseSubmission = z.infer<typeof SubmissionSchema>;

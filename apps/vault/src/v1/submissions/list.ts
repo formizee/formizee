@@ -66,9 +66,18 @@ export const registerListSubmissions = (api: typeof submissionsAPI) => {
     });
 
     if (!endpoint) {
-      throw new HTTPException(404, {
-        message: 'Endpoint not found'
-      });
+      return context.json(
+        {
+          _metadata: {
+            page,
+            totalPages: 1,
+            itemsPerPage: limit,
+            schema: {}
+          },
+          submissions: []
+        },
+        200
+      );
     }
 
     // Query submissions

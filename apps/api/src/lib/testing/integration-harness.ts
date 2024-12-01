@@ -8,6 +8,7 @@ export class IntegrationHarness extends Harness {
   public readonly apiUrl: string;
   public readonly webUrl: string;
   public readonly docsUrl: string;
+  public readonly vaultUrl: string;
 
   private constructor(t: TaskContext) {
     const env = integrationTestEnv.parse(process.env);
@@ -16,11 +17,13 @@ export class IntegrationHarness extends Harness {
     this.apiUrl = env.API_URL;
     this.webUrl = env.WEB_URL;
     this.docsUrl = env.DOCS_URL;
+    this.vaultUrl = env.VAULT_URL;
   }
 
   static async init(t: TaskContext): Promise<IntegrationHarness> {
     const h = new IntegrationHarness(t);
     await h.seed();
+    await h.seedvault();
     return h;
   }
 

@@ -1,28 +1,57 @@
-import {type Database, createConnection} from '@formizee/db';
-import {eq, schema} from '@formizee/db';
-import {databaseEnv} from './enviroment';
+import {type Database, eq, schema, createConnection} from '@formizee/db';
+import {integrationTestEnv} from './enviroment';
 import type {TaskContext} from 'vitest';
+import {Vault} from '@formizee/vault';
 import {newKey} from '@formizee/keys';
 import {newId} from '@formizee/id';
 
 export type Resources = {
+  disabledEndpoint: schema.Endpoint;
   workspace: schema.Workspace;
   endpoint: schema.Endpoint;
   user: schema.User;
   key: schema.Key;
 };
 
+export type VaultResources = {
+  submission: {
+    id: string;
+    createdAt: Date;
+    endpointId: string;
+    data: Record<string, string>;
+    location: string;
+    isRead: boolean;
+    isSpam: boolean;
+  };
+};
+
+export const defaultResources: VaultResources = {
+  submission: {
+    id: 'sub_123456789',
+    endpointId: 'enp_123456789',
+    createdAt: new Date(),
+    isRead: false,
+    isSpam: false,
+    location: '',
+    data: {}
+  }
+};
+
 export abstract class Harness {
-  public readonly db: Database;
+  public vaultResources: VaultResources = defaultResources;
   public resources: Resources;
 
+  public readonly vault: Vault;
+  public readonly db: Database;
+
   constructor(t: TaskContext) {
-    const {DATABASE_URL} = databaseEnv.parse(process.env);
+    const {DATABASE_URL, VAULT_URL} = integrationTestEnv.parse(process.env);
 
     this.resources = this.createResources();
     this.db = createConnection({
       databaseUrl: DATABASE_URL
     });
+    this.vault = new Vault({url: VAULT_URL, token: ''});
 
     t.onTestFinished(async () => {
       await this.teardown();
@@ -40,9 +69,20 @@ export abstract class Harness {
         .delete(schema.user)
         .where(eq(schema.user.id, this.resources.user.id));
     };
+
+    const deleteEndpoint = async () => {
+      await this.vault.endpoints.delete({
+        endpointId: this.resources.disabledEndpoint.id
+      });
+      await this.vault.endpoints.delete({
+        endpointId: this.resources.endpoint.id
+      });
+    };
+
     for (let i = 1; i <= 5; i++) {
       try {
         await deleteWorkspace();
+        await deleteEndpoint();
         await deleteUser();
         return;
       } catch (err) {
@@ -123,7 +163,23 @@ export abstract class Harness {
       updatedAt: new Date()
     };
 
+    const disabledEndpoint: schema.Endpoint = {
+      id: newId('test'),
+      name: 'My Disabled Endpoint',
+      slug: 'my-disabled-endpoint',
+      targetEmails: workspace.availableEmails,
+      workspaceId: workspace.id,
+      redirectUrl: 'https://formizee.com/thanks-you',
+      icon: 'file',
+      color: 'red',
+      isEnabled: false,
+      emailNotifications: true,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+
     return {
+      disabledEndpoint,
       workspace,
       endpoint,
       user,
@@ -135,6 +191,37 @@ export abstract class Harness {
     await this.db.insert(schema.user).values(this.resources.user);
     await this.db.insert(schema.workspace).values(this.resources.workspace);
     await this.db.insert(schema.endpoint).values(this.resources.endpoint);
+    await this.db
+      .insert(schema.endpoint)
+      .values(this.resources.disabledEndpoint);
     await this.db.insert(schema.key).values(this.resources.key);
+  }
+
+  protected async seedvault(): Promise<void> {
+    const {data, error} = await this.vault.submissions.post({
+      endpointId: this.resources.endpoint.id,
+      data: {name: 'pau', email: 'pau@mail.com'},
+      fileUploads: [],
+      location: ''
+    });
+
+    if (error) {
+      console.error('Error seeding the vault');
+      throw error;
+    }
+
+    const submission = await this.vault.submissions.get({
+      endpointId: data.endpointId,
+      id: data.id
+    });
+
+    if (submission.error) {
+      console.error('Error seeding the vault');
+      throw error;
+    }
+
+    this.vaultResources = {
+      submission: submission.data
+    };
   }
 }

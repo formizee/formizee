@@ -2,7 +2,7 @@ import {IntegrationHarness} from '@/lib/testing';
 import type {ResponseEndpoint} from './schema';
 import {describe, it, expect} from 'vitest';
 
-describe.skip('Delete a endpoint', () => {
+describe('Delete a endpoint', () => {
   it('Should get 200', async context => {
     const harness = await IntegrationHarness.init(context);
     const endpoint = harness.resources.endpoint;
@@ -30,7 +30,8 @@ describe.skip('Delete a endpoint', () => {
     expect(res.body).toStrictEqual({
       code: 'NOT_FOUND',
       message: 'Endpoint not found',
-      docs: `${harness.docsUrl}/api-references/errors/code/NOT_FOUND`
+      docs: `${harness.docsUrl}/api-references/errors/code/NOT_FOUND`,
+      requestId: res.headers['formizee-request-id']
     });
   });
 });

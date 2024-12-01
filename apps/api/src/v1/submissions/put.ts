@@ -24,7 +24,7 @@ export const putRoute = createRoute({
       description: 'Update a submission',
       content: {
         'application/json': {
-          schema: SubmissionSchema
+          schema: SubmissionSchema.omit({data: true})
         }
       }
     },
@@ -72,7 +72,7 @@ export const registerPutSubmission = (api: typeof submissionsApi) => {
       });
     }
 
-    const response = SubmissionSchema.parse(data);
+    const response = SubmissionSchema.omit({data: true}).parse(data);
     return context.json(response, 200);
   });
 };

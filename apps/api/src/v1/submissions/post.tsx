@@ -122,7 +122,7 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
 
     if (Object.keys(input).length === 0) {
       throw new HTTPException(400, {
-        message: 'The submission data is empty'
+        message: 'The submission is empty'
       });
     }
 
@@ -271,7 +271,7 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
       }
     });
 
-    const response = SubmissionSchema.parse(data);
+    const response = SubmissionSchema.parse({...data, data: input});
     return context.json(response, 201);
   });
 };

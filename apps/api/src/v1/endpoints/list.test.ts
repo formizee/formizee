@@ -5,6 +5,7 @@ import {describe, it, expect} from 'vitest';
 describe('List endpoints', () => {
   it('Should get 200', async context => {
     const harness = await IntegrationHarness.init(context);
+    const disabledEndpoint = harness.resources.disabledEndpoint;
     const endpoint = harness.resources.endpoint;
 
     const {key} = await harness.createKey();
@@ -20,7 +21,10 @@ describe('List endpoints', () => {
         totalPages: 1,
         itemsPerPage: 100
       },
-      endpoints: [omit(endpoint, ['createdAt', 'updatedAt'])]
+      endpoints: [
+        omit(endpoint, ['createdAt', 'updatedAt']),
+        omit(disabledEndpoint, ['createdAt', 'updatedAt'])
+      ]
     });
     expect(res.status).toBe(200);
   });
