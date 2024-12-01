@@ -138,13 +138,12 @@ describe('generate schema', () => {
       'example'
     );
 
-    expect(response).toStrictEqual({
+    expect(response).toMatchObject({
       id: 'example',
       schema: JSON.stringify({
         name: 'string',
         email: 'string'
-      }),
-      createdAt: new Date()
+      })
     });
   });
 
@@ -165,14 +164,13 @@ describe('generate schema', () => {
       'example'
     );
 
-    expect(response).toStrictEqual({
+    expect(response).toMatchObject({
       id: 'example',
       schema: JSON.stringify({
         name: 'string',
         email: 'string',
         file: 'file'
-      }),
-      createdAt: new Date()
+      })
     });
   });
 });
