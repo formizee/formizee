@@ -1,4 +1,5 @@
-import type {VaultOptions} from '../types';
+import type {schema} from '@formizee/db/submissions';
+import type {StatusCode, VaultOptions} from '../types';
 
 import type {
   DeleteRequest,
@@ -7,10 +8,13 @@ import type {
   GetResponse,
   ListRequest,
   ListResponse,
+  ListResponseData,
   PostRequest,
   PostResponse,
+  PostResponseData,
   PutRequest,
-  PutResponse
+  PutResponse,
+  PutResponseData
 } from './types';
 
 export class Submissions {
@@ -22,7 +26,7 @@ export class Submissions {
     this.token = opts.token;
   }
 
-  public async get(input: GetRequest): Promise<GetResponse | null> {
+  public async get(input: GetRequest): Promise<GetResponse> {
     const url = `${this.url}/v1/submission/${input.endpointId}/${input.id}`;
 
     const response = await fetch(url, {
@@ -30,21 +34,31 @@ export class Submissions {
       method: 'GET'
     });
 
-    if (!response.ok) {
-      console.error(response.text);
-      return Promise.resolve(null);
-    }
-
     try {
-      const submission = await response.json();
-      return Promise.resolve(submission as GetResponse);
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+      const body = (await response.json()) as any;
+
+      if (response.status !== 200) {
+        return Promise.resolve({
+          data: null,
+          error: {
+            status: response.status as StatusCode,
+            message: body.message ?? 'Unexpected Error'
+          }
+        });
+      }
+
+      return Promise.resolve({
+        data: body as schema.Submission,
+        error: null
+      });
     } catch (error) {
       console.error(error);
       return Promise.reject(error);
     }
   }
 
-  public async list(input: ListRequest): Promise<ListResponse | null> {
+  public async list(input: ListRequest): Promise<ListResponse> {
     const url = `${this.url}/v1/submissions/${input.endpointId}`;
     const queryUrl = new URL(url);
     if (input.page) {
@@ -59,21 +73,31 @@ export class Submissions {
       method: 'GET'
     });
 
-    if (!response.ok) {
-      console.error(response.text);
-      return Promise.resolve(null);
-    }
-
     try {
-      const submission = await response.json();
-      return Promise.resolve(submission as ListResponse);
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+      const body = (await response.json()) as any;
+
+      if (response.status !== 200) {
+        return Promise.resolve({
+          data: null,
+          error: {
+            status: response.status as StatusCode,
+            message: body.message
+          }
+        });
+      }
+
+      return Promise.resolve({
+        data: body as ListResponseData,
+        error: null
+      });
     } catch (error) {
       console.error(error);
       return Promise.reject(error);
     }
   }
 
-  public async post(input: PostRequest): Promise<PostResponse | null> {
+  public async post(input: PostRequest): Promise<PostResponse> {
     const url = `${this.url}/v1/submission/${input.endpointId}`;
 
     const response = await fetch(url, {
@@ -85,21 +109,31 @@ export class Submissions {
       body: JSON.stringify(input)
     });
 
-    if (!response.ok) {
-      console.error(response.text);
-      return Promise.resolve(null);
-    }
-
     try {
-      const submission = await response.json();
-      return Promise.resolve(submission as PostResponse);
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+      const body = (await response.json()) as any;
+
+      if (response.status !== 201) {
+        return Promise.resolve({
+          data: null,
+          error: {
+            status: response.status as StatusCode,
+            message: body.message
+          }
+        });
+      }
+
+      return Promise.resolve({
+        data: body as PostResponseData,
+        error: null
+      });
     } catch (error) {
       console.error(error);
       return Promise.reject(error);
     }
   }
 
-  public async put(input: PutRequest): Promise<PutResponse | null> {
+  public async put(input: PutRequest): Promise<PutResponse> {
     const url = `${this.url}/v1/submission/${input.endpointId}/${input.id}`;
 
     const response = await fetch(url, {
@@ -111,21 +145,31 @@ export class Submissions {
       body: JSON.stringify({isSpam: input.isSpam, isRead: input.isRead})
     });
 
-    if (!response.ok) {
-      console.error(response.text);
-      return Promise.resolve(null);
-    }
-
     try {
-      const submission = await response.json();
-      return Promise.resolve(submission as PutResponse);
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+      const body = (await response.json()) as any;
+
+      if (response.status !== 200) {
+        return Promise.resolve({
+          data: null,
+          error: {
+            status: response.status as StatusCode,
+            message: body.message
+          }
+        });
+      }
+
+      return Promise.resolve({
+        data: body as PutResponseData,
+        error: null
+      });
     } catch (error) {
       console.error(error);
       return Promise.reject(error);
     }
   }
 
-  public async delete(input: DeleteRequest): Promise<DeleteResponse | null> {
+  public async delete(input: DeleteRequest): Promise<DeleteResponse> {
     const url = `${this.url}/v1/submission/${input.endpointId}/${input.id}`;
 
     const response = await fetch(url, {
@@ -133,13 +177,24 @@ export class Submissions {
       method: 'DELETE'
     });
 
-    if (!response.ok) {
-      console.error(response.text);
-      return Promise.resolve(null);
-    }
-
     try {
-      return Promise.resolve({});
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+      const body = (await response.json()) as any;
+
+      if (response.status !== 200) {
+        return Promise.resolve({
+          data: null,
+          error: {
+            status: response.status as StatusCode,
+            message: body.message
+          }
+        });
+      }
+
+      return Promise.resolve({
+        data: {},
+        error: null
+      });
     } catch (error) {
       console.error(error);
       return Promise.reject(error);

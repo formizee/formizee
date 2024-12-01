@@ -1,3 +1,5 @@
+import type {Response} from '../types';
+
 /**
  * Delete
  *****/
@@ -7,4 +9,4 @@ export interface DeleteRequest {
 }
 
 // biome-ignore lint/complexity/noBannedTypes: <explanation>
-export type DeleteResponse = {};
+export type DeleteResponse = Response<{}>;

@@ -1,4 +1,5 @@
 import type {schema} from '@formizee/db/submissions';
+import type {Response} from '../types';
 
 /**
  * GET
@@ -9,7 +10,7 @@ export interface GetRequest {
   id: string;
 }
 
-export type GetResponse = schema.Submission;
+export type GetResponse = Response<schema.Submission>;
 
 /**
  * LIST
@@ -21,7 +22,7 @@ export interface ListRequest {
   limit?: number;
 }
 
-export interface ListResponse {
+export interface ListResponseData {
   _metadata: {
     page: number;
     totalPages: number;
@@ -30,6 +31,8 @@ export interface ListResponse {
   };
   submissions: schema.Submission[];
 }
+
+export type ListResponse = Response<ListResponseData>;
 
 /**
  * POST
@@ -42,7 +45,7 @@ export interface PostRequest {
   location: string;
 }
 
-export interface PostResponse {
+export interface PostResponseData {
   id: string;
   endpointId: string;
   pendingUploads: {name: string; url: string | null}[];
@@ -51,6 +54,8 @@ export interface PostResponse {
   location: string;
   createdAt: Date;
 }
+
+export type PostResponse = Response<PostResponseData>;
 
 /**
  * PUT
@@ -63,7 +68,7 @@ export interface PutRequest {
   isSpam?: boolean;
 }
 
-export interface PutResponse {
+export interface PutResponseData {
   id: string;
   endpointId: string;
   isRead: boolean;
@@ -74,6 +79,7 @@ export interface PutResponse {
   cipherText: string;
 }
 
+export type PutResponse = Response<PutResponseData>;
 /**
  * Delete
  *****/
@@ -84,4 +90,4 @@ export interface DeleteRequest {
 }
 
 // biome-ignore lint/complexity/noBannedTypes: <explanation>
-export type DeleteResponse = {};
+export type DeleteResponse = Response<{}>;
