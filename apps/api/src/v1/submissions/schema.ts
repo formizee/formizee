@@ -4,11 +4,15 @@ export const ParamsSchema = z.object({
   id: z.string().openapi({
     description: 'The id of the submission',
     example: 'sub_4VjHrJoEwAFC6itz8oUBW9NW2bia'
+  }),
+  endpointId: z.string().openapi({
+    description: 'The id of the endpoint',
+    example: 'enp_4VjHrJoEwAFC6itz8oUBW9NW2bia'
   })
 });
 
 export const EndpointParamsSchema = z.object({
-  id: z.string().openapi({
+  endpointId: z.string().openapi({
     description: 'The id of the endpoint',
     example: 'enp_4VjHrJoEwAFC6itz8oUBW9NW2bia'
   })

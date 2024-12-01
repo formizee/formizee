@@ -1,4 +1,3 @@
-import {deleteSubmission, getSubmission} from '@/lib/vault';
 import type {submissions as submissionsApi} from '.';
 import {openApiErrorResponses} from '@/lib/errors';
 import {HTTPException} from 'hono/http-exception';
@@ -9,7 +8,7 @@ export const deleteRoute = createRoute({
   method: 'delete',
   tags: ['Submissions'],
   summary: 'Delete a submission',
-  path: '/{id}',
+  path: '/{endpointId}/{id}',
   request: {
     params: ParamsSchema
   },
@@ -29,20 +28,13 @@ export const deleteRoute = createRoute({
 export const registerDeleteSubmission = (api: typeof submissionsApi) => {
   return api.openapi(deleteRoute, async context => {
     const workspaceId = context.get('workspace').id;
-    const {database, metrics} = context.get('services');
-    const {id} = context.req.valid('param');
-
-    const submission = await getSubmission(context.env.VAULT_SECRET, id);
-    if (!submission) {
-      throw new HTTPException(404, {
-        message: 'Submission not found'
-      });
-    }
+    const {database, vault, metrics, logger} = context.get('services');
+    const input = context.req.valid('param');
 
     const queryStart = performance.now();
     const endpoint = await database.query.endpoint
       .findFirst({
-        where: (table, {eq}) => eq(table.id, submission.endpointId)
+        where: (table, {eq}) => eq(table.id, input.endpointId)
       })
       .finally(() => {
         metrics.emit({
@@ -64,7 +56,14 @@ export const registerDeleteSubmission = (api: typeof submissionsApi) => {
       });
     }
 
-    await deleteSubmission(context.env.VAULT_SECRET, submission.id);
+    const {error} = await vault.submissions.delete(input);
+
+    if (error) {
+      logger.error(`vault.submissions.delete(${input.id})`, {error});
+      throw new HTTPException(error.status, {
+        message: error.message
+      });
+    }
 
     return context.json({}, 200);
   });

@@ -25,6 +25,7 @@
     "@formizee/metrics": "workspace:*",
     "@formizee/plans": "workspace:*",
     "@formizee/tsconfig": "workspace:*",
+    "@formizee/vault": "workspace:*",
     "@hono/zod-openapi": "0.16.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",

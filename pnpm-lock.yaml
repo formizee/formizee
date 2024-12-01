@@ -62,6 +62,9 @@ importers:
       '@formizee/tsconfig':
         specifier: workspace:*
         version: link:../../internal/tsconfig
+      '@formizee/vault':
+        specifier: workspace:*
+        version: link:../../internal/vault
       '@hono/zod-openapi':
         specifier: 0.16.4
         version: 0.16.4(hono@4.6.6)(zod@3.23.8)

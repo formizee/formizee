@@ -3,6 +3,7 @@ import type {Analytics} from '@formizee/analytics';
 import type {Metrics} from '@formizee/metrics';
 import type {KeyService} from '@formizee/keys';
 import type {Database} from '@formizee/db';
+import type {Vault} from '@formizee/vault';
 import type {Resend} from 'resend';
 
 export interface Services {
@@ -12,4 +13,5 @@ export interface Services {
   database: Database;
   metrics: Metrics;
   email: Resend;
+  vault: Vault;
 }

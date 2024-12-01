@@ -1,20 +1,15 @@
-import {
-  MetadataSchema,
-  QuerySchema,
-  calculateTotalPages
-} from '@/lib/pagination';
 import {SubmissionSchema, EndpointParamsSchema} from './schema';
+import {MetadataSchema, QuerySchema} from '@/lib/pagination';
 import type {listSubmissions as submissionsApi} from '.';
 import {openApiErrorResponses} from '@/lib/errors';
 import {HTTPException} from 'hono/http-exception';
 import {createRoute, z} from '@hono/zod-openapi';
-import {listSubmissions} from '@/lib/vault';
 
 export const listRoute = createRoute({
   method: 'get',
   tags: ['Submissions'],
   summary: 'List endpoint submissions',
-  path: '/{id}',
+  path: '/{endpointId}',
   request: {
     params: EndpointParamsSchema,
     query: QuerySchema
@@ -37,16 +32,16 @@ export const listRoute = createRoute({
 
 export const registerListSubmissions = (api: typeof submissionsApi) => {
   return api.openapi(listRoute, async context => {
-    const {database, metrics} = context.get('services');
+    const {database, metrics, vault, logger} = context.get('services');
     const {page, limit} = context.get('pagination');
     const workspace = context.get('workspace');
-    const {id} = context.req.valid('param');
+    const {endpointId} = context.req.valid('param');
 
     const queryStart = performance.now();
     const endpoint = await database.query.endpoint
       .findFirst({
         where: (table, {and, eq}) =>
-          and(eq(table.workspaceId, workspace.id), eq(table.id, id))
+          and(eq(table.workspaceId, workspace.id), eq(table.id, endpointId))
       })
       .finally(() => {
         metrics.emit({
@@ -62,35 +57,22 @@ export const registerListSubmissions = (api: typeof submissionsApi) => {
       });
     }
 
-    const endpointId = endpoint.id;
-
-    const submissions = await listSubmissions(
-      context.env.VAULT_SECRET,
-      endpointId
-    );
-    if (!submissions) {
-      throw new HTTPException(404, {
-        message: 'Submissions not found'
+    const {data, error} = await vault.submissions.list({
+      endpointId,
+      page,
+      limit
+    });
+    if (error) {
+      logger.error(`vault.submissions.list(${endpointId})`, {error});
+      throw new HTTPException(error.status, {
+        message: error.message
       });
     }
 
-    const totalItems = submissions.length;
-    const totalPages = calculateTotalPages(page, totalItems, limit);
-
-    const response = submissions.map(submission =>
+    const submissions = data.submissions.map(submission =>
       SubmissionSchema.parse(submission)
     );
 
-    return context.json(
-      {
-        _metadata: {
-          page,
-          totalPages,
-          itemsPerPage: limit
-        },
-        submissions: response
-      },
-      200
-    );
+    return context.json({...data, submissions}, 200);
   });
 };

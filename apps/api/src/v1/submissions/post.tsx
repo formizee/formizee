@@ -1,21 +1,21 @@
-import {
-  SubmissionEmail,
-  PlanLimitReached,
-  PlanLimitWarning
-} from '@formizee/email/templates';
 import {SubmissionSchema, EndpointParamsSchema} from './schema';
 import {calculatePlanCycleDates} from '@formizee/plans';
 import type {submissions as submissionsApi} from '.';
 import {openApiErrorResponses} from '@/lib/errors';
 import {HTTPException} from 'hono/http-exception';
 import {createRoute} from '@hono/zod-openapi';
-import {postSubmission} from '@/lib/vault';
+
+import {
+  SubmissionEmail,
+  PlanLimitReached,
+  PlanLimitWarning
+} from '@formizee/email/templates';
 
 export const postRoute = createRoute({
   method: 'post',
   tags: ['Submissions'],
   summary: 'Create a submission',
-  path: '/{id}',
+  path: '/{endpointId}',
   request: {
     params: EndpointParamsSchema,
     body: {
@@ -46,17 +46,20 @@ export const postRoute = createRoute({
 
 export const registerPostSubmission = (api: typeof submissionsApi) => {
   return api.openapi(postRoute, async context => {
-    const {
-      analytics,
-      metrics,
-      database,
-      email: emailService
-    } = context.get('services');
     const workspacePlan = context.get('workspace').plan;
     const workspaceId = context.get('workspace').id;
+    const {endpointId} = context.req.valid('param');
     const location = context.get('location');
-    const {id} = context.req.valid('param');
     const limits = context.get('limits');
+
+    const {
+      analytics,
+      vault,
+      metrics,
+      database,
+      logger,
+      email: emailService
+    } = context.get('services');
 
     if (context.req.header('Content-Type') !== 'application/json') {
       throw new HTTPException(400, {
@@ -70,7 +73,7 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
     const queryEndpointStart = performance.now();
     const endpoint = await database.query.endpoint
       .findFirst({
-        where: (table, {eq}) => eq(table.id, id)
+        where: (table, {eq}) => eq(table.id, endpointId)
       })
       .finally(() => {
         metrics.emit({
@@ -222,13 +225,19 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
       }
     }
 
-    const newSubmission = await postSubmission(context.env.VAULT_SECRET, {
+    const {data, error} = await vault.submissions.post({
       endpointId: endpoint.id,
+      fileUploads: [],
       data: input,
       location
-    }).catch(error => {
-      throw new HTTPException(error.status, error.body);
     });
+
+    if (error) {
+      logger.error(`vault.submissions.post(${endpointId})`, {error});
+      throw new HTTPException(error.status, {
+        message: error.message
+      });
+    }
 
     if (
       endpoint.emailNotifications &&
@@ -262,7 +271,7 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
       }
     });
 
-    const response = SubmissionSchema.parse(newSubmission);
+    const response = SubmissionSchema.parse(data);
     return context.json(response, 201);
   });
 };

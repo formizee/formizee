@@ -1,4 +1,3 @@
-import {getSubmission, putSubmission} from '@/lib/vault';
 import {SubmissionSchema, ParamsSchema} from './schema';
 import type {submissions as submissionsApi} from '.';
 import {openApiErrorResponses} from '@/lib/errors';
@@ -9,7 +8,7 @@ export const putRoute = createRoute({
   method: 'put',
   tags: ['Submissions'],
   summary: 'Update a submission',
-  path: '/{id}',
+  path: '/{endpointId}/{id}',
   request: {
     params: ParamsSchema,
     body: {
@@ -35,23 +34,15 @@ export const putRoute = createRoute({
 
 export const registerPutSubmission = (api: typeof submissionsApi) => {
   return api.openapi(putRoute, async context => {
+    const {database, vault, metrics, logger} = context.get('services');
     const workspaceId = context.get('workspace').id;
-    const {database, metrics} = context.get('services');
-    const {id} = context.req.valid('param');
+    const params = context.req.valid('param');
     const input = context.req.valid('json');
-
-    const submission = await getSubmission(context.env.VAULT_SECRET, id);
-
-    if (!submission) {
-      throw new HTTPException(404, {
-        message: 'Submission not found'
-      });
-    }
 
     const queryStart = performance.now();
     const endpoint = await database.query.endpoint
       .findFirst({
-        where: (table, {eq}) => eq(table.id, submission.endpointId)
+        where: (table, {eq}) => eq(table.id, params.endpointId)
       })
       .finally(() => {
         metrics.emit({
@@ -73,13 +64,15 @@ export const registerPutSubmission = (api: typeof submissionsApi) => {
       });
     }
 
-    const newSubmission = await putSubmission(
-      context.env.VAULT_SECRET,
-      id,
-      input
-    );
+    const {data, error} = await vault.submissions.put({...params, ...input});
+    if (error) {
+      logger.error(`vault.submissions.put(${params.id})`, {error});
+      throw new HTTPException(error.status, {
+        message: error.message
+      });
+    }
 
-    const response = SubmissionSchema.parse(newSubmission);
+    const response = SubmissionSchema.parse(data);
     return context.json(response, 200);
   });
 };

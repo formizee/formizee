@@ -4,7 +4,6 @@ import type {endpoints as endpointsAPI} from '.';
 import {createRoute, z} from '@hono/zod-openapi';
 import {and, eq, schema} from '@formizee/db';
 import {ParamsSchema} from './schema';
-import {deleteEndpoint} from '@/lib/vault';
 
 export const deleteRoute = createRoute({
   method: 'delete',
@@ -29,7 +28,8 @@ export const deleteRoute = createRoute({
 
 export const registerDeleteEndpoint = (api: typeof endpointsAPI) => {
   return api.openapi(deleteRoute, async context => {
-    const {analytics, metrics, database} = context.get('services');
+    const {analytics, metrics, database, vault, logger} =
+      context.get('services');
     const workspace = context.get('workspace');
     const {id} = context.req.valid('param');
     const rootKey = context.get('key');
@@ -68,7 +68,13 @@ export const registerDeleteEndpoint = (api: typeof endpointsAPI) => {
         });
       });
 
-    await deleteEndpoint(context.env.VAULT_SECRET, id);
+    const {error} = await vault.endpoints.delete({endpointId: id});
+    if (error) {
+      logger.error(`vault.endpoints.delete(${id})`, {error});
+      throw new HTTPException(error.status, {
+        message: error.message
+      });
+    }
 
     await analytics.ingestFormizeeAuditLogs({
       event: 'endpoint.delete',

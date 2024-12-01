@@ -8,6 +8,7 @@ import {Metrics} from '@formizee/metrics';
 import {KeyService} from '@formizee/keys';
 import {Resend} from 'resend';
 import {ConsoleLogger} from '@formizee/logger';
+import {Vault} from '@formizee/vault';
 
 export function services(): MiddlewareHandler<HonoEnv> {
   return async (c, next) => {
@@ -55,6 +56,11 @@ export function services(): MiddlewareHandler<HonoEnv> {
           : undefined
     });
 
+    const vault = new Vault({
+      url: c.env.VAULT_URL,
+      token: c.env.VAULT_SECRET
+    });
+
     const email = new Resend(
       c.env.ENVIROMENT === 'production' ? c.env.RESEND_TOKEN : 're_123456789'
     );
@@ -71,6 +77,7 @@ export function services(): MiddlewareHandler<HonoEnv> {
       metrics,
       apiKeys,
       logger,
+      vault,
       email
     });
 
