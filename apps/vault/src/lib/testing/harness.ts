@@ -6,7 +6,8 @@ import {
   type Database,
   createConnection,
   schema,
-  eq
+  eq,
+  like
 } from '@formizee/db/submissions';
 
 interface Resources {
@@ -48,9 +49,7 @@ export abstract class Harness {
     const deleteEndpointMapping = async () => {
       await this.db
         .delete(schema.mappings)
-        .where(
-          eq(schema.mappings.endpointId, this.resources.mapping.endpointId)
-        );
+        .where(like(schema.mappings.endpointId, 'test_%'));
     };
     for (let i = 1; i <= 5; i++) {
       try {
@@ -89,7 +88,7 @@ export abstract class Harness {
     };
 
     const mapping: schema.EndpointMapping = {
-      endpointId: newId('test'),
+      endpointId: endpoint.id,
       createdAt: new Date(),
       updatedAt: new Date(),
       databaseId: 'default'
