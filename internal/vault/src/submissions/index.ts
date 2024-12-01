@@ -1,4 +1,3 @@
-import type {schema} from '@formizee/db/submissions';
 import type {StatusCode, VaultOptions} from '../types';
 
 import type {
@@ -6,6 +5,7 @@ import type {
   DeleteResponse,
   GetRequest,
   GetResponse,
+  GetResponseData,
   ListRequest,
   ListResponse,
   ListResponseData,
@@ -49,7 +49,7 @@ export class Submissions {
       }
 
       return Promise.resolve({
-        data: body as schema.Submission,
+        data: body as GetResponseData,
         error: null
       });
     } catch (error) {
@@ -98,7 +98,7 @@ export class Submissions {
   }
 
   public async post(input: PostRequest): Promise<PostResponse> {
-    const url = `${this.url}/v1/submission/${input.endpointId}`;
+    const url = `${this.url}/v1/submission`;
 
     const response = await fetch(url, {
       method: 'POST',

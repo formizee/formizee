@@ -1,5 +1,14 @@
-import type {schema} from '@formizee/db/submissions';
 import type {Response} from '../types';
+
+export interface ResponseSubmission {
+  id: string;
+  endpointId: string;
+  data: Record<string, string>;
+  createdAt: Date;
+  location: string;
+  isRead: boolean;
+  isSpam: boolean;
+}
 
 /**
  * GET
@@ -10,7 +19,9 @@ export interface GetRequest {
   id: string;
 }
 
-export type GetResponse = Response<schema.Submission>;
+export type GetResponseData = ResponseSubmission;
+
+export type GetResponse = Response<GetResponseData>;
 
 /**
  * LIST
@@ -29,7 +40,7 @@ export interface ListResponseData {
     itemsPerPage: number;
     schema: Record<string, 'string' | 'file'>;
   };
-  submissions: schema.Submission[];
+  submissions: ResponseSubmission[];
 }
 
 export type ListResponse = Response<ListResponseData>;
@@ -71,12 +82,10 @@ export interface PutRequest {
 export interface PutResponseData {
   id: string;
   endpointId: string;
-  isRead: boolean;
   isSpam: boolean;
+  isRead: boolean;
   location: string;
   createdAt: Date;
-  iv: string;
-  cipherText: string;
 }
 
 export type PutResponse = Response<PutResponseData>;
