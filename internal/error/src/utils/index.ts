@@ -17,6 +17,8 @@ export function statusToCode(status: number): ErrorCode {
       return 'METHOD_NOT_ALLOWED';
     case 413:
       return 'PAYLOAD_TOO_LARGE';
+    case 415:
+      return 'UNSUPPORTED_MEDIA_TYPE';
     case 422:
       return 'UNPROCESSABLE_ENTITY';
     case 429:
@@ -46,6 +48,8 @@ export function codeToStatus(code: ErrorCode): number {
       return 409;
     case 'PAYLOAD_TOO_LARGE':
       return 413;
+    case 'UNSUPPORTED_MEDIA_TYPE':
+      return 415;
     case 'UNPROCESSABLE_ENTITY':
       return 422;
     case 'TOO_MANY_REQUESTS':
