@@ -4,6 +4,11 @@ import type {Services} from '@/lib/services';
 import type {Limits} from '@formizee/plans';
 import type {Env} from '@/lib/enviroment';
 
+interface PostSubmissionBody {
+  data: Record<string, string>;
+  fileUploads: {field: string; file: File}[];
+}
+
 export type HonoVariables = {
   // Metrics
   requestId: string;
@@ -16,6 +21,7 @@ export type HonoVariables = {
   key: Pick<schema.Key, 'id' | 'name'>;
 
   // Context
+  body: PostSubmissionBody;
   pagination: Pagination;
   services: Services;
 };
