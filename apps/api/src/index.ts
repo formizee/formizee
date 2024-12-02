@@ -1,10 +1,13 @@
 import {zEnv, type Env} from '@/lib/enviroment';
 import type {ExecutionContext} from 'hono';
 import {newApp} from '@/lib/hono';
+
+import {postSubmission} from './v1/submissions';
 import api from '@/v1';
 
 const app = newApp();
 
+app.route('/', postSubmission);
 app.route('/v1', api);
 
 export default {
