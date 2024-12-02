@@ -1,4 +1,4 @@
-import {authentication} from '@/lib/middlewares';
+import {authentication, parseBody} from '@/lib/middlewares';
 import {pagination} from '@/lib/pagination';
 import {newRoute} from '@/lib/hono';
 
@@ -8,17 +8,25 @@ import {registerPostSubmission} from './post';
 import {registerGetSubmission} from './get';
 import {registerPutSubmission} from './put';
 
-const submissions = newRoute();
-submissions.use(authentication());
+const publicRoute = newRoute();
+publicRoute.use(parseBody);
 
-registerGetSubmission(submissions);
-registerPutSubmission(submissions);
-registerPostSubmission(submissions);
-registerDeleteSubmission(submissions);
+registerPostSubmission(publicRoute);
 
-const listSubmissions = newRoute();
-listSubmissions.use(authentication());
-listSubmissions.use(pagination());
-registerListSubmissions(listSubmissions);
+const protectedRoute = newRoute();
+protectedRoute.use(authentication());
 
-export {submissions, listSubmissions};
+registerGetSubmission(protectedRoute);
+registerPutSubmission(protectedRoute);
+registerDeleteSubmission(protectedRoute);
+
+const protectedListRote = newRoute();
+protectedListRote.use(authentication());
+protectedListRote.use(pagination());
+registerListSubmissions(protectedListRote);
+
+export {
+  publicRoute as postSubmission,
+  protectedRoute as submissions,
+  protectedListRote as listSubmissions
+};

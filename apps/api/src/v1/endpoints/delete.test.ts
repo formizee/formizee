@@ -5,7 +5,7 @@ import {describe, it, expect} from 'vitest';
 describe('Delete a endpoint', () => {
   it('Should get 200', async context => {
     const harness = await IntegrationHarness.init(context);
-    const endpoint = harness.resources.endpoint;
+    const endpoint = harness.resources.endpointWithSchema;
     const {key} = await harness.createKey();
 
     const res = await harness.delete<ResponseEndpoint>({

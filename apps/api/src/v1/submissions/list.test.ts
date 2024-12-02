@@ -49,7 +49,7 @@ describe('List submissions', () => {
   it('Should get 400 with a invalid page', async context => {
     const harness = await IntegrationHarness.init(context);
     const {key} = await harness.createKey();
-    const {id} = harness.resources.endpoint;
+    const {id} = harness.resources.endpointWithSchema;
 
     const res = await harness.get<ResponseListSubmissions>({
       headers: {authorization: `Bearer ${key}`},
@@ -67,7 +67,7 @@ describe('List submissions', () => {
 
   it('Should get 404 on not found page', async context => {
     const harness = await IntegrationHarness.init(context);
-    const {id} = harness.resources.endpoint;
+    const {id} = harness.resources.endpointWithSchema;
     const {key} = await harness.createKey();
 
     const res = await harness.get<ResponseListSubmissions>({

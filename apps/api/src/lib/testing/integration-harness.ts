@@ -23,7 +23,7 @@ export class IntegrationHarness extends Harness {
   static async init(t: TaskContext): Promise<IntegrationHarness> {
     const h = new IntegrationHarness(t);
     await h.seed();
-    await h.seedvault();
+    await h.seedVault();
     return h;
   }
 

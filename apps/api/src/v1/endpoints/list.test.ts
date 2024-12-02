@@ -5,6 +5,7 @@ import {describe, it, expect} from 'vitest';
 describe('List endpoints', () => {
   it('Should get 200', async context => {
     const harness = await IntegrationHarness.init(context);
+    const endpointWithSchema = harness.resources.endpointWithSchema;
     const disabledEndpoint = harness.resources.disabledEndpoint;
     const endpoint = harness.resources.endpoint;
 
@@ -23,6 +24,7 @@ describe('List endpoints', () => {
       },
       endpoints: [
         omit(endpoint, ['createdAt', 'updatedAt']),
+        omit(endpointWithSchema, ['createdAt', 'updatedAt']),
         omit(disabledEndpoint, ['createdAt', 'updatedAt'])
       ]
     });

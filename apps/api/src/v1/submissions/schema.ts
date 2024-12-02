@@ -85,7 +85,13 @@ const ListSubmissionsSchema = z.object({
   })
 });
 
+const PostSubmissionResponse = SubmissionSchema.omit({data: true});
+
 export type RequestPostSubmission = z.infer<typeof SubmissionDataSchema>;
+export type ResponsePostSubmission = z.infer<typeof PostSubmissionResponse>;
+
 export type RequestPutSubmission = z.infer<typeof UpdateSubmissionSchema>;
+
 export type ResponseListSubmissions = z.infer<typeof ListSubmissionsSchema>;
+
 export type ResponseSubmission = z.infer<typeof SubmissionSchema>;

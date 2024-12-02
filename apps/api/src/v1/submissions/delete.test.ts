@@ -37,7 +37,7 @@ describe('Delete a submission', () => {
 
   it('Should get 404 on submission not found', async context => {
     const harness = await IntegrationHarness.init(context);
-    const endpoint = harness.resources.endpoint;
+    const endpoint = harness.resources.endpointWithSchema;
     const {key} = await harness.createKey();
 
     const response = await harness.delete<ResponseSubmission>({

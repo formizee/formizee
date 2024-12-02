@@ -6,9 +6,13 @@ import {newKey} from '@formizee/keys';
 import {newId} from '@formizee/id';
 
 export type Resources = {
+  // Endpoint with 'isEnabled' property disabled
   disabledEndpoint: schema.Endpoint;
-  workspace: schema.Workspace;
+  // Endpoint with a schema already defined by 'seedvault'
+  endpointWithSchema: schema.Endpoint;
+  // Clean endpoint for other things
   endpoint: schema.Endpoint;
+  workspace: schema.Workspace;
   user: schema.User;
   key: schema.Key;
 };
@@ -69,10 +73,12 @@ export abstract class Harness {
         .delete(schema.user)
         .where(eq(schema.user.id, this.resources.user.id));
     };
-
     const deleteEndpoint = async () => {
       await this.vault.endpoints.delete({
         endpointId: this.resources.disabledEndpoint.id
+      });
+      await this.vault.endpoints.delete({
+        endpointId: this.resources.endpointWithSchema.id
       });
       await this.vault.endpoints.delete({
         endpointId: this.resources.endpoint.id
@@ -163,6 +169,21 @@ export abstract class Harness {
       updatedAt: new Date()
     };
 
+    const endpointWithSchema: schema.Endpoint = {
+      id: newId('test'),
+      name: 'My Schema Endpoint',
+      slug: 'my-schema-endpoint',
+      targetEmails: workspace.availableEmails,
+      workspaceId: workspace.id,
+      redirectUrl: 'https://formizee.com/thanks-you',
+      icon: 'file',
+      color: 'gray',
+      isEnabled: true,
+      emailNotifications: true,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+
     const disabledEndpoint: schema.Endpoint = {
       id: newId('test'),
       name: 'My Disabled Endpoint',
@@ -179,6 +200,7 @@ export abstract class Harness {
     };
 
     return {
+      endpointWithSchema,
       disabledEndpoint,
       workspace,
       endpoint,
@@ -190,16 +212,20 @@ export abstract class Harness {
   protected async seed(): Promise<void> {
     await this.db.insert(schema.user).values(this.resources.user);
     await this.db.insert(schema.workspace).values(this.resources.workspace);
+    await this.db.insert(schema.key).values(this.resources.key);
+
     await this.db.insert(schema.endpoint).values(this.resources.endpoint);
     await this.db
       .insert(schema.endpoint)
+      .values(this.resources.endpointWithSchema);
+    await this.db
+      .insert(schema.endpoint)
       .values(this.resources.disabledEndpoint);
-    await this.db.insert(schema.key).values(this.resources.key);
   }
 
-  protected async seedvault(): Promise<void> {
+  protected async seedVault(): Promise<void> {
     const {data, error} = await this.vault.submissions.post({
-      endpointId: this.resources.endpoint.id,
+      endpointId: this.resources.endpointWithSchema.id,
       data: {name: 'pau', email: 'pau@mail.com'},
       fileUploads: [],
       location: ''
