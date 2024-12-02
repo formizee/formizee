@@ -59,7 +59,7 @@ export interface PostRequest {
 export interface PostResponseData {
   id: string;
   endpointId: string;
-  pendingUploads: {name: string; url: string | null}[];
+  pendingUploads: {field: string; url: string | null}[];
   isSpam: boolean;
   isRead: boolean;
   location: string;
