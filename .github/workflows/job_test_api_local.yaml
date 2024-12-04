@@ -35,7 +35,7 @@ jobs:
         run: "pnpm push:submissions"
         working-directory: internal/db
         env:
-          DATABASE_URL: "http://localhost:8081"
+          SUBMISSIONS_DATABASE_URL: "http://localhost:8081"
 
       - name: Test
         run: pnpm test
