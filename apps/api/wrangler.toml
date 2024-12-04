@@ -1,0 +1,17 @@
+name = "api"
+workers_dev = true
+main = "src/index.ts"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+
+[observability]
+enabled = true
+head_sampling_rate = 1
+
+[[kv_namespaces]]
+binding = "cache"
+id = "00000000000000000000000000000000"
+
+[env.development]
+name = "api-development"
+vars = { ENVIROMENT = "development" }

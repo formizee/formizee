@@ -25,17 +25,6 @@ jobs:
       - name: Build
         run: pnpm turbo run build --filter=./apps/vault...
 
-      - name: Wait for Database readiness
-        run: |
-          for i in {1..30}; do
-            if curl -f http://localhost:8081; then
-              echo "Submissions database is ready";
-              break;
-            fi
-            echo "Waiting for submissions database...";
-            sleep 2;
-          done
-
       - name: Load Schema into vault database
         run: pnpm push:submissions
         working-directory: internal/db

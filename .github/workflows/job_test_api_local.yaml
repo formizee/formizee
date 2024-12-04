@@ -25,26 +25,6 @@ jobs:
       - name: Build
         run: pnpm turbo run build --filter=./apps/api...
 
-      - name: Wait for Database readiness
-        run: |
-          for i in {1..30}; do
-            if curl -f http://localhost:8080; then
-              echo "Main database is ready";
-              break;
-            fi
-            echo "Waiting for main database...";
-            sleep 2;
-          done
-
-          for i in {1..30}; do
-            if curl -f http://localhost:8081; then
-              echo "Submissions database is ready";
-              break;
-            fi
-            echo "Waiting for submissions database...";
-            sleep 2;
-          done
-
       - name: Load Schema into main database
         run: pnpm push:main
         working-directory: internal/db
