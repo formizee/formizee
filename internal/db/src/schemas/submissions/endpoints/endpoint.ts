@@ -6,6 +6,8 @@ export const endpoint = sqliteTable('endpoints', {
 
   schema: text('schema', {mode: 'json'}).notNull().$type<string>(),
 
+  storageUsed: integer('storage_used').notNull().default(0),
+
   createdAt: integer('created_at', {mode: 'timestamp'})
     .notNull()
     .default(sql`(unixepoch())`)
