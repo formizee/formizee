@@ -73,14 +73,29 @@ services:
     container_name: api
     build:
       context: ..
-      dockerfile: ./apps/api/Dockerfile
+      dockerfile: ./apps/api/Dockerfile.dev
     ports:
       - 8787:8787
+    command:
+      [
+        "pnpm",
+        "wrangler",
+        "dev",
+        "--ip=0.0.0.0",
+        "--var=TINYBIRD_URL:https://api.eu-central-1.aws.tinybird.co",
+        "--var=DASHBOARD_URL:http://localhost:3001",
+        "--var=DATABASE_URL:http://database:8080",
+        "--var=DOCS_URL:http://localhost:3002",
+        "--var=API_URL:http://0.0.0.0:8787",
+        "--var=WEB_URL:http://localhost:3000",
+        "--var=VAULT_URL:http://vault:8787",
+        "--var=ENVIROMENT:development",
+        "--var=LOGTAIL_TOKEN:example",
+        "--var=VAULT_SECRET:example",
+        "--var=EMIT_LOGS:false",
+      ]
     depends_on:
       - database
-      - vault
-    environment:
-      DATABASE_URL: "http://localhost:8080"
 
 volumes:
   database:

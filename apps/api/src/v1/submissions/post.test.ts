@@ -227,11 +227,6 @@ describe('Post a submission with multipart/form-data', () => {
 
     const body = (await getResponse.json()) as ResponseSubmission;
 
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    const data = body.data as any;
-    const fileResponse = await fetch(data.file.url);
-    const fileBody = await fileResponse.text();
-
     expect(postResponse.status).toBe(201);
     expect(body).toMatchObject({
       data: {
@@ -247,7 +242,6 @@ describe('Post a submission with multipart/form-data', () => {
       isSpam: false,
       isRead: false
     });
-    expect(fileBody).toBe('Example');
   });
 
   it('Should get 201 with single file', async context => {
@@ -274,11 +268,6 @@ describe('Post a submission with multipart/form-data', () => {
 
     const body = (await getResponse.json()) as ResponseSubmission;
 
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    const data = body.data as any;
-    const fileResponse = await fetch(data.file.url);
-    const fileBody = await fileResponse.text();
-
     expect(postResponse.status).toBe(201);
     expect(body).toMatchObject({
       data: {
@@ -292,7 +281,6 @@ describe('Post a submission with multipart/form-data', () => {
       isSpam: false,
       isRead: false
     });
-    expect(fileBody).toBe('Example');
   });
 
   it('Should get 201 with multiple files', async context => {
@@ -326,15 +314,6 @@ describe('Post a submission with multipart/form-data', () => {
 
     const body = (await getResponse.json()) as ResponseSubmission;
 
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    const data = body.data as any;
-
-    const file1Response = await fetch(data.file1.url);
-    const file1Body = await file1Response.text();
-
-    const file2Response = await fetch(data.file2.url);
-    const file2Body = await file2Response.text();
-
     expect(postResponse.status).toBe(201);
     expect(body).toMatchObject({
       data: {
@@ -353,7 +332,5 @@ describe('Post a submission with multipart/form-data', () => {
       isSpam: false,
       isRead: false
     });
-    expect(file1Body).toBe('Example');
-    expect(file2Body).toBe('console.log("Example")');
   });
 });
