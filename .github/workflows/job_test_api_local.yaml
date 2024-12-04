@@ -19,33 +19,34 @@ jobs:
       - name: Run containers
         run: docker compose -f ./deployment/docker-compose.yaml up -d
 
+
       - name: Install
         uses: ./.github/actions/install
 
       - name: Build
         run: pnpm turbo run build --filter=./apps/api...
 
+      - name: Test Database Connectivity
+        run: curl -v http://127.0.0.1:8080
+
       - name: Load Schema into main database
-        run: "pnpm push:main"
+        run: "pnpm drizzle-kit push --config src/schemas/main/drizzle.config.ts"
         working-directory: internal/db
         env:
-          DATABASE_URL: "http://localhost:8080"
+          DATABASE_URL: http://127.0.0.1:8080
 
       - name: Load Schema into vault database
-        run: "pnpm push:submissions"
+        run: "pnpm drizzle-kit push --config src/schemas/submissions/drizzle.config.ts"
         working-directory: internal/db
         env:
-          SUBMISSIONS_DATABASE_URL: "http://localhost:8081"
+          SUBMISSIONS_DATABASE_URL: http://127.0.0.1:8081
 
       - name: Test
         run: pnpm test
         working-directory: apps/api
         env:
-          DATABASE_URL: "localhost:8080"
-          ENVIROMENT: "development"
-          EMIT_LOGS: "false"
-          LOGTAIL_TOKEN: ""
-          VAULT_SECRET: ""
+          DATABASE_URL: http://127.0.0.1:8080
+          VAULT_SECRET: "testing"
 
       - name: Dump logs
         if: always()
