@@ -12,11 +12,6 @@ services:
       SQLD_DB_PATH: /var/lib/sqld/formizee
     volumes:
       - database:/var/lib/sqld
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080"]
-      interval: 5s
-      timeout: 2s
-      retries: 10
 
   submissions-database:
     container_name: submissions-database
@@ -29,11 +24,6 @@ services:
       SQLD_DB_PATH: /var/lib/sqld/submissions
     volumes:
       - database:/var/lib/sqld
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8081"]
-      interval: 5s
-      timeout: 2s
-      retries: 10
 
   storage:
     container_name: storage
