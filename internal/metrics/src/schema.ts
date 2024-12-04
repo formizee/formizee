@@ -26,18 +26,18 @@ export const metricSchema = z.discriminatedUnion('metric', [
 
   // Cache metrics
   z.object({
-    metric: z.literal('vault.cache.read'),
+    metric: z.literal('cache.read'),
     hit: z.boolean(),
     key: z.string(),
     latency: z.number()
   }),
   z.object({
-    metric: z.literal('vault.cache.write'),
+    metric: z.literal('cache.write'),
     key: z.string(),
     latency: z.number()
   }),
   z.object({
-    metric: z.literal('vault.cache.delete'),
+    metric: z.literal('cache.delete'),
     key: z.string(),
     latency: z.number()
   }),
@@ -85,6 +85,8 @@ export const metricSchema = z.discriminatedUnion('metric', [
   z.object({
     metric: z.literal('vault.latency'),
     query: z.enum([
+      'storage.get',
+      'storage.post',
       'submissions.get',
       'submissions.list',
       'submissions.post',

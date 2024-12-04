@@ -24,7 +24,7 @@ export class Cache {
     const raw = await this.client.get(`rootKey:${keyToVerify}`);
 
     this.metrics.emit({
-      metric: 'vault.cache.read',
+      metric: 'cache.read',
       hit: raw !== null,
       key: `rootKey:${keyToVerify}`,
       latency: performance.now() - queryStart
@@ -56,7 +56,7 @@ export class Cache {
     });
 
     this.metrics.emit({
-      metric: 'vault.cache.write',
+      metric: 'cache.write',
       key: `rootKey:${keyToVerify}`,
       latency: performance.now() - mutationStart
     });
@@ -68,8 +68,59 @@ export class Cache {
     await this.client.delete(`rootKey:${keyToVerify}`);
 
     this.metrics.emit({
-      metric: 'vault.cache.delete',
+      metric: 'cache.delete',
       key: `rootKey:${keyToVerify}`,
+      latency: performance.now() - mutationStart
+    });
+  }
+
+  // Query Storage
+
+  public async getStorageUsed(endpointId: string): Promise<number | null> {
+    const queryStart = performance.now();
+    const raw = await this.client.get(`storage:${endpointId}`);
+
+    this.metrics.emit({
+      metric: 'cache.read',
+      hit: raw !== null,
+      key: `storage:${endpointId}`,
+      latency: performance.now() - queryStart
+    });
+
+    if (!raw) {
+      return Promise.resolve(null);
+    }
+
+    try {
+      const response = Number(raw);
+      return Promise.resolve(response);
+    } catch {
+      return Promise.resolve(null);
+    }
+  }
+
+  public async storeStorageUsed(endpointId: string, value: number) {
+    const mutationStart = performance.now();
+
+    await this.client.put(`storage:${endpointId}`, value.toString(), {
+      expirationTtl: 300
+    });
+
+    this.metrics.emit({
+      metric: 'cache.write',
+      key: `storage:${endpointId}`,
+      latency: performance.now() - mutationStart
+    });
+  }
+
+  public async deleteStorageUsed(endpointId: string) {
+    const mutationStart = performance.now();
+
+    await this.client.delete(`storage:${endpointId}`);
+
+    this.metrics.emit({
+      metric: 'cache.delete',
+      key: `storage:${endpointId}`,
       latency: performance.now() - mutationStart
     });
   }
@@ -83,7 +134,7 @@ export class Cache {
     const raw = await this.client.get(`submission:${submissionId}`);
 
     this.metrics.emit({
-      metric: 'vault.cache.read',
+      metric: 'cache.read',
       hit: raw !== null,
       key: `submission:${submissionId}`,
       latency: performance.now() - queryStart
@@ -109,7 +160,7 @@ export class Cache {
     });
 
     this.metrics.emit({
-      metric: 'vault.cache.write',
+      metric: 'cache.write',
       key: `submission:${data.id}`,
       latency: performance.now() - mutationStart
     });
@@ -121,7 +172,7 @@ export class Cache {
     await this.client.delete(`submission:${submissionId}`);
 
     this.metrics.emit({
-      metric: 'vault.cache.delete',
+      metric: 'cache.delete',
       key: `submission:${submissionId}`,
       latency: performance.now() - mutationStart
     });
@@ -141,7 +192,7 @@ export class Cache {
     );
 
     this.metrics.emit({
-      metric: 'vault.cache.read',
+      metric: 'cache.read',
       hit: raw !== null,
       key: `${input.endpointId}:submissions_page_${input.page}_size_${input.pageSize}`,
       latency: performance.now() - queryStart
@@ -185,7 +236,7 @@ export class Cache {
     );
 
     this.metrics.emit({
-      metric: 'vault.cache.write',
+      metric: 'cache.write',
       key: `${input.endpointId}:submissions_page_${input.page}_size_${input.pageSize}`,
       latency: performance.now() - mutationStart
     });
@@ -203,7 +254,7 @@ export class Cache {
         await this.client.delete(key.name);
         this.metrics.emit({
           key: key.name,
-          metric: 'vault.cache.delete',
+          metric: 'cache.delete',
           latency: performance.now() - mutationStart
         });
       })
@@ -218,7 +269,7 @@ export class Cache {
     const data = await this.client.get(`endpoint:${endpointId}`);
 
     this.metrics.emit({
-      metric: 'vault.cache.read',
+      metric: 'cache.read',
       hit: data !== null,
       key: `endpoint:${endpointId}`,
       latency: performance.now() - queryStart
@@ -238,7 +289,7 @@ export class Cache {
     });
 
     this.metrics.emit({
-      metric: 'vault.cache.write',
+      metric: 'cache.write',
       key: `endpoint:${data.endpointId}`,
       latency: performance.now() - mutationStart
     });
@@ -251,7 +302,7 @@ export class Cache {
 
     this.metrics.emit({
       key: `endpoint:${endpointId}`,
-      metric: 'vault.cache.delete',
+      metric: 'cache.delete',
       latency: performance.now() - mutationStart
     });
   }
@@ -266,7 +317,7 @@ export class Cache {
     const raw = await this.client.get(`database:${databaseId}`);
 
     this.metrics.emit({
-      metric: 'vault.cache.read',
+      metric: 'cache.read',
       hit: raw !== null,
       key: `database:${databaseId}`,
       latency: performance.now() - queryStart
@@ -292,7 +343,7 @@ export class Cache {
     });
 
     this.metrics.emit({
-      metric: 'vault.cache.write',
+      metric: 'cache.write',
       key: `database:${input.id}`,
       latency: performance.now() - mutationStart
     });
@@ -305,7 +356,7 @@ export class Cache {
 
     this.metrics.emit({
       key: `database:${databaseId}`,
-      metric: 'vault.cache.delete',
+      metric: 'cache.delete',
       latency: performance.now() - mutationStart
     });
   }
