@@ -17,8 +17,7 @@ jobs:
         run: rm -rf /opt/hostedtoolcache
 
       - name: Run containers
-        run: docker compose -f ./deployment/docker-compose.yaml up -d
-
+        run: docker compose -f ./deployment/docker-compose.yaml up -d --wait
 
       - name: Install
         uses: ./.github/actions/install
@@ -26,24 +25,44 @@ jobs:
       - name: Build
         run: pnpm turbo run build --filter=./apps/api...
 
+      - name: Wait for Database readiness
+        run: |
+          for i in {1..30}; do
+            if curl -f http://localhost:8080; then
+              echo "Main database is ready";
+              break;
+            fi
+            echo "Waiting for main database...";
+            sleep 2;
+          done
+
+          for i in {1..30}; do
+            if curl -f http://localhost:8081; then
+              echo "Submissions database is ready";
+              break;
+            fi
+            echo "Waiting for submissions database...";
+            sleep 2;
+          done
+
       - name: Load Schema into main database
-        run: "pnpm drizzle-kit push --config src/schemas/main/drizzle.config.ts"
+        run: pnpm push:main
         working-directory: internal/db
         env:
-          DATABASE_URL: "http://localhost:8080"
+          DATABASE_URL: http://localhost:8080
 
       - name: Load Schema into vault database
-        run: "pnpm drizzle-kit push --config src/schemas/submissions/drizzle.config.ts"
+        run: pnpm push:submissions
         working-directory: internal/db
         env:
-          SUBMISSIONS_DATABASE_URL: "http://localhost:8081"
+          SUBMISSIONS_DATABASE_URL: http://localhost:8081
 
       - name: Test
         run: pnpm test
         working-directory: apps/api
         env:
-          DATABASE_URL: "http://localhost:8080"
-          VAULT_SECRET: ""
+          DATABASE_URL: http://localhost:8080
+          VAULT_SECRET: testing
 
       - name: Dump logs
         if: always()

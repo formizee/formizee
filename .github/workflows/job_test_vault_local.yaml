@@ -17,7 +17,7 @@ jobs:
         run: rm -rf /opt/hostedtoolcache
 
       - name: Run containers
-        run: docker compose -f ./deployment/docker-compose.yaml up -d vault
+        run: docker compose -f ./deployment/docker-compose.yaml up -d vault --wait
 
       - name: Install
         uses: ./.github/actions/install
@@ -25,11 +25,19 @@ jobs:
       - name: Build
         run: pnpm turbo run build --filter=./apps/vault...
 
-      - name: Test Database Connectivity
-        run: curl -v http://127.0.0.1:8080
+      - name: Wait for Database readiness
+        run: |
+          for i in {1..30}; do
+            if curl -f http://localhost:8081; then
+              echo "Submissions database is ready";
+              break;
+            fi
+            echo "Waiting for submissions database...";
+            sleep 2;
+          done
 
       - name: Load Schema into vault database
-        run: "pnpm push:submissions"
+        run: pnpm push:submissions
         working-directory: internal/db
         env:
           SUBMISSIONS_DATABASE_URL: http://127.0.0.1:8081
@@ -39,7 +47,7 @@ jobs:
         working-directory: apps/vault
         env:
           DATABASE_URL: http://127.0.0.1:8081
-          VAULT_SECRET: "testing"
+          VAULT_SECRET: testing
 
       - name: Dump logs
         if: always()
@@ -49,6 +57,6 @@ jobs:
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: ${{github.run_id}}-${{github.run_number}}-api.logs
+          name: ${{github.run_id}}-${{github.run_number}}-vault.logs
           path: docker.logs
           retention-days: 7
