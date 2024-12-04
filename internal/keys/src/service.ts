@@ -29,25 +29,27 @@ interface VerifyKeyResult extends Key {
 
 export class KeyService {
   private readonly database: Database;
-  private readonly cache: Cache;
+  private readonly cache: Cache | undefined;
 
   constructor(options: {
     database: Database;
-    cache: KVNamespace;
+    cache?: KVNamespace;
     metrics: Metrics;
   }) {
     this.database = options.database;
-    this.cache = new Cache({client: options.cache, metrics: options.metrics});
+    this.cache = options.cache !== undefined ? new Cache({client: options.cache, metrics: options.metrics}) : undefined;
   }
 
   public async verifyKey(
     keyToVerify: string
   ): Promise<Result<VerifyKeyResult, VerifyKeyError>> {
     try {
-      const cachedKey = await this.cache.getKeyResponse(keyToVerify);
+      if(this.cache) {
+        const cachedKey = await this.cache.getKeyResponse(keyToVerify);
 
-      if (cachedKey) {
-        return Ok(cachedKey);
+        if (cachedKey) {
+          return Ok(cachedKey);
+        }
       }
 
       try {
@@ -108,7 +110,9 @@ export class KeyService {
         expiresAt: key.expiresAt
       };
 
-      await this.cache.storeKeyResponse(keyToVerify, keyResponse);
+      if(this.cache) {
+        await this.cache.storeKeyResponse(keyToVerify, keyResponse);
+      }
 
       return Ok(keyResponse);
     } catch (e) {
