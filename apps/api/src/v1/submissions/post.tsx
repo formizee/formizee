@@ -223,6 +223,7 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
     }
 
     if (data.pendingUploads.length > 0) {
+      let storageUsed = 0;
       await Promise.all(
         data.pendingUploads.map(async pending => {
           if (pending.url === null) {
@@ -230,6 +231,7 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
           }
           for (const upload of input.fileUploads) {
             if (upload.field === pending.field) {
+              storageUsed += upload.file.size;
               await uploadObject(pending.url, upload.file).catch(error => {
                 logger.error(
                   `Error uploading pending files on submission ${data.id}`,
@@ -240,6 +242,7 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
           }
         })
       );
+      await vault.storage.post({endpointId: endpoint.id, storageUsed});
     }
 
     if (
