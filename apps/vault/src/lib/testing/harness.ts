@@ -74,6 +74,7 @@ export abstract class Harness {
         email: 'string',
         message: 'string'
       }),
+      storageUsed: 0,
       createdAt: new Date()
     };
 
@@ -84,6 +85,7 @@ export abstract class Harness {
         email: 'string',
         file: 'file'
       }),
+      storageUsed: 0,
       createdAt: new Date()
     };
 

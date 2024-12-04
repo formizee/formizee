@@ -57,13 +57,31 @@ export const registerDeleteSubmission = (api: typeof submissionsAPI) => {
     }
 
     // Delete file uploads
-    await storage.deleteSubmissionData(originDatabase, submission.id);
+    const {freeSpace} = await storage.deleteSubmissionData(
+      originDatabase,
+      submission.id
+    );
+
+    const endpoint = await originDatabase
+      .select({storageUsed: schema.endpoint.storageUsed})
+      .from(schema.endpoint)
+      .where(eq(schema.endpoint.id, input.endpointId))
+      .get();
+    if (!endpoint) {
+      throw new HTTPException(404, {
+        message: 'Endpoint not found'
+      });
+    }
 
     // Delete submission and cache
     await Promise.all([
       originDatabase
         .delete(schema.submission)
         .where(eq(schema.submission.id, submission.id)),
+      originDatabase
+        .update(schema.endpoint)
+        .set({storageUsed: endpoint.storageUsed - freeSpace})
+        .where(eq(schema.endpoint.id, input.endpointId)),
       cache.deleteSubmission(submission.id),
       cache.invalidateSubmissions(input)
     ]);

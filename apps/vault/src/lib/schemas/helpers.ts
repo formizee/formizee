@@ -48,6 +48,7 @@ export const generateSchema = (
 
   return {
     id: endpointId,
+    storageUsed: 0,
     schema: JSON.stringify(schema),
     createdAt: new Date()
   };
