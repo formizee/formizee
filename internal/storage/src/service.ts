@@ -82,19 +82,32 @@ export class Storage extends BaseStorage {
     return Promise.resolve([]);
   }
 
-  public async deleteSubmissionData(database: Database, submissionId: string) {
+  public async deleteSubmissionData(
+    database: Database,
+    submissionId: string
+  ): Promise<{freeSpace: number}> {
     const fileUploads = await database.query.fileUpload.findMany({
       where: (table, {eq}) => eq(table.submissionId, submissionId)
     });
 
-    if (fileUploads.length < 1) {
-      return;
-    }
+    let freeSpace = 0;
 
-    await Promise.all(
-      fileUploads.map(async file => {
-        await this.deleteObject(file.fileKey);
-      })
-    );
+    try {
+      await Promise.all(
+        fileUploads.map(async file => {
+          const object = await this.getObject(file.fileKey);
+          if (object) {
+            const spaceUsed = Number(object.headers.get('Content-Length'));
+            freeSpace += spaceUsed;
+          }
+          await this.deleteObject(file.fileKey);
+        })
+      );
+
+      return Promise.resolve({freeSpace});
+    } catch (error) {
+      console.error(error);
+      return Promise.reject(error);
+    }
   }
 }

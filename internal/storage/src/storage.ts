@@ -67,9 +67,11 @@ export class BaseStorage {
         }
       );
 
-      await this.client.fetch(command);
+      const response = await this.client.fetch(command);
+      return Promise.resolve(response);
     } catch (error) {
       console.error(error);
+      return Promise.reject(error);
     }
   }
 
