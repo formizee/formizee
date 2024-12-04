@@ -1,0 +1,34 @@
+name: Unit Tests
+on:
+  workflow_call:
+
+jobs:
+  test:
+    strategy:
+     fail-fast: false
+     matrix:
+        path:
+          - "./internal/encoding"
+          - "./internal/encryption"
+          - "./internal/error"
+          - "./internal/hashing"
+          - "./internal/id"
+          - "./internal/keys"
+          - "./internal/plans"
+
+    name: Test ${{matrix.path}}
+    runs-on: ubuntu-latest
+    env:
+      TURBO_TEAM: ${{ secrets.VERCEL_ORG_ID }}
+      TURBO_TOKEN: ${{ secrets.VERCEL_API_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install
+        uses: ./.github/actions/install
+
+      - name: Build
+        run: pnpm turbo run build --filter=${{matrix.path}}
+
+      - name: Test
+        run: pnpm turbo run test --filter=${{matrix.path}}
