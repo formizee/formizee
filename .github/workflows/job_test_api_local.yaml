@@ -26,27 +26,24 @@ jobs:
       - name: Build
         run: pnpm turbo run build --filter=./apps/api...
 
-      - name: Test Database Connectivity
-        run: curl -v http://127.0.0.1:8080
-
       - name: Load Schema into main database
         run: "pnpm drizzle-kit push --config src/schemas/main/drizzle.config.ts"
         working-directory: internal/db
         env:
-          DATABASE_URL: http://127.0.0.1:8080
+          DATABASE_URL: "http://localhost:8080"
 
       - name: Load Schema into vault database
         run: "pnpm drizzle-kit push --config src/schemas/submissions/drizzle.config.ts"
         working-directory: internal/db
         env:
-          SUBMISSIONS_DATABASE_URL: http://127.0.0.1:8081
+          SUBMISSIONS_DATABASE_URL: "http://localhost:8081"
 
       - name: Test
         run: pnpm test
         working-directory: apps/api
         env:
-          DATABASE_URL: http://127.0.0.1:8080
-          VAULT_SECRET: "testing"
+          DATABASE_URL: "http://localhost:8080"
+          VAULT_SECRET: ""
 
       - name: Dump logs
         if: always()

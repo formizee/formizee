@@ -4,7 +4,7 @@ services:
   database:
     container_name: database
     image: ghcr.io/tursodatabase/libsql-server:latest
-    platform: linux/arm64
+    platform: linux/amd64
     ports:
       - "8080:8080"
     environment:
@@ -16,7 +16,7 @@ services:
   submissions-database:
     container_name: submissions-database
     image: ghcr.io/tursodatabase/libsql-server:latest
-    platform: linux/arm64
+    platform: linux/amd64
     ports:
       - "8081:8080"
     environment:
