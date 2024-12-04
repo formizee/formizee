@@ -113,6 +113,7 @@ export function CodeBlock(props: CodeBlockProps): JSX.Element {
           {tokens.map((line, i) => (
             <div
               className="my-1 md:my-0.5"
+              // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
               key={i}
               style={getLineProps({line}).style}
             >
@@ -120,6 +121,7 @@ export function CodeBlock(props: CodeBlockProps): JSX.Element {
                 {i + 1}
               </span>
               {line.map((token, key) => (
+                // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                 <span key={key} {...getTokenProps({token})} />
               ))}
             </div>

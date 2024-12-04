@@ -95,6 +95,7 @@ export const reducer = (state: ToasterState, action: Action): ToasterState => {
       if (toastId) {
         addToRemoveQueue(toastId);
       } else {
+        // biome-ignore lint/complexity/noForEach: <explanation>
         state.toasts.forEach(t => {
           addToRemoveQueue(t.id);
         });
@@ -132,6 +133,7 @@ let memoryState: ToasterState = {toasts: []};
 
 function dispatch(action: Action) {
   memoryState = reducer(memoryState, action);
+  // biome-ignore lint/complexity/noForEach: <explanation>
   listeners.forEach(listener => {
     listener(memoryState);
   });
@@ -159,7 +161,9 @@ function toast({...props}: Toast) {
       id,
       open: true,
       onOpenChange: open => {
-        if (!open) dismiss();
+        if (!open) {
+          dismiss();
+        }
       }
     }
   });

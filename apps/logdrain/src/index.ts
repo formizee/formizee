@@ -41,7 +41,9 @@ async function handleRequest(request: Request, env: Env): Promise<Response> {
   const rUrl = request.url;
   const rMeth = request.method;
   const rCf = {...request.cf} || {};
+  // biome-ignore lint/performance/noDelete: <explanation>
   delete rCf.tlsClientAuth;
+  // biome-ignore lint/performance/noDelete: <explanation>
   delete rCf.tlsExportedAuthenticator;
 
   const responseMetadata = buildMetadataFromHeaders(response.headers);
@@ -69,6 +71,7 @@ async function handleRequest(request: Request, env: Env): Promise<Response> {
     }
   };
 
+  // biome-ignore lint/complexity/useLiteralKeys: <explanation>
   await addToBatch(eventBody, requestMetadata['cf_connecting_ip'] || null, env);
 
   return response;
