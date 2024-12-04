@@ -26,13 +26,13 @@ jobs:
         run: pnpm turbo run build --filter=./apps/api...
 
       - name: Load Schema into main database
-        run: "pnpm drizzle-kit push:main"
+        run: "pnpm push:main"
         working-directory: internal/db
         env:
           DATABASE_URL: "http://localhost:8080"
 
       - name: Load Schema into vault database
-        run: "pnpm drizzle-kit push:submissions"
+        run: "pnpm push:submissions"
         working-directory: internal/db
         env:
           DATABASE_URL: "http://localhost:8081"
