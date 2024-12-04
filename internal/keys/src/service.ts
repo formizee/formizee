@@ -37,14 +37,17 @@ export class KeyService {
     metrics: Metrics;
   }) {
     this.database = options.database;
-    this.cache = options.cache !== undefined ? new Cache({client: options.cache, metrics: options.metrics}) : undefined;
+    this.cache =
+      options.cache !== undefined
+        ? new Cache({client: options.cache, metrics: options.metrics})
+        : undefined;
   }
 
   public async verifyKey(
     keyToVerify: string
   ): Promise<Result<VerifyKeyResult, VerifyKeyError>> {
     try {
-      if(this.cache) {
+      if (this.cache) {
         const cachedKey = await this.cache.getKeyResponse(keyToVerify);
 
         if (cachedKey) {
@@ -110,7 +113,7 @@ export class KeyService {
         expiresAt: key.expiresAt
       };
 
-      if(this.cache) {
+      if (this.cache) {
         await this.cache.storeKeyResponse(keyToVerify, keyResponse);
       }
 
