@@ -10,7 +10,7 @@ FROM base AS builder
 WORKDIR /formizee
 
 COPY . .
-RUN turbo prune vault --docker
+RUN turbo prune vault --docker --out-dir=./vault-out
 
 # Add lockfile and package.json's of isolated subworkspace
 FROM base AS installer
@@ -18,12 +18,12 @@ WORKDIR /formizee
 
 # First install dependencies (as they change less often)
 COPY .gitignore .gitignore
-COPY --from=builder /formizee/out/json/ .
-COPY --from=builder /formizee/out/pnpm-lock.yaml ./pnpm-lock.yaml
+COPY --from=builder /formizee/vault-out/json/ .
+COPY --from=builder /formizee/vault-out/pnpm-lock.yaml ./pnpm-lock.yaml
 RUN pnpm install
 
 # Build the project and its dependencies
-COPY --from=builder /formizee/out/full/ .
+COPY --from=builder /formizee/vault-out/full/ .
 COPY turbo.json turbo.json
 
 RUN pnpm turbo build --filter=vault
