@@ -1,11 +1,9 @@
 import {ThemeProvider} from '@/components/theme';
-import {cn} from '@formizee/ui';
 import {Toaster} from '@formizee/ui/toaster';
-import {Analytics} from '@vercel/analytics/react';
 import type {Metadata, Viewport} from 'next';
 import {Inter} from 'next/font/google';
-import {Suspense} from 'react';
 import '@formizee/ui/globals.css';
+import {cn} from '@formizee/ui';
 import './globals.css';
 
 export const viewport: Viewport = {
@@ -48,10 +46,9 @@ export default function RootLayout({
           defaultTheme="dark"
           enableSystem={false}
         >
-          <Suspense>{children}</Suspense>
+          {children}
           <Toaster />
         </ThemeProvider>
-        <Analytics />
       </body>
     </html>
   );

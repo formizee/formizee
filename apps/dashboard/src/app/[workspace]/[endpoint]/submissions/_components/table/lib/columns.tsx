@@ -71,6 +71,7 @@ export const generateColumns = (submissionColumns: Column[], color: Color) => {
               open={deleteOpen}
               setOpen={setDeleteOpen}
               submissionId={submission.id}
+              endpointId={submission.endpointId}
             />
           </>
         );

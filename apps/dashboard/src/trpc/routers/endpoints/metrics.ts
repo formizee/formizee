@@ -1,6 +1,6 @@
 import {protectedProcedure} from '@/trpc';
 import {TRPCError} from '@trpc/server';
-import {count, database, eq, schema} from '@/lib/db';
+import {database} from '@/lib/db';
 import {z} from 'zod';
 
 const generateLast30DaysData = (
@@ -110,12 +110,10 @@ export const getEndpointMetrics = protectedProcedure
       });
     }
 
-    const submissions = await database
-      .select({count: count()})
-      .from(schema.submission)
-      .where(eq(schema.submission.endpointId, endpoint.id));
-
-    if (!submissions[0]) {
+    const {data, error} = await ctx.vault.submissions.list({
+      endpointId: endpoint.id
+    });
+    if (error) {
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR'
       });
@@ -135,7 +133,7 @@ export const getEndpointMetrics = protectedProcedure
     const dayMetrics = generateLast24HoursData(dayResponse ?? []);
 
     const response = {
-      totalSubmissions: submissions[0].count,
+      totalSubmissions: data.submissions.length,
       '30d': monthMetrics,
       '24h': dayMetrics
     };

@@ -1,6 +1,7 @@
 {
   "extends": "@formizee/tsconfig/next.json",
   "compilerOptions": {
+    "types": ["@cloudflare/workers-types/experimental"],
     "declaration": false,
     "paths": {
       "@/*": ["./src/*"]

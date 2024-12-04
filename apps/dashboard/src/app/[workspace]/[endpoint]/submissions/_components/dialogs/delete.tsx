@@ -32,6 +32,7 @@ import type {Dispatch, SetStateAction} from 'react';
 interface Props {
   setOpen: Dispatch<SetStateAction<boolean>>;
   open: boolean;
+  endpointId: string;
   submissionId: string;
 }
 
@@ -65,7 +66,10 @@ export const DeleteSubmissionDialog = (props: Props) => {
   });
 
   const onSubmit = form.handleSubmit(() => {
-    deleteSubmission.mutate({id: props.submissionId});
+    deleteSubmission.mutate({
+      id: props.submissionId,
+      endpointId: props.endpointId
+    });
   });
 
   return (

@@ -2,6 +2,7 @@ import type {FetchCreateContextFnOptions} from '@trpc/server/adapters/fetch';
 import type {inferAsyncReturnType} from '@trpc/server';
 import {auth} from '@/lib/auth';
 import {Analytics} from '@formizee/analytics';
+import {Vault} from '@formizee/vault';
 import {env} from '@/lib/enviroment';
 
 export async function createContext({req}: FetchCreateContextFnOptions) {
@@ -20,6 +21,10 @@ export async function createContext({req}: FetchCreateContextFnOptions) {
       tinybirdToken:
         env().VERCEL_ENV === 'development' ? env().TINYBIRD_TOKEN : undefined,
       tinybirdUrl: env().TINYBIRD_URL
+    }),
+    vault: new Vault({
+      url: env().VAULT_URL,
+      token: env().VAULT_SECRET
     }),
     user: session?.user ?? null
   };

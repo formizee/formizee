@@ -21,6 +21,7 @@
     "@formizee/keys": "workspace:*",
     "@formizee/plans": "workspace:*",
     "@formizee/ui": "workspace:*",
+    "@formizee/vault": "workspace:*",
     "@hookform/resolvers": "3.4.0",
     "@libsql/client": "0.14.0",
     "@tanstack/react-query": "4.36.1",
@@ -43,6 +44,7 @@
     "zod": "3.23.8"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "4.20241022.0",
     "@formizee/tailwind": "workspace:*",
     "@formizee/tsconfig": "workspace:*",
     "@types/jsonwebtoken": "9.0.7",
