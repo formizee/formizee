@@ -96,6 +96,7 @@ const parseBody = async (context: Context<HonoEnv>, next: Next) => {
       });
     }
   }
+  context.set('bodyContentType', contentType);
   context.set('body', bodyData);
   await next();
 };

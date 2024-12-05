@@ -4,7 +4,7 @@ export const supportedContentTypes = [
   'multipart/form-data'
 ] as const;
 
-type ContentType =
+export type ContentType =
   (typeof supportedContentTypes)[keyof typeof supportedContentTypes];
 
 type ValidatedContentType =

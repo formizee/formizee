@@ -41,6 +41,9 @@ export const postRoute = createRoute({
         }
       }
     },
+    302: {
+      description: 'Create a submission'
+    },
     ...openApiErrorResponses
   }
 });
@@ -59,7 +62,9 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
       email: emailService
     } = context.get('services');
 
+    const contentType = context.get('bodyContentType');
     const input = context.get('body');
+
     const queryEndpointStart = performance.now();
     const endpoint = await database.query.endpoint
       .findFirst({
@@ -277,7 +282,11 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
       }
     });
 
-    const response = SubmissionSchema.omit({data: true}).parse(data);
-    return context.json(response, 201);
+    if (contentType === 'application/json') {
+      const response = SubmissionSchema.omit({data: true}).parse(data);
+      return context.json(response, 201);
+    }
+
+    return context.redirect(endpoint.redirectUrl);
   });
 };

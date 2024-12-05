@@ -160,7 +160,7 @@ export abstract class Harness {
       slug: 'my-endpoint',
       targetEmails: workspace.availableEmails,
       workspaceId: workspace.id,
-      redirectUrl: 'https://formizee.com/thanks-you',
+      redirectUrl: 'https://formizee.com',
       icon: 'file',
       color: 'gray',
       isEnabled: true,

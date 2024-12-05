@@ -134,7 +134,7 @@ describe('Post a submission with application/json', () => {
 });
 
 describe('Post a submission with application/x-www-form-urlencoded', () => {
-  it('Should get 201', async context => {
+  it('Should get 200', async context => {
     const harness = await IntegrationHarness.init(context);
     const endpoint = harness.resources.endpoint;
     const {key} = await harness.createKey();
@@ -148,35 +148,49 @@ describe('Post a submission with application/x-www-form-urlencoded', () => {
       body: formData.toString(),
       method: 'post'
     });
-    const postBody = (await postResponse.json()) as ResponseSubmission;
 
     const getResponse = await fetch(
-      `${harness.apiUrl}/v1/submission/${endpoint.id}/${postBody.id}`,
+      `${harness.apiUrl}/v1/submissions/${endpoint.id}`,
       {
         headers: {authorization: `Bearer ${key}`}
       }
     );
 
-    const body = (await getResponse.json()) as ResponseSubmission;
+    const body = (await getResponse.json()) as {
+      submissions: ResponseSubmission[];
+    };
 
-    expect(postResponse.status).toBe(201);
+    expect(postResponse.status).toBe(200);
     expect(getResponse.status).toBe(200);
     expect(body).toStrictEqual({
-      id: body.id,
-      data: {
-        email: 'pau@mail.com',
-        name: 'pau'
+      _metadata: {
+        itemsPerPage: 100,
+        totalPages: 1,
+        page: 1,
+        schema: {
+          email: 'string',
+          name: 'string'
+        }
       },
-      endpointId: endpoint.id,
-      location: body.location,
-      isSpam: false,
-      isRead: false
+      submissions: [
+        {
+          id: body.submissions[0]?.id,
+          data: {
+            email: 'pau@mail.com',
+            name: 'pau'
+          },
+          location: body.submissions[0]?.location,
+          endpointId: endpoint.id,
+          isSpam: false,
+          isRead: false
+        }
+      ]
     });
   });
 });
 
 describe('Post a submission with multipart/form-data', () => {
-  it('Should get 201 with data', async context => {
+  it('Should get 200 with data', async context => {
     const harness = await IntegrationHarness.init(context);
     const endpoint = harness.resources.endpoint;
 
@@ -189,19 +203,11 @@ describe('Post a submission with multipart/form-data', () => {
       body: formData.getBuffer(),
       method: 'post'
     });
-    const body = (await response.json()) as ResponseSubmission;
 
-    expect(response.status).toBe(201);
-    expect(body).toStrictEqual({
-      id: body.id,
-      endpointId: endpoint.id,
-      location: body.location,
-      isSpam: false,
-      isRead: false
-    });
+    expect(response.status).toBe(200);
   });
 
-  it('Should get 201 with data and a single file', async context => {
+  it('Should get 200 with data and a single file', async context => {
     const harness = await IntegrationHarness.init(context);
     const endpoint = harness.resources.endpoint;
     const {key} = await harness.createKey();
@@ -216,35 +222,52 @@ describe('Post a submission with multipart/form-data', () => {
       body: formData.getBuffer(),
       method: 'post'
     });
-    const postBody = (await postResponse.json()) as ResponseSubmission;
 
     const getResponse = await fetch(
-      `${harness.apiUrl}/v1/submission/${endpoint.id}/${postBody.id}`,
+      `${harness.apiUrl}/v1/submissions/${endpoint.id}`,
       {
         headers: {authorization: `Bearer ${key}`}
       }
     );
 
-    const body = (await getResponse.json()) as ResponseSubmission;
+    const body = (await getResponse.json()) as {
+      submissions: ResponseSubmission[];
+    };
 
-    expect(postResponse.status).toBe(201);
-    expect(body).toMatchObject({
-      data: {
-        name: 'pau',
-        email: 'pau@mail.com',
-        file: {
-          name: 'example.txt'
+    expect(postResponse.status).toBe(200);
+    expect(body).toStrictEqual({
+      _metadata: {
+        itemsPerPage: 100,
+        totalPages: 1,
+        page: 1,
+        schema: {
+          email: 'string',
+          name: 'string',
+          file: 'file'
         }
       },
-      id: body.id,
-      endpointId: endpoint.id,
-      location: body.location,
-      isSpam: false,
-      isRead: false
+      submissions: [
+        {
+          data: {
+            name: 'pau',
+            email: 'pau@mail.com',
+            file: {
+              name: 'example.txt',
+              // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+              url: (body.submissions[0]?.data as any).file.url
+            }
+          },
+          id: body.submissions[0]?.id,
+          endpointId: endpoint.id,
+          location: body.submissions[0]?.location,
+          isSpam: false,
+          isRead: false
+        }
+      ]
     });
   });
 
-  it('Should get 201 with single file', async context => {
+  it('Should get 200 with single file', async context => {
     const harness = await IntegrationHarness.init(context);
     const endpoint = harness.resources.endpoint;
     const {key} = await harness.createKey();
@@ -257,33 +280,48 @@ describe('Post a submission with multipart/form-data', () => {
       body: formData.getBuffer(),
       method: 'post'
     });
-    const postBody = (await postResponse.json()) as ResponseSubmission;
 
     const getResponse = await fetch(
-      `${harness.apiUrl}/v1/submission/${endpoint.id}/${postBody.id}`,
+      `${harness.apiUrl}/v1/submissions/${endpoint.id}`,
       {
         headers: {authorization: `Bearer ${key}`}
       }
     );
 
-    const body = (await getResponse.json()) as ResponseSubmission;
+    const body = (await getResponse.json()) as {
+      submissions: ResponseSubmission[];
+    };
 
-    expect(postResponse.status).toBe(201);
-    expect(body).toMatchObject({
-      data: {
-        file: {
-          name: 'example.txt'
+    expect(postResponse.status).toBe(200);
+    expect(body).toStrictEqual({
+      _metadata: {
+        itemsPerPage: 100,
+        totalPages: 1,
+        page: 1,
+        schema: {
+          file: 'file'
         }
       },
-      id: body.id,
-      endpointId: endpoint.id,
-      location: body.location,
-      isSpam: false,
-      isRead: false
+      submissions: [
+        {
+          data: {
+            file: {
+              name: 'example.txt',
+              // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+              url: (body.submissions[0]?.data as any).file.url
+            }
+          },
+          id: body.submissions[0]?.id,
+          endpointId: endpoint.id,
+          location: body.submissions[0]?.location,
+          isSpam: false,
+          isRead: false
+        }
+      ]
     });
   });
 
-  it('Should get 201 with multiple files', async context => {
+  it('Should get 200 with multiple files', async context => {
     const harness = await IntegrationHarness.init(context);
     const endpoint = harness.resources.endpoint;
     const {key} = await harness.createKey();
@@ -303,34 +341,54 @@ describe('Post a submission with multipart/form-data', () => {
       body: formData.getBuffer(),
       method: 'post'
     });
-    const postBody = (await postResponse.json()) as ResponseSubmission;
 
     const getResponse = await fetch(
-      `${harness.apiUrl}/v1/submission/${endpoint.id}/${postBody.id}`,
+      `${harness.apiUrl}/v1/submissions/${endpoint.id}`,
       {
         headers: {authorization: `Bearer ${key}`}
       }
     );
 
-    const body = (await getResponse.json()) as ResponseSubmission;
+    const body = (await getResponse.json()) as {
+      submissions: ResponseSubmission[];
+    };
 
-    expect(postResponse.status).toBe(201);
-    expect(body).toMatchObject({
-      data: {
-        name: 'pau',
-        email: 'pau@mail.com',
-        file1: {
-          name: 'example.txt'
-        },
-        file2: {
-          name: 'example.js'
+    expect(postResponse.status).toBe(200);
+    expect(body).toStrictEqual({
+      _metadata: {
+        itemsPerPage: 100,
+        totalPages: 1,
+        page: 1,
+        schema: {
+          name: 'string',
+          email: 'string',
+          file1: 'file',
+          file2: 'file'
         }
       },
-      id: body.id,
-      endpointId: endpoint.id,
-      location: body.location,
-      isSpam: false,
-      isRead: false
+      submissions: [
+        {
+          data: {
+            name: 'pau',
+            email: 'pau@mail.com',
+            file1: {
+              name: 'example.txt',
+              // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+              url: (body.submissions[0]?.data as any).file1.url
+            },
+            file2: {
+              name: 'example.js',
+              // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+              url: (body.submissions[0]?.data as any).file2.url
+            }
+          },
+          id: body.submissions[0]?.id,
+          endpointId: endpoint.id,
+          location: body.submissions[0]?.location,
+          isSpam: false,
+          isRead: false
+        }
+      ]
     });
   });
 });

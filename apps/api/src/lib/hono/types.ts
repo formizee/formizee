@@ -1,8 +1,9 @@
-import type {schema} from '@formizee/db';
+import type {ContentType} from '@/lib/middlewares/body/utils';
 import type {Pagination} from '@/lib/pagination';
 import type {Services} from '@/lib/services';
 import type {Limits} from '@formizee/plans';
 import type {Env} from '@/lib/enviroment';
+import type {schema} from '@formizee/db';
 
 interface PostSubmissionBody {
   data: Record<string, string>;
@@ -21,6 +22,7 @@ export type HonoVariables = {
   key: Pick<schema.Key, 'id' | 'name'>;
 
   // Context
+  bodyContentType: ContentType;
   body: PostSubmissionBody;
   pagination: Pagination;
   services: Services;
