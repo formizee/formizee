@@ -1,0 +1,62 @@
+name: Deploy
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  vault_local_test:
+    name: Test Vault
+    uses: ./.github/workflows/job_test_vault_local.yaml
+
+  vault_preview_deployment:
+    needs:
+      - vault_local_test
+    uses: ./.github/workflows/job_deploy_vault_preview.yaml
+    secrets:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
+  vault_preview_test:
+    needs:
+      - vault_preview_deployment
+    uses: ./.github/workflows/job_test_vault_preview.yaml
+    with:
+       VAULT_URL: https://preview-vault.formizee.com
+
+  vault_production_deployment:
+    needs:
+      - vault_preview_test
+    uses: ./.github/workflows/job_deploy_vault_production.yaml
+    secrets:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
+
+  api_local_test:
+    name: Test API
+    uses: ./.github/workflows/job_test_api_local.yaml
+
+  api_preview_deployment:
+    needs:
+      - api_local_test
+    uses: ./.github/workflows/job_deploy_api_preview.yaml
+    secrets:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
+  api_preview_test:
+    needs:
+      - vault_preview_deployment
+      - api_preview_deployment
+    uses: ./.github/workflows/job_test_api_preview.yaml
+    with:
+       API_URL: https://preview-api.formizee.com
+
+  api_production_deployment:
+    needs:
+      - vault_production_deployment
+      - api_preview_test
+    uses: ./.github/workflows/job_deploy_api_production.yaml
+    secrets:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
