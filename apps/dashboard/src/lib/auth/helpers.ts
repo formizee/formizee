@@ -6,6 +6,12 @@ import {EmailService} from '@formizee/email';
 import {newId} from '@formizee/id';
 import {z} from 'zod';
 
+export async function signupDisabled() {
+  throw new Error(
+    "Signups aren't available right now, wait for the launch of Formizee."
+  );
+}
+
 export async function createUser(
   data: Omit<AdapterUser, 'id'>
 ): Promise<AdapterUser> {

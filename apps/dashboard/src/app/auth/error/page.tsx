@@ -21,6 +21,12 @@ const generateErrorLabel = (data: {error: string} | undefined) => {
         message:
           'There is a problem with the server configuration. Please contact the support team.'
       };
+    case 'Disabled':
+      return {
+        title: 'Formizee Private Beta',
+        message:
+          'New logins are disabled, wait until we launch a public release or join in our closed beta waitlist.'
+      };
     case 'AccessDenied':
       return {
         title: 'Access denied for this workspace',
