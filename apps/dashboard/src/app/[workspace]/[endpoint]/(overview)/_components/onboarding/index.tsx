@@ -10,7 +10,7 @@ interface Props {
 }
 
 export const OnboardingCard = (props: Props) => {
-  const endpointUrl = `https://api.formizee.com/v1/submissions/${props.id}`;
+  const endpointUrl = `https://api.formizee.com/v1/f/${props.id}`;
 
   const copyID = () => {
     navigator.clipboard.writeText(endpointUrl).then(() => {
