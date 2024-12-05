@@ -17,4 +17,15 @@ binding = "keys"
 id = "11111111111111111111111111111111"
 
 [env.development]
+name = "api-development"
+route = { pattern = "development-vault.formizee.com", custom_domain = true }
 vars = { ENVIROMENT = "development", DOCS_URL="https://docs.formizee.com", VERSION="1.0.0" }
+
+[env.preview]
+name = "vault-preview"
+vars = { ENVIROMENT = "preview" }
+route = { pattern = "preview-vault.formizee.com", custom_domain = true }
+
+[env.production]
+name = "vault"
+vars = { ENVIROMENT = "production" }
