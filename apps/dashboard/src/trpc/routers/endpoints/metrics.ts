@@ -113,7 +113,8 @@ export const getEndpointMetrics = protectedProcedure
     const {data, error} = await ctx.vault.submissions.list({
       endpointId: endpoint.id
     });
-    if (error) {
+
+    if (error && error.status !== 404) {
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR'
       });
@@ -133,7 +134,7 @@ export const getEndpointMetrics = protectedProcedure
     const dayMetrics = generateLast24HoursData(dayResponse ?? []);
 
     const response = {
-      totalSubmissions: data.submissions.length,
+      totalSubmissions: data?.submissions.length ?? 0,
       '30d': monthMetrics,
       '24h': dayMetrics
     };
