@@ -79,7 +79,7 @@ export function services(): MiddlewareHandler<HonoEnv> {
     });
 
     const cache = new Cache({client: c.env.cache, metrics});
-    const keys = new Keys({client: c.env.keys});
+    const keys = new Keys({client: c.env.keys, logger});
 
     c.set('services', {
       database,

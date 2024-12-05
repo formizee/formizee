@@ -4,14 +4,17 @@ import {
   getLatestMasterKey,
   getMasterKey
 } from './helpers';
+import type {ConsoleLogger} from '@formizee/logger';
 import type {Env} from '@/lib/enviroment';
 import type {DEK} from './types';
 
 export class Keys {
   public readonly client: KVNamespace;
+  public readonly logger: ConsoleLogger;
 
-  constructor(opts: {client: KVNamespace}) {
+  constructor(opts: {client: KVNamespace; logger: ConsoleLogger}) {
     this.client = opts.client;
+    this.logger = opts.logger;
   }
 
   /*
@@ -68,8 +71,9 @@ export class Keys {
           version: raw.metadata.version
         }
       });
-    } catch {
-      throw new Error(`DEK for (${endpointId}) can't be parsed`);
+    } catch (error) {
+      this.logger.fatal(`DEK for (${endpointId}) can't be parsed`, {error});
+      return Promise.reject(error);
     }
   }
 
