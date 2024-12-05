@@ -15,3 +15,13 @@ id = "33333333333333333333333333333333"
 [env.development]
 name = "api-development"
 vars = { ENVIROMENT = "development" }
+route = { pattern = "development-api.formizee.com", custom_domain = true }
+
+[env.preview]
+name = "api-preview"
+vars = { ENVIROMENT = "preview" }
+route = { pattern = "preview-api.formizee.com", custom_domain = true }
+
+[env.production]
+name = "api"
+vars = { ENVIROMENT = "production" }
