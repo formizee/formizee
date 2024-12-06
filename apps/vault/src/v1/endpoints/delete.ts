@@ -1,14 +1,16 @@
-import {deleteSchema, deleteSubmission} from '@/lib/helpers';
+import {assignOriginDatabase} from '@/lib/databases';
 import {openApiErrorResponses} from '@/lib/errors';
+import {eq, schema} from '@formizee/db/submissions';
+import {HTTPException} from 'hono/http-exception';
 import {createRoute, z} from '@hono/zod-openapi';
 import type {endpoints as endpointsAPI} from '.';
 import {ParamsSchema} from './schema';
 
 export const deleteRoute = createRoute({
   method: 'delete',
-  tags: ['Submissions'],
+  tags: ['Endpoints'],
   summary: 'Delete a endpoint',
-  path: '/{endpointId}',
+  path: '/{id}',
   request: {
     params: ParamsSchema
   },
@@ -17,7 +19,7 @@ export const deleteRoute = createRoute({
       description: 'Delete a endpoint',
       content: {
         'application/json': {
-          schema: z.object({})
+          schema: z.any({})
         }
       }
     },
@@ -27,23 +29,62 @@ export const deleteRoute = createRoute({
 
 export const registerDeleteEndpoint = (api: typeof endpointsAPI) => {
   return api.openapi(deleteRoute, async context => {
-    const {endpointId} = context.req.valid('param');
-    const bucket = context.env.BUCKET;
-    const vault = context.env.VAULT;
+    const {metrics, database, storage, cache} = context.get('services');
+    const input = context.req.valid('param');
+    const mutationStart = performance.now();
 
-    await deleteSchema(endpointId, bucket);
+    const originDatabase = await assignOriginDatabase(
+      {database, cache},
+      input.id
+    );
 
-    const list = await vault.list({prefix: `${endpointId}:`});
-
-    if (list.keys.length < 1) {
-      return context.json({}, 200);
+    if (!originDatabase) {
+      throw new HTTPException(404, {
+        message:
+          'Origin database not found, please contact support@formizee.com'
+      });
     }
 
+    // Query endpoint
+    const endpoint = await originDatabase.query.endpoint.findFirst({
+      where: (table, {eq}) => eq(table.id, input.id)
+    });
+
+    if (!endpoint) {
+      throw new HTTPException(404, {
+        message: 'Endpoint not found'
+      });
+    }
+
+    // Query submissions
+    const submissions = await originDatabase.query.submission.findMany({
+      where: (table, {eq}) => eq(table.endpointId, endpoint.id)
+    });
+
+    // Delete cache and files
     await Promise.all(
-      list.keys.map(async key => {
-        return await deleteSubmission(key.name, vault);
+      submissions.map(async submission => {
+        await storage.deleteSubmissionData(originDatabase, submission.id);
+        await cache.invalidateSubmissions({endpointId: endpoint.id});
+        await cache.deleteSubmission(submission.id);
       })
     );
+
+    // Delete endpoint data
+    await Promise.all([
+      originDatabase
+        .delete(schema.endpoint)
+        .where(eq(schema.endpoint.id, endpoint.id)),
+      originDatabase
+        .delete(schema.mappings)
+        .where(eq(schema.mappings.endpointId, endpoint.id))
+    ]);
+
+    metrics.emit({
+      metric: 'vault.latency',
+      query: 'endpoints.delete',
+      latency: performance.now() - mutationStart
+    });
 
     return context.json({}, 200);
   });

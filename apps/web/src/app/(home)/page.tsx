@@ -1,5 +1,5 @@
+import {Cards, Spotlight} from './_components';
 import {Footer, Navbar} from '@/components';
-import {Cards, Form, Spotlight} from './components';
 
 function Home(): JSX.Element {
   return (
@@ -31,7 +31,6 @@ function Home(): JSX.Element {
             <br />
             Just keeping things simple.
           </h2>
-          <Form />
         </div>
         <Cards />
       </header>

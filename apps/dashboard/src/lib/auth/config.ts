@@ -3,6 +3,7 @@ import Google from '@auth/core/providers/google';
 import GitHub from 'next-auth/providers/github';
 import Resend from 'next-auth/providers/resend';
 import type {NextAuthConfig} from 'next-auth';
+import {database} from '@/lib/db';
 
 export const authConfig = {
   providers: [
@@ -19,6 +20,19 @@ export const authConfig = {
       }
     })
   ],
+  // Disable new signups
+  callbacks: {
+    signIn: async ({user}) => {
+      const userExists = await database.query.user.findFirst({
+        where: (table, {eq}) => eq(table.id, user.id ?? '')
+      });
+
+      if (!userExists) {
+        return '/auth/error?error=Disabled';
+      }
+      return true;
+    }
+  },
   pages: {
     verifyRequest: '/auth/verify',
     error: '/auth/error',

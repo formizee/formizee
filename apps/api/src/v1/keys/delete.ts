@@ -28,17 +28,26 @@ export const deleteRoute = createRoute({
 
 export const registerDeleteKey = (api: typeof keysAPI) => {
   return api.openapi(deleteRoute, async context => {
-    const {database, analytics} = context.get('services');
+    const {database, metrics, analytics} = context.get('services');
     const workspace = context.get('workspace');
     const {id} = context.req.valid('param');
     const rootKey = context.get('key');
 
-    const key = await database.query.key.findFirst({
-      where: and(
-        eq(schema.key.workspaceId, workspace.id),
-        eq(schema.key.id, id)
-      )
-    });
+    const queryStart = performance.now();
+    const key = await database.query.key
+      .findFirst({
+        where: and(
+          eq(schema.key.workspaceId, workspace.id),
+          eq(schema.key.id, id)
+        )
+      })
+      .finally(() => {
+        metrics.emit({
+          query: 'keys.get',
+          metric: 'main.db.read',
+          latency: performance.now() - queryStart
+        });
+      });
 
     if (!key) {
       throw new HTTPException(404, {
@@ -46,7 +55,17 @@ export const registerDeleteKey = (api: typeof keysAPI) => {
       });
     }
 
-    await database.delete(schema.key).where(eq(schema.key.id, id));
+    const mutationStart = performance.now();
+    await database
+      .delete(schema.key)
+      .where(eq(schema.key.id, id))
+      .finally(() => {
+        metrics.emit({
+          mutation: 'keys.delete',
+          metric: 'main.db.write',
+          latency: performance.now() - mutationStart
+        });
+      });
 
     await analytics.ingestFormizeeAuditLogs({
       event: 'key.delete',

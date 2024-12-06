@@ -1,0 +1,35 @@
+name: Test Vault Preview
+on:
+  workflow_call:
+    inputs:
+      VAULT_URL:
+        type: string
+        required: true
+
+jobs:
+  test:
+    name: Vault Test Staging
+    environment: Preview
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: ["1/8", "2/8", "3/8", "4/8", "5/8", "6/8","7/8", "8/8"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install
+        uses: ./.github/actions/install
+
+      - name: Build
+        run: pnpm turbo run build --filter=./apps/vault
+
+      - name: Test
+        run: pnpm vitest run --bail=1 --shard=${{ matrix.shard }}
+        working-directory: apps/vault
+        env:
+          VAULT_URL: ${{ inputs.VAULT_URL }}
+          DATABASE_URL: ${{ secrets.SUBMISSIONS_DATABASE_URL_TESTING }}
+          DATABASE_AUTH_TOKEN: ${{ secrets.SUBMISSIONS_DATABASE_AUTH_TOKEN_TESTING }}

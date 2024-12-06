@@ -5,7 +5,11 @@ export const calculateTotalPages = (
   totalItems: number,
   limit: number
 ): number => {
-  const totalPages = Math.ceil(totalItems / limit);
+  let totalPages = Math.ceil(totalItems / limit);
+
+  if (totalItems === 0) {
+    totalPages = 1;
+  }
 
   if (page > totalPages) {
     throw new HTTPException(404, {

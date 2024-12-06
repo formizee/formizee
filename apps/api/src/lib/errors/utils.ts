@@ -1,4 +1,5 @@
 import {HTTPException} from 'hono/http-exception';
+import type {HonoEnv} from '@/lib/hono';
 import {z} from '@hono/zod-openapi';
 import type {Context} from 'hono';
 import {ZodError} from 'zod';
@@ -9,14 +10,17 @@ import {
   statusToCode
 } from '@formizee/error';
 
-export function handleError(err: Error, c: Context): Response {
+export function handleError(err: Error, c: Context<HonoEnv>): Response {
+  const {logger} = c.get('services');
+
   if (err instanceof ZodError) {
     const error = SchemaError.fromZod(err, c);
     return c.json<ErrorSchema>(
       {
         code: 'BAD_REQUEST',
         message: error.message,
-        docs: `${c.env.DOCS_URL}/api-references/errors/code/BAD_REQUEST`
+        docs: `${c.env.DOCS_URL}/api-references/errors/code/BAD_REQUEST`,
+        requestId: c.get('requestId')
       },
       {status: 400}
     );
@@ -27,18 +31,20 @@ export function handleError(err: Error, c: Context): Response {
       {
         code: code,
         message: err.message,
-        docs: `${c.env.DOCS_URL}/api-references/errors/code/${code}`
+        docs: `${c.env.DOCS_URL}/api-references/errors/code/${code}`,
+        requestId: c.get('requestId')
       },
       {status: err.status}
     );
   }
-  console.error(c.env);
-  console.error(err);
+
+  logger.fatal('Unhandled internal error', {error: err});
   return c.json<ErrorSchema>(
     {
       code: 'INTERNAL_SERVER_ERROR',
       message: err.message ?? 'Something went wrong',
-      docs: `${c.env.DOCS_URL}/api-references/errors/code/INTERNAL_SERVER_ERROR`
+      docs: `${c.env.DOCS_URL}/api-references/errors/code/INTERNAL_SERVER_ERROR`,
+      requestId: c.get('requestId')
     },
 
     {status: 500}
@@ -50,7 +56,8 @@ export function handleNotFound(context: Context): Response {
     {
       code: 'NOT_FOUND',
       docs: `${context.env.DOCS_URL}/api-references/errors/code/NOT_FOUND`,
-      message: 'The route does not exists, ensure that is correctly typed'
+      message: 'The route does not exists, ensure that is correctly typed',
+      requestId: context.get('requestId')
     },
     {status: 404}
   );
@@ -74,7 +81,8 @@ export function handleZodError(
       {
         code: 'BAD_REQUEST',
         docs: `${c.env.DOCS_URL}/api-references/errors/code/BAD_REQUEST`,
-        message: error.message
+        message: error.message,
+        requestId: c.get('requestId')
       },
       {status: 400}
     );
@@ -95,6 +103,7 @@ export function createErrorSchema(code: ErrorCode) {
     docs: z.string().openapi({
       description: 'A link to the documentation for the error.',
       example: `https://formizee.com/api-references/errors/code/${code}`
-    })
+    }),
+    requestId: z.string()
   });
 }

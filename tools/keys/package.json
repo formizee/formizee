@@ -1,0 +1,17 @@
+{
+  "name": "@formizee/master-keys",
+  "author": "Pau García Chiner",
+  "license": "Apache-2.0",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "lint": "biome lint .",
+    "generate": "tsx ./src/index.ts"
+  },
+  "devDependencies": {
+    "@formizee/tsconfig": "workspace:^",
+    "@types/node": "20.14.11",
+    "tsx": "4.16.2"
+  }
+}

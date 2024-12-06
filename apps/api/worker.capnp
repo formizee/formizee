@@ -7,16 +7,24 @@ const mainWorker :Workerd.Worker = (
   ],
 
 bindings = [
+    ( name = "DASHBOARD_URL", fromEnvironment= "DASHBOARD_URL"),
+    ( name = "VAULT_URL", fromEnvironment= "VAULT_URL"),
+    ( name = "DOCS_URL", fromEnvironment= "DOCS_URL"),
     ( name = "API_URL", fromEnvironment= "API_URL"),
     ( name = "WEB_URL", fromEnvironment= "WEB_URL"),
-    ( name = "DOCS_URL", fromEnvironment= "DOCS_URL"),
 
+    ( name = "DATABASE_AUTH_TOKEN", fromEnvironment= "DATABASE_AUTH_TOKEN"),
     ( name = "DATABASE_URL", fromEnvironment= "DATABASE_URL"),
+
+    ( name = "VAULT_SECRET", fromEnvironment= "VAULT_SECRET"),
 
     ( name = "TINYBIRD_URL", fromEnvironment= "TINYBIRD_URL"),
     ( name = "TINYBIRD_TOKEN", fromEnvironment= "TINYBIRD_TOKEN"),
 
     ( name = "RESEND_TOKEN", fromEnvironment= "RESEND_TOKEN"),
+
+    ( name = "LOGTAIL_TOKEN", fromEnvironment= "LOGTAIL_TOKEN"),
+    ( name = "EMIT_LOGS", fromEnvironment= "EMIT_LOGS"),
 
     ( name = "ENVIROMENT", fromEnvironment= "ENVIROMENT"),
     ( name = "VERSION", fromEnvironment= "VERSION"),

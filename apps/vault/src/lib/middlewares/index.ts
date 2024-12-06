@@ -10,5 +10,4 @@ export {timeout} from './security/timeout';
 export {cors} from './security/cors';
 export {csrf} from 'hono/csrf';
 
-// Services
-export {logger} from './logger';
+export {metrics} from './metrics';

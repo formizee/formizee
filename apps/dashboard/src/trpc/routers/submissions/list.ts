@@ -2,7 +2,6 @@ import {protectedProcedure} from '@/trpc';
 import {TRPCError} from '@trpc/server';
 import {database} from '@/lib/db';
 import {z} from 'zod';
-import {env} from '@/lib/enviroment';
 
 export const listSubmissions = protectedProcedure
   .input(
@@ -48,25 +47,18 @@ export const listSubmissions = protectedProcedure
       });
     }
 
-    const response = await fetch('https://vault.formizee.com/v1/submissions', {
-      method: 'POST',
-      headers: {
-        Authorization: env().VAULT_SECRET,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({endpointId: endpoint.id})
+    const {data, error} = await ctx.vault.submissions.list({
+      endpointId: endpoint.id
     });
 
-    if (response.status !== 200) {
+    if (error) {
       return {
         columns: [],
         submissions: []
       };
     }
 
-    const result = await response.json();
-
-    const submissions = result.submissions.map(
+    const submissions = data.submissions.map(
       (submission: {id: string; data: object}) => ({
         id: submission.id,
         ...submission.data
@@ -81,7 +73,7 @@ export const listSubmissions = protectedProcedure
       }
     ];
 
-    const schemaColumns = Object.keys(result._metadata.schema).map(key => ({
+    const schemaColumns = Object.keys(data._metadata.schema).map(key => ({
       accessorKey: key,
       header: key.charAt(0).toUpperCase() + key.slice(1)
     }));

@@ -35,17 +35,25 @@ export const postRoute = createRoute({
 
 export const registerPostKey = (api: typeof keysAPI) => {
   return api.openapi(postRoute, async context => {
-    const {analytics, database, keyService} = context.get('services');
+    const {analytics, database, metrics, apiKeys} = context.get('services');
     const workspace = context.get('workspace');
     const input = context.req.valid('json');
     const limits = context.get('limits');
     const rootKey = context.get('key');
 
     // Check plan limits.
+    const queryStart = performance.now();
     const keys = await database
       .select({count: count()})
       .from(schema.key)
-      .where(eq(schema.key.workspaceId, workspace.id));
+      .where(eq(schema.key.workspaceId, workspace.id))
+      .finally(() => {
+        metrics.emit({
+          metric: 'main.db.read',
+          query: 'keys.list',
+          latency: performance.now() - queryStart
+        });
+      });
 
     if (!keys[0]) {
       throw new HTTPException(500, {
@@ -59,7 +67,7 @@ export const registerPostKey = (api: typeof keysAPI) => {
       });
     }
 
-    const {val, err} = await keyService.createKey(input.expiresAt);
+    const {val, err} = await apiKeys.createKey(input.expiresAt);
 
     if (err || !val) {
       throw new HTTPException(500, {
@@ -75,7 +83,17 @@ export const registerPostKey = (api: typeof keysAPI) => {
       workspaceId: workspace.id
     };
 
-    await database.insert(schema.key).values(data);
+    const mutationStart = performance.now();
+    await database
+      .insert(schema.key)
+      .values(data)
+      .finally(() => {
+        metrics.emit({
+          metric: 'main.db.write',
+          mutation: 'keys.post',
+          latency: performance.now() - mutationStart
+        });
+      });
 
     await analytics.ingestFormizeeAuditLogs({
       event: 'key.create',

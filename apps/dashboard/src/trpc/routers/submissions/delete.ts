@@ -1,29 +1,18 @@
-import {database, eq, schema} from '@/lib/db';
-import {env} from '@/lib/enviroment';
 import {protectedProcedure} from '@/trpc';
 import {TRPCError} from '@trpc/server';
+import {database} from '@/lib/db';
 import {z} from 'zod';
 
 export const deleteSubmission = protectedProcedure
   .input(
     z.object({
-      id: z.string()
+      id: z.string(),
+      endpointId: z.string()
     })
   )
   .mutation(async ({input, ctx}) => {
-    const submission = await database.query.submission.findFirst({
-      where: (table, {eq}) => eq(table.id, input.id)
-    });
-
-    if (!submission) {
-      throw new TRPCError({
-        code: 'NOT_FOUND',
-        message: 'Submission not found.'
-      });
-    }
-
     const endpoint = await database.query.endpoint.findFirst({
-      where: (table, {eq}) => eq(table.id, submission.endpointId)
+      where: (table, {eq}) => eq(table.id, input.endpointId)
     });
 
     if (!endpoint) {
@@ -59,26 +48,15 @@ export const deleteSubmission = protectedProcedure
       });
     }
 
-    await fetch(
-      `https://vault.formizee.com/v1/submission/${endpoint.id}/${submission.id}`,
-      {
-        headers: {Authorization: env().VAULT_SECRET},
-        method: 'DELETE'
-      }
-    );
+    const {error} = await ctx.vault.submissions.delete(input);
 
-    const deletedSubmission = await database
-      .delete(schema.submission)
-      .where(eq(schema.submission.id, submission.id))
-      .returning();
-
-    if (!deletedSubmission[0]) {
+    if (error) {
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message:
-          "The submission can't be deleted, please contact to support@formizee.com"
+          "The submission can't be deleted, please contact support@formizee.com"
       });
     }
 
-    return {id: deletedSubmission[0].id};
+    return {id: input.id};
   });

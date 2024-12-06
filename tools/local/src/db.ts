@@ -1,26 +1,40 @@
-import {pgDrizzle, schema} from '@formizee/db/local';
 import path, {dirname} from 'node:path';
 import {exec} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 import {task} from './util';
-import pg from 'pg';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-export async function prepareDatabase(): Promise<void> {
-  await connectDatabase();
-  await migrateTables();
+export async function prepareDatabase(
+  database: 'main' | 'submissions'
+): Promise<void> {
+  if (database === 'main') {
+    await migrateTables(database, 'http://localhost:8080', 'pnpm push:main');
+  }
+
+  if (database === 'submissions') {
+    await migrateTables(
+      database,
+      'http://localhost:8081',
+      'pnpm push:submissions'
+    );
+  }
 }
 
-async function migrateTables() {
-  await task('migrating tables', async s => {
-    const cwd = path.join(__dirname, '../../../packages/db');
+async function migrateTables(
+  database: string,
+  databaseUrl: string,
+  pushCommand: string
+) {
+  const packageDir = '../../../packages/db';
 
+  await task('migrating tables', async s => {
+    const cwd = path.join(__dirname, packageDir);
     await new Promise((resolve, reject) => {
-      const p = exec('pnpm drizzle-kit push', {
+      const p = exec(pushCommand, {
         env: {
-          DATABASE_URL: 'postgresql://formizee:password@localhost/formizee',
+          DATABASE_URL: databaseUrl,
           ...process.env
         },
         cwd
@@ -33,29 +47,6 @@ async function migrateTables() {
         }
       });
     });
-    s.stop('database ready.');
-  });
-}
-
-async function connectDatabase() {
-  return await task('Connecting to database', async s => {
-    let err: Error | undefined = undefined;
-    for (let i = 1; i <= 10; i++) {
-      try {
-        const connectionString =
-          'postgresql://formizee:password@localhost/formizee';
-        const client = new pg.Client({connectionString});
-
-        s.message('pinging database');
-        await client.connect();
-        s.stop('connected to the database');
-        return pgDrizzle(client, {schema});
-      } catch (e) {
-        err = e as Error;
-        await new Promise(r => setTimeout(r, 1000 * i));
-      }
-    }
-
-    throw err;
+    s.stop(`${database} database ready.`);
   });
 }

@@ -1,23 +1,23 @@
+import {SubmissionSchema, EndpointParamsSchema} from './schema';
+import {calculatePlanCycleDates, getLimits} from '@formizee/plans';
+import type {submissions as submissionsApi} from '.';
+import {openApiErrorResponses} from '@/lib/errors';
+import {HTTPException} from 'hono/http-exception';
+import {createRoute} from '@hono/zod-openapi';
+
 import {
   SubmissionEmail,
   PlanLimitReached,
   PlanLimitWarning
 } from '@formizee/email/templates';
-import {SubmissionSchema, EndpointParamsSchema} from './schema';
-import {calculatePlanCycleDates} from '@formizee/plans';
-import type {submissions as submissionsApi} from '.';
-import {openApiErrorResponses} from '@/lib/errors';
-import {HTTPException} from 'hono/http-exception';
-import {createRoute} from '@hono/zod-openapi';
-import {postSubmission} from '@/lib/vault';
-import {schema} from '@formizee/db';
-import {newId} from '@formizee/id';
+import {uploadObject} from '@/lib/storage';
 
 export const postRoute = createRoute({
   method: 'post',
   tags: ['Submissions'],
   summary: 'Create a submission',
-  path: '/{id}',
+  path: '/{endpointId}',
+  security: [],
   request: {
     params: EndpointParamsSchema,
     body: {
@@ -38,9 +38,12 @@ export const postRoute = createRoute({
       description: 'Create a submission',
       content: {
         'application/json': {
-          schema: SubmissionSchema
+          schema: SubmissionSchema.omit({data: true})
         }
       }
+    },
+    302: {
+      description: 'Create a submission'
     },
     ...openApiErrorResponses
   }
@@ -48,45 +51,37 @@ export const postRoute = createRoute({
 
 export const registerPostSubmission = (api: typeof submissionsApi) => {
   return api.openapi(postRoute, async context => {
-    const {analytics, database, emailService} = context.get('services');
-    const workspacePlan = context.get('workspace').plan;
-    const workspaceId = context.get('workspace').id;
+    const {endpointId} = context.req.valid('param');
     const location = context.get('location');
-    const {id} = context.req.valid('param');
-    const limits = context.get('limits');
 
-    if (context.req.header('Content-Type') !== 'application/json') {
-      throw new HTTPException(400, {
-        message: "Use one of the supported body types: 'application/json'"
+    const {
+      analytics,
+      vault,
+      metrics,
+      database,
+      logger,
+      email: emailService
+    } = context.get('services');
+
+    const contentType = context.get('bodyContentType');
+    const input = context.get('body');
+
+    const queryEndpointStart = performance.now();
+    const endpoint = await database.query.endpoint
+      .findFirst({
+        where: (table, {eq}) => eq(table.id, endpointId)
+      })
+      .finally(() => {
+        metrics.emit({
+          metric: 'main.db.read',
+          query: 'endpoints.get',
+          latency: performance.now() - queryEndpointStart
+        });
       });
-    }
-
-    // biome-ignore lint/suspicious/noExplicitAny:
-    const input = await context.req.json<any>();
-
-    const endpoint = await database.query.endpoint.findFirst({
-      where: (table, {eq}) => eq(table.id, id)
-    });
 
     if (!endpoint) {
       throw new HTTPException(404, {
         message: 'Endpoint not found'
-      });
-    }
-
-    if (endpoint.workspaceId !== workspaceId) {
-      throw new HTTPException(401, {
-        message: 'This submission belongs to another workspace'
-      });
-    }
-
-    const workspace = await database.query.workspace.findFirst({
-      where: (table, {eq}) => eq(table.id, workspaceId)
-    });
-
-    if (!workspace) {
-      throw new HTTPException(404, {
-        message: 'Workspace not found'
       });
     }
 
@@ -96,14 +91,28 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
       });
     }
 
-    if (Object.keys(input).length === 0) {
-      throw new HTTPException(400, {
-        message: 'The submission data is empty'
+    const queryWorkspaceStart = performance.now();
+    const workspace = await database.query.workspace
+      .findFirst({
+        where: (table, {eq}) => eq(table.id, endpoint.workspaceId)
+      })
+      .finally(() => {
+        metrics.emit({
+          metric: 'main.db.read',
+          query: 'endpoints.get',
+          latency: performance.now() - queryWorkspaceStart
+        });
+      });
+
+    if (!workspace) {
+      throw new HTTPException(404, {
+        message: 'Workspace not found'
       });
     }
 
     // Check plan limits.
 
+    const limits = getLimits(workspace.plan);
     const billingCycle = calculatePlanCycleDates(workspace);
 
     const submissionsCount = await analytics.queryFormizeeMonthlySubmissions(
@@ -119,7 +128,7 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
     ) {
       const workspaceMember = await database.query.usersToWorkspaces.findFirst({
         where: (table, {and, eq}) =>
-          and(eq(table.workspaceId, workspaceId), eq(table.role, 'owner'))
+          and(eq(table.workspaceId, workspace.id), eq(table.role, 'owner'))
       });
 
       if (!workspaceMember) {
@@ -148,7 +157,7 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
             <PlanLimitReached
               limit={'submissions'}
               username={workspaceOwner.name}
-              currentPlan={workspacePlan}
+              currentPlan={workspace.plan}
             />
           )
         });
@@ -165,7 +174,7 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
     ) {
       const workspaceMember = await database.query.usersToWorkspaces.findFirst({
         where: (table, {and, eq}) =>
-          and(eq(table.workspaceId, workspaceId), eq(table.role, 'owner'))
+          and(eq(table.workspaceId, workspace.id), eq(table.role, 'owner'))
       });
 
       if (!workspaceMember) {
@@ -194,32 +203,53 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
             <PlanLimitWarning
               limit={'submissions'}
               username={workspaceOwner.name}
-              currentPlan={workspacePlan}
+              currentPlan={workspace.plan}
             />
           )
         });
       }
     }
 
-    const data: schema.InsertSubmission = {
-      id: newId('submission'),
-      endpointId: endpoint.id,
-      data: {},
-      location
-    };
-
-    await postSubmission(context.env.VAULT_SECRET, {
-      endpointId: data.endpointId,
-      id: data.id,
-      data: input
-    }).catch(error => {
-      throw new HTTPException(error.status, error.body);
+    const fileUploads = input.fileUploads.map(entry => {
+      return {name: entry.file.name, field: entry.field};
     });
 
-    const newSubmission = await database
-      .insert(schema.submission)
-      .values(data)
-      .returning();
+    const {data, error} = await vault.submissions.post({
+      endpointId: endpoint.id,
+      fileUploads: fileUploads,
+      data: input.data,
+      location
+    });
+
+    if (error) {
+      logger.error(`vault.submissions.post(${endpointId})`, {error});
+      throw new HTTPException(error.status, {
+        message: error.message
+      });
+    }
+
+    if (data.pendingUploads.length > 0) {
+      let storageUsed = 0;
+      await Promise.all(
+        data.pendingUploads.map(async pending => {
+          if (pending.url === null) {
+            return;
+          }
+          for (const upload of input.fileUploads) {
+            if (upload.field === pending.field) {
+              storageUsed += upload.file.size;
+              await uploadObject(pending.url, upload.file).catch(error => {
+                logger.error(
+                  `Error uploading pending files on submission ${data.id}`,
+                  {error}
+                );
+              });
+            }
+          }
+        })
+      );
+      await vault.storage.post({endpointId: endpoint.id, storageUsed});
+    }
 
     if (
       endpoint.emailNotifications &&
@@ -242,10 +272,10 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
       }
     }
 
-    await analytics.ingestFormizeeMetrics({
+    metrics.emit({
       metric: 'submission.upload',
       endpointId: endpoint.id,
-      workspaceId,
+      workspaceId: workspace.id,
       uploadedAt: new Date(),
       context: {
         location: context.get('location'),
@@ -253,7 +283,11 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
       }
     });
 
-    const response = SubmissionSchema.parse({...newSubmission[0], data: input});
-    return context.json(response, 201);
+    if (contentType === 'application/json') {
+      const response = SubmissionSchema.omit({data: true}).parse(data);
+      return context.json(response, 201);
+    }
+
+    return context.redirect(endpoint.redirectUrl);
   });
 };

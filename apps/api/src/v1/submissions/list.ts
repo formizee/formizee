@@ -1,21 +1,15 @@
-import {
-  MetadataSchema,
-  QuerySchema,
-  calculateTotalPages
-} from '@/lib/pagination';
 import {SubmissionSchema, EndpointParamsSchema} from './schema';
+import {MetadataSchema, QuerySchema} from '@/lib/pagination';
 import type {listSubmissions as submissionsApi} from '.';
 import {openApiErrorResponses} from '@/lib/errors';
 import {HTTPException} from 'hono/http-exception';
 import {createRoute, z} from '@hono/zod-openapi';
-import {count, eq, schema} from '@formizee/db';
-import {getSubmission} from '@/lib/vault';
 
 export const listRoute = createRoute({
   method: 'get',
   tags: ['Submissions'],
   summary: 'List endpoint submissions',
-  path: '/{id}',
+  path: '/{endpointId}',
   request: {
     params: EndpointParamsSchema,
     query: QuerySchema
@@ -38,15 +32,24 @@ export const listRoute = createRoute({
 
 export const registerListSubmissions = (api: typeof submissionsApi) => {
   return api.openapi(listRoute, async context => {
+    const {database, metrics, vault, logger} = context.get('services');
     const {page, limit} = context.get('pagination');
-    const {database} = context.get('services');
     const workspace = context.get('workspace');
-    const {id} = context.req.valid('param');
+    const {endpointId} = context.req.valid('param');
 
-    const endpoint = await database.query.endpoint.findFirst({
-      where: (table, {and, eq}) =>
-        and(eq(table.workspaceId, workspace.id), eq(table.id, id))
-    });
+    const queryStart = performance.now();
+    const endpoint = await database.query.endpoint
+      .findFirst({
+        where: (table, {and, eq}) =>
+          and(eq(table.workspaceId, workspace.id), eq(table.id, endpointId))
+      })
+      .finally(() => {
+        metrics.emit({
+          metric: 'main.db.read',
+          query: 'endpoints.get',
+          latency: performance.now() - queryStart
+        });
+      });
 
     if (!endpoint) {
       throw new HTTPException(404, {
@@ -54,62 +57,22 @@ export const registerListSubmissions = (api: typeof submissionsApi) => {
       });
     }
 
-    const endpointId = endpoint.id;
-
-    const submissions = await database.query.submission.findMany({
-      where: (table, {eq}) => eq(table.endpointId, endpointId),
-      offset: (page - 1) * limit,
+    const {data, error} = await vault.submissions.list({
+      endpointId,
+      page,
       limit
     });
-
-    if (!submissions) {
-      throw new HTTPException(404, {
-        message: 'Submissions not found'
+    if (error) {
+      logger.error(`vault.submissions.list(${endpointId})`, {error});
+      throw new HTTPException(error.status, {
+        message: error.message
       });
     }
 
-    const submissionsData = await Promise.all(
-      submissions.map(async submission => {
-        const content = await getSubmission(
-          context.env.VAULT_SECRET,
-          endpointId,
-          submission.id
-        );
-        return {...submission, data: content.data};
-      })
-    );
-
-    async function countTotalItems(): Promise<number> {
-      const data = await database
-        .select({totalItems: count()})
-        .from(schema.submission)
-        .where(eq(schema.submission.endpointId, endpointId));
-
-      if (!data[0]) {
-        throw new HTTPException(404, {
-          message: 'Submissions not found'
-        });
-      }
-
-      return data[0].totalItems;
-    }
-
-    const totalItems = await countTotalItems();
-    const totalPages = calculateTotalPages(page, totalItems, limit);
-
-    const response = submissionsData.map(submission =>
+    const submissions = data.submissions.map(submission =>
       SubmissionSchema.parse(submission)
     );
-    return context.json(
-      {
-        _metadata: {
-          page,
-          totalPages,
-          itemsPerPage: limit
-        },
-        submissions: response
-      },
-      200
-    );
+
+    return context.json({...data, submissions}, 200);
   });
 };

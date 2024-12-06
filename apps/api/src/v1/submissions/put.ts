@@ -3,13 +3,12 @@ import type {submissions as submissionsApi} from '.';
 import {openApiErrorResponses} from '@/lib/errors';
 import {HTTPException} from 'hono/http-exception';
 import {createRoute} from '@hono/zod-openapi';
-import {eq, schema} from '@formizee/db';
 
 export const putRoute = createRoute({
   method: 'put',
   tags: ['Submissions'],
   summary: 'Update a submission',
-  path: '/{id}',
+  path: '/{endpointId}/{id}',
   request: {
     params: ParamsSchema,
     body: {
@@ -25,7 +24,7 @@ export const putRoute = createRoute({
       description: 'Update a submission',
       content: {
         'application/json': {
-          schema: SubmissionSchema
+          schema: SubmissionSchema.omit({data: true})
         }
       }
     },
@@ -35,24 +34,23 @@ export const putRoute = createRoute({
 
 export const registerPutSubmission = (api: typeof submissionsApi) => {
   return api.openapi(putRoute, async context => {
+    const {database, vault, metrics, logger} = context.get('services');
     const workspaceId = context.get('workspace').id;
-    const {database} = context.get('services');
-    const {id} = context.req.valid('param');
+    const params = context.req.valid('param');
     const input = context.req.valid('json');
 
-    const submission = await database.query.submission.findFirst({
-      where: (table, {eq}) => eq(table.id, id)
-    });
-
-    if (!submission) {
-      throw new HTTPException(404, {
-        message: 'Submission not found'
+    const queryStart = performance.now();
+    const endpoint = await database.query.endpoint
+      .findFirst({
+        where: (table, {eq}) => eq(table.id, params.endpointId)
+      })
+      .finally(() => {
+        metrics.emit({
+          metric: 'main.db.read',
+          query: 'endpoints.get',
+          latency: performance.now() - queryStart
+        });
       });
-    }
-
-    const endpoint = await database.query.endpoint.findFirst({
-      where: (table, {eq}) => eq(table.id, submission.endpointId)
-    });
 
     if (!endpoint) {
       throw new HTTPException(404, {
@@ -66,22 +64,15 @@ export const registerPutSubmission = (api: typeof submissionsApi) => {
       });
     }
 
-    if (Object.keys(input).length === 0) {
-      throw new HTTPException(400, {
-        message: "There's no fields to update"
+    const {data, error} = await vault.submissions.put({...params, ...input});
+    if (error) {
+      logger.error(`vault.submissions.put(${params.id})`, {error});
+      throw new HTTPException(error.status, {
+        message: error.message
       });
     }
 
-    const newSubmission = await database
-      .update(schema.submission)
-      .set({
-        isRead: input.isRead ?? submission.isRead,
-        isSpam: input.isSpam ?? submission.isSpam
-      })
-      .where(eq(schema.submission.id, submission.id))
-      .returning();
-
-    const response = SubmissionSchema.parse(newSubmission[0]);
+    const response = SubmissionSchema.omit({data: true}).parse(data);
     return context.json(response, 200);
   });
 };

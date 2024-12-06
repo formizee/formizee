@@ -1,7 +1,7 @@
 import path, {dirname} from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {execa} from 'execa';
 import {task} from './util';
+import {execa} from 'execa';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);

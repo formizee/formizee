@@ -1,34 +1,35 @@
-import {getSchema, getSubmission, type DataSchema} from '@/lib/helpers';
-import {MetadataSchema, calculateTotalPages} from '@/lib/pagination';
-import {ListSchema, SubmissionSchema} from './schema';
+import {ListParams, SubmissionSchema} from './schema';
 import type {submissions as submissionsAPI} from '.';
 import {openApiErrorResponses} from '@/lib/errors';
 import {HTTPException} from 'hono/http-exception';
 import {createRoute, z} from '@hono/zod-openapi';
+import {aes} from '@formizee/encryption';
+import {assignOriginDatabase} from '@/lib/databases';
+import {
+  MetadataSchema,
+  QuerySchema,
+  calculateTotalPages
+} from '@/lib/pagination';
+import {count, eq, schema} from '@formizee/db/submissions';
 
 export const listRoute = createRoute({
-  method: 'post',
+  method: 'get',
   tags: ['Submissions'],
-  summary: 'List all submissions',
-  path: '/',
+  summary: 'List endpoint submissions',
+  path: '/{endpointId}',
   request: {
-    body: {
-      content: {
-        'application/json': {
-          schema: ListSchema
-        }
-      }
-    }
+    query: QuerySchema,
+    params: ListParams
   },
   responses: {
     200: {
-      description: 'List all submissions',
+      description: 'List endpoint submissions',
       content: {
         'application/json': {
           schema: z.object({
             _metadata: MetadataSchema.merge(
               z.object({
-                schema: z.custom<DataSchema>()
+                schema: z.custom<Record<string, string>>()
               })
             ),
             submissions: SubmissionSchema.array()
@@ -42,22 +43,36 @@ export const listRoute = createRoute({
 
 export const registerListSubmissions = (api: typeof submissionsAPI) => {
   return api.openapi(listRoute, async context => {
+    const {metrics, logger, database, storage, cache, keys} =
+      context.get('services');
     const {page, limit} = context.get('pagination');
-    const input = context.req.valid('json');
-    const bucket = context.env.BUCKET;
-    const vault = context.env.VAULT;
+    const input = context.req.valid('param');
+    const queryStart = performance.now();
 
-    // List all submissions for the endpoint.
-    const list = await vault.list({prefix: `${input.endpointId}:`});
+    const originDatabase = await assignOriginDatabase(
+      {database, cache},
+      input.endpointId
+    );
 
-    if (list.keys.length < 1) {
+    if (!originDatabase) {
+      throw new HTTPException(404, {
+        message:
+          'Origin database not found, please contact support@formizee.com'
+      });
+    }
+
+    const endpoint = await originDatabase.query.endpoint.findFirst({
+      where: (table, {eq}) => eq(table.id, input.endpointId)
+    });
+
+    if (!endpoint) {
       return context.json(
         {
           _metadata: {
-            schema: {},
-            page: 1,
+            page,
             totalPages: 1,
-            itemsPerPage: 0
+            itemsPerPage: limit,
+            schema: {}
           },
           submissions: []
         },
@@ -65,45 +80,120 @@ export const registerListSubmissions = (api: typeof submissionsAPI) => {
       );
     }
 
-    // Get the endpoint schema from the bucket
-    const schema = await getSchema(input.endpointId, bucket);
+    // Query submissions
+    let submissions = await cache.getSubmissions({
+      endpointId: input.endpointId,
+      pageSize: limit,
+      page
+    });
+    if (!submissions) {
+      const [data, totalItems] = await Promise.all([
+        originDatabase.query.submission.findMany({
+          where: (table, {eq}) => eq(table.endpointId, input.endpointId),
+          offset: (page - 1) * limit,
+          limit
+        }),
+        originDatabase
+          .select({count: count()})
+          .from(schema.submission)
+          .where(eq(schema.submission.endpointId, input.endpointId))
+      ]);
 
-    if (!schema) {
-      throw new HTTPException(404, {
-        message: 'Endpoint schema not found'
-      });
+      if (!data || !totalItems[0]) {
+        submissions = {
+          totalItems: 0,
+          data: []
+        };
+      } else {
+        submissions = {
+          totalItems: totalItems[0].count,
+          data
+        };
+      }
     }
 
-    // Calculate pagination values.
-    const totalPages = calculateTotalPages(page, list.keys.length, limit);
-    const offset = (page - 1) * limit;
+    const [key] = await Promise.all([
+      keys.getEndpointDEK(context.env, input.endpointId),
+      cache.storeSubmissions(
+        {
+          endpointId: input.endpointId,
+          page,
+          pageSize: limit,
+          totalItems: submissions.totalItems
+        },
+        submissions.data
+      )
+    ]);
 
-    // Retrieve the current keys of the submissions.
-    const keys = list.keys.slice(offset, offset + limit);
+    const response = await Promise.all(
+      submissions.data.map(async submission => {
+        const decryptedSubmission = await aes.decrypt(
+          {iv: submission.iv, cipherText: submission.cipherText},
+          key
+        );
+        const fileUploads = await storage.getDownloadLinks(
+          originDatabase,
+          submission.id
+        );
 
-    // Fetch submissions in a batch.
-    const data = await Promise.all(
-      keys.map(async key => {
-        return await getSubmission(key.name, vault);
+        const submissionData = JSON.parse(decryptedSubmission);
+
+        // Merge file uploads with the data
+        const data = (fileUploads || []).reduce(
+          (acc, file) => {
+            if (file && Object.keys(file).length > 0) {
+              for (const [key, value] of Object.entries(file)) {
+                acc[key] = value;
+              }
+            }
+            return acc;
+          },
+          {...submissionData}
+        );
+
+        const response = {
+          id: submission.id,
+          endpointId: submission.endpointId,
+          data,
+          isSpam: submission.isSpam,
+          isRead: submission.isRead,
+          location: submission.location,
+          createdAt: submission.createdAt
+        };
+
+        return response;
       })
     );
 
-    // Parse submissions data.
-    const submissions = data.map(submission =>
-      SubmissionSchema.parse(submission)
-    );
+    try {
+      const totalPages = calculateTotalPages(
+        page,
+        submissions.totalItems,
+        limit
+      );
+      const endpointSchema = JSON.parse(endpoint.schema);
 
-    return context.json(
-      {
-        _metadata: {
-          schema: schema,
-          page,
-          totalPages,
-          itemsPerPage: limit
+      metrics.emit({
+        metric: 'vault.latency',
+        query: 'submissions.list',
+        latency: performance.now() - queryStart
+      });
+
+      return context.json(
+        {
+          _metadata: {
+            page,
+            totalPages,
+            itemsPerPage: limit,
+            schema: endpointSchema
+          },
+          submissions: response
         },
-        submissions
-      },
-      200
-    );
+        200
+      );
+    } catch (error) {
+      logger.error('Unexpected error listing submissions', {error});
+      throw error;
+    }
   });
 };

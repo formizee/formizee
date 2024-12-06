@@ -3,7 +3,7 @@ import {newRoute} from '@/lib/hono';
 import {health} from './health';
 import {keys, listKeys} from './keys';
 import {endpoints, listEndpoints} from './endpoints';
-import {submissions, listSubmissions} from './submissions';
+import {submissions, listSubmissions, postSubmission} from './submissions';
 
 const api = newRoute('/');
 
@@ -15,6 +15,7 @@ api.route('/keys', listKeys);
 api.route('/endpoint', endpoints);
 api.route('/endpoints', listEndpoints);
 
+api.route('/f', postSubmission);
 api.route('/submission', submissions);
 api.route('/submissions', listSubmissions);
 

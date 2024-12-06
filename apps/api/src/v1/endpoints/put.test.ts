@@ -5,7 +5,7 @@ import {describe, it, expect} from 'vitest';
 describe('Update a endpoint', () => {
   it('Should get 200 on update', async context => {
     const harness = await IntegrationHarness.init(context);
-    const endpoint = harness.resources.endpoint;
+    const endpoint = harness.resources.endpointWithSchema;
     const {key} = await harness.createKey();
 
     const res = await harness.put<RequestPutEndpoint, ResponseEndpoint>({
@@ -34,7 +34,7 @@ describe('Update a endpoint', () => {
 
   it('Should get 400 on empty update', async context => {
     const harness = await IntegrationHarness.init(context);
-    const endpoint = harness.resources.endpoint;
+    const endpoint = harness.resources.endpointWithSchema;
     const {key} = await harness.createKey();
 
     const res = await harness.put<unknown, ResponseEndpoint>({
@@ -50,13 +50,14 @@ describe('Update a endpoint', () => {
     expect(res.body).toStrictEqual({
       code: 'BAD_REQUEST',
       message: "There's no fields to update",
-      docs: `${harness.docsUrl}/api-references/errors/code/BAD_REQUEST`
+      docs: `${harness.docsUrl}/api-references/errors/code/BAD_REQUEST`,
+      requestId: res.headers['formizee-request-id']
     });
   });
 
   it('Should get 403 on invalid target emails', async context => {
     const harness = await IntegrationHarness.init(context);
-    const endpoint = harness.resources.endpoint;
+    const endpoint = harness.resources.endpointWithSchema;
     const {key} = await harness.createKey();
 
     const res = await harness.put<RequestPutEndpoint, ResponseEndpoint>({
@@ -76,7 +77,8 @@ describe('Update a endpoint', () => {
       code: 'FORBIDDEN',
       message:
         'All the target emails needs to be available in the current workspace',
-      docs: `${harness.docsUrl}/api-references/errors/code/FORBIDDEN`
+      docs: `${harness.docsUrl}/api-references/errors/code/FORBIDDEN`,
+      requestId: res.headers['formizee-request-id']
     });
   });
 });

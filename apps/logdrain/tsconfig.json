@@ -1,0 +1,11 @@
+{
+  "extends": "@formizee/tsconfig/api.json",
+  "compilerOptions": {
+    "types": ["@cloudflare/workers-types/experimental"],
+    "outDir": "dist",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  }
+}

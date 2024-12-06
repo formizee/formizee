@@ -36,17 +36,25 @@ export const putRoute = createRoute({
 
 export const registerPutKey = (api: typeof keysAPI) => {
   return api.openapi(putRoute, async context => {
-    const {analytics, database} = context.get('services');
+    const {analytics, database, metrics} = context.get('services');
     const workspace = context.get('workspace');
     const {id} = context.req.valid('param');
     const input = context.req.valid('json');
     const rootKey = context.get('key');
 
-    const key = await database.query.key.findFirst({
-      //@ts-ignore
-      where: (table, {and, eq}) =>
-        and(eq(table.workspaceId, workspace.id), eq(table.id, id))
-    });
+    const queryStart = performance.now();
+    const key = await database.query.key
+      .findFirst({
+        where: (table, {and, eq}) =>
+          and(eq(table.workspaceId, workspace.id), eq(table.id, id))
+      })
+      .finally(() => {
+        metrics.emit({
+          metric: 'main.db.read',
+          query: 'keys.get',
+          latency: performance.now() - queryStart
+        });
+      });
 
     if (!key) {
       throw new HTTPException(404, {
@@ -74,6 +82,7 @@ export const registerPutKey = (api: typeof keysAPI) => {
       expiresAt = key.expiresAt;
     }
 
+    const mutationStart = performance.now();
     const newKey = await database
       .update(schema.key)
       .set({
@@ -82,7 +91,14 @@ export const registerPutKey = (api: typeof keysAPI) => {
         expiresAt
       })
       .where(eq(schema.key.id, id))
-      .returning();
+      .returning()
+      .finally(() => {
+        metrics.emit({
+          metric: 'main.db.write',
+          mutation: 'keys.put',
+          latency: performance.now() - mutationStart
+        });
+      });
 
     await analytics.ingestFormizeeAuditLogs({
       event: 'key.update',

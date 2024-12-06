@@ -22,7 +22,8 @@ describe('Authentication middleware', () => {
     expect(res.body).toStrictEqual({
       code: 'UNAUTHORIZED',
       message: 'API key required',
-      docs: `${harness.docsUrl}/api-references/errors/code/UNAUTHORIZED`
+      docs: `${harness.docsUrl}/api-references/errors/code/UNAUTHORIZED`,
+      requestId: res.headers['formizee-request-id']
     });
   });
 
@@ -52,7 +53,8 @@ describe('Authentication middleware', () => {
     expect(res.body).toStrictEqual({
       code: 'UNAUTHORIZED',
       message: 'The API key is not valid',
-      docs: `${harness.docsUrl}/api-references/errors/code/UNAUTHORIZED`
+      docs: `${harness.docsUrl}/api-references/errors/code/UNAUTHORIZED`,
+      requestId: res.headers['formizee-request-id']
     });
   });
 
@@ -72,7 +74,8 @@ describe('Authentication middleware', () => {
     expect(res.body).toStrictEqual({
       code: 'UNAUTHORIZED',
       message: 'The API key is expired',
-      docs: `${harness.docsUrl}/api-references/errors/code/UNAUTHORIZED`
+      docs: `${harness.docsUrl}/api-references/errors/code/UNAUTHORIZED`,
+      requestId: res.headers['formizee-request-id']
     });
   });
 });

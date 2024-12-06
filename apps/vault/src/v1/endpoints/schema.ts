@@ -1,7 +1,7 @@
 import {z} from '@hono/zod-openapi';
 
 export const ParamsSchema = z.object({
-  endpointId: z
+  id: z
     .string()
     .regex(/^[a-zA-Z]+_[a-zA-Z0-9]+$/, {
       message: 'Invalid identifier, please check that is correctly typed.'

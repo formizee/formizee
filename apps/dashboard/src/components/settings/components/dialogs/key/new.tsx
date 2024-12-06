@@ -5,7 +5,7 @@ import keyIcon from '@/../public/key.webp';
 import Image from 'next/image';
 
 import {zodResolver} from '@hookform/resolvers/zod';
-import * as schema from '@formizee/db/schema';
+import {schema} from '@formizee/db';
 import {useForm} from 'react-hook-form';
 import {api} from '@/trpc/client';
 import {z} from 'zod';

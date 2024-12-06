@@ -1,11 +1,17 @@
-import {bootstrapApi, bootstrapWeb} from './commands';
 import {execSync} from 'node:child_process';
-import path, {dirname} from 'node:path';
 import {startContainers} from './docker';
-import {fileURLToPath} from 'node:url';
+import path, {dirname} from 'node:path';
 import * as clack from '@clack/prompts';
+import {fileURLToPath} from 'node:url';
 import {prepareDatabase} from './db';
 import {run, task} from './util';
+
+import {
+  bootstrapApi,
+  bootstrapWeb,
+  bootstrapVault,
+  bootstrapDashboard
+} from './commands';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -18,32 +24,67 @@ async function main() {
     maxItems: 1,
     options: [
       {
-        label: 'API',
+        label: 'web',
+        value: 'web',
+        hint: 'formizee.com'
+      },
+      {
+        label: 'api',
         value: 'api',
         hint: 'api.formizee.com'
       },
       {
-        label: 'Web',
-        value: 'web',
-        hint: 'formizee.com'
+        label: 'docs',
+        value: 'docs',
+        hint: 'docs.formizee.com'
+      },
+      {
+        label: 'vault',
+        value: 'vault',
+        hint: 'vault.formizee.com'
+      },
+      {
+        label: 'dashboard',
+        value: 'dashboard',
+        hint: 'dashboard.formizee.com'
       }
     ]
   });
 
   switch (app) {
-    case 'api': {
-      await startContainers(['database', 'storage']);
+    case 'web': {
+      bootstrapWeb();
+      break;
+    }
 
-      await prepareDatabase();
+    case 'api': {
+      await startContainers(['database', 'submissions-database', 'vault']);
+      await prepareDatabase('submissions');
+      await prepareDatabase('main');
+
       await bootstrapApi();
       break;
     }
 
-    case 'web': {
-      await startContainers(['database', 'storage']);
+    case 'vault': {
+      await startContainers(['submissions-database', 'storage']);
+      await prepareDatabase('submissions');
 
-      await prepareDatabase();
-      bootstrapWeb();
+      await bootstrapVault();
+      break;
+    }
+
+    case 'dashboard': {
+      await startContainers([
+        'database',
+        'submissions-database',
+        'api',
+        'vault'
+      ]);
+      await prepareDatabase('submissions');
+      await prepareDatabase('main');
+
+      bootstrapDashboard();
       break;
     }
 

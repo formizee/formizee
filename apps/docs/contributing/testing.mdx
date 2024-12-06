@@ -11,14 +11,15 @@ pnpm install
 pnpm test
 ```
 
-## API Tests
+## Integration Tests
 
-`/apps/api` is our core product and needs to be heavily tested. we use integration testing:
+`/apps/api` and `/apps/vault` is our core product and needs to be heavily tested. we use integration testing:
 
   ```bash
-  pnpm test --filter @formizee/api
+  pnpm test --filter api
+  pnpm test --filter vault
   ```
 
 <Info>
-Integration tests require a running API either locally or in a deployed environment.
+Integration tests require a running `API` or `Vault` either locally or in a deployed environment.
 </Info>

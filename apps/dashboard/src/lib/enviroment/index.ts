@@ -9,13 +9,12 @@ export const env = () =>
         .optional()
         .default('development'),
       VERCEL_URL: z.string().optional(),
-      DASHBOARD_URL: z.string().default(''),
+      DASHBOARD_URL: z.string().default('http://localhost:3002'),
+      VAULT_URL: z.string().default('http://localhost:8888'),
 
       // Databases
-      DATABASE_URL: z
-        .string()
-        .url()
-        .default('postgresql://formizee:password@localhost/formizee'),
+      DATABASE_URL: z.string().url().default('http://localhost:8080'),
+      DATABASE_AUTH_TOKEN: z.string().default(''),
 
       // Storage
       VAULT_SECRET: z.string().default(''),

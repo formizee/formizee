@@ -3,13 +3,12 @@ import type {submissions as submissionsApi} from '.';
 import {openApiErrorResponses} from '@/lib/errors';
 import {HTTPException} from 'hono/http-exception';
 import {createRoute} from '@hono/zod-openapi';
-import {getSubmission} from '@/lib/vault';
 
 export const getRoute = createRoute({
   method: 'get',
   tags: ['Submissions'],
   summary: 'Retrieve a submission',
-  path: '/{id}',
+  path: '/{endpointId}/{id}',
   request: {
     params: ParamsSchema
   },
@@ -28,24 +27,31 @@ export const getRoute = createRoute({
 
 export const registerGetSubmission = (api: typeof submissionsApi) => {
   return api.openapi(getRoute, async context => {
-    const {analytics, database} = context.get('services');
+    const {database, metrics, vault, logger} = context.get('services');
     const workspaceId = context.get('workspace').id;
-    const {id} = context.req.valid('param');
+    const input = context.req.valid('param');
 
-    const dbStart = performance.now();
-    const submission = await database.query.submission.findFirst({
-      where: (table, {eq}) => eq(table.id, id)
-    });
+    const {data, error} = await vault.submissions.get(input);
 
-    if (!submission) {
-      throw new HTTPException(404, {
-        message: 'Submission not found'
+    if (error) {
+      logger.error(`vault.submissions.get(${input.id})`, {error});
+      throw new HTTPException(error.status, {
+        message: error.message
       });
     }
 
-    const endpoint = await database.query.endpoint.findFirst({
-      where: (table, {eq}) => eq(table.id, submission.endpointId)
-    });
+    const queryStart = performance.now();
+    const endpoint = await database.query.endpoint
+      .findFirst({
+        where: (table, {eq}) => eq(table.id, input.endpointId)
+      })
+      .finally(() => {
+        metrics.emit({
+          metric: 'main.db.read',
+          query: 'endpoints.get',
+          latency: performance.now() - queryStart
+        });
+      });
 
     if (!endpoint) {
       throw new HTTPException(404, {
@@ -59,22 +65,7 @@ export const registerGetSubmission = (api: typeof submissionsApi) => {
       });
     }
 
-    const content = await getSubmission(
-      context.env.VAULT_SECRET,
-      endpoint.id,
-      id
-    );
-
-    await analytics.ingestFormizeeMetrics({
-      metric: 'db.read',
-      query: 'submissions.load',
-      latency: performance.now() - dbStart
-    });
-
-    const response = SubmissionSchema.parse({
-      ...submission,
-      data: content.data
-    });
+    const response = SubmissionSchema.parse(data);
 
     return context.json(response, 200);
   });

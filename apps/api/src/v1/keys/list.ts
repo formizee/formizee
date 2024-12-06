@@ -36,15 +36,24 @@ export const listRoute = createRoute({
 
 export const registerListKeys = (api: typeof keysApi) => {
   return api.openapi(listRoute, async context => {
+    const {database, metrics} = context.get('services');
     const {page, limit} = context.get('pagination');
-    const {database} = context.get('services');
     const workspace = context.get('workspace');
 
-    const keys = await database.query.key.findMany({
-      where: (table, {eq}) => eq(table.workspaceId, workspace.id),
-      offset: (page - 1) * limit,
-      limit
-    });
+    const queryStart = performance.now();
+    const keys = await database.query.key
+      .findMany({
+        where: (table, {eq}) => eq(table.workspaceId, workspace.id),
+        offset: (page - 1) * limit,
+        limit
+      })
+      .finally(() => {
+        metrics.emit({
+          metric: 'main.db.read',
+          query: 'keys.list',
+          latency: performance.now() - queryStart
+        });
+      });
 
     if (!keys) {
       throw new HTTPException(404, {
@@ -53,10 +62,18 @@ export const registerListKeys = (api: typeof keysApi) => {
     }
 
     async function countTotalItems(): Promise<number> {
+      const queryStart = performance.now();
       const data = await database
         .select({totalItems: count()})
         .from(schema.key)
-        .where(eq(schema.key.workspaceId, workspace.id));
+        .where(eq(schema.key.workspaceId, workspace.id))
+        .finally(() => {
+          metrics.emit({
+            metric: 'main.db.read',
+            query: 'keys.list',
+            latency: performance.now() - queryStart
+          });
+        });
 
       if (!data[0]) {
         throw new HTTPException(404, {

@@ -5,6 +5,8 @@ import {describe, it, expect} from 'vitest';
 describe('List endpoints', () => {
   it('Should get 200', async context => {
     const harness = await IntegrationHarness.init(context);
+    const endpointWithSchema = harness.resources.endpointWithSchema;
+    const disabledEndpoint = harness.resources.disabledEndpoint;
     const endpoint = harness.resources.endpoint;
 
     const {key} = await harness.createKey();
@@ -20,7 +22,11 @@ describe('List endpoints', () => {
         totalPages: 1,
         itemsPerPage: 100
       },
-      endpoints: [omit(endpoint, ['createdAt', 'updatedAt'])]
+      endpoints: [
+        omit(endpoint, ['createdAt', 'updatedAt']),
+        omit(endpointWithSchema, ['createdAt', 'updatedAt']),
+        omit(disabledEndpoint, ['createdAt', 'updatedAt'])
+      ]
     });
     expect(res.status).toBe(200);
   });
@@ -39,7 +45,8 @@ describe('List endpoints', () => {
       code: 'NOT_FOUND',
       docs: `${harness.docsUrl}/api-references/errors/code/NOT_FOUND`,
       message:
-        'The requested page 999 does not exist. There are only 1 pages available'
+        'The requested page 999 does not exist. There are only 1 pages available',
+      requestId: res.headers['formizee-request-id']
     });
   });
 
@@ -56,7 +63,8 @@ describe('List endpoints', () => {
     expect(res.body).toStrictEqual({
       code: 'BAD_REQUEST',
       docs: `${harness.docsUrl}/api-references/errors/code/BAD_REQUEST`,
-      message: "invalid_type in 'page': Expected number, received nan"
+      message: "invalid_type in 'page': Expected number, received nan",
+      requestId: res.headers['formizee-request-id']
     });
   });
 });

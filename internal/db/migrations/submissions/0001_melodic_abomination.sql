@@ -1,0 +1,1 @@
+ALTER TABLE `endpoints` ADD `storage_used` integer DEFAULT 0 NOT NULL;

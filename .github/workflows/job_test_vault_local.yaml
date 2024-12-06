@@ -1,0 +1,51 @@
+name: Test Vault Local
+on:
+  workflow_call:
+
+jobs:
+  test:
+    name: Vault Test Local
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    env:
+      TURBO_TEAM: ${{ secrets.VERCEL_ORG_ID }}
+      TURBO_TOKEN: ${{ secrets.VERCEL_API_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Delete huge unnecessary tools folder
+        run: rm -rf /opt/hostedtoolcache
+
+      - name: Run containers
+        run: docker compose -f ./deployment/docker-compose.yaml up -d vault --wait
+
+      - name: Install
+        uses: ./.github/actions/install
+
+      - name: Build
+        run: pnpm turbo run build --filter=./apps/vault...
+
+      - name: Load Schema into vault database
+        run: pnpm push:submissions
+        working-directory: internal/db
+        env:
+          SUBMISSIONS_DATABASE_URL: http://127.0.0.1:8081
+
+      - name: Test
+        run: pnpm test
+        working-directory: apps/vault
+        env:
+          DATABASE_URL: http://127.0.0.1:8081
+          VAULT_SECRET: testing
+
+      - name: Dump logs
+        if: always()
+        run: docker compose -f ./deployment/docker-compose.yaml logs --no-color > ./docker.logs
+
+      - name: Upload logs
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ${{github.run_id}}-${{github.run_number}}-vault.logs
+          path: docker.logs
+          retention-days: 7

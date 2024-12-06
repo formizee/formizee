@@ -2,15 +2,13 @@ import type {submissions as submissionsApi} from '.';
 import {openApiErrorResponses} from '@/lib/errors';
 import {HTTPException} from 'hono/http-exception';
 import {createRoute, z} from '@hono/zod-openapi';
-import {eq, schema} from '@formizee/db';
 import {ParamsSchema} from './schema';
-import {deleteSubmission} from '@/lib/vault';
 
 export const deleteRoute = createRoute({
   method: 'delete',
   tags: ['Submissions'],
   summary: 'Delete a submission',
-  path: '/{id}',
+  path: '/{endpointId}/{id}',
   request: {
     params: ParamsSchema
   },
@@ -30,22 +28,21 @@ export const deleteRoute = createRoute({
 export const registerDeleteSubmission = (api: typeof submissionsApi) => {
   return api.openapi(deleteRoute, async context => {
     const workspaceId = context.get('workspace').id;
-    const {database} = context.get('services');
-    const {id} = context.req.valid('param');
+    const {database, vault, metrics, logger} = context.get('services');
+    const input = context.req.valid('param');
 
-    const submission = await database.query.submission.findFirst({
-      where: (table, {eq}) => eq(table.id, id)
-    });
-
-    if (!submission) {
-      throw new HTTPException(404, {
-        message: 'Submission not found'
+    const queryStart = performance.now();
+    const endpoint = await database.query.endpoint
+      .findFirst({
+        where: (table, {eq}) => eq(table.id, input.endpointId)
+      })
+      .finally(() => {
+        metrics.emit({
+          metric: 'main.db.read',
+          query: 'endpoints.get',
+          latency: performance.now() - queryStart
+        });
       });
-    }
-
-    const endpoint = await database.query.endpoint.findFirst({
-      where: (table, {eq}) => eq(table.id, submission.endpointId)
-    });
 
     if (!endpoint) {
       throw new HTTPException(404, {
@@ -59,15 +56,14 @@ export const registerDeleteSubmission = (api: typeof submissionsApi) => {
       });
     }
 
-    await database
-      .delete(schema.submission)
-      .where(eq(schema.submission.id, submission.id));
+    const {error} = await vault.submissions.delete(input);
 
-    await deleteSubmission(
-      context.env.VAULT_SECRET,
-      endpoint.id,
-      submission.id
-    );
+    if (error) {
+      logger.error(`vault.submissions.delete(${input.id})`, {error});
+      throw new HTTPException(error.status, {
+        message: error.message
+      });
+    }
 
     return context.json({}, 200);
   });

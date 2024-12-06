@@ -14,14 +14,15 @@ const envPath = path.join(appPath, '.dev.vars');
 export async function bootstrapApi() {
   const env = marshalEnv({
     General: {
+      DASHBOARD_URL: 'http://localhost:3001',
+      VAULT_URL: 'http://localhost:8888',
       DOCS_URL: 'http://localhost:3002',
       WEB_URL: 'http://localhost:3000',
       API_URL: 'http://localhost:8787',
-      ENVIROMENT: 'development',
-      VERSION: '1.0.0'
+      ENVIROMENT: 'development'
     },
     Database: {
-      DATABASE_URL: 'postgresql://formizee:password@localhost/formizee'
+      DATABASE_URL: 'http://localhost:8080'
     }
   });
 

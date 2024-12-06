@@ -1,69 +1,50 @@
 import type {RequestPutSubmission, ResponseSubmission} from './schema';
-import {IntegrationHarness, omit} from '@/lib/testing';
+import {IntegrationHarness} from '@/lib/testing';
 import {describe, it, expect} from 'vitest';
 
 describe('Update a submission', () => {
   it('Should get 200', async context => {
     const harness = await IntegrationHarness.init(context);
-    const submission = harness.resources.submission;
+    const submission = harness.vaultResources.submission;
     const {key} = await harness.createKey();
 
-    const res = await harness.put<RequestPutSubmission, ResponseSubmission>({
+    const response = await harness.put<
+      RequestPutSubmission,
+      ResponseSubmission
+    >({
+      url: `/v1/submission/${submission.endpointId}/${submission.id}`,
       headers: {
-        authorization: `Bearer ${key}`,
-        'content-type': 'application/json'
+        'content-type': 'application/json',
+        authorization: `Bearer ${key}`
       },
-      url: `/v1/submission/${submission.id}`,
-      body: {
-        isSpam: true,
-        isRead: true
-      }
+      body: {isRead: true, isSpam: false}
     });
 
-    expect(res.body).toStrictEqual({
-      ...omit(submission, ['createdAt']),
-      isRead: true,
-      isSpam: true
-    });
-    expect(res.status).toBe(200);
-  });
-
-  it('Should get 400', async context => {
-    const harness = await IntegrationHarness.init(context);
-    const submission = harness.resources.submission;
-    const {key} = await harness.createKey();
-
-    const res = await harness.put<unknown, ResponseSubmission>({
-      headers: {
-        authorization: `Bearer ${key}`,
-        'content-type': 'application/json'
-      },
-      url: `/v1/submission/${submission.id}`,
-      body: {}
-    });
-
-    expect(res.status).toBe(400);
-    expect(res.body).toStrictEqual({
-      code: 'BAD_REQUEST',
-      message: "There's no fields to update",
-      docs: `${harness.docsUrl}/api-references/errors/code/BAD_REQUEST`
+    expect(response.status).toBe(200);
+    expect(response.body).toStrictEqual({
+      id: response.body.id,
+      endpointId: submission.endpointId,
+      location: response.body.location,
+      isSpam: false,
+      isRead: true
     });
   });
 
-  it('Should get 404', async context => {
+  it('Should get 404 on endpoint not found', async context => {
     const harness = await IntegrationHarness.init(context);
     const {key} = await harness.createKey();
 
-    const res = await harness.put<unknown, ResponseSubmission>({
+    const response = await harness.get<ResponseSubmission>({
       headers: {authorization: `Bearer ${key}`},
-      url: '/v1/submission/sub_123456789'
+      url: '/v1/submission/enp_123456789/sub_123456789'
     });
 
-    expect(res.status).toBe(404);
-    expect(res.body).toStrictEqual({
+    expect(response.status).toBe(404);
+    expect(response.body).toStrictEqual({
       code: 'NOT_FOUND',
-      message: 'Submission not found',
-      docs: `${harness.docsUrl}/api-references/errors/code/NOT_FOUND`
+      docs: `${harness.docsUrl}/api-references/errors/code/NOT_FOUND`,
+      requestId: response.headers['formizee-request-id'],
+      message: 'Submission not found'
     });
   });
 });

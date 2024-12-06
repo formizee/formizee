@@ -35,17 +35,25 @@ export const postRoute = createRoute({
 
 export const registerPostEndpoint = (api: typeof endpointsAPI) => {
   return api.openapi(postRoute, async context => {
-    const {analytics, database} = context.get('services');
+    const {analytics, metrics, database} = context.get('services');
     const workspace = context.get('workspace');
     const input = context.req.valid('json');
     const limits = context.get('limits');
     const rootKey = context.get('key');
 
     // Check plan limits.
+    const queryListStart = performance.now();
     const endpoints = await database
       .select({count: count()})
       .from(schema.endpoint)
-      .where(eq(schema.endpoint.workspaceId, workspace.id));
+      .where(eq(schema.endpoint.workspaceId, workspace.id))
+      .finally(() => {
+        metrics.emit({
+          metric: 'main.db.read',
+          query: 'endpoints.list',
+          latency: performance.now() - queryListStart
+        });
+      });
 
     if (!endpoints[0]) {
       throw new HTTPException(500, {
@@ -64,9 +72,18 @@ export const registerPostEndpoint = (api: typeof endpointsAPI) => {
 
     // Check slug
 
-    const slugAlreadyTaken = await database.query.endpoint.findFirst({
-      where: (table, {eq}) => eq(table.slug, input.slug)
-    });
+    const queryGetStart = performance.now();
+    const slugAlreadyTaken = await database.query.endpoint
+      .findFirst({
+        where: (table, {eq}) => eq(table.slug, input.slug)
+      })
+      .finally(() => {
+        metrics.emit({
+          metric: 'main.db.read',
+          query: 'endpoints.get',
+          latency: performance.now() - queryGetStart
+        });
+      });
 
     if (slugAlreadyTaken) {
       throw new HTTPException(409, {
@@ -103,7 +120,17 @@ export const registerPostEndpoint = (api: typeof endpointsAPI) => {
       color: input.color
     };
 
-    await database.insert(schema.endpoint).values(data);
+    const mutationStart = performance.now();
+    await database
+      .insert(schema.endpoint)
+      .values(data)
+      .finally(() => {
+        metrics.emit({
+          metric: 'main.db.write',
+          mutation: 'endpoints.post',
+          latency: performance.now() - mutationStart
+        });
+      });
 
     await analytics.ingestFormizeeAuditLogs({
       event: 'endpoint.create',
@@ -120,6 +147,15 @@ export const registerPostEndpoint = (api: typeof endpointsAPI) => {
         }
       ],
       description: `Created ${data.id}`,
+      context: {
+        location: context.get('location'),
+        userAgent: context.get('userAgent')
+      }
+    });
+
+    metrics.emit({
+      metric: 'endpoint.created',
+      workspaceId: workspace.id,
       context: {
         location: context.get('location'),
         userAgent: context.get('userAgent')

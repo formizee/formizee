@@ -35,16 +35,25 @@ export const putRoute = createRoute({
 
 export const registerPutEndpoint = (api: typeof endpointsAPI) => {
   return api.openapi(putRoute, async context => {
-    const {analytics, database} = context.get('services');
+    const {analytics, database, metrics} = context.get('services');
     const workspace = context.get('workspace');
     const {id} = context.req.valid('param');
     const input = context.req.valid('json');
     const rootKey = context.get('key');
 
-    const endpoint = await database.query.endpoint.findFirst({
-      where: (table, {and, eq}) =>
-        and(eq(table.workspaceId, workspace.id), eq(table.id, id))
-    });
+    const queryStart = performance.now();
+    const endpoint = await database.query.endpoint
+      .findFirst({
+        where: (table, {and, eq}) =>
+          and(eq(table.workspaceId, workspace.id), eq(table.id, id))
+      })
+      .finally(() => {
+        metrics.emit({
+          metric: 'main.db.read',
+          query: 'endpoints.get',
+          latency: performance.now() - queryStart
+        });
+      });
 
     if (!endpoint) {
       throw new HTTPException(404, {
@@ -53,9 +62,18 @@ export const registerPutEndpoint = (api: typeof endpointsAPI) => {
     }
 
     if (input.slug && endpoint.slug !== input.slug) {
-      const slugAlreadyTaken = await database.query.endpoint.findFirst({
-        where: eq(schema.endpoint.slug, input.slug)
-      });
+      const querySlugStart = performance.now();
+      const slugAlreadyTaken = await database.query.endpoint
+        .findFirst({
+          where: eq(schema.endpoint.slug, input.slug)
+        })
+        .finally(() => {
+          metrics.emit({
+            metric: 'main.db.read',
+            query: 'endpoints.get',
+            latency: performance.now() - querySlugStart
+          });
+        });
 
       if (slugAlreadyTaken) {
         throw new HTTPException(409, {
@@ -82,11 +100,19 @@ export const registerPutEndpoint = (api: typeof endpointsAPI) => {
       });
     }
 
+    const mutationStart = performance.now();
     const newEndpoint = await database
       .update(schema.endpoint)
       .set(input)
       .where(eq(schema.endpoint.id, id))
-      .returning();
+      .returning()
+      .finally(() => {
+        metrics.emit({
+          metric: 'main.db.write',
+          mutation: 'endpoints.put',
+          latency: performance.now() - mutationStart
+        });
+      });
 
     await analytics.ingestFormizeeAuditLogs({
       event: 'endpoint.update',

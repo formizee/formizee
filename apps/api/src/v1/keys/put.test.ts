@@ -46,7 +46,8 @@ describe('Update a key', () => {
     expect(res.body).toStrictEqual({
       code: 'BAD_REQUEST',
       message: "There's no fields to update",
-      docs: `${harness.docsUrl}/api-references/errors/code/BAD_REQUEST`
+      docs: `${harness.docsUrl}/api-references/errors/code/BAD_REQUEST`,
+      requestId: res.headers['formizee-request-id']
     });
   });
 
@@ -70,7 +71,8 @@ describe('Update a key', () => {
     expect(res.body).toStrictEqual({
       code: 'NOT_FOUND',
       message: 'Key not found',
-      docs: `${harness.docsUrl}/api-references/errors/code/NOT_FOUND`
+      docs: `${harness.docsUrl}/api-references/errors/code/NOT_FOUND`,
+      requestId: res.headers['formizee-request-id']
     });
   });
 });

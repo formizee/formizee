@@ -3,13 +3,13 @@ import {OpenAPIHono} from '@hono/zod-openapi';
 import {services} from '@/lib/services';
 import type {HonoEnv} from './types';
 import {
-  logger,
+  cors,
   timeout,
   bodyLimit,
   prettyJSON,
   secureHeaders,
   trimTrailingSlash,
-  cors
+  metrics
 } from '@/lib/middlewares';
 
 export const newRoute = (basePath = '/'): OpenAPIHono<HonoEnv> => {
@@ -35,13 +35,11 @@ export const newApp = (): OpenAPIHono<HonoEnv> => {
   // Middlewares
   app.use(trimTrailingSlash());
   app.use(secureHeaders());
-  //app.use(rateLimiter());
   app.use(prettyJSON());
   app.use(bodyLimit);
+  app.use(metrics());
   app.use(timeout);
-  app.use(logger);
   app.use(cors());
-  //app.use(csrf());
 
   // Openapi
   app.doc('/openapi.json', {

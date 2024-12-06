@@ -15,13 +15,10 @@ const envPath = path.join(appPath, '.env.local');
 export function bootstrapWeb() {
   const env = marshalEnv({
     General: {
+      DASHBOARD_URL: 'http://localhost:3001',
       DOCS_URL: 'http://localhost:3002',
       WEB_URL: 'http://localhost:3000',
-      API_URL: 'http://localhost:3001'
-    },
-    Database: {
-      DATABASE_URL: 'postgresql://formizee:password@localhost/formizee',
-      TESTING_DATABASE_URL: 'postgresql://formizee:password@localhost/testing'
+      API_URL: 'http://localhost:8787'
     }
   });
 
