@@ -17,6 +17,7 @@ export const postRoute = createRoute({
   tags: ['Submissions'],
   summary: 'Create a submission',
   path: '/{endpointId}',
+  security: [],
   request: {
     params: EndpointParamsSchema,
     body: {
