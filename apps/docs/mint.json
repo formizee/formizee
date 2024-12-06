@@ -35,7 +35,7 @@
     {
       "name": "GitHub",
       "icon": "github",
-      "url": "https://github.com/formizee"
+      "url": "https://github.com/formizee/formizee"
     },
     {
       "name": "API Reference",
@@ -111,12 +111,13 @@
       "pages": [
         "contributing/getting-started",
         "contributing/editor-setup",
+        "contributing/project-structure",
         "contributing/testing"
       ]
     }
   ],
   "footerSocials": {
     "website": "https://formizee.com",
-    "github": "https://github.com/formizee"
+    "github": "https://github.com/formizee/formizee"
   }
 }
