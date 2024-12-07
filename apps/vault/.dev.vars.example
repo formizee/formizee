@@ -1,5 +1,6 @@
 # General
 ENVIROMENT="development"
+VAULT_SECRET="openssl rand -base64 33"
 
 # Databases
 DATABASE_AUTH_TOKEN="Your sqlite compatible database auth token"
