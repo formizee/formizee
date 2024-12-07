@@ -31,5 +31,5 @@ jobs:
         working-directory: apps/vault
         env:
           VAULT_URL: ${{ inputs.VAULT_URL }}
-          DATABASE_URL: ${{ secrets.SUBMISSIONS_DATABASE_URL_TESTING }}
-          DATABASE_AUTH_TOKEN: ${{ secrets.SUBMISSIONS_DATABASE_AUTH_TOKEN_TESTING }}
+          DATABASE_URL: ${{ secrets.SUBMISSIONS_DATABASE_URL_PREVIEW }}
+          DATABASE_AUTH_TOKEN: ${{ secrets.SUBMISSIONS_DATABASE_AUTH_TOKEN_PREVIEW }}
