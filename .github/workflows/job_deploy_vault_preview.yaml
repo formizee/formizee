@@ -19,11 +19,7 @@ jobs:
         run: pnpm turbo run build --filter='./apps/vault'
 
       - name: Deploy
-        uses: cloudflare/wrangler-action@v3
-        with:
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          workingDirectory: apps/vault
-          environment: preview
+        run: wrangler deploy --env=preview --var VERSION:$(git rev-parse --short HEAD)
+        working-directory: apps/vault
         env:
-          VERSION: $(git rev-parse --short HEAD)
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
