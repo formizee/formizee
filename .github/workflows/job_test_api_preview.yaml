@@ -5,6 +5,11 @@ on:
       API_URL:
         type: string
         required: true
+    secrets:
+      DATABASE_URL_PREVIEW:
+        required: true
+      DATABASE_AUTH_TOKEN_PREVIEW:
+        required: true
 
 jobs:
   test:
@@ -29,7 +34,7 @@ jobs:
       - name: Test
         run: pnpm vitest run --bail=1 --shard=${{ matrix.shard }}
         working-directory: apps/api
-        with:
+        env:
           API_URL: ${{ inputs.API_URL }}
           DATABASE_URL: ${{ secrets.DATABASE_URL_PREVIEW }}
           DATABASE_AUTH_TOKEN: ${{ secrets.DATABASE_AUTH_TOKEN_PREVIEW }}
