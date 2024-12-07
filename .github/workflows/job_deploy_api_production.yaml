@@ -24,6 +24,6 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           workingDirectory: apps/api
-          enviroment: production
+          environment: production
         env:
           VERSION: $(git rev-parse --short HEAD)
