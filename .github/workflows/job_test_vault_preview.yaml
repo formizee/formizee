@@ -6,6 +6,8 @@ on:
         type: string
         required: true
     secrets:
+      VAULT_SECRET_PREVIEW:
+        required: true
       DATABASE_URL_PREVIEW:
         required: true
       DATABASE_AUTH_TOKEN_PREVIEW:
@@ -36,5 +38,6 @@ jobs:
         working-directory: apps/vault
         env:
           VAULT_URL: ${{ inputs.VAULT_URL }}
+          VAULT_SECRET: ${{ inputs.VAULT_SECRET_PREVIEW }}
           DATABASE_URL: ${{ secrets.DATABASE_URL_PREVIEW }}
           DATABASE_AUTH_TOKEN: ${{ secrets.DATABASE_AUTH_TOKEN_PREVIEW }}
