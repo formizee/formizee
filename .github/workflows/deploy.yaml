@@ -26,8 +26,8 @@ jobs:
     with:
        VAULT_URL: https://preview-vault.formizee.com
     secrets:
-      DATABASE_URL: ${{ secrets.SUBMISSIONS_DATABASE_URL_PREVIEW }}
-      DATABASE_AUTH_TOKEN: ${{ secrets.SUBMISSIONS_DATABASE_AUTH_TOKEN_PREVIEW }}
+      DATABASE_URL_PREVIEW: ${{ secrets.SUBMISSIONS_DATABASE_URL_PREVIEW }}
+      DATABASE_AUTH_TOKEN_PREVIEW: ${{ secrets.SUBMISSIONS_DATABASE_AUTH_TOKEN_PREVIEW }}
 
   vault_production_deployment:
     needs:
@@ -56,8 +56,8 @@ jobs:
     with:
        API_URL: https://preview-api.formizee.com
     secrets:
-      DATABASE_URL: ${{ secrets.DATABASE_URL_PREVIEW }}
-      DATABASE_AUTH_TOKEN: ${{ secrets.DATABASE_AUTH_TOKEN_PREVIEW }}
+      DATABASE_URL_PREVIEW: ${{ secrets.DATABASE_URL_PREVIEW }}
+      DATABASE_AUTH_TOKEN_PREVIEW: ${{ secrets.DATABASE_AUTH_TOKEN_PREVIEW }}
 
   api_production_deployment:
     needs:
