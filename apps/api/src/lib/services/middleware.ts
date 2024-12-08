@@ -51,9 +51,9 @@ export function services(): MiddlewareHandler<HonoEnv> {
     const database = createConnection({
       databaseUrl: c.env.DATABASE_URL,
       authToken:
-        c.env.ENVIROMENT === 'production'
-          ? c.env.DATABASE_AUTH_TOKEN
-          : undefined
+        c.env.ENVIROMENT === 'development'
+          ? undefined
+          : c.env.DATABASE_AUTH_TOKEN
     });
 
     const vault = new Vault({
