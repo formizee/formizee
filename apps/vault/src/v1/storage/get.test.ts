@@ -8,6 +8,7 @@ describe('Retrieve a endpoint used storage', () => {
     const {id} = harness.resources.endpoint;
 
     const response = await harness.get<ResponseStorage>({
+      headers: {Authorization: `Bearer ${harness.env.VAULT_SECRET}`},
       url: `/v1/storage/${id}`
     });
 
@@ -21,6 +22,7 @@ describe('Retrieve a endpoint used storage', () => {
     const harness = await IntegrationHarness.init(context);
 
     const res = await harness.get<ResponseStorage>({
+      headers: {Authorization: `Bearer ${harness.env.VAULT_SECRET}`},
       url: '/v1/storage/enp_123456789'
     });
 

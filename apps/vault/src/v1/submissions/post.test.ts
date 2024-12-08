@@ -12,7 +12,8 @@ describe('Create a submission', () => {
       ResponsePostSubmission
     >({
       headers: {
-        'content-type': 'application/json'
+        'content-type': 'application/json',
+        Authorization: `Bearer ${harness.env.VAULT_SECRET}`
       },
       url: '/v1/submission',
       body: {
@@ -46,7 +47,8 @@ describe('Create a submission', () => {
       ResponsePostSubmission
     >({
       headers: {
-        'content-type': 'application/json'
+        'content-type': 'application/json',
+        Authorization: `Bearer ${harness.env.VAULT_SECRET}`
       },
       url: '/v1/submission',
       body: {
@@ -83,7 +85,8 @@ describe('Create a submission', () => {
       ResponsePostSubmission
     >({
       headers: {
-        'content-type': 'application/json'
+        'content-type': 'application/json',
+        Authorization: `Bearer ${harness.env.VAULT_SECRET}`
       },
       url: '/v1/submission',
       body: {
@@ -117,7 +120,8 @@ describe('Create a submission', () => {
       ResponsePostSubmission
     >({
       headers: {
-        'content-type': 'application/json'
+        'content-type': 'application/json',
+        Authorization: `Bearer ${harness.env.VAULT_SECRET}`
       },
       url: '/v1/submission',
       body: {
@@ -157,7 +161,8 @@ describe('Create a submission', () => {
 
     const res = await harness.post<unknown, ResponsePostSubmission>({
       headers: {
-        'content-type': 'application/json'
+        'content-type': 'application/json',
+        Authorization: `Bearer ${harness.env.VAULT_SECRET}`
       },
       url: '/v1/submission',
       body: {}

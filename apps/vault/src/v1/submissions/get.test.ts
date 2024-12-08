@@ -17,7 +17,8 @@ describe('Retrieve a submission', () => {
       ResponsePostSubmission
     >({
       headers: {
-        'content-type': 'application/json'
+        'content-type': 'application/json',
+        Authorization: `Bearer ${harness.env.VAULT_SECRET}`
       },
       url: '/v1/submission',
       body: {
@@ -33,6 +34,7 @@ describe('Retrieve a submission', () => {
     });
 
     const res = await harness.get<ResponseSubmission>({
+      headers: {Authorization: `Bearer ${harness.env.VAULT_SECRET}`},
       url: `/v1/submission/${id}/${submission.body.id}`
     });
 
@@ -51,6 +53,7 @@ describe('Retrieve a submission', () => {
     const harness = await IntegrationHarness.init(context);
 
     const res = await harness.get<ResponseSubmission>({
+      headers: {Authorization: `Bearer ${harness.env.VAULT_SECRET}`},
       url: '/v1/submission/enp_123456789/sub_123456789'
     });
 

@@ -16,7 +16,8 @@ describe('List submissions', () => {
       ResponsePostSubmission
     >({
       headers: {
-        'content-type': 'application/json'
+        'content-type': 'application/json',
+        Authorization: `Bearer ${harness.env.VAULT_SECRET}`
       },
       url: '/v1/submission',
       body: {
@@ -32,6 +33,7 @@ describe('List submissions', () => {
     });
 
     const res = await harness.get<ResponseSubmission>({
+      headers: {Authorization: `Bearer ${harness.env.VAULT_SECRET}`},
       url: `/v1/submissions/${id}`
     });
     const createdAt = new Date(submission.body.createdAt);
@@ -68,6 +70,7 @@ describe('List submissions', () => {
     const {id} = harness.resources.endpoint;
 
     const res = await harness.get<ResponseSubmission>({
+      headers: {Authorization: `Bearer ${harness.env.VAULT_SECRET}`},
       url: `/v1/submissions/${id}`
     });
 
@@ -92,6 +95,7 @@ describe('List submissions', () => {
     const {id} = harness.resources.endpoint;
 
     const res = await harness.get<ResponseSubmission>({
+      headers: {Authorization: `Bearer ${harness.env.VAULT_SECRET}`},
       url: `/v1/submissions/${id}?page=999`
     });
 
@@ -110,6 +114,7 @@ describe('List submissions', () => {
     const {id} = harness.resources.endpoint;
 
     const res = await harness.get<ResponseSubmission>({
+      headers: {Authorization: `Bearer ${harness.env.VAULT_SECRET}`},
       url: `/v1/submissions/${id}?page=notvalid`
     });
 

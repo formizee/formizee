@@ -8,7 +8,10 @@ describe('Update endpoint used storage', () => {
     const {id} = harness.resources.endpoint;
 
     const response = await harness.put<ResponseStorage, ResponseStorage>({
-      headers: {'content-type': 'application/json'},
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${harness.env.VAULT_SECRET}`
+      },
       url: `/v1/storage/${id}`,
       body: {storageUsed: 100}
     });
@@ -21,7 +24,10 @@ describe('Update endpoint used storage', () => {
     const harness = await IntegrationHarness.init(context);
 
     const response = await harness.put<ResponseStorage, ResponseStorage>({
-      headers: {'content-type': 'application/json'},
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${harness.env.VAULT_SECRET}`
+      },
       url: '/v1/storage/enp_123456789',
       body: {storageUsed: 100}
     });

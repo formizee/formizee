@@ -7,6 +7,7 @@ describe('Delete a submission', () => {
     const {id} = harness.resources.endpoint;
 
     const res = await harness.delete<Response>({
+      headers: {Authorization: `Bearer ${harness.env.VAULT_SECRET}`},
       url: `/v1/endpoint/${id}`
     });
 
@@ -18,6 +19,7 @@ describe('Delete a submission', () => {
     const harness = await IntegrationHarness.init(context);
 
     const res = await harness.delete<Response>({
+      headers: {Authorization: `Bearer ${harness.env.VAULT_SECRET}`},
       url: '/v1/endpoint/enp_123456789'
     });
 
