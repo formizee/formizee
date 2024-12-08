@@ -16,8 +16,8 @@ describe('Update endpoint used storage', () => {
       body: {storageUsed: 100}
     });
 
-    expect(response.status).toBe(200);
     expect(response.body).toStrictEqual({});
+    expect(response.status).toBe(200);
   });
 
   it('Should get 404', async context => {
@@ -32,12 +32,12 @@ describe('Update endpoint used storage', () => {
       body: {storageUsed: 100}
     });
 
-    expect(response.status).toBe(404);
     expect(response.body).toStrictEqual({
       code: 'NOT_FOUND',
       message: 'Endpoint not found',
       docs: `${harness.env.DOCS_URL}/api-references/errors/code/NOT_FOUND`,
       requestId: response.headers['formizee-request-id']
     });
+    expect(response.status).toBe(404);
   });
 });

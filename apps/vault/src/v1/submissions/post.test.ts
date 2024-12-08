@@ -168,10 +168,10 @@ describe('Create a submission', () => {
       body: {}
     });
 
-    expect(res.status).toBe(400);
     expect(res.body).toMatchObject({
       code: 'BAD_REQUEST',
       docs: `${harness.env.DOCS_URL}/api-references/errors/code/BAD_REQUEST`
     });
+    expect(res.status).toBe(400);
   });
 });
