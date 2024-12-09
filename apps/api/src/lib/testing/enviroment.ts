@@ -1,7 +1,9 @@
 import {z} from 'zod';
 
 export const databaseEnv = z.object({
-  DATABASE_URL: z.string().url().default('http://localhost:8080')
+  DATABASE_URL: z.string().url().default('http://localhost:8080'),
+  DATABASE_AUTH_TOKEN: z.string().default(''),
+  VAULT_SECRET: z.string().default('')
 });
 
 export const integrationTestEnv = databaseEnv.merge(

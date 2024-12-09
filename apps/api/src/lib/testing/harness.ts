@@ -49,13 +49,14 @@ export abstract class Harness {
   public readonly db: Database;
 
   constructor(t: TaskContext) {
-    const {DATABASE_URL, VAULT_URL} = integrationTestEnv.parse(process.env);
+    const environment = integrationTestEnv.parse(process.env);
 
     this.resources = this.createResources();
     this.db = createConnection({
-      databaseUrl: DATABASE_URL
+      databaseUrl: environment.DATABASE_URL,
+      authToken: environment.DATABASE_AUTH_TOKEN
     });
-    this.vault = new Vault({url: VAULT_URL, token: ''});
+    this.vault = new Vault({url: environment.VAULT_URL, token: environment.VAULT_SECRET});
 
     t.onTestFinished(async () => {
       await this.teardown();
