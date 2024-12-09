@@ -7,50 +7,41 @@ describe('Post submission general behaviours', () => {
   it('Should get 403 on disabled endpoint', async context => {
     const harness = await IntegrationHarness.init(context);
     const endpoint = harness.resources.disabledEndpoint;
-    const {key} = await harness.createKey();
 
     const response = await harness.post<
       RequestPostSubmission,
       ResponseSubmission
     >({
       url: `/v1/f/${endpoint.id}`,
-      headers: {
-        'Content-Type': 'application/json',
-        authorization: `Bearer ${key}`
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: {
         name: 'pau',
         email: 'pau@mail.com'
       }
     });
 
-    expect(response.status).toBe(403);
     expect(response.body).toStrictEqual({
       code: 'FORBIDDEN',
       docs: `${harness.docsUrl}/api-references/errors/code/FORBIDDEN`,
       requestId: response.headers['formizee-request-id'],
       message: 'The endpoint is currently not accepting submissions'
     });
+    expect(response.status).toBe(403);
   });
 
   it('Should get 201 on empty submission', async context => {
     const harness = await IntegrationHarness.init(context);
     const endpoint = harness.resources.endpoint;
-    const {key} = await harness.createKey();
 
     const response = await harness.post<
       RequestPostSubmission,
       ResponseSubmission
     >({
       url: `/v1/f/${endpoint.id}`,
-      headers: {
-        'Content-Type': 'application/json',
-        authorization: `Bearer ${key}`
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: {}
     });
 
-    expect(response.status).toBe(201);
     expect(response.body).toStrictEqual({
       id: response.body.id,
       endpointId: endpoint.id,
@@ -58,34 +49,31 @@ describe('Post submission general behaviours', () => {
       isSpam: false,
       isRead: false
     });
+    expect(response.status).toBe(201);
   });
 
   it('Should get 404 on endpoint not found', async context => {
     const harness = await IntegrationHarness.init(context);
-    const {key} = await harness.createKey();
 
     const response = await harness.post<
       RequestPostSubmission,
       ResponseSubmission
     >({
       url: '/v1/f/enp_123456789',
-      headers: {
-        'Content-Type': 'application/json',
-        authorization: `Bearer ${key}`
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: {
         name: 'pau',
         email: 'pau@mail.com'
       }
     });
 
-    expect(response.status).toBe(404);
     expect(response.body).toStrictEqual({
       code: 'NOT_FOUND',
       docs: `${harness.docsUrl}/api-references/errors/code/NOT_FOUND`,
       requestId: response.headers['formizee-request-id'],
       message: 'Endpoint not found'
     });
+    expect(response.status).toBe(404);
   });
 });
 
@@ -100,9 +88,7 @@ describe('Post a submission with application/json', () => {
       ResponseSubmission
     >({
       url: `/v1/f/${endpoint.id}`,
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: {
         name: 'pau',
         email: 'pau@mail.com'
