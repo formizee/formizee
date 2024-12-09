@@ -13,7 +13,7 @@ describe('Post submission general behaviours', () => {
       ResponseSubmission
     >({
       url: `/v1/f/${endpoint.id}`,
-      headers: { 'Content-Type': 'application/json' },
+      headers: {'Content-Type': 'application/json'},
       body: {
         name: 'pau',
         email: 'pau@mail.com'
@@ -38,7 +38,7 @@ describe('Post submission general behaviours', () => {
       ResponseSubmission
     >({
       url: `/v1/f/${endpoint.id}`,
-      headers: { 'Content-Type': 'application/json' },
+      headers: {'Content-Type': 'application/json'},
       body: {}
     });
 
@@ -60,7 +60,7 @@ describe('Post submission general behaviours', () => {
       ResponseSubmission
     >({
       url: '/v1/f/enp_123456789',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {'Content-Type': 'application/json'},
       body: {
         name: 'pau',
         email: 'pau@mail.com'
@@ -88,7 +88,7 @@ describe('Post a submission with application/json', () => {
       ResponseSubmission
     >({
       url: `/v1/f/${endpoint.id}`,
-      headers: { 'Content-Type': 'application/json' },
+      headers: {'Content-Type': 'application/json'},
       body: {
         name: 'pau',
         email: 'pau@mail.com'
