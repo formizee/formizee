@@ -56,7 +56,10 @@ export abstract class Harness {
       databaseUrl: environment.DATABASE_URL,
       authToken: environment.DATABASE_AUTH_TOKEN
     });
-    this.vault = new Vault({url: environment.VAULT_URL, token: environment.VAULT_SECRET});
+    this.vault = new Vault({
+      url: environment.VAULT_URL,
+      token: environment.VAULT_SECRET
+    });
 
     t.onTestFinished(async () => {
       await this.teardown();
