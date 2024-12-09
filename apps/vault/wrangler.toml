@@ -36,7 +36,7 @@ DOCS_URL = "https://docs.formizee.com"
 [env.preview]
 name="vault-preview"
 routes = [ { pattern = "vault-preview.formizee.com", custom_domain = true } ]
-kv_namespaces = [{ binding = "cache", id = "5c9356abc153448abd1bc8a737237600", preview_id = "3cddba9fdea542b4aa69876c4c9ffc7d" }, { binding = "keys", id = "dbfd7a696afb47bca4e693051c6f0af1", preview_id = "9062df7839f9417abbfaba89cb2eae48" }]
+kv_namespaces = [{ binding = "cache", id = "3cddba9fdea542b4aa69876c4c9ffc7d" }, { binding = "keys", id = "9062df7839f9417abbfaba89cb2eae48" }]
 
 [env.preview.vars]
 EMIT_LOGS =  "false"
@@ -47,7 +47,7 @@ VAULT_URL = "https://vault-preview.formizee.com"
 [env.production]
 name="vault-production"
 routes = [ { pattern = "vault.formizee.com", custom_domain = true } ]
-kv_namespaces = [{ binding = "cache", id = "5c9356abc153448abd1bc8a737237600", preview_id = "3cddba9fdea542b4aa69876c4c9ffc7d" }, { binding = "keys", id = "dbfd7a696afb47bca4e693051c6f0af1", preview_id = "9062df7839f9417abbfaba89cb2eae48" }]
+kv_namespaces = [{ binding = "cache", id = "5c9356abc153448abd1bc8a737237600" }, { binding = "keys", id = "dbfd7a696afb47bca4e693051c6f0af1" }]
 
 [env.production.vars]
 EMIT_LOGS =  "true"
