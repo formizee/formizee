@@ -265,7 +265,7 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
             <SubmissionEmail
               workspaceSlug={workspace.slug}
               endpointSlug={endpoint.slug}
-              data={input}
+              data={input.data}
             />
           )
         });
