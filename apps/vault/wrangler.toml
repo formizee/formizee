@@ -42,6 +42,7 @@ kv_namespaces = [{ binding = "cache", id = "5c9356abc153448abd1bc8a737237600", p
 EMIT_LOGS =  "false"
 ENVIROMENT = "preview"
 DOCS_URL = "https://docs.formizee.com"
+VAULT_URL = "https://vault-preview.formizee.com"
 
 [env.production]
 name="vault-production"
@@ -52,3 +53,4 @@ kv_namespaces = [{ binding = "cache", id = "5c9356abc153448abd1bc8a737237600", p
 EMIT_LOGS =  "true"
 ENVIROMENT = "production"
 DOCS_URL = "https://docs.formizee.com"
+VAULT_URL = "https://vault.formizee.com"
