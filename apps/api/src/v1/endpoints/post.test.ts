@@ -6,6 +6,7 @@ describe('Create a endpoint', () => {
   it('Should get 201 on post', async context => {
     const harness = await IntegrationHarness.init(context);
     const workspaceId = harness.resources.workspace.id;
+    const user = harness.resources.user;
     const {key} = await harness.createKey();
 
     const res = await harness.post<RequestPostEndpoint, ResponseEndpoint>({
@@ -16,7 +17,7 @@ describe('Create a endpoint', () => {
       },
       body: {
         slug: 'my-example',
-        targetEmails: ['user@formizee.com']
+        targetEmails: [user.email]
       }
     });
 
@@ -27,7 +28,7 @@ describe('Create a endpoint', () => {
       isEnabled: true,
       emailNotifications: true,
       redirectUrl: `${harness.webUrl}/thanks-you`,
-      targetEmails: ['user@formizee.com'],
+      targetEmails: [user.email],
       icon: 'file',
       color: 'gray'
     });
