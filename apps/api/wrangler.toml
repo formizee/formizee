@@ -1,8 +1,10 @@
 name = "api"
-workers_dev = true
 main = "src/index.ts"
 compatibility_date = "2024-09-23"
 compatibility_flags = ["nodejs_compat"]
+
+[placement]
+mode = "smart"
 
 [observability]
 enabled = true
@@ -10,18 +12,47 @@ head_sampling_rate = 1
 
 [[kv_namespaces]]
 binding = "cache"
-id = "33333333333333333333333333333333"
+id = "5afb50fb9774441e8fc927078e274790"
+preview_id = "20acddf9715c4701b923250853fccf39"
 
 [env.development]
 name = "api-development"
 vars = { ENVIROMENT = "development" }
-route = { pattern = "development-api.formizee.com", custom_domain = true }
+routes = [ { pattern = "api-development.formizee.com", custom_domain = true } ]
+
+[env.development.vars]
+EMIT_LOGS="false"
+ENVIROMENT = "development",
+WEB_URL="https://formizee.com"
+API_URL="https://localhost:8787",
+VAULT_URL="https://localhost:8888",
+DOCS_URL="https://docs.formizee.com",
+DASHBOARD_URL="https://dashboard.formizee.com",
 
 [env.preview]
 name = "api-preview"
-vars = { ENVIROMENT = "preview" }
-route = { pattern = "preview-api.formizee.com", custom_domain = true }
+routes = [ { pattern = "api-preview.formizee.com", custom_domain = true } ]
+kv_namespaces = [{ binding = "cache", id = "5afb50fb9774441e8fc927078e274790", preview_id = "20acddf9715c4701b923250853fccf39" }]
+
+[env.preview.vars]
+EMIT_LOGS="false"
+ENVIROMENT = "preview",
+WEB_URL="https://formizee.com"
+DOCS_URL="https://docs.formizee.com",
+API_URL="https://api-preview.formizee.com",
+VAULT_URL="https://vault-preview.formizee.com",
+DASHBOARD_URL="https://dashboard.formizee.com",
 
 [env.production]
-name = "api"
-vars = { ENVIROMENT = "production" }
+name = "api-production"
+routes = [ { pattern = "api.formizee.com", custom_domain = true } ]
+kv_namespaces = [{ binding = "cache", id = "5afb50fb9774441e8fc927078e274790", preview_id = "20acddf9715c4701b923250853fccf39" }]
+
+[env.production.vars]
+EMIT_LOGS="true"
+ENVIROMENT = "production",
+WEB_URL="https://formizee.com"
+API_URL="https://api.formizee.com",
+DOCS_URL="https://docs.formizee.com",
+VAULT_URL="https://vault.formizee.com",
+DASHBOARD_URL="https://dashboard.formizee.com",

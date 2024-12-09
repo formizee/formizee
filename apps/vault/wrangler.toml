@@ -1,8 +1,13 @@
 name = "vault"
-workers_dev = true
 main = "src/index.ts"
 compatibility_date = "2024-09-23"
 compatibility_flags = ["nodejs_compat"]
+
+[dev]
+port = 8888
+
+[placement]
+mode = "smart"
 
 [observability] 
 enabled = true
@@ -10,22 +15,39 @@ head_sampling_rate = 1
 
 [[kv_namespaces]]
 binding = "cache"
-id = "00000000000000000000000000000000"
+id = "5c9356abc153448abd1bc8a737237600"
+preview_id = "3cddba9fdea542b4aa69876c4c9ffc7d"
 
 [[kv_namespaces]]
 binding = "keys"
-id = "11111111111111111111111111111111"
+id = "dbfd7a696afb47bca4e693051c6f0af1"
+preview_id = "9062df7839f9417abbfaba89cb2eae48"
 
 [env.development]
-name = "api-development"
-route = { pattern = "development-vault.formizee.com", custom_domain = true }
-vars = { ENVIROMENT = "development", DOCS_URL="https://docs.formizee.com", VERSION="1.0.0" }
+name="vault-development"
+routes = [ { pattern = "vault-development.formizee.com", custom_domain = true } ]
+
+[env.development.vars]
+EMIT_LOGS =  false
+ENVIROMENT = "development"
+DOCS_URL = "https://docs.formizee.com"
 
 [env.preview]
-name = "vault-preview"
-vars = { ENVIROMENT = "preview" }
-route = { pattern = "preview-vault.formizee.com", custom_domain = true }
+name="vault-preview"
+routes = [ { pattern = "vault-preview.formizee.com", custom_domain = true } ]
+kv_namespaces = [{ binding = "cache", id = "5c9356abc153448abd1bc8a737237600", preview_id = "3cddba9fdea542b4aa69876c4c9ffc7d" }, { binding = "keys", id = "dbfd7a696afb47bca4e693051c6f0af1", preview_id = "9062df7839f9417abbfaba89cb2eae48" }]
+
+[env.preview.vars]
+EMIT_LOGS =  false
+ENVIROMENT = "preview"
+DOCS_URL = "https://docs.formizee.com"
 
 [env.production]
-name = "vault"
-vars = { ENVIROMENT = "production" }
+name="vault-production"
+routes = [ { pattern = "vault.formizee.com", custom_domain = true } ]
+kv_namespaces = [{ binding = "cache", id = "5c9356abc153448abd1bc8a737237600", preview_id = "3cddba9fdea542b4aa69876c4c9ffc7d" }, { binding = "keys", id = "dbfd7a696afb47bca4e693051c6f0af1", preview_id = "9062df7839f9417abbfaba89cb2eae48" }]
+
+[env.production.vars]
+EMIT_LOGS =  true
+ENVIROMENT = "production"
+DOCS_URL = "https://docs.formizee.com"

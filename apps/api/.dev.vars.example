@@ -1,13 +1,6 @@
-# General
-DASHBOARD_URL="The url where the dashboard is running"
-WEB_URL="The url where the webpage is running"
-DOCS_URL="The url where the docs is running"
-API_URL="The url where the api is running"
-ENVIROMENT="development"
-
 # Databases
-DATABASE_AUTH_TOKEN="Your sqlite compatible database auth token"
-DATABASE_URL="Your sqlite compatible database connection url"
+DATABASE_AUTH_TOKEN="Your libsql compatible database auth token"
+DATABASE_URL="Your libsql compatible database connection url"
 
 # Storage
 VAULT_SECRET="Your vault access token"
@@ -16,5 +9,8 @@ VAULT_SECRET="Your vault access token"
 TINYBIRD_URL="Your proxy tinybird url"
 TINYBIRD_TOKEN="Your tiny bird token"
 
-# Communication
+# Logs
+LOGTAIL_TOKEN="Your logtail token"
+
+# Email
 RESEND_TOKEN="Your resend api key"

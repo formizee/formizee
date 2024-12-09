@@ -1,10 +1,9 @@
 # General
-ENVIROMENT="development"
 VAULT_SECRET="openssl rand -base64 33"
 
 # Databases
-DATABASE_AUTH_TOKEN="Your sqlite compatible database auth token"
-DATABASE_URL="Your sqlite compatible database connection url"
+DATABASE_AUTH_TOKEN="Your libsql compatible database auth token"
+DATABASE_URL="Your libsql compatible database connection url"
 
 # Storage
 STORAGE_SECRET_ACCESS_KEY="Your s3 compatible storage secret key"
@@ -18,4 +17,3 @@ TINYBIRD_TOKEN="Your tiny bird token"
 
 # Logs
 LOGTAIL_TOKEN="Your logtail token"
-EMIT_LOGS="true"
