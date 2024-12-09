@@ -36,9 +36,10 @@ jobs:
         run: pnpm vitest run --bail=1
         working-directory: apps/api
         env:
+          WEB_URL: https://formizee.com
+          DOCS_URL: https://docs.formizee.com
           API_URL: ${{ inputs.API_URL }}
           VAULT_URL: ${{ inputs.VAULT_URL }}
-          DOCS_URL: https://docs.formizee.com
           VAULT_SECRET: ${{ secrets.VAULT_SECRET_PREVIEW }}
           DATABASE_URL: ${{ secrets.DATABASE_URL_PREVIEW }}
           DATABASE_AUTH_TOKEN: ${{ secrets.DATABASE_AUTH_TOKEN_PREVIEW }}
