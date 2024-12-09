@@ -24,7 +24,7 @@ jobs:
       - vault_preview_deployment
     uses: ./.github/workflows/job_test_vault_preview.yaml
     with:
-       VAULT_URL: https://preview-vault.formizee.com
+       VAULT_URL: https://vault-preview.formizee.com
     secrets:
       VAULT_SECRET_PREVIEW: ${{ secrets.VAULT_SECRET_PREVIEW }}
       DATABASE_URL_PREVIEW: ${{ secrets.SUBMISSIONS_DATABASE_URL_PREVIEW }}
@@ -55,7 +55,7 @@ jobs:
       - api_preview_deployment
     uses: ./.github/workflows/job_test_api_preview.yaml
     with:
-       API_URL: https://preview-api.formizee.com
+       API_URL: https://api-preview.formizee.com
     secrets:
       VAULT_SECRET_PREVIEW: ${{ secrets.VAULT_SECRET_PREVIEW }}
       DATABASE_URL_PREVIEW: ${{ secrets.DATABASE_URL_PREVIEW }}

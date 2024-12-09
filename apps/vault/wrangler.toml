@@ -27,8 +27,8 @@ preview_id = "9062df7839f9417abbfaba89cb2eae48"
 name="vault-development"
 routes = [ { pattern = "vault-development.formizee.com", custom_domain = true } ]
 
-[env.development.vars]
-EMIT_LOGS =  false
+[vars]
+EMIT_LOGS =  "false"
 ENVIROMENT = "development"
 DOCS_URL = "https://docs.formizee.com"
 
@@ -38,7 +38,7 @@ routes = [ { pattern = "vault-preview.formizee.com", custom_domain = true } ]
 kv_namespaces = [{ binding = "cache", id = "5c9356abc153448abd1bc8a737237600", preview_id = "3cddba9fdea542b4aa69876c4c9ffc7d" }, { binding = "keys", id = "dbfd7a696afb47bca4e693051c6f0af1", preview_id = "9062df7839f9417abbfaba89cb2eae48" }]
 
 [env.preview.vars]
-EMIT_LOGS =  false
+EMIT_LOGS =  "false"
 ENVIROMENT = "preview"
 DOCS_URL = "https://docs.formizee.com"
 
@@ -48,6 +48,6 @@ routes = [ { pattern = "vault.formizee.com", custom_domain = true } ]
 kv_namespaces = [{ binding = "cache", id = "5c9356abc153448abd1bc8a737237600", preview_id = "3cddba9fdea542b4aa69876c4c9ffc7d" }, { binding = "keys", id = "dbfd7a696afb47bca4e693051c6f0af1", preview_id = "9062df7839f9417abbfaba89cb2eae48" }]
 
 [env.production.vars]
-EMIT_LOGS =  true
+EMIT_LOGS =  "true"
 ENVIROMENT = "production"
 DOCS_URL = "https://docs.formizee.com"

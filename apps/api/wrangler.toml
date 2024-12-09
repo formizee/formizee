@@ -20,14 +20,14 @@ name = "api-development"
 vars = { ENVIROMENT = "development" }
 routes = [ { pattern = "api-development.formizee.com", custom_domain = true } ]
 
-[env.development.vars]
+[vars]
 EMIT_LOGS="false"
-ENVIROMENT = "development",
-WEB_URL="https://formizee.com"
-API_URL="https://localhost:8787",
-VAULT_URL="https://localhost:8888",
-DOCS_URL="https://docs.formizee.com",
-DASHBOARD_URL="https://dashboard.formizee.com",
+ENVIROMENT = "development"
+WEB_URL="http://localhost:3000"
+DOCS_URL="http://localhost:3002"
+API_URL="http://localhost:8787"
+VAULT_URL="http://localhost:8888"
+DASHBOARD_URL="http://localhost:3001"
 
 [env.preview]
 name = "api-preview"
@@ -36,12 +36,12 @@ kv_namespaces = [{ binding = "cache", id = "5afb50fb9774441e8fc927078e274790", p
 
 [env.preview.vars]
 EMIT_LOGS="false"
-ENVIROMENT = "preview",
+ENVIROMENT = "preview"
 WEB_URL="https://formizee.com"
-DOCS_URL="https://docs.formizee.com",
-API_URL="https://api-preview.formizee.com",
-VAULT_URL="https://vault-preview.formizee.com",
-DASHBOARD_URL="https://dashboard.formizee.com",
+DOCS_URL="https://docs.formizee.com"
+API_URL="https://api-preview.formizee.com"
+VAULT_URL="https://vault-preview.formizee.com"
+DASHBOARD_URL="https://dashboard.formizee.com"
 
 [env.production]
 name = "api-production"
@@ -50,9 +50,9 @@ kv_namespaces = [{ binding = "cache", id = "5afb50fb9774441e8fc927078e274790", p
 
 [env.production.vars]
 EMIT_LOGS="true"
-ENVIROMENT = "production",
+ENVIROMENT = "production"
 WEB_URL="https://formizee.com"
-API_URL="https://api.formizee.com",
-DOCS_URL="https://docs.formizee.com",
-VAULT_URL="https://vault.formizee.com",
-DASHBOARD_URL="https://dashboard.formizee.com",
+API_URL="https://api.formizee.com"
+DOCS_URL="https://docs.formizee.com"
+VAULT_URL="https://vault.formizee.com"
+DASHBOARD_URL="https://dashboard.formizee.com"

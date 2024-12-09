@@ -17,3 +17,6 @@ TINYBIRD_TOKEN="Your tiny bird token"
 
 # Logs
 LOGTAIL_TOKEN="Your logtail token"
+
+# Master Keys
+MASTER_KEY_V1="Use tools/keys package to generate a master key"
