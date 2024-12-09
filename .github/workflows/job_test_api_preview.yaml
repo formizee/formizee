@@ -5,6 +5,9 @@ on:
       API_URL:
         type: string
         required: true
+      VAULT_URL:
+        type: string
+        required: true
     secrets:
       VAULT_SECRET_PREVIEW:
         required: true
