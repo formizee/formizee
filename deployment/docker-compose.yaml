@@ -90,7 +90,7 @@ services:
         "--var=DOCS_URL:http://localhost:3002",
         "--var=API_URL:http://0.0.0.0:8787",
         "--var=WEB_URL:http://localhost:3000",
-        "--var=VAULT_URL:http://vault:8787",
+        "--var=VAULT_URL:http://vault:8888",
         "--var=ENVIROMENT:development",
         "--var=LOGTAIL_TOKEN:example",
         "--var=VAULT_SECRET:example",
