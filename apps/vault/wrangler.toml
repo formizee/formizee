@@ -30,6 +30,7 @@ routes = [ { pattern = "vault-development.formizee.com", custom_domain = true } 
 [vars]
 EMIT_LOGS =  "false"
 ENVIROMENT = "development"
+VAULT_URL = "http://localhost:8888"
 DOCS_URL = "https://docs.formizee.com"
 
 [env.preview]

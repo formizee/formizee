@@ -46,7 +46,7 @@ services:
       context: ..
       dockerfile: ./apps/vault/Dockerfile.dev
     ports:
-      - 8888:8787
+      - 8888:8888
     command:
       [
         "pnpm",
