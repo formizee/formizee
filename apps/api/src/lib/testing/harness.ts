@@ -215,11 +215,6 @@ export abstract class Harness {
 
   protected async seed(): Promise<void> {
     await this.db.insert(schema.user).values(this.resources.user);
-    await this.db.insert(schema.usersToEmails).values({
-      userId: this.resources.user.id,
-      email: this.resources.user.email,
-      isVerified: true
-    });
 
     await this.db.insert(schema.workspace).values(this.resources.workspace);
     await this.db.insert(schema.key).values(this.resources.key);
