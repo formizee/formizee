@@ -122,13 +122,15 @@ export abstract class Harness {
   }
 
   public createResources(): Resources {
+    const userId = newId('test');
+
     const user: schema.User = {
-      id: newId('test'),
+      id: userId,
       name: 'user',
       slug: 'user',
       image: '',
       emailVerified: new Date(),
-      email: 'user@formizee.com',
+      email: `${userId}@formizee.com`,
       lastAccess: new Date(),
       createdAt: new Date(),
       updatedAt: new Date()
@@ -215,11 +217,6 @@ export abstract class Harness {
 
   protected async seed(): Promise<void> {
     await this.db.insert(schema.user).values(this.resources.user);
-    await this.db.insert(schema.usersToEmails).values({
-      userId: this.resources.user.id,
-      email: this.resources.user.email,
-      isVerified: true
-    });
 
     await this.db.insert(schema.workspace).values(this.resources.workspace);
     await this.db.insert(schema.key).values(this.resources.key);
