@@ -127,7 +127,7 @@ export abstract class Harness {
     const user: schema.User = {
       id: userId,
       name: 'user',
-      slug: 'user',
+      slug: `${userId.slice(4)}-user`,
       image: '',
       emailVerified: new Date(),
       email: `${userId}@formizee.com`,
@@ -136,11 +136,12 @@ export abstract class Harness {
       updatedAt: new Date()
     };
 
+    const workspaceId = newId('test');
     const workspace: schema.Workspace = {
-      id: newId('test'),
+      id: workspaceId,
       name: 'Formizee',
-      slug: 'formizee',
-      stripeId: 'stripeId1',
+      slug: `${workspaceId.slice(4)}-formizee`,
+      stripeId: `${workspaceId}_stripeId`,
       subscriptionId: 'subscriptionId',
       availableEmails: [user.email],
       plan: 'pro',
