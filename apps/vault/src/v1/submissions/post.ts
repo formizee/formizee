@@ -87,7 +87,6 @@ export const registerPostSubmission = (api: typeof submissionsAPI) => {
 
     await Promise.all([
       originDatabase.insert(schema.submission).values(submissionData),
-      cache.storeSubmission(submissionData),
       cache.invalidateSubmissions(input)
     ]);
 
