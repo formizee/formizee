@@ -1,15 +1,11 @@
 import {ThemeProvider} from '@/components/theme';
-import {Toaster} from '@formizee/ui/toaster';
-import type {Metadata, Viewport} from 'next';
+import {Space_Grotesk} from 'next/font/google';
+import {Navbar, Footer} from '@/components';
 import {Inter} from 'next/font/google';
+import type {Metadata} from 'next';
 import '@formizee/ui/globals.css';
 import {cn} from '@formizee/ui';
 import './globals.css';
-
-export const viewport: Viewport = {
-  colorScheme: 'dark',
-  themeColor: 'black'
-};
 
 export const metadata: Metadata = {
   title: 'Formizee | The Forms Backend platform',
@@ -28,6 +24,11 @@ const font = Inter({
   variable: '--font-sans'
 });
 
+const secondaryFont = Space_Grotesk({
+  subsets: ['latin'],
+  variable: '--font-space-grotesk'
+});
+
 export default function RootLayout({
   children
 }: Readonly<{
@@ -37,17 +38,19 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         className={cn(
-          'min-h-screen bg-background font-sans antialiased',
+          'flex flex-col min-h-screen bg-white dark:bg-black font-sans antialiased',
+          secondaryFont.variable,
           font.variable
         )}
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
-          enableSystem={false}
+          defaultTheme="light"
+          enableSystem={true}
         >
+          <Navbar />
           {children}
-          <Toaster />
+          <Footer />
         </ThemeProvider>
       </body>
     </html>

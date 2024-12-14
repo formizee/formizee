@@ -4,20 +4,6 @@
 
 @layer base {
   :root {
-    @apply selection:bg-amber-600/20;
-  }
-
-  div,
-  body {
-    scrollbar-color: #525252 black;
-    scrollbar-width: thin;
-  }
-}
-
-@layer utilities {
-  .bg-grid-pattern {
-    background-image: linear-gradient(#171717 0.1em, transparent 0.1em),
-      linear-gradient(90deg, #171717 0.1em, transparent 0.1em);
-    background-size: 56px 56px;
+    @apply selection:bg-neutral-600/10;
   }
 }
