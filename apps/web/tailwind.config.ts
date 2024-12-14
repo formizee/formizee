@@ -5,6 +5,13 @@ const config: Pick<Config, 'presets'> = {
   presets: [
     {
       ...sharedConfig,
+      theme: {
+        extend: {
+          fontFamily: {
+            secondary: 'var(--font-space-grotesk)'
+          }
+        }
+      },
       content: [
         './index.html',
         './src/**/*.{ts,tsx}',
