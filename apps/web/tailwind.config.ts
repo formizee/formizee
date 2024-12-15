@@ -9,6 +9,17 @@ const config: Pick<Config, 'presets'> = {
         extend: {
           fontFamily: {
             secondary: 'var(--font-space-grotesk)'
+          },
+          animation: {
+            'border-beam':
+              'border-beam calc(var(--duration)*1s) infinite linear'
+          },
+          keyframes: {
+            'border-beam': {
+              '100%': {
+                'offset-distance': '100%'
+              }
+            }
           }
         }
       },
