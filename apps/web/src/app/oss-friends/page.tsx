@@ -11,7 +11,7 @@ export default function Page() {
         Formizee is highly inspired in some open-source projects. Here is a sort
         list:
       </p>
-      <div className="grid grid-cols-[auto,auto] gap-6 mt-12">
+      <div className="grid grid-cols-1 sm:grid-cols-[auto,auto] gap-6 mt-12">
         <ProductCard name="Cal.com" href="https://cal.com">
           A scheduling tool that helps you schedule mettings without the
           back-and-forth emails.
