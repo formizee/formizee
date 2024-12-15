@@ -2,6 +2,7 @@ import './styles/globals.css';
 
 export {cn} from './lib/ui';
 
+export * from './components/accordion';
 export * from './components/breadcrumb';
 export * from './components/button';
 export * from './components/card';
