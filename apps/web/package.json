@@ -12,11 +12,17 @@
     "lint": "biome lint src"
   },
   "dependencies": {
+    "@formizee/plans": "workspace:*",
     "@formizee/ui": "workspace:*",
+    "cobe": "0.6.3",
+    "framer-motion": "11.14.1",
+    "gray-matter": "4.0.3",
     "next": "14.2.16",
     "next-themes": "0.3.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
+    "remark": "15.0.1",
+    "remark-html": "16.0.1",
     "zod": "3.23.8"
   },
   "devDependencies": {

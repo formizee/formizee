@@ -12,6 +12,7 @@ const config: Pick<Config, 'presets'> = {
           }
         }
       },
+      darkMode: ['class'],
       content: [
         './index.html',
         './src/**/*.{ts,tsx}',

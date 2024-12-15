@@ -4,6 +4,6 @@
 
 @layer base {
   :root {
-    @apply selection:bg-neutral-600/10;
+    @apply selection:bg-neutral-600/10 dark:selection:bg-neutral-400/20;
   }
 }
