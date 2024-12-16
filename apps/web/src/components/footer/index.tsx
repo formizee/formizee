@@ -9,13 +9,18 @@ export function Footer() {
         <div className="flex flex-row gap-12 mb-8 justify-between sm:gap-0 sm:flex-col min-w-56">
           <div className="flex flex-col">
             <Logo />
-            <p className="mt-2 text-sm text-neutral-600 dark:text-neutral-400">
+            <p className="mt-1 sm:mt-2 text-[0.70rem] sm:text-sm text-neutral-600 dark:text-neutral-400">
               The Forms Backend Platform
             </p>
             <ThemeToggle className="mt-4 flex sm:hidden" />
           </div>
           <div className="my-6 flex flex-row gap-2">
-            <Button asChild size="icon" variant="outline">
+            <Button
+              asChild
+              size="icon"
+              variant="outline"
+              className="shadow-none"
+            >
               <Link href="https://github.com/formizee" target="_blank">
                 <svg viewBox="0 0 438.549 438.549" className="h-4 w-4">
                   <path
@@ -25,7 +30,12 @@ export function Footer() {
                 </svg>
               </Link>
             </Button>
-            <Button asChild size="icon" variant="outline">
+            <Button
+              asChild
+              size="icon"
+              variant="outline"
+              className="shadow-none"
+            >
               <Link
                 href="https://bsky.app/profile/formizee.com"
                 target="_blank"
@@ -38,7 +48,12 @@ export function Footer() {
                 </svg>
               </Link>
             </Button>
-            <Button asChild size="icon" variant="outline">
+            <Button
+              asChild
+              size="icon"
+              variant="outline"
+              className="shadow-none"
+            >
               <Link href="https://x.com/formizeedev" target="_blank">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
