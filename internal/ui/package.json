@@ -35,9 +35,9 @@
   "scripts": {
     "check": "tsc --noEmit",
     "build": "NODE_OPTIONS='--max-old-space-size=4096' tsup",
-    "dev": "NODE_OPTIONS='--max-old-space-size=8192' tsup --watch",
     "dev:styles": "tailwindcss -i ./src/styles/globals.css -o ./dist/index.css --watch",
-    "build:styles": "tailwindcss -i ./src/styles/globals.css -o ./dist/index.css --minify"
+    "build:styles": "tailwindcss -i ./src/styles/globals.css -o ./dist/index.css --minify",
+    "dev": "NODE_OPTIONS='--max-old-space-size=4096' tsup --watch --onSuccess 'tsc -d; echo DTS ⚡️ Build succeed'"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "1.2.2",
