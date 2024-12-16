@@ -12,15 +12,13 @@ export default async function Page(props: {params: {slug: string}}) {
   const content = await markdownToHtml(post.content || '');
 
   return (
-    <main className="flex flex-grow items-center justify-center overflow-x-clip">
+    <main className="flex flex-grow w-full items-center flex-col px-4 mt-32">
       <Navbar />
-      <Transition className="mx-6 my-28 max-w-[800px]">
-        <h1 className="font-secondary font-semibold text-4xl text-neutral-950 dark:text-neutral-50 sm:text-5xl">
-          {post.title}
-        </h1>
-        <p className="mt-2 text-lg font-secondary text-neutral-600 dark:text-neutral-500">
-          {post.date}
-        </p>
+      <h1 className="font-bold text-2xl sm:text-4xl">{post.title}</h1>
+      <time className="font-secondary text-sm max-w-96 text-center mt-4">
+        {post.date}
+      </time>
+      <Transition className="flex flex-col w-full max-w-[700px]">
         <div
           className={markdownStyles.markdown}
           // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>

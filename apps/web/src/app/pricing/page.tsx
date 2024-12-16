@@ -10,21 +10,25 @@ import {Transition} from '@/components';
 export default function PricingPage() {
   return (
     <Transition className="flex flex-grow flex-col">
-      <section className="flex flex-col w-full items-center px-2 mt-32">
-        <h1 className="font-bold text-xl sm:text-3xl mb-12">
-          Choose your plan, start building
-        </h1>
+      <section className="flex flex-col w-full items-center px-4 mt-32">
+        <h1 className="font-bold text-2xl sm:text-4xl">Choose your plan</h1>
+        <h2 className="font-secondary text-sm max-w-96 text-center mt-4 mb-16">
+          Start for free, upgrade when you need
+        </h2>
         <div className="flex flex-col sm:flex-row gap-8">
           <PricingCard plan="hobby" />
           <PricingCard plan="pro" />
         </div>
         <TeamsPricingCard />
       </section>
-      <section className="flex flex-col w-full items-center px-2 mt-24 mb-4">
-        <h1 className="font-bold text-xl sm:text-3xl mb-12">
+      <section className="flex flex-col w-full items-center px-4 my-16">
+        <h1 className="font-bold text-2xl sm:text-4xl">
           Frequently Asked Questions
         </h1>
-        <Accordion type="single" collapsible className="w-[50rem]">
+        <h2 className="font-secondary text-sm max-w-96 text-center mt-4 mb-16">
+          Because we all have doubts sometimes
+        </h2>
+        <Accordion type="single" collapsible className="w-full max-w-[50rem]">
           <AccordionItem value="item-0">
             <AccordionTrigger>How does the Hobby plan works?</AccordionTrigger>
             <AccordionContent>
@@ -92,7 +96,7 @@ export default function PricingPage() {
           </AccordionItem>
         </Accordion>
         <div className="mt-8 flex items-center justify-center w-full">
-          <span className="text-sm text-neutral-600 dark:text-neutral-400">
+          <span className="font-secondary">
             If you have further questions, don’t hesitate to reach out to{' '}
             <a className="underline" href="mailto:support@formizee.com">
               support@formizee.com

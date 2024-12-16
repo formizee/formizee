@@ -11,8 +11,8 @@ export const Signature = () => {
   return (
     <Image
       src={resolvedTheme === 'light' ? lightSign : darkSign}
-      width={103}
-      height={64}
+      width={96}
+      height={57}
       alt="Pau Chiner's signature"
     />
   );

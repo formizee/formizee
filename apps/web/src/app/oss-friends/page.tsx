@@ -3,14 +3,14 @@ import {Transition} from '@/components';
 
 export default function Page() {
   return (
-    <Transition className="flex flex-grow items-center flex-col mt-32">
+    <Transition className="flex flex-grow items-center px-4 flex-col mt-32">
       <h1 className="font-bold text-2xl sm:text-4xl">
         Our Open Source Friends
       </h1>
-      <p className="font-secondary max-w-96 text-center mt-4">
+      <h2 className="font-secondary text-sm max-w-96 text-center mt-4">
         Formizee is highly inspired in some open-source projects. Here is a sort
         list:
-      </p>
+      </h2>
       <div className="grid grid-cols-1 sm:grid-cols-[auto,auto] gap-6 mt-12">
         <ProductCard name="Cal.com" href="https://cal.com">
           A scheduling tool that helps you schedule mettings without the
