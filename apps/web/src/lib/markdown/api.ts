@@ -1,4 +1,4 @@
-import {readFileSync} from 'node:fs';
+import {readFileSync, readdirSync} from 'node:fs';
 import matter from 'gray-matter';
 import {join} from 'node:path';
 
@@ -8,6 +8,12 @@ interface Post {
   title: string;
   author: string;
   content: string;
+  coverImage: string;
+  description: string;
+}
+
+export function getPostSlugs(postsDirectory = 'src/app/blog/_posts') {
+  return readdirSync(postsDirectory);
 }
 
 export function getBySlug(
@@ -23,4 +29,13 @@ export function getBySlug(
   const {data, content} = matter(fileContents);
 
   return {...data, slug: realSlug, content} as Post;
+}
+
+export function getAllPosts() {
+  const slugs = getPostSlugs();
+  const posts = slugs
+    .map(slug => getBySlug(slug))
+    // sort posts by date in descending order
+    .sort((post1, post2) => (post1.date > post2.date ? -1 : 1));
+  return posts;
 }
