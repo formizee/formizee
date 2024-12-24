@@ -6,6 +6,7 @@ import type {Metadata} from 'next';
 import '@formizee/ui/globals.css';
 import {cn} from '@formizee/ui';
 import './globals.css';
+import {Toaster} from '@formizee/ui/toaster';
 
 export const metadata: Metadata = {
   title: 'Formizee | The Forms Backend platform',
@@ -51,6 +52,7 @@ export default function RootLayout({
         >
           <Navbar />
           {children}
+          <Toaster />
           <Footer />
         </ThemeProvider>
       </body>
