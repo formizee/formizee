@@ -1,18 +1,18 @@
 'use client';
 
-import { CodeBlock as Component } from '@/components/code-block';
-import { useEffect, useState } from 'react';
-import { useTheme } from 'next-themes';
-import { STACKS, DATA } from './data';
-import type { Stack } from './types';
-import { Sidebar } from './sidebar';
-import { Topbar } from './topbar';
+import {CodeBlock as Component} from '@/components/code-block';
+import {useEffect, useState} from 'react';
+import {useTheme} from 'next-themes';
+import {STACKS, DATA} from './data';
+import type {Stack} from './types';
+import {Sidebar} from './sidebar';
+import {Topbar} from './topbar';
 
 export const CodeBlock = () => {
   const [stack, setStack] = useState<Stack | undefined>(STACKS[0]);
   const [example, setExample] = useState(DATA[0]);
   const [mounted, setMounted] = useState(false);
-  const { resolvedTheme } = useTheme();
+  const {resolvedTheme} = useTheme();
 
   useEffect(() => {
     setExample(DATA.find(example => example.stack === stack?.stack));
@@ -23,7 +23,9 @@ export const CodeBlock = () => {
   }, []);
 
   if (!mounted) {
-    return <div className="w-full h-[25.3rem] max-w-[62rem] rounded-lg mt-16" />;
+    return (
+      <div className="w-full h-[25.3rem] max-w-[62rem] rounded-lg mt-16" />
+    );
   }
 
   return (

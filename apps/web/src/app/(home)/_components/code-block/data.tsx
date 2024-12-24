@@ -1,7 +1,7 @@
 import type {Example, Stack} from './types';
 
 import {
-    AstroIcon,
+  AstroIcon,
   CurlIcon,
   DenoIcon,
   LambdaIcon,
@@ -111,7 +111,7 @@ export default function Page() {
     <button>Submit</button>
   </form>
 </template>`
-  },
+  }
 ];
 
 const ServerlessExamples: Example[] = [
