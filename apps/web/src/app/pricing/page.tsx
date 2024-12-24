@@ -12,16 +12,16 @@ export default function PricingPage() {
     <Transition className="flex flex-grow flex-col">
       <section className="flex flex-col w-full items-center px-4 mt-32">
         <h1 className="font-bold text-2xl sm:text-4xl">Choose your plan</h1>
-        <h2 className="font-secondary text-sm max-w-96 text-center mt-4 mb-16">
+        <h2 className="font-secondary text-sm mt-2">
           Start for free, upgrade when you need
         </h2>
-        <div className="flex flex-col sm:flex-row gap-8">
+        <div className="flex flex-col sm:flex-row w-full items-center justify-center gap-8 mt-16">
           <PricingCard plan="hobby" />
           <PricingCard plan="pro" />
         </div>
         <TeamsPricingCard />
       </section>
-      <section className="flex flex-col w-full items-center px-4 my-16">
+      <section className="flex flex-col w-full items-center px-4 mt-16">
         <h1 className="font-bold text-2xl sm:text-4xl">
           Frequently Asked Questions
         </h1>

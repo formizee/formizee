@@ -45,7 +45,7 @@ export const PricingCard = (props: CardProps) => {
   const plan = getPlanConfig(props.plan);
 
   return (
-    <article className="flex w-96 flex-col items-center border dark:border-neutral-800 rounded-lg p-4">
+    <article className="flex w-full max-w-80 sm:max-w-96 flex-col items-center border dark:border-neutral-800 rounded-lg p-4">
       <div className="relative mt-2 mb-4 flex w-16 h-16 overflow-hidden rounded-lg bg-background md:shadow-xl">
         <Image
           src={props.plan === 'hobby' ? hobbyPlanIcon : proPlanIcon}
@@ -61,10 +61,8 @@ export const PricingCard = (props: CardProps) => {
           colorFrom={props.plan === 'hobby' ? '#AAA' : '#FFBE7B'}
         />
       </div>
-      <h2 className="text-3xl font-secondary font-bold">{plan.title} Plan</h2>
-      <p className="mt-2 text-neutral-600 dark:text-neutral-400">
-        {plan.description}
-      </p>
+      <h2 className="text-3xl font-bold">{plan.title} Plan</h2>
+      <p className="mt-2 font-secondary">{plan.description}</p>
       <h3 className="mb-4 mt-8">
         <span className="text-4xl font-bold">${plan.price}</span>
         <span className="text-xl font-semibold"> \month</span>
@@ -75,16 +73,16 @@ export const PricingCard = (props: CardProps) => {
         </span>
         <ul className="flex flex-col w-full">
           <PricingItem
-            label="Submissions"
-            limit={plan.limits.submissions.toLocaleString('en-US')}
-          >
-            <BoltIcon className="text-amber-400 dark:text-amber-300" />
-          </PricingItem>
-          <PricingItem
             label="API Daily Requests"
             limit={plan.limits.apiDailyRequests.toLocaleString('en-US')}
           >
             <CodeIcon className="text-neutral-400 dark:text-neutral-500" />
+          </PricingItem>
+          <PricingItem
+            label="Submissions"
+            limit={plan.limits.submissions.toLocaleString('en-US')}
+          >
+            <BoltIcon className="text-neutral-950 dark:text-neutral-50" />
           </PricingItem>
           <PricingItem
             label="Forms"
@@ -137,9 +135,9 @@ export const TeamsPricingCard = () => {
   const plan = getPlanConfig('teams');
 
   return (
-    <article className="flex mt-8 w-96 md:w-[50rem] flex-col border dark:border-neutral-800 rounded-lg p-4">
-      <div className="flex flex-col pb-4 border-b dark:border-neutral-800">
-        <div className="relative mb-4 flex w-16 h-16 overflow-hidden rounded-lg bg-background md:shadow-xl">
+    <article className="flex mt-8  w-full max-w-80 sm:max-w-[50rem] flex-col border dark:border-neutral-800 rounded-lg p-4">
+      <div className="flex flex-col items-center pb-4">
+        <div className="relative mt-2 mb-4 flex w-16 h-16 overflow-hidden rounded-lg bg-background md:shadow-xl">
           <Image
             src={teamsPlanIcon}
             className="w-16 h-16"
@@ -148,15 +146,9 @@ export const TeamsPricingCard = () => {
           <BorderBeam size={250} anchor={60} duration={4} borderWidth={3} />
         </div>
         <h2 className="text-3xl font-bold">{plan.title} Plan</h2>
-        <p className="mt-2 text-neutral-600 dark:text-neutral-400">
-          {plan.description}
-        </p>
+        <p className="mt-2 font-secondary">{plan.description}</p>
+        <h3 className="mt-4 text-xl font-bold">Coming Soon...</h3>
       </div>
-      <h3 className="mb-4 mt-8">
-        <span className="text-2xl font-secondary font-bold">
-          Coming Soon...
-        </span>
-      </h3>
     </article>
   );
 };
