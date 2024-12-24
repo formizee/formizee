@@ -351,6 +351,9 @@ importers:
       cobe:
         specifier: 0.6.3
         version: 0.6.3
+      date-fns:
+        specifier: 4.1.0
+        version: 4.1.0
       framer-motion:
         specifier: 11.14.1
         version: 11.14.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -363,6 +366,12 @@ importers:
       next-themes:
         specifier: 0.3.0
         version: 0.3.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      prism-react-renderer:
+        specifier: 2.3.1
+        version: 2.3.1(react@18.3.1)
+      prismjs:
+        specifier: 1.29.0
+        version: 1.29.0
       react:
         specifier: 18.3.1
         version: 18.3.1
@@ -388,6 +397,9 @@ importers:
       '@types/node':
         specifier: 20.12.12
         version: 20.12.12
+      '@types/prismjs':
+        specifier: 1.26.5
+        version: 1.26.5
       '@types/react':
         specifier: 18.3.2
         version: 18.3.2
@@ -800,6 +812,9 @@ importers:
       prism-react-renderer:
         specifier: 2.3.1
         version: 2.3.1(react@18.3.1)
+      prismjs:
+        specifier: 1.29.0
+        version: 1.29.0
       react:
         specifier: 18.3.1
         version: 18.3.1
@@ -825,6 +840,9 @@ importers:
       '@types/node':
         specifier: 22.9.0
         version: 22.9.0
+      '@types/prismjs':
+        specifier: 1.26.5
+        version: 1.26.5
       '@types/react':
         specifier: 18.3.3
         version: 18.3.3
@@ -3920,8 +3938,8 @@ packages:
   '@types/pg@8.11.6':
     resolution: {integrity: sha512-/2WmmBXHLsfRqzfHW7BNZ8SbYzE8OSk7i3WjFYvfgRHj7S1xj+16Je5fUKv3lVdVzk/zn9TXOqf+avFCFIE0yQ==}
 
-  '@types/prismjs@1.26.4':
-    resolution: {integrity: sha512-rlAnzkW2sZOjbqZ743IHUhFcvzaGbqijwOu8QZnZCjfQzBqFE3s4lOTJEsxikImav9uzz/42I+O7YUs1mWgMlg==}
+  '@types/prismjs@1.26.5':
+    resolution: {integrity: sha512-AUZTa7hQ2KY5L7AmtSiqxlhWxb4ina0yd8hNbl4TWuqnv/pFP0nDMb3YrfSBf4hJVGLh2YEIBfKaBW/9UEl6IQ==}
 
   '@types/prop-types@15.7.12':
     resolution: {integrity: sha512-5zvhXYtRNRluoE/jAp4GVsSduVUzNWKkOZrCDBWYtE7biZywwdC2AcEzg+cSMLFRfVgeAFqpfNabiPjxFddV1Q==}
@@ -11186,7 +11204,7 @@ snapshots:
       pg-types: 4.0.2
     optional: true
 
-  '@types/prismjs@1.26.4': {}
+  '@types/prismjs@1.26.5': {}
 
   '@types/prop-types@15.7.12': {}
 
@@ -15242,7 +15260,7 @@ snapshots:
 
   prism-react-renderer@2.3.1(react@18.3.1):
     dependencies:
-      '@types/prismjs': 1.26.4
+      '@types/prismjs': 1.26.5
       clsx: 2.1.1
       react: 18.3.1
 
@@ -15491,7 +15509,7 @@ snapshots:
   refractor@4.8.1:
     dependencies:
       '@types/hast': 2.3.10
-      '@types/prismjs': 1.26.4
+      '@types/prismjs': 1.26.5
       hastscript: 7.2.0
       parse-entities: 4.0.1
 
