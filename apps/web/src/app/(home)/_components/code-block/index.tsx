@@ -7,6 +7,7 @@ import {STACKS, DATA} from './data';
 import type {Stack} from './types';
 import {Sidebar} from './sidebar';
 import {Topbar} from './topbar';
+import {BlurFade} from '@/components/blur-fade';
 
 export const CodeBlock = () => {
   const [stack, setStack] = useState<Stack | undefined>(STACKS[0]);
@@ -23,15 +24,17 @@ export const CodeBlock = () => {
   }, []);
 
   if (!mounted) {
-    return (
-      <div className="w-full h-[25.3rem] max-w-[62rem] rounded-lg mt-16" />
-    );
+    return <div className="w-full h-[28rem] max-w-[62rem] rounded-lg mt-16" />;
   }
 
   return (
-    <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 w-full max-w-[62rem] border dark:border-neutral-800 rounded-lg mt-16">
+    <BlurFade
+      delay={0.5}
+      inView
+      className="w-full max-w-[62rem] border dark:border-neutral-800 rounded-lg mt-16 shadow-sm"
+    >
       <Topbar example={example} stack={stack} setStack={setStack} />
-      <div className="flex flex-col sm:flex-row h-80 p-2 sm:p-4 overflow-scroll overflow-light-style dark:overflow-dark-style">
+      <div className="flex flex-col sm:flex-row h-[22.7rem] p-2 sm:p-4 overflow-scroll overflow-light-style dark:overflow-dark-style">
         <Sidebar
           stack={stack}
           current={example}
@@ -40,7 +43,7 @@ export const CodeBlock = () => {
         />
         <Component
           key={example?.name}
-          className="overflow-scroll w-full"
+          className="overflow-scroll w-full h-full"
           color={stack?.color ?? 'green'}
           language={example?.language ?? 'html'}
           theme={resolvedTheme === 'light' ? 'light' : 'dark'}
@@ -65,6 +68,6 @@ export const CodeBlock = () => {
           View On Github
         </a>
       </div>
-    </div>
+    </BlurFade>
   );
 };

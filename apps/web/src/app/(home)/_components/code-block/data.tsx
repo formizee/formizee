@@ -41,21 +41,19 @@ const NodejsExamples: Example[] = [
     language: 'tsx',
     icon: NextIcon,
     stack: 'node',
-    code: `import Form from 'next/form';
-
-export default function Page() {
+    code: `export default function Page() {
   return (
-    <Form action="https://api.formizee.com/v1/f/enp_123456">
+    <form method="post" action="https://api.formizee.com/v1/f/enp_123456">
       <label htmlFor="name">
         Name
         <input type="text" name="name"/>
-      </label
+      </label>
       <label htmlFor="email">
         Email
       <input type="email" name="email"/>
-      </label
+      </label.
       <button>Submit</button>
-    </Form>
+    </form>
   )
 }`
   },
