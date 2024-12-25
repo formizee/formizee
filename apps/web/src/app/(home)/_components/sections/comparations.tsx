@@ -3,7 +3,7 @@ import {cn} from '@formizee/ui';
 
 export const Comparations = () => {
   return (
-    <BlurFade delay={0.4} inView>
+    <BlurFade inView>
       <section className="flex flex-col items-center justify-between gap-16">
         <h3 className="text-neutral-900 dark:text-neutral-50 font-bold text-3xl text-center select-none">
           The cheapest alternative by far...

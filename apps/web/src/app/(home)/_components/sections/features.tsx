@@ -4,7 +4,7 @@ import {GlobeItem} from '../globe';
 
 export const Features = () => {
   return (
-    <BlurFade delay={0.4} inView>
+    <BlurFade inView>
       <section className="flex px-4 flex-col items-center justify-center">
         <h3 className="text-neutral-900 dark:text-neutral-50 font-bold text-3xl text-center select-none">
           Built By Developers For Developers
