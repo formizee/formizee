@@ -1,6 +1,8 @@
 import {BlurFade} from '@/components/blur-fade';
-import {CryptoItem} from '../crypto';
-import {GlobeItem} from '../globe';
+import {Integrations} from '../integrations';
+import {Encryption} from '../encryption';
+import {Analytics} from '../analytics';
+import {Global} from '../global';
 
 export const Features = () => {
   return (
@@ -13,8 +15,12 @@ export const Features = () => {
           Because new tech stacks are always exciting
         </h2>
         <div className="w-full flex flex-col sm:flex-row items-center justify-center gap-8">
-          <GlobeItem />
-          <CryptoItem />
+          <Analytics />
+          <Integrations /> 
+        </div>
+        <div className="w-full flex flex-col sm:flex-row items-center justify-center mt-8 gap-8">
+          <Global />
+          <Encryption />
         </div>
       </section>
     </BlurFade>
