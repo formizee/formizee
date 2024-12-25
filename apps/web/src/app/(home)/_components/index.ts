@@ -1,2 +1,2 @@
-export {Spotlight} from './spotlight';
-export {Cards} from './cards';
+export * from './code-block';
+export * from './sections';
