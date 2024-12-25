@@ -1,4 +1,4 @@
-import { cn } from "@formizee/ui";
+import {cn} from '@formizee/ui';
 
 export interface OrbitingCirclesProps {
   className?: string;
@@ -17,7 +17,7 @@ export function OrbitingCircles({
   duration = 20,
   delay = 10,
   radius = 50,
-  path = true,
+  path = true
 }: OrbitingCirclesProps) {
   return (
     <>
@@ -40,15 +40,15 @@ export function OrbitingCircles({
       <div
         style={
           {
-            "--duration": duration,
-            "--radius": radius,
-            "--delay": -delay,
+            '--duration': duration,
+            '--radius': radius,
+            '--delay': -delay
           } as React.CSSProperties
         }
         className={cn(
-          "absolute flex size-full transform-gpu animate-orbit items-center justify-center rounded-full border bg-black/10 [animation-delay:calc(var(--delay)*1000ms)] dark:bg-white/10",
-          { "[animation-direction:reverse]": reverse },
-          className,
+          'absolute flex size-full transform-gpu animate-orbit items-center justify-center rounded-full border bg-black/10 [animation-delay:calc(var(--delay)*1000ms)] dark:bg-white/10',
+          {'[animation-direction:reverse]': reverse},
+          className
         )}
       >
         {children}

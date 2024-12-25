@@ -16,7 +16,7 @@ export const Features = () => {
         </h2>
         <div className="w-full flex flex-col sm:flex-row items-center justify-center gap-8">
           <Analytics />
-          <Integrations /> 
+          <Integrations />
         </div>
         <div className="w-full flex flex-col sm:flex-row items-center justify-center mt-8 gap-8">
           <Global />
