@@ -67,6 +67,7 @@ export function Navbar(props: NavbarProps): JSX.Element {
         <DropdownMenuTrigger asChild>
           <Button
             size="icon"
+            aria-label="Menu"
             className="flex sm:hidden border-2 hover:border-neutral-500 border-neutral-700 bg-neutral-900 dark:border-neutral-200"
           >
             <MenuIcon />

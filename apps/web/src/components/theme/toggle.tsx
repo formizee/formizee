@@ -34,6 +34,7 @@ export const ThemeToggle = (props: Props) => {
     >
       <button
         onClick={() => setTheme('system')}
+        aria-label="Set system theme"
         type="button"
         className={
           theme === 'system'
@@ -45,6 +46,7 @@ export const ThemeToggle = (props: Props) => {
       </button>
       <button
         onClick={() => setTheme('light')}
+        aria-label="Set light theme"
         type="button"
         className={
           theme === 'light'
@@ -56,6 +58,7 @@ export const ThemeToggle = (props: Props) => {
       </button>
       <button
         onClick={() => setTheme('dark')}
+        aria-label="Set dark theme"
         type="button"
         className={
           theme === 'dark'

@@ -21,7 +21,11 @@ export function Footer() {
               variant="outline"
               className="shadow-none"
             >
-              <Link href="https://github.com/formizee" target="_blank">
+              <Link
+                aria-label="Github"
+                href="https://github.com/formizee"
+                target="_blank"
+              >
                 <svg viewBox="0 0 438.549 438.549" className="h-4 w-4">
                   <path
                     fill="currentColor"
@@ -38,6 +42,7 @@ export function Footer() {
             >
               <Link
                 href="https://bsky.app/profile/formizee.com"
+                aria-label="Bluesky"
                 target="_blank"
               >
                 <svg role="img" viewBox="0 0 24 24 " className="h-4 w-4">
@@ -54,7 +59,11 @@ export function Footer() {
               variant="outline"
               className="shadow-none"
             >
-              <Link href="https://x.com/formizeedev" target="_blank">
+              <Link
+                aria-label="X (Twitter)"
+                href="https://x.com/formizeedev"
+                target="_blank"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
