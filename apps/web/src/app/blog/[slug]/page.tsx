@@ -1,7 +1,8 @@
 import {getBySlug, markdownStyles, markdownToHtml} from '@/lib/markdown';
-import {Navbar, Transition} from '@/components';
+import {Transition} from '@/components';
 import {notFound} from 'next/navigation';
 import DateFormatter from '../_components/date-formatter';
+import {BlurFade} from '@/components/blur-fade';
 
 export default async function Page(props: {params: {slug: string}}) {
   const post = getBySlug(props.params.slug);
@@ -13,8 +14,7 @@ export default async function Page(props: {params: {slug: string}}) {
   const content = await markdownToHtml(post.content || '');
 
   return (
-    <main className="flex flex-grow w-full items-center flex-col px-4 mt-32">
-      <Navbar />
+    <BlurFade className="flex flex-grow w-full items-center flex-col px-4 mt-32">
       <div className="flex flex-col w-full max-w-[700px]">
         <div className="rounded-md overflow-clip aspect-video border dark:border-neutral-800" />
         <div className="mt-4 flex flex-row items-center justify-between">
@@ -35,6 +35,6 @@ export default async function Page(props: {params: {slug: string}}) {
           dangerouslySetInnerHTML={{__html: content}}
         />
       </Transition>
-    </main>
+    </BlurFade>
   );
 }

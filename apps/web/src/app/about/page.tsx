@@ -1,9 +1,9 @@
-import {Transition} from '@/components';
+import {BlurFade} from '@/components/blur-fade';
 import {Signature} from './_components/signature';
 
 export default function Page() {
   return (
-    <Transition className="flex flex-grow w-full items-center flex-col px-4 mt-32">
+    <BlurFade className="flex flex-grow w-full items-center flex-col px-4 mt-32">
       <h1 className="font-bold text-2xl sm:text-4xl">Made With Love</h1>
       <h2 className="font-secondary text-sm mt-2">
         a love letter to all indie developers
@@ -49,6 +49,6 @@ export default function Page() {
           </p>
         </div>
       </section>
-    </Transition>
+    </BlurFade>
   );
 }

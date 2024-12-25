@@ -1,9 +1,9 @@
+import {BlurFade} from '@/components/blur-fade';
 import {ProductCard} from './_components';
-import {Transition} from '@/components';
 
 export default function Page() {
   return (
-    <Transition className="flex flex-grow items-center px-4 flex-col mt-32">
+    <BlurFade className="flex flex-grow items-center px-4 flex-col mt-32">
       <h1 className="font-bold text-2xl sm:text-4xl">
         Our Open Source Friends
       </h1>
@@ -60,6 +60,6 @@ export default function Page() {
           facing APIs.
         </ProductCard>
       </div>
-    </Transition>
+    </BlurFade>
   );
 }
