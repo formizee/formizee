@@ -1,13 +1,13 @@
-import {CodeBlock, Comparations, Features} from './_components';
+import {Join, Comparations, Features} from './_components/sections';
+import {CodeBlock} from './_components/code-block';
 import {GithubLabel} from './_components/github';
 import {BlurFade} from '@/components/blur-fade';
-import {Transition} from '@/components';
 import {Button} from '@formizee/ui';
 import Link from 'next/link';
 
 function Home(): JSX.Element {
   return (
-    <Transition className="relative flex flex-col min-h-screen gap-20">
+    <main className="relative flex flex-col min-h-screen gap-32">
       <header className="flex flex-col px-4 items-center">
         <BlurFade>
           <div className="flex flex-col gap-8 items-center mt-32 sm:mt-48">
@@ -17,10 +17,10 @@ function Home(): JSX.Element {
               <br />
               Forms Platform
             </h1>
-            <h2 className="font-secondary text-neutral-800 text-sm sm:text-md dark:text-neutral-200 max-w-[400px] text-center">
+            <h2 className="font-secondary text-neutral-800 text-sm sm:text-md dark:text-neutral-200 max-w-[430px] text-center">
               Formizee is the modern approach to create forms.
               <br />
-              Design, build, analytics and an affordable price,
+              Design, build and analytics all at an affordable price,
               <br />
               all-in-one solution
             </h2>
@@ -36,7 +36,8 @@ function Home(): JSX.Element {
       </header>
       <Features />
       <Comparations />
-    </Transition>
+      <Join />
+    </main>
   );
 }
 
