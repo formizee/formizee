@@ -41,7 +41,7 @@ export function Navbar(props: NavbarProps): JSX.Element {
     <nav
       className={cn(
         props.className,
-        'fixed top-0 z-50 backdrop-blur-md bg-white/70 dark:bg-black/70 flex h-16 w-full items-center justify-between border-b dark:border-neutral-800 px-4'
+        'fixed top-0 z-50 backdrop-blur-md bg-white/70 dark:bg-black/70 flex h-16 w-full items-center justify-between border-b dark:border-neutral-800 px-4 animate-in slide-in-from-top-5 fade-in duration-1000'
       )}
     >
       <Link href="/">
