@@ -16,7 +16,7 @@ export const ProductCard = (props: Props) => {
       target="_blank"
       rel="noreferrer"
     >
-      <article className="flex flex-col h-32 max-w-96 rounded-md border dark:border-neutral-800 gap-4 p-4 group-hover:shadow-md">
+      <article className="flex flex-col h-36 max-w-96 rounded-md border dark:border-neutral-800 gap-4 p-4 group-hover:shadow-md">
         <h3 className="flex flex-row gap-2 items-center font-secondary text-xl font-bold">
           <img
             className="grayscale rounded-[0.25rem]"
