@@ -1,7 +1,7 @@
 'use client';
 
-import { NumberTicker } from '@/components/ticker';
-import { BlurFade } from '@/components/blur-fade';
+import {NumberTicker} from '@/components/ticker';
+import {BlurFade} from '@/components/blur-fade';
 
 import {
   CodeIcon,
@@ -9,7 +9,7 @@ import {
   InboxIcon,
   UserGroupIcon
 } from '@formizee/ui/icons';
-import { useEffect, useState } from 'react';
+import {useEffect, useState} from 'react';
 
 export const Metrics = () => {
   const [data, setData] = useState({

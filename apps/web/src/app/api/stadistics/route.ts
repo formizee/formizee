@@ -1,10 +1,10 @@
-import { database, count, schema } from '@/lib/db';
-import { Analytics } from '@formizee/analytics';
-import { env } from '@/lib/environment';
+import {database, count, schema} from '@/lib/db';
+import {Analytics} from '@formizee/analytics';
+import {env} from '@/lib/environment';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET () {
+export async function GET() {
   const analytics = new Analytics({
     tinybirdUrl: env().TINYBIRD_URL,
     tinybirdToken: env().TINYBIRD_TOKEN
@@ -12,8 +12,8 @@ export async function GET () {
 
   const [events, endpoints, workspaces] = await Promise.all([
     await analytics.queryFormizeeStadistics(),
-    await database.select({ count: count() }).from(schema.endpoint),
-    await database.select({ count: count() }).from(schema.workspace)
+    await database.select({count: count()}).from(schema.endpoint),
+    await database.select({count: count()}).from(schema.workspace)
   ]);
 
   return Response.json({
