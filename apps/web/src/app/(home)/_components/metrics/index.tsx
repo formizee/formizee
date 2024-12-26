@@ -57,3 +57,5 @@ const MetricsItem = (props: ItemProps) => {
     </div>
   );
 };
+
+export default Metrics;

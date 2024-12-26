@@ -1,7 +1,9 @@
 import {BlurFade} from '@/components/blur-fade';
-import {Metrics} from '../metrics';
 import {Button} from '@formizee/ui';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
+
+const Metrics = dynamic(() => import('../metrics'), {ssr: false});
 
 export const Join = () => {
   return (
