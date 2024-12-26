@@ -3,7 +3,7 @@ import {Button} from '@formizee/ui';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 
-const Metrics = dynamic(async () => await import("../metrics"));
+const Metrics = dynamic(async () => await import('../metrics'));
 
 export const Join = () => {
   return (
