@@ -4,15 +4,6 @@ import {unstable_cache} from 'next/cache';
 import {env} from '@/lib/environment';
 
 async function getData() {
-  if (env().VERCEL_ENV === 'development') {
-    return {
-      submissions: 2102,
-      workspaces: 31,
-      endpoints: 120,
-      requests: 94123
-    };
-  }
-
   const analytics = new Analytics({
     tinybirdUrl: env().TINYBIRD_URL,
     tinybirdToken: env().TINYBIRD_TOKEN
