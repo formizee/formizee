@@ -2,7 +2,7 @@ import {BlurFade} from '@/components/blur-fade';
 import {Button} from '@formizee/ui';
 import {Metrics} from '../metrics';
 import Link from 'next/link';
-import { Suspense } from 'react';
+import {Suspense} from 'react';
 
 export const Join = () => {
   return (
