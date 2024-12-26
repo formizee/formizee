@@ -354,9 +354,18 @@ importers:
       '@formizee/ui':
         specifier: workspace:*
         version: link:../../internal/ui
+      '@hookform/resolvers':
+        specifier: 3.9.1
+        version: 3.9.1(react-hook-form@7.54.2(react@18.3.1))
       '@libsql/client':
         specifier: 0.14.0
         version: 0.14.0
+      '@vercel/edge-config':
+        specifier: 1.4.0
+        version: 1.4.0
+      '@vercel/flags':
+        specifier: 2.6.3
+        version: 2.6.3(next@14.2.16(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       cobe:
         specifier: 0.6.3
         version: 0.6.3
@@ -387,6 +396,9 @@ importers:
       react-dom:
         specifier: 18.3.1
         version: 18.3.1(react@18.3.1)
+      react-hook-form:
+        specifier: 7.54.2
+        version: 7.54.2(react@18.3.1)
       recharts:
         specifier: 2.15.0
         version: 2.15.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -3845,6 +3857,35 @@ packages:
       react:
         optional: true
 
+  '@vercel/edge-config-fs@0.1.0':
+    resolution: {integrity: sha512-NRIBwfcS0bUoUbRWlNGetqjvLSwgYH/BqKqDN7vK1g32p7dN96k0712COgaz6VFizAm9b0g6IG6hR6+hc0KCPg==}
+
+  '@vercel/edge-config@1.4.0':
+    resolution: {integrity: sha512-69Wg5gw9DzwnyUmnjToSeLRm1nm8mCPgN0kflX8EHRHyqvzH80wPem5A8rI2LXPb2Y9tJNoqN3vXPcQhS2Wh5g==}
+    engines: {node: '>=14.6'}
+    peerDependencies:
+      '@opentelemetry/api': ^1.7.0
+    peerDependenciesMeta:
+      '@opentelemetry/api':
+        optional: true
+
+  '@vercel/flags@2.6.3':
+    resolution: {integrity: sha512-knLDYS8MCc/zx4FF6KRzHQzAKdo8VQ3V0PEBI5WvRlFIhcqhcEomxHoK41/xMnNEQvUzETACHw610/i/pVwYSA==}
+    peerDependencies:
+      '@sveltejs/kit': '*'
+      next: '*'
+      react: '*'
+      react-dom: '*'
+    peerDependenciesMeta:
+      '@sveltejs/kit':
+        optional: true
+      next:
+        optional: true
+      react:
+        optional: true
+      react-dom:
+        optional: true
+
   '@vitest/expect@1.5.0':
     resolution: {integrity: sha512-0pzuCI6KYi2SIC3LQezmxujU9RK/vwC1U9R0rLuGlNGcOuDWxqWKu6nUdFsX9tH1WU0SXtAxToOsEjeUn1s3hA==}
 
@@ -5665,6 +5706,9 @@ packages:
   jiti@1.21.6:
     resolution: {integrity: sha512-2yTgeWTWzMWkHu6Jp9NKgePDaYHbntiwvYuuJLbbN9vl7DC9DvXKOB2BC3ZZ92D3cvV/aflH0osDfwpHepQ53w==}
     hasBin: true
+
+  jose@5.2.1:
+    resolution: {integrity: sha512-qiaQhtQRw6YrOaOj0v59h3R6hUY9NvxBmmnMfKemkqYmBB0tEc97NbLP7ix44VP5p9/0YHG8Vyhzuo5YBNwviA==}
 
   jose@5.9.6:
     resolution: {integrity: sha512-AMlnetc9+CV9asI19zHmrgS/WYsWUwCn2R7RzlbJWD7F9eWYUTGyBmU9o6PxngtLGOiDGPRu+Uc4fhKzbpteZQ==}
@@ -10689,6 +10733,20 @@ snapshots:
       next: 14.2.16(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react: 18.3.1
 
+  '@vercel/edge-config-fs@0.1.0': {}
+
+  '@vercel/edge-config@1.4.0':
+    dependencies:
+      '@vercel/edge-config-fs': 0.1.0
+
+  '@vercel/flags@2.6.3(next@14.2.16(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      jose: 5.2.1
+    optionalDependencies:
+      next: 14.2.16(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+
   '@vitest/expect@1.5.0':
     dependencies:
       '@vitest/spy': 1.5.0
@@ -12834,6 +12892,8 @@ snapshots:
       '@pkgjs/parseargs': 0.11.0
 
   jiti@1.21.6: {}
+
+  jose@5.2.1: {}
 
   jose@5.9.6: {}
 

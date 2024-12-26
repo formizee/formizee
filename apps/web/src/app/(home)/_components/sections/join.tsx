@@ -1,9 +1,13 @@
 import {BlurFade} from '@/components/blur-fade';
+import {showWaitlist} from '@/flags';
 import {Button} from '@formizee/ui';
 import Metrics from '../metrics';
 import Link from 'next/link';
+import {WaitlistDialog} from '@/components/waitlist-dialog';
 
 export const Join = async () => {
+  const waitlist = await showWaitlist();
+
   return (
     <BlurFade inView className="flex flex-col w-full items-center mb-8">
       <svg
@@ -45,12 +49,20 @@ export const Join = async () => {
             No Credit Card Required
           </p>
           <div className="flex w-full justify-center md:justify-start items-center sm:flex-row gap-4 mt-8">
-            <Button
-              asChild
-              className="max-w-38 font-secondary border-2 hover:border-neutral-500 dark:hover:border-neutral-400 hover:bg-neutral-800 dark:hover:bg-neutral-300 border-neutral-700 dark:border-neutral-300 bg-neutral-900 dark:bg-neutral-100"
-            >
-              <Link href="https://dashboard.formizee.com">Start Now</Link>
-            </Button>
+            {waitlist ? (
+              <WaitlistDialog>
+                <Button className="max-w-40 font-secondary border-2 hover:border-neutral-500 dark:hover:border-neutral-400 hover:bg-neutral-800 dark:hover:bg-neutral-300 border-neutral-700 dark:border-neutral-300 bg-neutral-900 dark:bg-neutral-100">
+                  Join Beta Waitlist
+                </Button>
+              </WaitlistDialog>
+            ) : (
+              <Button
+                asChild
+                className="max-w-32 font-secondary border-2 hover:border-neutral-500 dark:hover:border-neutral-400 hover:bg-neutral-800 dark:hover:bg-neutral-300 border-neutral-700 dark:border-neutral-300 bg-neutral-900 dark:bg-neutral-100"
+              >
+                <Link href="https://dashboard.formizee.com">Start Now</Link>
+              </Button>
+            )}
             <Button
               asChild
               variant="outline"

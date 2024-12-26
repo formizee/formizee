@@ -2,10 +2,14 @@ import {Join, Comparations, Bentos, Features} from './_components/sections';
 import {CodeBlock} from './_components/code-block';
 import {GithubLabel} from './_components/github';
 import {BlurFade} from '@/components/blur-fade';
+import {showWaitlist} from '@/flags';
 import {Button} from '@formizee/ui';
 import Link from 'next/link';
+import {WaitlistDialog} from '@/components/waitlist-dialog';
 
-function Home(): JSX.Element {
+async function Home() {
+  const waitlist = await showWaitlist();
+
   return (
     <main className="relative flex flex-col min-h-screen gap-32">
       <header className="flex flex-col px-4 items-center">
@@ -24,12 +28,20 @@ function Home(): JSX.Element {
               <br />
               all-in-one solution
             </h2>
-            <Button
-              asChild
-              className="max-w-32 mt-4 font-secondary border-2 hover:border-neutral-500 dark:hover:border-neutral-400 hover:bg-neutral-800 dark:hover:bg-neutral-300 border-neutral-700 dark:border-neutral-300 bg-neutral-900 dark:bg-neutral-100"
-            >
-              <Link href="https://dashboard.formizee.com">Get Started</Link>
-            </Button>
+            {waitlist ? (
+              <WaitlistDialog>
+                <Button className="max-w-40 mt-4 font-secondary border-2 hover:border-neutral-500 dark:hover:border-neutral-400 hover:bg-neutral-800 dark:hover:bg-neutral-300 border-neutral-700 dark:border-neutral-300 bg-neutral-900 dark:bg-neutral-100">
+                  Join Beta Waitlist
+                </Button>
+              </WaitlistDialog>
+            ) : (
+              <Button
+                asChild
+                className="max-w-32 mt-4 font-secondary border-2 hover:border-neutral-500 dark:hover:border-neutral-400 hover:bg-neutral-800 dark:hover:bg-neutral-300 border-neutral-700 dark:border-neutral-300 bg-neutral-900 dark:bg-neutral-100"
+              >
+                <Link href="https://dashboard.formizee.com">Get Started</Link>
+              </Button>
+            )}
           </div>
         </BlurFade>
         <CodeBlock />
