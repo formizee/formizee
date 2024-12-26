@@ -28,8 +28,8 @@ export const Join = () => {
             gradientUnits="userSpaceOnUse"
             gradientTransform="translate(247.5 247.5) rotate(90) scale(247.5)"
           >
-            <stop stop-color="#D9D9D9" stop-opacity="0.44" />
-            <stop offset="1" stop-color="#737373" stop-opacity="0" />
+            <stop stopColor="#D9D9D9" stopOpacity="0.44" />
+            <stop offset="1" stopColor="#737373" stopOpacity="0" />
           </radialGradient>
         </defs>
       </svg>
