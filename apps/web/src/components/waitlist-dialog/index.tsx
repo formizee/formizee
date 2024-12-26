@@ -46,7 +46,6 @@ export function WaitlistDialog(props: {children: React.ReactNode}) {
     try {
       await fetch('https://api.formizee.com/v1/f/enp_123456', {
         method: 'POST',
-        mode: 'no-cors',
         body: JSON.stringify({email: data.email}),
         headers: {'content-type': 'application/json'}
       });
@@ -59,11 +58,12 @@ export function WaitlistDialog(props: {children: React.ReactNode}) {
 
       setLoading(false);
     } catch (error) {
-      if (error instanceof Error) console.log(error);
-      toast({
-        variant: 'destructive',
-        description: error.message
-      });
+      if (error instanceof Error) {
+        toast({
+          variant: 'destructive',
+          description: error.message
+        });
+      }
     }
   });
 
