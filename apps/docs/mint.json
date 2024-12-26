@@ -1,8 +1,11 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Formizee Docs",
+  "name": "Formizee.",
   "openapi": "https://api.formizee.com/openapi.json",
   "favicon": "/favicon.svg",
+  "codeBlock": {
+    "mode": "auto"
+  },
   "colors": {
     "primary": "#0a0a0a",
     "light": "#fafafa",
@@ -23,8 +26,7 @@
   ],
   "feedback": {
     "raiseIssue": true,
-    "suggestEdit": true,
-    "thumbsRating": true
+    "suggestEdit": true
   },
   "anchors": [
     {
@@ -52,6 +54,10 @@
     {
       "group": "Introduction",
       "pages": ["introduction"]
+    },
+    {
+      "group": "Quickstart",
+      "pages": ["quickstart/nextjs"]
     },
     {
       "group": "API Documentation",
@@ -117,7 +123,7 @@
     }
   ],
   "footerSocials": {
-    "website": "https://formizee.com",
+    "x": "https://x.com/formizeedev",
     "github": "https://github.com/formizee/formizee"
   }
 }
