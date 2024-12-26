@@ -69,7 +69,7 @@ interface ItemProps {
 
 const Item = (props: ItemProps) => {
   return (
-    <div className="flex flex-col gap-4 items-start w-72 h-28">
+    <div className="flex flex-col gap-4 items-start w-72 px-2 h-28">
       <div className="flex flex-row gap-2 items-center">
         <div className="flex items-center justify-center size-8 min-h-8 min-w-8 bg-white dark:bg-black/30 border dark:border-neutral-800 rounded-md">
           {props.children}
