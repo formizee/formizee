@@ -16,6 +16,7 @@ import {
 import Image from 'next/image';
 import {BorderBeam} from '@/components/beam';
 import {Button} from '@formizee/ui';
+import Link from 'next/link';
 
 const getStorageSize = (size: number) => {
   if (size >= 1000) {
@@ -45,7 +46,7 @@ export const PricingCard = (props: CardProps) => {
   const plan = getPlanConfig(props.plan);
 
   return (
-    <article className="flex w-full max-w-80 sm:max-w-96 flex-col items-center border dark:border-neutral-800 rounded-lg p-4">
+    <article className="flex w-full max-w-80 sm:max-w-96 flex-col items-center border dark:border-neutral-800 rounded-lg p-4 shadow-md">
       <div className="relative mt-2 mb-4 flex w-16 h-16 overflow-hidden rounded-lg bg-background md:shadow-xl">
         <Image
           src={props.plan === 'hobby' ? hobbyPlanIcon : proPlanIcon}
@@ -63,9 +64,9 @@ export const PricingCard = (props: CardProps) => {
       </div>
       <h2 className="text-3xl font-bold">{plan.title} Plan</h2>
       <p className="mt-2 font-secondary">{plan.description}</p>
-      <h3 className="mb-4 mt-8">
+      <h3 className="flex flex-col items-center mb-4 mt-8">
         <span className="text-4xl font-bold">${plan.price}</span>
-        <span className="text-xl font-semibold"> \month</span>
+        <span className="text-md font-semibold">per month</span>
       </h3>
       <div className="mt-8 flex w-full flex-col items-start">
         <span className="mb-2 text-neutral-800 dark:text-neutral-200">
@@ -122,8 +123,15 @@ export const PricingCard = (props: CardProps) => {
             <CheckIcon className="text-neutral-400 dark:text-neutral-500" />
           </PricingItem>
 
-          <Button className="mt-4 font-secondary border-2 hover:border-neutral-500 border-neutral-700 bg-neutral-900">
-            {props.plan === 'hobby' ? 'Start for Free' : 'Get Started with Pro'}
+          <Button
+            asChild
+            className="mt-4 font-secondary border-2 hover:border-neutral-500 border-neutral-700 bg-neutral-900"
+          >
+            <Link href="https://dashboard.formizee.com">
+              {props.plan === 'hobby'
+                ? 'Start for Free'
+                : 'Get Started with Pro'}
+            </Link>
           </Button>
         </ul>
       </div>
@@ -135,7 +143,7 @@ export const TeamsPricingCard = () => {
   const plan = getPlanConfig('teams');
 
   return (
-    <article className="flex mt-8  w-full max-w-80 sm:max-w-[50rem] flex-col border dark:border-neutral-800 rounded-lg p-4">
+    <article className="flex mt-8  w-full max-w-80 sm:max-w-[50rem] flex-col border dark:border-neutral-800 rounded-lg p-4 shadow-md">
       <div className="flex flex-col items-center pb-4">
         <div className="relative mt-2 mb-4 flex w-16 h-16 overflow-hidden rounded-lg bg-background md:shadow-xl">
           <Image
