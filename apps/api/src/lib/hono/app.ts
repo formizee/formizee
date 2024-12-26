@@ -40,7 +40,7 @@ export const newApp = (): OpenAPIHono<HonoEnv> => {
   app.use(bodyLimit);
   app.use(metrics());
   app.use(timeout);
-  app.use(cors());
+  //app.use(cors());
 
   // Openapi
   app.doc('/openapi.json', {
