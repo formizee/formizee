@@ -40,6 +40,7 @@ describe('Retrieve a submission', () => {
 
     expect(res.body).toStrictEqual({
       ...omit(submission.body, ['pendingUploads']),
+      createdAt: res.body.createdAt,
       data: {
         name: 'pau',
         email: 'pau@mail.com',
