@@ -342,12 +342,21 @@ importers:
 
   apps/web:
     dependencies:
+      '@formizee/analytics':
+        specifier: workspace:*
+        version: link:../../internal/analytics
+      '@formizee/db':
+        specifier: workspace:*
+        version: link:../../internal/db
       '@formizee/plans':
         specifier: workspace:*
         version: link:../../internal/plans
       '@formizee/ui':
         specifier: workspace:*
         version: link:../../internal/ui
+      '@libsql/client':
+        specifier: 0.14.0
+        version: 0.14.0
       cobe:
         specifier: 0.6.3
         version: 0.6.3

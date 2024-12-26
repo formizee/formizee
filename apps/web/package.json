@@ -12,8 +12,11 @@
     "lint": "biome lint src"
   },
   "dependencies": {
+    "@formizee/analytics": "workspace:*",
+    "@formizee/db": "workspace:*",
     "@formizee/plans": "workspace:*",
     "@formizee/ui": "workspace:*",
+    "@libsql/client": "0.14.0",
     "cobe": "0.6.3",
     "date-fns": "4.1.0",
     "gray-matter": "4.0.3",

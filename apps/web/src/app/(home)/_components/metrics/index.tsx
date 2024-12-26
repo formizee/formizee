@@ -1,5 +1,6 @@
 import {NumberTicker} from '@/components/ticker';
 import {BlurFade} from '@/components/blur-fade';
+import {getMetrics} from '@/lib/metrics';
 import {
   CodeIcon,
   DocumentIcon,
@@ -7,24 +8,28 @@ import {
   UserGroupIcon
 } from '@formizee/ui/icons';
 
-export const Metrics = () => (
-  <BlurFade inView className="hidden md:flex">
-    <article className="grid grid-cols-2 gap-x-8 gap-y-8 p-4 px-8">
-      <MetricsItem label="Submissions Ingested" value={12432}>
-        <InboxIcon className="size-4" />
-      </MetricsItem>
-      <MetricsItem label="Requests Proccessed" value={96349}>
-        <CodeIcon className="size-4" />
-      </MetricsItem>
-      <MetricsItem label="Endpoints Hosted" value={103}>
-        <DocumentIcon className="size-4" />
-      </MetricsItem>
-      <MetricsItem label="Workspaces Created" value={32}>
-        <UserGroupIcon className="size-4" />
-      </MetricsItem>
-    </article>
-  </BlurFade>
-);
+export const Metrics = async () => {
+  const data = await getMetrics();
+
+  return (
+    <BlurFade inView className="hidden md:flex">
+      <article className="grid grid-cols-2 gap-x-8 gap-y-8 p-4 px-8">
+        <MetricsItem label="Submissions Ingested" value={data.submissions}>
+          <InboxIcon className="size-4" />
+        </MetricsItem>
+        <MetricsItem label="Requests Proccessed" value={data.requests}>
+          <CodeIcon className="size-4" />
+        </MetricsItem>
+        <MetricsItem label="Endpoints Hosted" value={data.endpoints}>
+          <DocumentIcon className="size-4" />
+        </MetricsItem>
+        <MetricsItem label="Workspaces Created" value={data.workspaces}>
+          <UserGroupIcon className="size-4" />
+        </MetricsItem>
+      </article>
+    </BlurFade>
+  );
+};
 
 interface ItemProps {
   label: string;
