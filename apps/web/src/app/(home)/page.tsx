@@ -1,4 +1,4 @@
-import {Join, Comparations, Features} from './_components/sections';
+import {Join, Comparations, Bentos, Features} from './_components/sections';
 import {CodeBlock} from './_components/code-block';
 import {GithubLabel} from './_components/github';
 import {BlurFade} from '@/components/blur-fade';
@@ -34,8 +34,9 @@ function Home(): JSX.Element {
         </BlurFade>
         <CodeBlock />
       </header>
-      <Features />
+      <Bentos />
       <Comparations />
+      <Features />
       <Join />
     </main>
   );
