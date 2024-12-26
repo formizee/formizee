@@ -1,9 +1,8 @@
 import {BlurFade} from '@/components/blur-fade';
 import {Button} from '@formizee/ui';
-import dynamic from 'next/dynamic';
+import {Metrics} from '../metrics';
 import Link from 'next/link';
-
-const Metrics = dynamic(() => import('../metrics'), {ssr: false});
+import { Suspense } from 'react';
 
 export const Join = () => {
   return (
@@ -62,7 +61,9 @@ export const Join = () => {
             </Button>
           </div>
         </div>
-        <Metrics />
+        <Suspense fallback={<div />}>
+          <Metrics />
+        </Suspense>
       </section>
     </BlurFade>
   );
