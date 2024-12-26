@@ -15,9 +15,9 @@ export const Features = () => {
         <h3 className="text-neutral-900 dark:text-neutral-50 font-bold text-3xl text-center select-none">
           Need something else?
         </h3>
-        <h2 className="font-secondary text-sm mt-4 mb-16">
+        <p className="font-secondary text-sm mt-4 mb-16">
           We have a lot of cools features to offer
-        </h2>
+        </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 place-items-center w-full max-w-[62rem] gap-y-12 gap-x-6">
           <Item
             label="Teams Support"

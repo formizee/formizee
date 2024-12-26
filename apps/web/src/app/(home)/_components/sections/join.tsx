@@ -38,12 +38,12 @@ export const Join = async () => {
           <h3 className="text-nowrap text-neutral-900 dark:text-neutral-50 font-bold text-3xl text-center select-none">
             Start Building Today
           </h3>
-          <h2 className="w-full font-secondary text-center md:text-start text-sm leading-relaxed mt-4">
+          <p className="w-full font-secondary text-center md:text-start text-sm leading-relaxed mt-4">
             <span className="font-bold">250 Submissions</span> per month for
             free.
             <br />
             No Credit Card Required
-          </h2>
+          </p>
           <div className="flex w-full justify-center md:justify-start items-center sm:flex-row gap-4 mt-8">
             <Button
               asChild
