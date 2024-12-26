@@ -1,11 +1,9 @@
 import {BlurFade} from '@/components/blur-fade';
 import {Button} from '@formizee/ui';
-import dynamic from 'next/dynamic';
+import Metrics from '../metrics';
 import Link from 'next/link';
 
-const Metrics = dynamic(async () => await import('../metrics'));
-
-export const Join = () => {
+export const Join = async () => {
   return (
     <BlurFade inView className="flex flex-col w-full items-center mb-8">
       <svg

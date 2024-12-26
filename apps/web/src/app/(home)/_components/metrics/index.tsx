@@ -1,25 +1,30 @@
-import {NumberTicker} from '@/components/ticker';
-import {BlurFade} from '@/components/blur-fade';
-import {getMetrics} from '@/lib/metrics';
+'use client';
+
+import { NumberTicker } from '@/components/ticker';
+import { BlurFade } from '@/components/blur-fade';
+
 import {
   CodeIcon,
   DocumentIcon,
   InboxIcon,
   UserGroupIcon
 } from '@formizee/ui/icons';
-import {env} from '@/lib/environment';
+import { useEffect, useState } from 'react';
 
-export const Metrics = async () => {
-  let data = {
-    submissions: 2102,
-    workspaces: 31,
-    endpoints: 120,
-    requests: 94123
-  };
+export const Metrics = () => {
+  const [data, setData] = useState({
+    submissions: 0,
+    requests: 0,
+    endpoints: 0,
+    workspaces: 0
+  });
 
-  if (env().VERCEL_ENV !== 'development') {
-    data = await getMetrics();
-  }
+  useEffect(() => {
+    fetch('/api/stadistics').then(async res => {
+      const data = await res.json();
+      setData(data);
+    });
+  }, []);
 
   return (
     <BlurFade inView className="hidden md:flex">
