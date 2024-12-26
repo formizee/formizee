@@ -11,7 +11,7 @@ export const env = () =>
       VERCEL_URL: z.string().optional(),
 
       // Databases
-      DATABASE_URL: z.string().url().default('http://localhost:8080'),
+      DATABASE_URL: z.string().url().default(''),
       DATABASE_AUTH_TOKEN: z.string().default(''),
 
       // Analytics
