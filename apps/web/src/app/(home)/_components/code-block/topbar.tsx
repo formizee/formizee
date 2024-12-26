@@ -43,6 +43,7 @@ export const Topbar = ({example, stack, setStack}: TopbarProps) => {
           })}
         </ul>
         <Button
+          aria-label="Copy Code"
           onClick={copyCode}
           className="hidden sm:flex bg-white dark:bg-black shadow-none"
           variant="ghost"
