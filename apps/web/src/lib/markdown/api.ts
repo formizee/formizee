@@ -2,7 +2,7 @@ import {readFileSync, readdirSync} from 'node:fs';
 import matter from 'gray-matter';
 import {join} from 'node:path';
 
-interface Post {
+export interface Post {
   slug: string;
   date: string;
   title: string;

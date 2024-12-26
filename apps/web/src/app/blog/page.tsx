@@ -1,6 +1,22 @@
+import {type Post, getAllPosts} from '@/lib/markdown';
 import {BlurFade} from '@/components/blur-fade';
 import {PostCard} from './_components/card';
-import {getAllPosts} from '@/lib/markdown';
+
+const RenderPosts = ({posts}: {posts: Post[]}) => {
+  return posts.map(post => {
+    return (
+      <PostCard
+        description={post.description}
+        coverImage={post.coverImage}
+        author={post.content}
+        title={post.title}
+        date={post.date}
+        slug={post.slug}
+        key={post.slug}
+      />
+    );
+  });
+};
 
 export default function Page() {
   const posts = getAllPosts();
@@ -14,19 +30,13 @@ export default function Page() {
       <section
         className={`grid grid-cols-1 ${posts.length > 1 ? 'sm:grid-cols-[auto,auto]' : ''} place-items-center mt-16 w-full`}
       >
-        {posts.map(post => {
-          return (
-            <PostCard
-              description={post.description}
-              coverImage={post.coverImage}
-              author={post.content}
-              title={post.title}
-              date={post.date}
-              slug={post.slug}
-              key={post.slug}
-            />
-          );
-        })}
+        {posts.length < 1 ? (
+          <h3 className="font-secondary mt-8">
+            There's nothing here right now...
+          </h3>
+        ) : (
+          <RenderPosts posts={posts} />
+        )}
       </section>
     </BlurFade>
   );
