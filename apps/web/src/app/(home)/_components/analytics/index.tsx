@@ -26,8 +26,6 @@ function generateChartData() {
   return chartData;
 }
 
-console.log(generateChartData());
-
 const chartConfig = {
   submissions: {
     label: 'Submissions',
