@@ -3,7 +3,6 @@ import {OpenAPIHono} from '@hono/zod-openapi';
 import {services} from '@/lib/services';
 import type {HonoEnv} from './types';
 import {
-  cors,
   timeout,
   bodyLimit,
   prettyJSON,
@@ -11,6 +10,7 @@ import {
   trimTrailingSlash,
   metrics
 } from '@/lib/middlewares';
+import {cors} from 'hono/cors';
 
 export const newRoute = (basePath = '/'): OpenAPIHono<HonoEnv> => {
   const route = new OpenAPIHono<HonoEnv>({
@@ -40,7 +40,12 @@ export const newApp = (): OpenAPIHono<HonoEnv> => {
   app.use(bodyLimit);
   app.use(metrics());
   app.use(timeout);
-  //app.use(cors());
+  app.use(
+    cors({
+      origin: '*',
+      allowHeaders: ['Content-Type', 'Authorization']
+    })
+  );
 
   // Openapi
   app.doc('/openapi.json', {
