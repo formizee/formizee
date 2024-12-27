@@ -1,12 +1,10 @@
 import {ThemeProvider} from '@/components/theme';
 import {Space_Grotesk} from 'next/font/google';
-import {Navbar, Footer} from '@/components';
 import {Inter} from 'next/font/google';
 import type {Metadata} from 'next';
 import '@formizee/ui/globals.css';
 import {cn} from '@formizee/ui';
 import './globals.css';
-import {Toaster} from '@formizee/ui/toaster';
 
 export const metadata: Metadata = {
   title: 'Formizee | The Forms Backend platform',
@@ -50,10 +48,7 @@ export default function RootLayout({
           enableColorScheme={true}
           disableTransitionOnChange
         >
-          <Navbar />
           {children}
-          <Toaster />
-          <Footer />
         </ThemeProvider>
       </body>
     </html>
