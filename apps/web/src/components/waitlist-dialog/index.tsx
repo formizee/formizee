@@ -25,6 +25,7 @@ import {zodResolver} from '@hookform/resolvers/zod';
 import {useForm} from 'react-hook-form';
 import {useState} from 'react';
 import {z} from 'zod';
+import {joinWaitlist} from './actions';
 
 const formSchema = z.object({
   email: z.string().email()
@@ -32,6 +33,7 @@ const formSchema = z.object({
 
 export function WaitlistDialog(props: {children: React.ReactNode}) {
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -42,33 +44,29 @@ export function WaitlistDialog(props: {children: React.ReactNode}) {
 
   const onSubmit = form.handleSubmit(async data => {
     setLoading(true);
+    const {error} = await joinWaitlist(data.email);
 
-    try {
-      await fetch('https://api.formizee.com/v1/f/enp_123456', {
-        method: 'POST',
-        body: JSON.stringify({email: data.email}),
-        headers: {'content-type': 'application/json'}
-      });
+    if (error) {
       toast({
-        variant: 'success',
-        title: 'You are in!',
-        description:
-          'thanks for join with us, we will sent you an email when Formizee is ready.'
+        variant: 'destructive',
+        title: 'Error',
+        description: error.message
       });
-
       setLoading(false);
-    } catch (error) {
-      if (error instanceof Error) {
-        toast({
-          variant: 'destructive',
-          description: error.message
-        });
-      }
+      return;
     }
+
+    toast({
+      title: 'You are in!',
+      description:
+        'thanks for join with us, we will sent you an email when Formizee is ready.'
+    });
+    setLoading(false);
+    setOpen(false);
   });
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{props.children}</DialogTrigger>
       <DialogContent className="border-2">
         <DialogHeader className="flex items-center gap-2">
