@@ -8,7 +8,7 @@ export function Footer({example}: FooterProps) {
   return (
     <div className="flex flex-row gap-4 py-2 p-4 border-t dark:border-neutral-800">
       <a
-        className="px-1 py-0.5 flex flex-row items-center gap-2 text-xs text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
+        className="px-1 py-0.5 flex flex-row items-center gap-2 text-xs text-neutral-400 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
         rel="noreferrer"
         target="_blank"
         href={example?.github}
@@ -25,7 +25,7 @@ export function Footer({example}: FooterProps) {
         View On Github
       </a>
       <a
-        className="px-1 py-0.5 flex flex-row items-center gap-2 text-xs text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
+        className="px-1 py-0.5 flex flex-row items-center gap-2 text-xs text-neutral-400 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
         rel="noreferrer"
         target="_blank"
         href={`${example?.github}/archive/refs/heads/main.zip`}
