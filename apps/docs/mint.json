@@ -11,8 +11,8 @@
     "light": "#fafafa",
     "dark": "#0a0a0a",
     "background": {
-      "light": "#fafafa",
-      "dark": "#0a0a0a"
+      "light": "#ffffff",
+      "dark": "#000000"
     }
   },
   "api": {
