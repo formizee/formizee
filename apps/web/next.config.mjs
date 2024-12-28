@@ -15,8 +15,8 @@ const nextConfig = {
         destination: '/endpoint?type=not-found'
       },
       {
-        source: '/f/bad-request',
-        destination: '/endpoint?type=bad-request'
+        source: '/f/error',
+        destination: '/endpoint?type=error'
       }
     ];
   }

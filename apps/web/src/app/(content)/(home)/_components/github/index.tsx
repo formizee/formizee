@@ -5,6 +5,7 @@ export function GithubLabel() {
   return (
     <a
       href="https://github.com/formizee/formizee"
+      className="rounded-2xl outline-black/70 dark:outline-white/70"
       target="_blank"
       rel="noreferrer"
     >

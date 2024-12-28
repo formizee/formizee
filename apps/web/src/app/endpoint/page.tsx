@@ -9,20 +9,21 @@ import errorIcon from '@public/error.webp';
 
 interface Props {
   searchParams: {
-    type: 'not-found' | 'bad-request' | 'thanks-you' | 'disabled';
+    type: 'not-found' | 'error' | 'thanks-you' | 'disabled';
   };
 }
 
 const title = {
   'not-found': 'Form Not Found',
-  'bad-request': 'Bad Request',
+  error: 'Unexpected Error',
   'thanks-you': 'Thanks For Your Submission',
   disabled: 'Form Disabled'
 } as const;
 
 const description = {
   'not-found': 'the form does not exists, ensure that is correctly typed',
-  'bad-request': 'invalid request, please check the body of the form',
+  error:
+    'something bad happen, please check carefully your code or contact with us',
   disabled: 'the form is currently not accepting submissions',
   'thanks-you': 'your submission has been sent correctly'
 } as const;
@@ -30,7 +31,7 @@ const description = {
 const image = {
   disabled: pausedIcon,
   'thanks-you': checkIcon,
-  'bad-request': errorIcon,
+  error: errorIcon,
   'not-found': notFoundIcon
 };
 

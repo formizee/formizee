@@ -37,27 +37,29 @@ export const STACKS: Stack[] = [
 
 const NodejsExamples: Example[] = [
   {
+    github: 'https://github.com/formizee/formizee-next-example',
     name: 'Next.js',
     language: 'tsx',
     icon: NextIcon,
     stack: 'node',
     code: `export default function Page() {
-  return (
-    <form method="post" action="https://api.formizee.com/v1/f/enp_123456">
-      <label htmlFor="name">
-        Name
-        <input type="text" name="name"/>
-      </label>
-      <label htmlFor="email">
-        Email
-      <input type="email" name="email"/>
-      </label.
-      <button>Submit</button>
-    </form>
-  )
+	return (
+		<form method="post" action="https://api.formizee.com/v1/f/enp_123456">
+			<label htmlFor="name">
+				Name
+				<input id="name" autoComplete="name" name="name" />
+			</label>
+			<label htmlFor="email">
+				Email
+				<input id="email" autoComplete="email" name="email" />
+			</label>
+			<button>Submit</button>
+		</form>
+	);
 }`
   },
   {
+    github: 'https://github.com/formizee/formizee-astro-example',
     name: 'Astro',
     language: 'tsx',
     icon: AstroIcon,
@@ -75,6 +77,7 @@ const NodejsExamples: Example[] = [
 </form>`
   },
   {
+    github: 'https://github.com/formizee/formizee-svelte-example',
     name: 'Svelte',
     language: 'tsx',
     icon: AstroIcon,
@@ -92,6 +95,7 @@ const NodejsExamples: Example[] = [
 </form>`
   },
   {
+    github: 'https://github.com/formizee/formizee-vue-example',
     name: 'Vue',
     language: 'tsx',
     icon: AstroIcon,
@@ -114,6 +118,7 @@ const NodejsExamples: Example[] = [
 
 const ServerlessExamples: Example[] = [
   {
+    github: 'https://github.com/formizee/formizee-cloudflare-workers-example',
     name: 'Cloudflare Workers',
     stack: 'serverless',
     language: 'tsx',
@@ -140,6 +145,7 @@ const ServerlessExamples: Example[] = [
 };`
   },
   {
+    github: 'https://github.com/formizee/formizee-vercel-functions-example',
     name: 'Vercel Functions',
     language: 'tsx',
     icon: VercelIcon,
@@ -163,6 +169,7 @@ const ServerlessExamples: Example[] = [
 }`
   },
   {
+    github: 'https://github.com/formizee/formizee-aws-lambda-example',
     name: 'AWS Lambda',
     stack: 'serverless',
     language: 'tsx',
@@ -190,6 +197,7 @@ const ServerlessExamples: Example[] = [
 };`
   },
   {
+    github: 'https://github.com/formizee/formizee-deno-example',
     name: 'Deno',
     stack: 'serverless',
     language: 'tsx',
@@ -227,6 +235,7 @@ serve(handler);
 
 const restExamples: Example[] = [
   {
+    github: 'https://github.com/formizee/formizee-curl-example',
     name: 'cURL',
     language: 'bash',
     icon: CurlIcon,
@@ -239,6 +248,7 @@ const restExamples: Example[] = [
 }'`
   },
   {
+    github: 'https://github.com/formizee/formizee-wget-example',
     name: 'wget',
     language: 'bash',
     icon: WgetIcon,

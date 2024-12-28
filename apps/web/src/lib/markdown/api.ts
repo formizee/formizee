@@ -12,13 +12,13 @@ export interface Post {
   description: string;
 }
 
-export function getPostSlugs(postsDirectory = 'src/app/blog/_posts') {
+export function getPostSlugs(postsDirectory = 'src/app/(content)/blog/_posts') {
   return readdirSync(postsDirectory);
 }
 
 export function getBySlug(
   slug: string,
-  postsDirectory = 'src/app/blog/_posts'
+  postsDirectory = 'src/app/(content)/blog/_posts'
 ) {
   const realSlug = slug.replace(/\.md$/, '');
 

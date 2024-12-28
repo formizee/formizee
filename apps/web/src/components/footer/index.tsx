@@ -2,6 +2,50 @@ import {ThemeToggle} from '../theme/toggle';
 import {Button, Logo} from '@formizee/ui';
 import Link from 'next/link';
 
+const company = [
+  {
+    title: 'About',
+    href: '/about'
+  },
+  {
+    title: 'Status Page',
+    href: 'https://status.formizee.com',
+    target: '_blank'
+  },
+  {
+    title: 'Source Code',
+    href: 'https://github.com/formizee/formizee',
+    target: '_blank'
+  }
+];
+
+const resources = [
+  {
+    title: 'Blog',
+    href: '/blog'
+  },
+  {
+    title: 'Docs',
+    href: 'https://docs.formizee.com',
+    target: '_blank'
+  },
+  {
+    title: 'OSS Friends',
+    href: '/oss-friends'
+  }
+];
+
+const legal = [
+  {
+    title: 'Privacy Policy',
+    href: '/legal/privacy-policy'
+  },
+  {
+    title: 'Terms Of Service',
+    href: '/legal/terms-of-service'
+  }
+];
+
 export function Footer() {
   return (
     <footer className="z-20 bg-white dark:bg-black flex justify-center items-center w-full mt-12 border-t dark:border-neutral-800">
@@ -87,83 +131,51 @@ export function Footer() {
           <nav>
             <span className="font-secondary font-semibold">Company</span>
             <ul className="flex flex-col mt-4 gap-4">
-              <li>
-                <Link
-                  href="/about"
-                  className="text-neutral-600 dark:text-neutral-400 underline-offset-2 hover:underline"
-                >
-                  About
-                </Link>
-              </li>
-              <li>
-                <Link
-                  target="_blank"
-                  href="https://status.formizee.com"
-                  className="text-neutral-600 dark:text-neutral-400 underline-offset-2 hover:underline"
-                >
-                  Status Page
-                </Link>
-              </li>
-              <li>
-                <Link
-                  target="_blank"
-                  href="https://github.com/formizee/formizee"
-                  className="text-neutral-600 dark:text-neutral-400 underline-offset-2 hover:underline"
-                >
-                  Source Code
-                </Link>
-              </li>
+              {company.map(item => (
+                <li key={item.href}>
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    target={item.target}
+                    className="text-neutral-600 dark:text-neutral-400 underline-offset-2 hover:underline"
+                  >
+                    {item.title}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </nav>
           <nav>
             <span className="font-secondary font-semibold">Resources</span>
             <ul className="flex flex-col mt-4 gap-4">
-              <li>
-                <Link
-                  href="/blog"
-                  className="text-neutral-600 dark:text-neutral-400 underline-offset-2 hover:underline"
-                >
-                  Blog
-                </Link>
-              </li>
-              <li>
-                <Link
-                  target="_blank"
-                  href="https://docs.formizee.com"
-                  className="text-neutral-600 dark:text-neutral-400 underline-offset-2 hover:underline"
-                >
-                  Docs
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/oss-friends"
-                  className="text-neutral-600 dark:text-neutral-400 underline-offset-2 hover:underline"
-                >
-                  OSS Friends
-                </Link>
-              </li>
+              {resources.map(item => (
+                <li key={item.href}>
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    target={item.target}
+                    className="text-neutral-600 dark:text-neutral-400 underline-offset-2 hover:underline"
+                  >
+                    {item.title}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </nav>
           <nav>
             <span className="font-secondary font-semibold">Legal</span>
             <ul className="flex flex-col mt-4 gap-4">
-              <li>
-                <Link
-                  href="/legal/terms-of-service"
-                  className="text-neutral-600 dark:text-neutral-400 underline-offset-2 hover:underline"
-                >
-                  Terms Of Service
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/legal/privacy-policy"
-                  className="text-neutral-600 dark:text-neutral-400 underline-offset-2 hover:underline"
-                >
-                  Privacy Policy
-                </Link>
-              </li>
+              {legal.map(item => (
+                <li key={item.href}>
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="text-neutral-600 dark:text-neutral-400 underline-offset-2 hover:underline"
+                  >
+                    {item.title}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </nav>
         </div>

@@ -44,7 +44,7 @@ export function Navbar(props: NavbarProps): JSX.Element {
         'fixed top-0 z-50 backdrop-blur-md bg-white/70 dark:bg-black/70 flex h-16 w-full items-center justify-between border-b dark:border-neutral-800 px-4 animate-in slide-in-from-top-5 fade-in duration-1000'
       )}
     >
-      <Link href="/">
+      <Link tabIndex={-1} href="/">
         <Logo />
       </Link>
       <ul className="hidden sm:flex flex-row gap-8">
@@ -53,7 +53,12 @@ export function Navbar(props: NavbarProps): JSX.Element {
             key={href}
             className="transition-colors text-sm font-medium font-secondary text-neutral-700 dark:text-neutral-200 hover:text-neutral-950 underline-offset-4 hover:underline"
           >
-            <Link href={href}>{name}</Link>
+            <Link
+              className="px-2 py-1 outline-black/70 dark:outline-white/70 rounded-2xl"
+              href={href}
+            >
+              {name}
+            </Link>
           </li>
         ))}
       </ul>

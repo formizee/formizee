@@ -22,7 +22,7 @@ export default function Page() {
   const posts = getAllPosts();
 
   return (
-    <BlurFade className="flex flex-grow w-full items-center flex-col px-4 mt-32">
+    <BlurFade className="flex flex-col flex-grow w-full items-center flex-col px-4 mt-32">
       <h1 className="font-bold text-2xl sm:text-4xl">Blog</h1>
       <h2 className="font-secondary text-sm mt-2">
         Cool stories, guides and fun facts about us

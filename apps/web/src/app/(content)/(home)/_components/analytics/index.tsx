@@ -52,6 +52,7 @@ export const Analytics = () => {
           <BarChart
             accessibilityLayer
             data={chartData}
+            tabIndex={-1}
             margin={{
               left: 0,
               right: 0

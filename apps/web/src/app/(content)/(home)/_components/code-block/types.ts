@@ -9,6 +9,7 @@ export interface Stack {
 
 export interface Example {
   icon: React.ElementType;
+  github: string;
   language: string;
   stack: Stacks;
   name: string;
