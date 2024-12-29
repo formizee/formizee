@@ -5,7 +5,7 @@ on:
 jobs:
   commits:
     name: Conventional Commits
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2204
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -15,7 +15,7 @@ jobs:
 
   lint:
     name: Lint
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2204
     env:
       TURBO_TEAM: ${{ secrets.VERCEL_ORG_ID }}
       TURBO_TOKEN: ${{ secrets.VERCEL_API_TOKEN }}
@@ -29,7 +29,7 @@ jobs:
           version: 9.0.5
             
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: useblacksmith/setup-node@v5
         with:
           node-version: 20
           cache: 'pnpm'
@@ -42,7 +42,7 @@ jobs:
 
   build:
     name: Build
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2204
     env:
       TURBO_TEAM: ${{ secrets.VERCEL_ORG_ID }}
       TURBO_TOKEN: ${{ secrets.VERCEL_API_TOKEN }}
