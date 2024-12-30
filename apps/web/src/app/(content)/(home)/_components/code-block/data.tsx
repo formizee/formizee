@@ -1,25 +1,26 @@
 import type {Example, Stack} from './types';
 
 import {
-  AstroIcon,
   CurlIcon,
   DenoIcon,
   LambdaIcon,
   NextIcon,
-  NodeIcon,
+  WebIcon,
   RestIcon,
   ServerlessIcon,
   VercelIcon,
   WgetIcon,
-  WorkersIcon
+  WorkersIcon,
+  AngularIcon,
+  VueIcon
 } from './icons';
 
 export const STACKS: Stack[] = [
   {
     stack: 'node',
-    name: 'Node.js',
+    name: 'Frameworks',
     color: 'text-lime-500',
-    icon: NodeIcon
+    icon: WebIcon
   },
   {
     stack: 'serverless',
@@ -59,58 +60,40 @@ const NodejsExamples: Example[] = [
 }`
   },
   {
-    github: 'https://github.com/formizee/formizee-astro-example',
-    name: 'Astro',
+    github: 'https://github.com/formizee/formizee-angular-example',
+    name: 'Angular',
     language: 'tsx',
-    icon: AstroIcon,
+    icon: AngularIcon,
     stack: 'node',
-    code: `<form method="POST" action="https://api.formizee.com/v1/f/enp_123456">
-  <label>
+    code: `<form method="post" action="https://api.formizee.com/v1/f/enp_123456">
+  <label htmlFor="name">
     Name
-    <input type="text" name="name"/>
-  </label
-  <label>
-    Email
-  <input type="email" name="email"/>
-  </label
-  <button>Submit</button>
-</form>`
-  },
-  {
-    github: 'https://github.com/formizee/formizee-svelte-example',
-    name: 'Svelte',
-    language: 'tsx',
-    icon: AstroIcon,
-    stack: 'node',
-    code: `<form method="POST" action="https://api.formizee.com/v1/f/enp_123456">
-  <label>
-    Name
-    <input name="name" type="text"/>
+    <input id="name" autoComplete="name" name="name" />
   </label>
-  <label>
+  <label htmlFor="email">
     Email
-    <input name="email" type="email"/>
+    <input id="email" autoComplete="email" name="email" />
   </label>
-  <button>Submit</button>
+  <button type="submit">Submit</button>
 </form>`
   },
   {
     github: 'https://github.com/formizee/formizee-vue-example',
     name: 'Vue',
     language: 'tsx',
-    icon: AstroIcon,
+    icon: VueIcon,
     stack: 'node',
     code: `<template>
-  <form>
-    <label>
+  <form method="post" action="https://api.formizee.com/v1/f/enp_123456">
+    <label htmlFor="name">
       Name
-      <input type="text" name="name" />
+      <input id="name" autoComplete="name" name="name" />
     </label>
-    <label>
+    <label htmlFor="email">
       Email
-      <input type="email" name="email" />
+      <input id="email" autoComplete="email" name="email" />
     </label>
-    <button>Submit</button>
+    <button type="submit">Submit</button>
   </form>
 </template>`
   }
