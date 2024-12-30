@@ -25,7 +25,7 @@ export function Footer({example}: FooterProps) {
         View On Github
       </a>
       <a
-        className="px-1 py-0.5 flex flex-row items-center gap-2 text-xs text-neutral-400 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
+        className="hidden sm:flex px-1 py-0.5 flex-row items-center gap-2 text-xs text-neutral-400 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
         rel="noreferrer"
         target="_blank"
         href={`${example?.github}/archive/refs/heads/main.zip`}
