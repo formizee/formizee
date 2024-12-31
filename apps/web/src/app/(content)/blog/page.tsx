@@ -1,4 +1,4 @@
-import {type Post, getAllPosts} from '@/lib/markdown';
+import type {Post} from '@/lib/markdown';
 import {BlurFade} from '@/components/blur-fade';
 import {PostCard} from './_components/card';
 
@@ -19,7 +19,7 @@ const RenderPosts = ({posts}: {posts: Post[]}) => {
 };
 
 export default function Page() {
-  const posts = getAllPosts();
+  const posts: Post[] = [];
 
   return (
     <BlurFade className="flex flex-col flex-grow w-full items-center flex-col px-4 mt-32">
