@@ -213,4 +213,27 @@ export class Analytics {
       console.error(error.message);
     }
   }
+
+  /*
+   * Used for the landing page stadistics
+   */
+  public async queryFormizeeStadistics() {
+    const query = this.client.buildPipe({
+      pipe: 'homepage__metrics__pipe__v1',
+      data: z.object({
+        requests: z.number(),
+        submissions: z.number()
+      })
+    });
+
+    try {
+      const response = await query({});
+      return response.data[0] ?? {requests: 0, submissions: 0};
+    } catch (e) {
+      const error = e as Error;
+      console.error(error.message);
+    }
+
+    return {requests: 0, submissions: 0};
+  }
 }

@@ -1,4 +1,5 @@
 export {
+  type Plan,
   getLimit,
   getLimits,
   getPlanConfig,
