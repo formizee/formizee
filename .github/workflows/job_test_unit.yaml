@@ -17,7 +17,7 @@ jobs:
           - "./internal/plans"
 
     name: Test ${{matrix.path}}
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2204
     env:
       TURBO_TEAM: ${{ secrets.VERCEL_ORG_ID }}
       TURBO_TOKEN: ${{ secrets.VERCEL_API_TOKEN }}
