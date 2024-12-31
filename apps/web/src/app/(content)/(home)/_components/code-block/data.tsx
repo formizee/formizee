@@ -166,8 +166,8 @@ const ServerlessExamples: Example[] = [
     language: 'tsx',
     icon: WorkersIcon,
     code: `export default {
-  async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
-    const res = await fetch('https://api.formizee.com/v1/f/enp_123456', {
+  async fetch(_request: Request, _env: Env, _ctx: ExecutionContext): Promise<Response> {
+    const res = await fetch("https://api.formizee.com/v1/f/enp_123456", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -177,7 +177,7 @@ const ServerlessExamples: Example[] = [
         email: 'example@mail.com'
       })
     });
-
+		const data = await res.json();
     return new Response(JSON.stringify(data), {
       headers: {
         'Content-Type': 'application/json',
@@ -193,21 +193,22 @@ const ServerlessExamples: Example[] = [
     icon: VercelIcon,
     stack: 'serverless',
     code: `export async function POST() {
-  const res = await fetch('https://api.formizee.com/v1/f/enp_123456', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      name: 'example',
-      email: 'example@mail.com'
-    }),
-  });
-
-  if (res.ok) {
-    const data = await res.json();
-    return Response.json(data);
-  }
+	const res = await fetch("https://api.formizee.com/v1/f/enp_123456", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify({
+			name: "example",
+			email: "example@mail.com",
+		}),
+	});
+	const data = await res.json();
+	return new Response(JSON.stringify(data), {
+		headers: {
+			"Content-Type": "application/json",
+		},
+	});
 }`
   },
   {
@@ -216,30 +217,27 @@ const ServerlessExamples: Example[] = [
     stack: 'serverless',
     language: 'tsx',
     icon: LambdaIcon,
-    code: `export const handler = async(event) => {
-  const res = await fetch('https://api.formizee.com/v1/f/enp_123456', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-        name: 'example',
-        email: 'example@mail.com'
-    })
-  });
-
-  if (res.ok) {
-    const data = await res.json();
-
-    return {
-      statusCode: 200,
-      body: data,
-    };
-  }
+    code: `export const handler = async(_event) => {
+	const res = await fetch("https://api.formizee.com/v1/f/enp_123456", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify({
+			name: "example",
+			email: "example@mail.com",
+		}),
+	});
+	const data = await res.json();
+	return new Response(JSON.stringify(data), {
+		headers: {
+			"Content-Type": "application/json",
+		},
+	});
 };`
   },
   {
-    github: 'https://github.com/formizee/formizee-deno-example',
+    github: 'https://github.com/formizee/formizee-deno-deploy-example',
     name: 'Deno',
     stack: 'serverless',
     language: 'tsx',
@@ -257,17 +255,13 @@ const handler = async (_request: Request): Promise<Response> => {
       email: 'example@mail.com'
     })
   });
-
-  if (res.ok) {
-    const data = await res.json();
-
-    return new Response(data, {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-  }
+  const data = await res.json();
+  return new Response(data, {
+    status: 200,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
 };
 
 serve(handler);
