@@ -28,10 +28,11 @@ export default function Page() {
         Cool stories, guides and fun facts about us
       </h2>
       <section
-        className={`grid grid-cols-1 ${posts.length > 1 ? 'sm:grid-cols-[auto,auto]' : ''} place-items-center mt-16 w-full`}
+        //className={`grid grid-cols-1 ${posts.length > 1 ? 'sm:grid-cols-[auto,auto]' : ''} place-items-center mt-16 w-full`}
+        className="flex flex-col flex-grow items-center justify-center w-full"
       >
         {posts.length < 1 ? (
-          <h3 className="font-secondary mt-8">
+          <h3 className="font-secondary text-xl mt-16">
             There's nothing here right now...
           </h3>
         ) : (
