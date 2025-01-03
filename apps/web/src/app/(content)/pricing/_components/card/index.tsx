@@ -46,7 +46,7 @@ export const PricingCard = (props: CardProps) => {
   const plan = getPlanConfig(props.plan);
 
   return (
-    <article className="flex w-full max-w-80 sm:max-w-96 flex-col items-center border dark:border-neutral-800 rounded-lg p-4 shadow-md">
+    <article className="flex w-full max-w-80 sm:max-w-96 flex-col items-center border dark:border-neutral-800 rounded-lg p-4 shadow-md hover:scale-[1.03] transition-transform">
       <div className="relative mt-2 mb-4 flex w-16 h-16 overflow-hidden rounded-lg bg-background md:shadow-xl">
         <Image
           src={props.plan === 'hobby' ? hobbyPlanIcon : proPlanIcon}
@@ -143,7 +143,7 @@ export const TeamsPricingCard = () => {
   const plan = getPlanConfig('teams');
 
   return (
-    <article className="flex mt-8  w-full max-w-80 sm:max-w-[50rem] flex-col border dark:border-neutral-800 rounded-lg p-4 shadow-md">
+    <article className="flex mt-8  w-full max-w-80 sm:max-w-[50rem] flex-col border dark:border-neutral-800 rounded-lg p-4 shadow-md  hover:scale-[1.03] transition-transform">
       <div className="flex flex-col items-center pb-4">
         <div className="relative mt-2 mb-4 flex w-16 h-16 overflow-hidden rounded-lg bg-background md:shadow-xl">
           <Image
