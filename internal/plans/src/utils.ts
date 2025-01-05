@@ -2,6 +2,8 @@ import type {schema} from '@formizee/db';
 import {planConfig} from './config';
 import type {Limits} from './types';
 
+export type Plan = schema.WorkspacePlans;
+
 export function getLimit<T extends keyof Limits>(
   plan: schema.WorkspacePlans,
   limit: T

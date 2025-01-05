@@ -1,0 +1,44 @@
+---
+title: Next.js
+description: 'Learn how to ingest your first submission using Next.js'
+---
+
+## 1. Get the Next.js Formizee template
+
+```bash
+  git clone https://github.com/formizee/formizee-next-example.git
+```
+
+## 2. Update the main page
+Update the file under `src/app/page.tsx` with the endpoint id of your form
+
+```tsx page.tsx {1}
+const ENDPOINT = "enp_123456";
+
+export default function Page() {
+	return (
+		<form method="post" action={`https://api.formizee.com/v1/f/${ENDPOINT}`}>
+			<label htmlFor="name">
+				Name
+				<input id="name" autoComplete="name" name="name" />
+			</label>
+			<label htmlFor="email">
+				Email
+				<input id="email" autoComplete="email" name="email" />
+			</label>
+			<button>Submit</button>
+		</form>
+	);
+}
+```
+
+## 3. Run in local
+
+```bash
+  pnpm run dev
+```
+
+## 4. Try it yourself
+<Card title="Formizee Next.js Example" icon="link" href="https://github.com/formizee/formizee-next-example">
+  See the full source code
+</Card>

@@ -1,0 +1,49 @@
+.markdown p,
+.markdown hr,
+.markdown ul,
+.markdown ol,
+.markdown blockquote {
+  @apply my-6;
+}
+
+.markdown p {
+  @apply text-neutral-600 dark:text-neutral-400 leading-relaxed;
+}
+
+.markdown ol {
+  @apply list-decimal;
+}
+
+.markdown ul {
+  @apply list-disc;
+}
+
+.markdown li {
+  @apply ml-4 my-2;
+}
+
+.markdown a {
+  @apply underline font-secondary;
+}
+
+.markdown code {
+  @apply rounded-md px-1 py-0.5 bg-neutral-200/70 dark:bg-neutral-800/70;
+}
+
+.markdown h1 {
+  @apply text-2xl sm:text-3xl font-semibold mt-12 mb-0 sm:mb-2 leading-snug;
+}
+
+.markdown h2 {
+  @apply text-2xl sm:text-3xl font-semibold mt-12 mb-0 sm:mb-2 leading-snug;
+}
+
+.markdown h3 {
+  @apply text-xl sm:text-2xl font-semibold mt-8 mb-0 sm:mb-2 leading-snug;
+}
+
+.markdown h4,
+.markdown h5,
+.markdown h6 {
+  @apply text-xl font-semibold mt-8 mb-0 sm:mb-2 leading-snug;
+}
