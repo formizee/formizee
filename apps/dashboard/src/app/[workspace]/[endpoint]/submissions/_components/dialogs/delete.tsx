@@ -74,7 +74,7 @@ export const DeleteSubmissionDialog = (props: Props) => {
 
   return (
     <Dialog open={props.open} onOpenChange={props.setOpen}>
-      <DialogContent>
+      <DialogContent className="border-2">
         <DialogHeader className="mb-4">
           <DialogTitle className="w-full flex flex-col gap-6 items-center text-left text-xl font-bold">
             <Image
