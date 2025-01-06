@@ -71,7 +71,7 @@ export function TableSearchOptions<TData>(
     <Input
       type="search"
       name="search"
-      className={props.className}
+      className={cn(props.className, 'font-secondary')}
       placeholder={props.placeholder ?? 'Search...'}
       value={
         (props.table.getColumn(props.column)?.getFilterValue() as string) ?? ''
