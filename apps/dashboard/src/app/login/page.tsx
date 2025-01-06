@@ -1,4 +1,4 @@
-import {BlurFade} from '@/components/blur-fade';
+import {Transition} from '@/components';
 import {LoginForm} from './form';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -28,7 +28,7 @@ export default async function Login({
 
   return (
     <main className="w-full flex flex-col min-h-screen items-center justify-center p-8">
-      <BlurFade className="flex flex-col max-w-96 gap-4">
+      <Transition className="flex flex-col max-w-96 gap-4">
         <header className="mb-8 flex w-full flex-col items-center sm:items-start gap-8">
           <Image
             alt="Formizee"
@@ -59,7 +59,7 @@ export default async function Login({
           </Link>
           .
         </p>
-      </BlurFade>
+      </Transition>
     </main>
   );
 }
