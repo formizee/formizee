@@ -1,9 +1,9 @@
 'use client';
 
 import {emailLogin, githubLogin, googleLogin} from './actions';
-import {ArrowRightIcon, LoadingIcon, UndoIcon} from '@formizee/ui/icons';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {Button, Input, toast} from '@formizee/ui';
+import {LoadingIcon} from '@formizee/ui/icons';
 import {useForm} from 'react-hook-form';
 import Link from 'next/link';
 import {z} from 'zod';
@@ -84,31 +84,30 @@ export const LoginForm = ({redirectTo}: {redirectTo: string}) => {
         />
         <Button
           disabled={isEmailLoading || isGithubLoading || isGoogleLoading}
+          className="font-secondary border-2 hover:border-neutral-500 dark:hover:border-neutral-400 hover:bg-neutral-800 dark:hover:bg-neutral-300 border-neutral-700 dark:border-neutral-300 bg-neutral-900 dark:bg-neutral-100"
           type="submit"
-          className="group"
         >
           {!isEmailLoading ? (
             <div className="flex flex-row items-center justify-center gap-2 w-full">
               Continue
-              <ArrowRightIcon className="transition-all w-0 opacity-0 group-hover:w-4 group-hover:opacity-100" />
             </div>
           ) : (
             <LoadingIcon className="size-8" />
           )}
         </Button>
         <div className="flex flex-row items-center justify-between">
-          <div className="w-full h-[1px] bg-neutral-200 dark:bg-neutral-700" />
+          <div className="w-full h-[1px] bg-neutral-200 dark:bg-neutral-800" />
           <span className="text-sm px-4 text-neutral-400 dark:text-neutral-700">
             OR
           </span>
-          <div className="w-full h-[1px] bg-neutral-200 dark:bg-neutral-700" />
+          <div className="w-full h-[1px] bg-neutral-200 dark:bg-neutral-800" />
         </div>
         <div className="flex flex-col sm:flex-row gap-4 justify-between">
           <Button
             type="button"
             variant="outline"
             onClick={loginWithGithub}
-            className="w-full text-neutral-950 dark:text-neutral-50"
+            className="w-full font-secondary border-2 text-neutral-950 dark:text-neutral-50"
             disabled={isEmailLoading || isGithubLoading || isGoogleLoading}
           >
             {!isGithubLoading ? (
@@ -130,7 +129,7 @@ export const LoginForm = ({redirectTo}: {redirectTo: string}) => {
             type="button"
             variant="outline"
             onClick={loginWithGoogle}
-            className="w-full text-neutral-950 dark:text-neutral-50"
+            className="w-full font-secondary border-2 text-neutral-950 dark:text-neutral-50"
             disabled={isEmailLoading || isGithubLoading || isGoogleLoading}
           >
             {!isGoogleLoading ? (
@@ -153,15 +152,12 @@ export const LoginForm = ({redirectTo}: {redirectTo: string}) => {
           </Button>
         </div>
         <Button
+          className="w-full font-secondary border-2 text-neutral-950 dark:text-neutral-50"
           variant="outline"
           type="button"
-          className="group text-neutral-950 dark:text-neutral-50"
           asChild
         >
-          <Link href="https://formizee.com">
-            Go Back
-            <UndoIcon className="transition-all w-0 rotate-90 opacity-0 group-hover:w-4 group-hover:rotate-0 group-hover:opacity-100" />
-          </Link>
+          <Link href="https://formizee.com">Go Back</Link>
         </Button>
       </form>
     </Form>
