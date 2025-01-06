@@ -19,7 +19,7 @@ export const Badge = (props: {
       className={cn(
         props.className,
         variants[props.variant ?? 'green'],
-        'flex justify-center items-center text-xs h-6 w-16 font-semibold border rounded-xl'
+        'flex max-w-16 justify-center items-center text-xs rounded-2xl border px-2 py-1 font-secondary font-semibold'
       )}
     >
       {props.children}
