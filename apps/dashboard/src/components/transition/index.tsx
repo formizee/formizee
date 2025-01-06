@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import {useRef} from 'react';
 import {
   AnimatePresence,
   motion,
@@ -15,8 +15,8 @@ interface TransitionProps {
   children: React.ReactNode;
   className?: string;
   variant?: {
-    hidden: { y: number };
-    visible: { y: number };
+    hidden: {y: number};
+    visible: {y: number};
   };
   duration?: number;
   delay?: number;
@@ -40,7 +40,7 @@ export function Transition({
   blur = '6px'
 }: TransitionProps): JSX.Element {
   const ref = useRef(null);
-  const inViewResult = useInView(ref, { once: true, margin: inViewMargin });
+  const inViewResult = useInView(ref, {once: true, margin: inViewMargin});
   const isInView = !inView || inViewResult;
   const defaultVariants: Variants = {
     hidden: {
