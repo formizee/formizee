@@ -1,9 +1,11 @@
 'use client';
 
 import {UndoIcon} from '@formizee/ui/icons';
+import * as Sentry from '@sentry/nextjs';
 import {Transition} from '@/components';
 import logo from '@/../public/logo.svg';
 import {Button} from '@formizee/ui';
+import {useEffect} from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -14,6 +16,10 @@ export default function GlobalError({
   error: Error & {digest?: string};
   reset: () => void;
 }): JSX.Element {
+  useEffect(() => {
+    Sentry.captureException(error);
+  }, [error]);
+
   return (
     <main className="w-full flex flex-col min-h-screen gap-4 items-center justify-center p-24">
       <Transition className="flex flex-col max-w-[50rem] gap-4">
