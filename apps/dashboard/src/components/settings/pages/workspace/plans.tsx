@@ -37,7 +37,7 @@ export const SettingsWorkspacePlans = (props: Props) => {
         />
         <div className="flex flex-col gap-1 items-start">
           <span className="font-medium">Formizee Plans</span>
-          <p className="text-sm text-neutral-600 dark:text-neutral-400">
+          <p className="font-secondary text-sm text-neutral-600 dark:text-neutral-400">
             What you want, you get it. Priceless options for all sizes
           </p>
         </div>

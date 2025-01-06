@@ -31,7 +31,7 @@ interface Props {
 
 export const Content = (props: Props) => {
   return (
-    <div className="flex w-full px-6 pt-12 py-4">
+    <div className="flex w-full px-6 mt-8 py-4">
       <Pages {...props} />
     </div>
   );

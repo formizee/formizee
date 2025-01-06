@@ -19,7 +19,7 @@ export const SettingsAccountInfo = () => {
         />
         <div className="flex flex-col max-w-96">
           <span className="font-regular truncate mr-2">{'Info & Others'}</span>
-          <span className="text-sm text-neutral-600 dark:text-neutral-400 font-regular mt-1">
+          <span className="font-secondary text-sm text-neutral-600 dark:text-neutral-400 font-regular mt-1">
             Legal information about the app and others.
           </span>
         </div>

@@ -38,7 +38,7 @@ export const SettingsWorkspaceAudit = (props: Props) => {
           />
           <div className="flex flex-col gap-1 items-start">
             <span className="font-medium">Audit Logs</span>
-            <p className="text-sm text-neutral-600 dark:text-neutral-400">
+            <p className="font-secondary text-sm text-neutral-600 dark:text-neutral-400">
               Here are logged all the important actions of the last 7 days.
             </p>
           </div>
