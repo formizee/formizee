@@ -4,6 +4,7 @@ import GitHub from 'next-auth/providers/github';
 import Resend from 'next-auth/providers/resend';
 import type {NextAuthConfig} from 'next-auth';
 import {database} from '@/lib/db';
+import {allowNewUsers} from '@/flags';
 
 export const authConfig = {
   providers: [
@@ -20,16 +21,20 @@ export const authConfig = {
       }
     })
   ],
-  // Disable new signups
   callbacks: {
     signIn: async ({user}) => {
-      const userExists = await database.query.user.findFirst({
-        where: (table, {eq}) => eq(table.id, user.id ?? '')
-      });
+      // Disable new signups by feature flag
+      const enabled = await allowNewUsers();
+      if (!enabled) {
+        const userExists = await database.query.user.findFirst({
+          where: (table, {eq}) => eq(table.id, user.id ?? '')
+        });
 
-      if (!userExists) {
-        return '/auth/error?error=Disabled';
+        if (!userExists) {
+          return '/auth/error?error=Disabled';
+        }
       }
+
       return true;
     }
   },
