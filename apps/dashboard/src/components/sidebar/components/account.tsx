@@ -68,7 +68,7 @@ export const Account = (props: AccountProps) => {
                   <span className="text-sm font-regular truncate mr-2">
                     {data.name}
                   </span>
-                  <span className="text-xs text-neutral-600 dark:text-neutral-400 font-regular truncate">
+                  <span className="font-secondary text-xs text-neutral-600 dark:text-neutral-400 font-regular truncate">
                     {data.slug}
                   </span>
                 </div>

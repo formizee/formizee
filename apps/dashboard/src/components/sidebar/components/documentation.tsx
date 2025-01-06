@@ -5,7 +5,7 @@ export const Documentation = () => (
   <SidebarMenuItem>
     <SidebarMenuButton
       asChild
-      className="transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-800"
+      className="font-secondary transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-800"
     >
       <a
         target="_blank"

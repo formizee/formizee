@@ -11,7 +11,7 @@ export const Search = () => {
     <SidebarMenuItem>
       <SidebarMenuButton
         onClick={() => setOpen(open => !open)}
-        className="text-neutral-600 dark:text-neutral-400 transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-800"
+        className="font-secondary text-neutral-600 dark:text-neutral-400 transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-800"
       >
         <SearchIcon />
         <span>Search</span>

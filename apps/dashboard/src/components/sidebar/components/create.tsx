@@ -13,7 +13,7 @@ export const Create = (props: {workspaceSlug: string}) => {
       <SidebarGroupAction
         title="New Form"
         onClick={() => setOpen(open => !open)}
-        className="transition-colors bg-transparent hover:bg-neutral-200 dark:hover:bg-neutral-800"
+        className="font-secondary transition-colors bg-transparent hover:bg-neutral-200 dark:hover:bg-neutral-800"
       >
         <PlusIcon /> <span className="sr-only">New Form</span>
       </SidebarGroupAction>
