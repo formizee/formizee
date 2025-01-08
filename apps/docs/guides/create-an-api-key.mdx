@@ -11,32 +11,39 @@ To get the most out of this guide, you'll need to:
 
 ## 1. Login into the Dashboard
 
-<Frame caption="The Dashboard">
-  <img className="block dark:hidden" src="../assets/guides/create-your-first-form/2-light.png" alt="Dashboard Page for Formizee" />
-  <img className="hidden dark:block" src="../assets/guides/create-your-first-form/2-dark.png"  alt="Dashboard Page for Formizee"/>
+<Frame>
+  <img className="block dark:hidden" src="../assets/guides/create-an-api-key/1-light.png" alt="Dashboard Page for Formizee" />
+  <img className="hidden dark:block" src="../assets/guides/create-an-api-key/1-dark.png"  alt="Dashboard Page for Formizee"/>
 </Frame>
 
-## 2. Go to Root Keys
-Now that we are inside the dashboard, we will click on the "New" button on the top of the sidebar.
-This will show a dialog to create your form.
+## 2. Go to Settings
+Now that we are inside the dashboard, we will click on the **"Settings"** button on the sidebar.
+Then go to **Workspace > API Keys**
 
-<Frame caption="Create your form">
-  <img className="block dark:hidden" src="../assets/guides/create-your-first-form/3-light.png" alt="Create your form" />
-  <img className="hidden dark:block" src="../assets/guides/create-your-first-form/3-dark.png"  alt="Create your form"/>
+<Frame>
+  <img className="block dark:hidden" src="../assets/guides/create-an-api-key/2-light.png" alt="Settings Page" />
+  <img className="hidden dark:block" src="../assets/guides/create-an-api-key/2-dark.png"  alt="Settings Page"/>
 </Frame>
 
 ## 3. Create a API Key
-Now you can see your brand new form, customize the appearance is you want _(icon, colors...)_
-If you look closer, in the first section appears your `Endpoint URL`, this is used to integrate the form within your app.
+Now press on the **"New Key"** button to open the create dialog, here you can assign a name and a expiration date to the key.
 
-<Frame caption="Create your form">
-  <img className="block dark:hidden" src="../assets/guides/create-your-first-form/4-light.png" alt="Create your form" />
-  <img className="hidden dark:block" src="../assets/guides/create-your-first-form/4-dark.png"  alt="Create your form"/>
+_We recommend to set carefully the **Expiration Date** of the key._
+
+<Frame>
+  <img className="block dark:hidden" src="../assets/guides/create-an-api-key/3-light.png" alt="Create your key" />
+  <img className="hidden dark:block" src="../assets/guides/create-an-api-key/3-dark.png"  alt="Create your key"/>
 </Frame>
 
-<Tip>You can also see the Endpoint ID on the settings tab under "Formizee ID"</Tip>
+## 4. Copy your API Key
+That's it, you new API Key is created, now it should be copied into your clipboard:
 
-## 4. Test your API key
+<Frame>
+  <img className="block dark:hidden" src="../assets/guides/create-an-api-key/4-light.png" alt="Copy your key" />
+  <img className="hidden dark:block" src="../assets/guides/create-an-api-key/4-dark.png"  alt="Copy your key"/>
+</Frame>
+
+## 5. Test your API key
 Open your terminal and paste the next code:
 
 <Tabs>
@@ -78,7 +85,7 @@ You should see all the submissions of your form, like this:
 
 <Warning>The only types shown in the schema are `string` and `file`, do not expect *number* or *boolean* values.</Warning>
 
-## 5. Next steps
+## 6. Next steps
 Now that you know how to create API Keys, see the **API reference** to unleash all the power!
 
 <Card icon="database" href="/api-references/submissions/list" title="API Reference"/>
