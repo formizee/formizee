@@ -52,12 +52,25 @@
   ],
   "navigation": [
     {
-      "group": "Introduction",
-      "pages": ["introduction"]
+      "group": "Formizee",
+      "pages": [
+        "introduction",
+        {
+          "group": "Guides",
+          "pages": ["guides/create-your-first-form"]
+        }
+      ]
     },
     {
       "group": "Quickstart",
-      "pages": ["quickstart/nextjs"]
+      "pages": [
+        "quickstart/nextjs",
+        "quickstart/angular",
+        "quickstart/vue",
+        "quickstart/svelte",
+        "quickstart/astro",
+        "quickstart/html"
+      ]
     },
     {
       "group": "API Documentation",
