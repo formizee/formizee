@@ -6,30 +6,30 @@ description: 'Learn how to ingest your first submission using Next.js'
 ### Prerequisites
 To get the most out of this guide, you'll need to:
 
-* [<u>Create a Formizee account</u>](https://dashboard.formizee.com)
-* [<u>Have a form created</u>](/guides/create-your-first-form)
+* [Create a Formizee account](https://dashboard.formizee.com)
+* [Have a form created](/guides/create-your-first-form)
 
 ## 1. Create a Next.js project
 
 <Tabs>
   <Tab title="pnpm">
   ```bash
-    pnpm create-next-app@latest
+  pnpm create-next-app@latest formizee-next-example
   ```
   </Tab>
   <Tab title="npm">
   ```bash
-    npx create-next-app@latest
+  npx create-next-app@latest formizee-next-example
   ```
   </Tab>
   <Tab title="bun">
   ```bash
-    bun create-next-app@latest
+  bun create-next-app@latest formizee-next-example
   ```
   </Tab>
   <Tab title="yarn">
   ```bash
-    yarn create-next-app@latest
+  yarn create-next-app@latest formizee-next-example
   ```
   </Tab>
 </Tabs>
@@ -37,7 +37,7 @@ To get the most out of this guide, you'll need to:
 ## 2. Update the main page
 Update the file under `src/app/page.tsx` with the next code
 
-```tsx page.tsx {1}
+```tsx page.tsx {2}
 // Add here your Endpoint URL
 const ENDPOINT_URL = "https://api.formizee.com/v1/f/enp_123456";
 
@@ -60,9 +60,28 @@ export default function Page() {
 
 ## 3. Run in local
 
-```bash
+<Tabs>
+  <Tab title="pnpm">
+  ```bash
   pnpm run dev
-```
+  ```
+  </Tab>
+  <Tab title="npm">
+  ```bash
+  npm run dev
+  ```
+  </Tab>
+  <Tab title="bun">
+  ```bash
+  bun run dev
+  ```
+  </Tab>
+  <Tab title="yarn">
+  ```bash
+  yarn run dev
+  ```
+  </Tab>
+</Tabs>
 
 ## 4. Try it yourself
 <Card title="Formizee Next.js Example" icon="link" href="https://github.com/formizee/formizee-next-example">
