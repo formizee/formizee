@@ -1,0 +1,81 @@
+---
+title: Cloudflare Workers
+description: 'Learn how to ingest your first submission using Cloudflare Workers'
+---
+
+### Prerequisites
+To get the most out of this guide, you'll need to:
+
+* [Create a Formizee account](https://dashboard.formizee.com)
+* [Have a form created](/guides/create-your-first-form)
+
+## 1. Create a Cloudflare Workers project
+
+<CodeGroup>
+  ```bash pnpm
+  pnpm create cloudflare@latest formizee-workers-example
+  ```
+  ```bash npm
+  npm create cloudflare@latest formizee-workers-example
+  ```
+  ```bash bun
+  bun create cloudflare@latest formizee-workers-example
+  ```
+  ```bash yarn
+  yarn create cloudflare formizee-workers-example
+  ```
+</CodeGroup>
+
+## 2. Update the main script
+Update the file under `src/index.ts` with the next code, then update the **Endpoint URL**.
+
+```ts index.ts {1}
+const ENDPOINT_URL = "https://api.formizee.com/v1/f/enp_123456";
+
+export default {
+	async fetch(
+		_request: Request,
+		_env: Env,
+		_ctx: ExecutionContext,
+	): Promise<Response> {
+		const res = await fetch(ENDPOINT_URL, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				name: "example",
+				email: "example@mail.com",
+			}),
+		});
+		const data = await res.json();
+		return new Response(JSON.stringify(data), {
+			headers: {
+				"Content-Type": "application/json",
+			},
+		});
+	},
+};
+```
+
+## 3. Run in local
+
+<CodeGroup>
+  ```bash pnpm
+  pnpm run dev
+  ```
+  ```bash npm
+  npm run dev
+  ```
+  ```bash bun
+  bun run dev
+  ```
+  ```bash yarn
+  yarn run dev
+  ```
+</CodeGroup>
+
+## 4. Try it yourself
+<Card title="Formizee Cloudflare Workers Example" icon="link" href="https://github.com/formizee/formizee-cloudflare-workers-example">
+  See the full source code
+</Card>

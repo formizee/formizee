@@ -1,0 +1,85 @@
+---
+title: HTML
+description: 'Learn how to ingest your first submission using HTML'
+---
+
+### Prerequisites
+To get the most out of this guide, you'll need to:
+
+* [Create a Formizee account](https://dashboard.formizee.com)
+* [Have a form created](/guides/create-your-first-form)
+
+## 1. Create the project
+Make a new folder and create a `index.html` inside with the following content.
+Then update the action with your **Endpoint URL**.
+
+```html index.html {7}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Formizee HTML Example</title>
+  </head>
+  <body>
+    <form method="post" action="https://api.formizee.com/v1/f/enp_123456">
+      <label for="name">
+        Name
+        <input id="name" autoComplete="name" name="name" />
+      </label>
+      <label for="email">
+        Email
+        <input id="email" autoComplete="email" name="email" />
+      </label>
+      <button type="submit">Submit</button>
+    </form>
+  </body>
+</html>
+```
+
+## 2. Install the server
+
+<CodeGroup>
+  ```bash pnpm
+  pnpm add -D http-server
+  ```
+  ```bash npm
+  npm install --save http-server
+  ```
+  ```bash bun
+  bun add -D http-server
+  ```
+  ```bash yarn
+  yarn add -D http-server
+  ```
+</CodeGroup>
+
+After install, add this script to your `package.json`
+```json {2}
+"scripts": {
+  "dev": "http-server ."
+},
+"devDependencies": {
+  "http-server": "14.1.1"
+},
+```
+
+## 3. Run in local
+
+<CodeGroup>
+  ```bash pnpm
+  pnpm run dev
+  ```
+  ```bash npm
+  npm run dev
+  ```
+  ```bash bun
+  bun run dev
+  ```
+  ```bash yarn
+  yarn run dev
+  ```
+</CodeGroup>
+
+## 4. Try it yourself
+<Card title="Formizee HTML Example" icon="link" href="https://github.com/formizee/formizee-html-example">
+  See the full source code
+</Card>

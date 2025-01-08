@@ -3,21 +3,39 @@ title: Next.js
 description: 'Learn how to ingest your first submission using Next.js'
 ---
 
-## 1. Get the Next.js Formizee template
+### Prerequisites
+To get the most out of this guide, you'll need to:
 
-```bash
-  git clone https://github.com/formizee/formizee-next-example.git
-```
+* [Create a Formizee account](https://dashboard.formizee.com)
+* [Have a form created](/guides/create-your-first-form)
+
+## 1. Create a Next.js project
+
+<CodeGroup>
+  ```bash pnpm
+  pnpm create-next-app@latest formizee-next-example
+  ```
+  ```bash npm
+  npx create-next-app@latest formizee-next-example
+  ```
+  ```bash bun
+  bun create-next-app@latest formizee-next-example
+  ```
+  ```bash yarn
+  yarn create-next-app@latest formizee-next-example
+  ```
+</CodeGroup>
 
 ## 2. Update the main page
-Update the file under `src/app/page.tsx` with the endpoint id of your form
+Update the file under `src/app/page.tsx` with the next code
 
-```tsx page.tsx {1}
-const ENDPOINT = "enp_123456";
+```tsx page.tsx {2}
+// Add here your Endpoint URL
+const ENDPOINT_URL = "https://api.formizee.com/v1/f/enp_123456";
 
 export default function Page() {
 	return (
-		<form method="post" action={`https://api.formizee.com/v1/f/${ENDPOINT}`}>
+		<form method="post" action={ENDPOINT_URL}>
 			<label htmlFor="name">
 				Name
 				<input id="name" autoComplete="name" name="name" />
@@ -34,9 +52,20 @@ export default function Page() {
 
 ## 3. Run in local
 
-```bash
+<CodeGroup>
+  ```bash pnpm
   pnpm run dev
-```
+  ```
+  ```bash npm
+  npm run dev
+  ```
+  ```bash bun
+  bun run dev
+  ```
+  ```bash yarn
+  yarn run dev
+  ```
+</CodeGroup>
 
 ## 4. Try it yourself
 <Card title="Formizee Next.js Example" icon="link" href="https://github.com/formizee/formizee-next-example">

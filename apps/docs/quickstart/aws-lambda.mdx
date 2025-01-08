@@ -1,0 +1,56 @@
+---
+title: AWS Lambda
+description: 'Learn how to ingest your first submission using AWS Lambda'
+---
+
+### Prerequisites
+To get the most out of this guide, you'll need to:
+
+* [Create a Formizee account](https://dashboard.formizee.com)
+* [Have a form created](/guides/create-your-first-form)
+
+## 1. Create a AWS Lambda function
+
+Go to [aws.amazon.com](https://aws.amazon.com) and create a new Lambda function using the Node 22.x runtime.
+
+<Frame>
+  <img src="../assets/quickstart/aws-lambda-1.png" alt="AWS Dashboard" />
+</Frame>
+
+## 2. Edit the handler function
+Paste the following code into the browser editor and update the **ENDPOINT_URL**.
+
+```js index.mjs {1}
+const ENDPOINT_URL = "https://api.formizee.com/v1/f/enp_123456";
+
+export const handler = async(_event) => {
+	const res = await fetch(ENDPOINT_URL, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify({
+			name: "example",
+			email: "example@mail.com",
+		}),
+	});
+	const data = await res.json();
+	return new Response(JSON.stringify(data), {
+		headers: {
+			"Content-Type": "application/json",
+		},
+	});
+};
+```
+
+## 3. Deploy and ingest submissions
+Click on `Deploy` and then `Test` at the left of the screen.
+
+<Frame>
+<img src="../assets/quickstart/aws-lambda-2.png" alt="AWS Lambda Editor" />
+</Frame>
+
+## 4. Try it yourself
+<Card title="Formizee AWS Lambda Example" icon="link" href="https://github.com/formizee/formizee-aws-lambda-example">
+  See the full source code
+</Card>

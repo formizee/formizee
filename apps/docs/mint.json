@@ -52,12 +52,37 @@
   ],
   "navigation": [
     {
-      "group": "Introduction",
-      "pages": ["introduction"]
+      "group": "Overview",
+      "pages": ["introduction", "concepts", "security"]
+    },
+    {
+      "group": "Guides",
+      "pages": [
+        "guides/create-your-first-form",
+        "guides/add-a-linked-email",
+        "guides/create-an-api-key",
+        "guides/upload-files"
+      ]
     },
     {
       "group": "Quickstart",
-      "pages": ["quickstart/nextjs"]
+      "pages": [
+        "quickstart/nextjs",
+        "quickstart/angular",
+        "quickstart/vue",
+        "quickstart/svelte",
+        "quickstart/astro",
+        "quickstart/html",
+        {
+          "group": "Serverless",
+          "pages": [
+            "quickstart/cloudflare-workers",
+            "quickstart/vercel-functions",
+            "quickstart/deno-deploy",
+            "quickstart/aws-lambda"
+          ]
+        }
+      ]
     },
     {
       "group": "API Documentation",
