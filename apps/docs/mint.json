@@ -64,12 +64,26 @@
     {
       "group": "Quickstart",
       "pages": [
-        "quickstart/nextjs",
-        "quickstart/angular",
-        "quickstart/vue",
-        "quickstart/svelte",
-        "quickstart/astro",
-        "quickstart/html"
+        {
+          "group": "Frameworks",
+          "pages": [
+            "quickstart/nextjs",
+            "quickstart/angular",
+            "quickstart/vue",
+            "quickstart/svelte",
+            "quickstart/astro",
+            "quickstart/html"
+          ]
+        },
+        {
+          "group": "Serverless",
+          "pages": [
+            "quickstart/cloudflare-workers",
+            "quickstart/vercel-functions",
+            "quickstart/deno-deploy",
+            "quickstart/aws-lambda"
+          ]
+        }
       ]
     },
     {
