@@ -11,28 +11,20 @@ To get the most out of this guide, you'll need to:
 
 ## 1. Create a Cloudflare Workers project
 
-<Tabs>
-  <Tab title="pnpm">
-  ```bash
+<CodeGroup>
+  ```bash pnpm
   pnpm create cloudflare@latest formizee-workers-example
   ```
-  </Tab>
-  <Tab title="npm">
-  ```bash
+  ```bash npm
   npm create cloudflare@latest formizee-workers-example
   ```
-  </Tab>
-  <Tab title="bun">
-  ```bash
+  ```bash bun
   bun create cloudflare@latest formizee-workers-example
   ```
-  </Tab>
-  <Tab title="yarn">
-  ```bash
+  ```bash yarn
   yarn create cloudflare formizee-workers-example
   ```
-  </Tab>
-</Tabs>
+</CodeGroup>
 
 ## 2. Update the main script
 Update the file under `src/index.ts` with the next code, then update the **Endpoint URL**.
@@ -68,28 +60,20 @@ export default {
 
 ## 3. Run in local
 
-<Tabs>
-  <Tab title="pnpm">
-  ```bash
+<CodeGroup>
+  ```bash pnpm
   pnpm run dev
   ```
-  </Tab>
-  <Tab title="npm">
-  ```bash
+  ```bash npm
   npm run dev
   ```
-  </Tab>
-  <Tab title="bun">
-  ```bash
+  ```bash bun
   bun run dev
   ```
-  </Tab>
-  <Tab title="yarn">
-  ```bash
+  ```bash yarn
   yarn run dev
   ```
-  </Tab>
-</Tabs>
+</CodeGroup>
 
 ## 4. Try it yourself
 <Card title="Formizee Cloudflare Workers Example" icon="link" href="https://github.com/formizee/formizee-cloudflare-workers-example">
