@@ -1,0 +1,82 @@
+---
+title: Astro
+description: 'Learn how to ingest your first submission using Astro'
+---
+
+### Prerequisites
+To get the most out of this guide, you'll need to:
+
+* [Create a Formizee account](https://dashboard.formizee.com)
+* [Have a form created](/guides/create-your-first-form)
+
+## 1. Create a Astro project
+
+<Tabs>
+  <Tab title="pnpm">
+  ```bash
+  pnpm create astro@latest formizee-astro-example
+  ```
+  </Tab>
+  <Tab title="npm">
+  ```bash
+  npm create astro@latest formizee-astro-example
+  ```
+  </Tab>
+  <Tab title="bun">
+  ```bash
+  bun create astro@latest formizee-astro-example
+  ```
+  </Tab>
+  <Tab title="yarn">
+  ```bash
+  yarn create astro formizee-astro-example
+  ```
+  </Tab>
+</Tabs>
+
+## 2. Update the main page
+Update the file under `src/pages/index.astro` with the next code, then update the **Endpoint URL**.
+
+```tsx index.astro {1}
+<form method="post" action="https://api.formizee.com/v1/f/enp_123456">
+  <label for="name">
+    Name
+    <input id="name" autoComplete="name" name="name" />
+  </label>
+  <label for="email">
+    Email
+    <input id="email" autoComplete="email" name="email" />
+  </label>
+  <button type="submit">Submit</button>
+</form>
+```
+
+## 3. Run in local
+
+<Tabs>
+  <Tab title="pnpm">
+  ```bash
+  pnpm run dev
+  ```
+  </Tab>
+  <Tab title="npm">
+  ```bash
+  npm run dev
+  ```
+  </Tab>
+  <Tab title="bun">
+  ```bash
+  bun run dev
+  ```
+  </Tab>
+  <Tab title="yarn">
+  ```bash
+  yarn run dev
+  ```
+  </Tab>
+</Tabs>
+
+## 4. Try it yourself
+<Card title="Formizee Astro Example" icon="link" href="https://github.com/formizee/formizee-astro-example">
+  See the full source code
+</Card>

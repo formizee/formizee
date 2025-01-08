@@ -1,0 +1,49 @@
+---
+title: Angular
+description: 'Learn how to ingest your first submission using Angular'
+---
+
+### Prerequisites
+To get the most out of this guide, you'll need to:
+
+* [Create a Formizee account](https://dashboard.formizee.com)
+* [Have a form created](/guides/create-your-first-form)
+
+## 1. Create a Angular project
+
+```bash
+ng new formizee-angular-example
+```
+
+## 2. Update the main page
+Update the file under `src/app/app.component.html` with the next code,
+then add your **Endpoint URL**.
+
+```html app.component.html {2}
+<main>
+  <form method="post" action="<your-endpoint-url>">
+    <label for="name">
+      Name
+      <input id="name" autoComplete="name" name="name" />
+    </label>
+    <label for="email">
+      Email
+      <input id="email" autoComplete="email" name="email" />
+    </label>
+    <button>Submit</button>
+  </form>
+</main>
+
+<router-outlet />
+```
+
+## 3. Run in local
+
+```bash
+  ng serve
+```
+
+## 4. Try it yourself
+<Card title="Formizee Angular Example" icon="link" href="https://github.com/formizee/formizee-angular-example">
+  See the full source code
+</Card>
