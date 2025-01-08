@@ -52,29 +52,27 @@
   ],
   "navigation": [
     {
-      "group": "Formizee",
+      "group": "Overview",
+      "pages": ["introduction", "concepts", "security"]
+    },
+    {
+      "group": "Guides",
       "pages": [
-        "introduction",
-        {
-          "group": "Guides",
-          "pages": ["guides/create-your-first-form"]
-        }
+        "guides/create-your-first-form",
+        "guides/add-a-linked-email",
+        "guides/create-an-api-key",
+        "guides/upload-files"
       ]
     },
     {
       "group": "Quickstart",
       "pages": [
-        {
-          "group": "Frameworks",
-          "pages": [
-            "quickstart/nextjs",
-            "quickstart/angular",
-            "quickstart/vue",
-            "quickstart/svelte",
-            "quickstart/astro",
-            "quickstart/html"
-          ]
-        },
+        "quickstart/nextjs",
+        "quickstart/angular",
+        "quickstart/vue",
+        "quickstart/svelte",
+        "quickstart/astro",
+        "quickstart/html",
         {
           "group": "Serverless",
           "pages": [

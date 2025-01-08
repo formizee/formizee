@@ -1,0 +1,35 @@
+---
+title: Security
+icon: lock
+description: "A overview of how Formizee handles the stored data"
+---
+
+These are technical concepts written for transparency of the platform,
+If you just want to use the platform, you can skip this page.
+
+### Data Isolation
+
+Formizee stores the data in two different locations, the `workspace` data (users, endpoints, emails and configuration),
+are stored in one location, besides the submissions, which are stored in another location for security.
+
+These isolation prevents data tracking and break points in case of data leaks.
+
+
+### The Vault
+
+The vault is a serverless microservice built specifically to store submissions securely, is fast, simple and reliable.
+
+### Encryption
+
+When a form is created, a new AES-256 encryption key is created, this key is used to encrypt all the data of your submissions (files are not included at the moment).
+
+This ensures that even when someone can access the data, it is impossible for them to read it, since the data necessary to complete the key is isolated in the first location (workspace data).
+
+Also, the keys are rotated every month to prevent accidental leaks during deployments.
+
+### Payment Data
+
+The payment data is not in our hands, is all managed throught [Stripe](https://stripe.com), you can read more about this in our [Terms Of Service](https://formizee.com/legal/terms-of-service)
+
+---
+If you want to know more about our infrastructure, check the [Contributing Docs](/contributing/project-structure)
