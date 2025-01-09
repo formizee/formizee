@@ -110,15 +110,18 @@ export const getEndpointMetrics = protectedProcedure
       });
     }
 
+    /*
     const {data, error} = await ctx.vault.submissions.list({
       endpointId: endpoint.id
     });
 
     if (error && error.status !== 404) {
       throw new TRPCError({
-        code: 'INTERNAL_SERVER_ERROR'
+        code: 'INTERNAL_SERVER_ERROR',
+        message: error.message
       });
     }
+    */
 
     const monthResponse = await ctx.analytics.queryFormizeeMetricsSubmissions(
       endpoint.id,
@@ -134,7 +137,7 @@ export const getEndpointMetrics = protectedProcedure
     const dayMetrics = generateLast24HoursData(dayResponse ?? []);
 
     const response = {
-      totalSubmissions: data?.submissions.length ?? 0,
+      totalSubmissions: 999,
       '30d': monthMetrics,
       '24h': dayMetrics
     };
