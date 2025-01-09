@@ -277,6 +277,7 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
           }
         })
       );
+      console.info(`Storage Used by the submission: ${storageUsed}`);
       await vault.storage.post({endpointId: endpoint.id, storageUsed});
     }
 
@@ -301,7 +302,7 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
       }
     }
 
-    metrics.emit({
+    await metrics.forceEmit({
       metric: 'submission.upload',
       endpointId: endpoint.id,
       workspaceId: workspace.id,

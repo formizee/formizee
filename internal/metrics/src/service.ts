@@ -27,6 +27,23 @@ export class Metrics {
     });
   }
 
+  public async forceEmit(metric: Metric) {
+    const metricType = metric.metric.split('.')[0] ?? '';
+    const type = metricType === '' ? '' : `${metricType}__`;
+
+    const publishEvent = this.client.buildIngestEndpoint({
+      datasource: `metrics__${type}v1`,
+      event: metricSchema
+    });
+
+    try {
+      await publishEvent(metric);
+    } catch (e) {
+      const error = e as Error;
+      console.error(error.message);
+    }
+  }
+
   public emit(metric: Metric) {
     const metricType = metric.metric.split('.')[0] ?? '';
     const type = metricType === '' ? '' : `${metricType}__`;
