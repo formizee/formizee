@@ -95,7 +95,7 @@ export async function createUser(
     color:
       schema.endpointColor[
         Math.floor(Math.random() * schema.endpointColor.length)
-      ],
+      ]
   };
 
   await database.insert(schema.endpoint).values(newEndpoint);
