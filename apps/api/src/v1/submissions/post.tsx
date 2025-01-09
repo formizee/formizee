@@ -248,7 +248,9 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
     if (error) {
       logger.error(`vault.submissions.post(${endpointId})`, {error});
       if (contentType !== 'application/json') {
-        return context.redirect('https://formizee.com/f/error');
+        return context.redirect(
+          `https://formizee.com/f/error?message=${error.message}`
+        );
       }
       throw new HTTPException(error.status, {
         message: error.message
