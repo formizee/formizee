@@ -1,4 +1,4 @@
-import {Fetcher} from '@cloudflare/workers-types';
+import type {Fetcher} from '@cloudflare/workers-types';
 
 export class FetchWrapper {
   private readonly fetcher: Fetcher | null;
