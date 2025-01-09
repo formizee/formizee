@@ -231,7 +231,7 @@ export class Cache {
         totalItems: input.totalItems
       }),
       {
-        expirationTtl: 3600
+        expirationTtl: 30
       }
     );
 
