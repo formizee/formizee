@@ -1,6 +1,15 @@
 import type {Response} from '../types';
 
 /**
+ * Metrics
+ *****/
+
+export interface MetricsRequest {
+  endpointId: string;
+}
+export type MetricsResponse = Response<{totalSubmissions: number}>;
+
+/**
  * Delete
  *****/
 
