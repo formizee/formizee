@@ -92,7 +92,7 @@ export const CreateKeyButton = (props: {workspaceSlug: string}) => {
       </Button>
       <div className="hidden">
         <Dialog open={open} onOpenChange={setOpen}>
-          <DialogContent className="rounded-lg border-neutral-200 dark:border-neutral-800">
+          <DialogContent className="border-2 rounded-lg border-neutral-200 dark:border-neutral-800">
             <DialogHeader>
               <DialogTitle className="w-full flex flex-col gap-6 items-center text-left text-xl font-bold">
                 <Image

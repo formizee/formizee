@@ -59,7 +59,7 @@ export const DeleteUserDialog = () => {
         Delete Permanently
       </Button>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent>
+        <DialogContent className="border-2">
           <DialogHeader className="flex mb-4 items-center">
             <DialogTitle className="w-full flex flex-col gap-6 items-center text-left text-xl font-bold">
               <Image

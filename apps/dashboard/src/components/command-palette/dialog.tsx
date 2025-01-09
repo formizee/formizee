@@ -49,7 +49,7 @@ export function CommandPalette() {
     <>
       <CommandDialog open={open} onOpenChange={setOpen}>
         <CommandInput
-          className="border-red-400"
+          className="font-secondary"
           placeholder="Search within your workspace..."
         />
         <CommandList>
@@ -70,8 +70,8 @@ export function CommandPalette() {
         </CommandList>
         <div className="flex justify-between gap-2 p-2 border-t text-neutral-400 dark:text-neutral-500 border-t-neutral-200 dark:border-t-neutral-800">
           <div className="flex flex-row gap-2">
-            <div className="flex flex-row text-xs gap-2 items-center">
-              <div className="bg-neutral-200 dark:bg-neutral-800 px-1 py-0.5 rounded-sm">
+            <div className="flex flex-row text-xs gap-2 items-center font-secondary">
+              <div className="bg-neutral-200 dark:bg-neutral-800 px-1 py-0.5 rounded-[0.25rem]">
                 <svg
                   className="w-[12px]  h-[12px] fill-neutral-400 dark:fill-neutral-500"
                   viewBox="0 0 16 16"
@@ -81,8 +81,8 @@ export function CommandPalette() {
               </div>
               Select
             </div>
-            <div className="flex flex-row text-xs gap-2 items-center">
-              <div className="bg-neutral-200 dark:bg-neutral-800 px-1 py-0.5 rounded-sm">
+            <div className="flex flex-row text-xs gap-2 items-center font-secondary">
+              <div className="bg-neutral-200 dark:bg-neutral-800 px-1 py-0.5 rounded-[0.25rem]">
                 <svg
                   className="w-[12px]  h-[12px] fill-neutral-400 dark:fill-neutral-500"
                   viewBox="0 0 16 16"
@@ -93,8 +93,8 @@ export function CommandPalette() {
               Open
             </div>
           </div>
-          <div className="flex flex-row text-xs gap-2 items-center">
-            <div className="bg-neutral-200 dark:bg-neutral-800 px-1 rounded-sm">
+          <div className="flex flex-row text-xs gap-2 items-center font-secondary">
+            <div className="bg-neutral-200 dark:bg-neutral-800 px-1 rounded-[0.25rem]">
               <span className="text-[10px] font-semibold font-mono">ESC</span>
             </div>
             Close

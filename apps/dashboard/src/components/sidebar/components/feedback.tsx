@@ -1,6 +1,6 @@
 'use client';
 
-import {ArrowRightIcon, ChatIcon, LoadingIcon} from '@formizee/ui/icons';
+import {ChatIcon, LoadingIcon} from '@formizee/ui/icons';
 import chatIcon from '@/../public/chat.webp';
 import Image from 'next/image';
 
@@ -41,7 +41,7 @@ const formSchema = z.object({
 });
 
 export const Feedback = (props: Props) => {
-  const [isLoading, _setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -52,10 +52,20 @@ export const Feedback = (props: Props) => {
   });
 
   const onSubmit = form.handleSubmit(async data => {
-    await sendFeedbackEmail(props.userId, props.userName, data.description);
+    setIsLoading(true);
+    const {error} = await sendFeedbackEmail(
+      props.userId,
+      props.userName,
+      data.description
+    );
 
+    setIsLoading(false);
     setOpen(false);
     form.reset();
+
+    if (error) {
+      console.error(error);
+    }
 
     toast({
       title: 'Thanks!',
@@ -69,14 +79,14 @@ export const Feedback = (props: Props) => {
       <SidebarMenuItem>
         <SidebarMenuButton
           onClick={() => setOpen(open => !open)}
-          className="transition-colors text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-800"
+          className="font-secondary transition-colors text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-800"
         >
           <ChatIcon />
           Feedback
         </SidebarMenuButton>
       </SidebarMenuItem>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent>
+        <DialogContent className="border-2">
           <DialogHeader>
             <DialogTitle className="w-full flex flex-col gap-6 items-center text-left text-xl font-bold">
               <Image
@@ -99,7 +109,9 @@ export const Feedback = (props: Props) => {
                 name="description"
                 render={({field}) => (
                   <FormItem>
-                    <FormLabel>Message</FormLabel>
+                    <FormLabel className="text-neutral-400 dark:text-neutral-600">
+                      Message
+                    </FormLabel>
                     <FormControl>
                       <Textarea
                         className="h-32 overflow-light-style dark:overflow-dark-style "
@@ -115,9 +127,8 @@ export const Feedback = (props: Props) => {
                 {isLoading ? (
                   <LoadingIcon className="size-8" />
                 ) : (
-                  <div className="group flex flex-row w-full items-center justify-center gap-2">
-                    <span>Send Feedback</span>{' '}
-                    <ArrowRightIcon className="transition-all w-0 group-hover:w-6" />
+                  <div className="flex flex-row w-full items-center justify-center gap-2">
+                    <span>Send Feedback</span>
                   </div>
                 )}
               </Button>

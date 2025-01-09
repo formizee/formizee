@@ -2,26 +2,30 @@
 
 import {redirect} from 'next/navigation';
 import {signOut} from '@/lib/auth';
-import {env} from '@/lib/enviroment';
-import {Resend} from 'resend';
+
+const FEEDBACK_ENDPOINT = 'enp_2WgsdoNbzHHYkXnzbkCcpqx3aUjx';
 
 export const sendFeedbackEmail = async (
   id: string,
   name: string,
   feedback: string
 ) => {
-  const client = new Resend(env().RESEND_TOKEN);
+  const res = await fetch(
+    `https://api.formizee.com/v1/f/${FEEDBACK_ENDPOINT}`,
+    {
+      headers: {'content-type': 'application/json'},
+      body: JSON.stringify({id, name, feedback}),
+      method: 'post'
+    }
+  );
 
-  const {error} = await client.emails.send({
-    from: 'Formizee Feedback <noreply@formizee.com>',
-    subject: `New Submission from ${name}`,
-    to: 'feedback@formizee.com',
-    html: `<strong>${id}</strong> share his feedback:<br/><br/>${feedback}`
-  });
-
-  if (error) {
-    console.error(error);
+  if (!res.ok) {
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+    const data = (await res.json()) as any;
+    return Promise.resolve({error: new Error(data.message)});
   }
+
+  return Promise.resolve({error: null});
 };
 
 export const logout = async () => {

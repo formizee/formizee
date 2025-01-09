@@ -1,11 +1,12 @@
-import logo from '@/../public/logo.svg';
 import {Transition} from '@/components';
 import {LoginForm} from './form';
 import Image from 'next/image';
 import Link from 'next/link';
-import {z} from 'zod';
-import {auth} from '@/lib/auth';
+
 import {redirect} from 'next/navigation';
+import logo from '@/../public/logo.svg';
+import {auth} from '@/lib/auth';
+import {z} from 'zod';
 
 const searchParamsSchema = z.object({
   redirectTo: z.string().optional().default('/')
@@ -41,7 +42,7 @@ export default async function Login({
           </h1>
         </header>
         <LoginForm redirectTo={redirectTo} />
-        <p className="text-balance text-center text-neutral-600 dark:text-neutral-400 text-xs">
+        <p className="mt-2 text-balance text-center text-neutral-600 dark:text-neutral-400 text-xs">
           {'By signing in, you agree to our '}
           <Link
             className="underline underline-offset-2 transition-colors hover:text-neutral-950 dark:hover:text-neutral-50"

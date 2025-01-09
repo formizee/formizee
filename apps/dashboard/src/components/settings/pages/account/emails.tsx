@@ -45,7 +45,7 @@ export const SettingsAccountEmails = (props: Props) => {
           />
           <div className="flex flex-col gap-1 items-start">
             <span className="font-medium">Linked Emails</span>
-            <p className="text-sm text-neutral-600 dark:text-neutral-400">
+            <p className="font-secondary text-sm text-neutral-600 dark:text-neutral-400">
               Manage your linked emails and notifications
             </p>
           </div>

@@ -15,9 +15,15 @@ const parseBody = async (context: Context<HonoEnv>, next: Next) => {
   );
 
   if (!valid) {
-    throw new HTTPException(415, {
-      message: `Use one of the supported body types: ${supportedContentTypes}`
-    });
+    const message = `Use one of the supported body types: ${supportedContentTypes}`;
+
+    if (contentType !== 'application/json') {
+      return context.redirect(
+        `https://formizee.com/f/error?message=${message}`
+      );
+    }
+
+    throw new HTTPException(415, {message});
   }
 
   let bodyData: BodyData = {
@@ -72,9 +78,9 @@ const parseBody = async (context: Context<HonoEnv>, next: Next) => {
     } catch (error) {
       console.error(error);
       logger.error('Invalid multipart form', {error});
-      throw new HTTPException(400, {
-        message: 'Invalid multipart form'
-      });
+      return context.redirect(
+        'https://formizee.com/f/error?message=Invalid multipart form, please check carefully the docs.'
+      );
     }
   }
 
@@ -91,9 +97,9 @@ const parseBody = async (context: Context<HonoEnv>, next: Next) => {
       bodyData = {data, fileUploads: []};
     } catch (error) {
       logger.error('Invalid urlencoded form', {error});
-      throw new HTTPException(400, {
-        message: 'Invalid form data'
-      });
+      return context.redirect(
+        'https://formizee.com/f/error?message=Invalid urlencoded form, please check carefully the docs.'
+      );
     }
   }
   context.set('bodyContentType', contentType);

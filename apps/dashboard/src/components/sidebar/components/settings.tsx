@@ -11,7 +11,7 @@ export function Settings() {
     <SidebarMenuItem>
       <SidebarMenuButton
         onClick={() => setOpen(open => !open)}
-        className="transition-colors text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-800"
+        className="font-secondary transition-colors text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-800"
       >
         <SettingsIcon />
         <span>Settings</span>

@@ -9,6 +9,9 @@ node_modules
 # testing
 coverage
 
+# sentry
+.env.sentry-build-plugin
+
 # next.js
 .next/
 out/

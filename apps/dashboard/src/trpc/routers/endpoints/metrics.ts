@@ -110,13 +110,14 @@ export const getEndpointMetrics = protectedProcedure
       });
     }
 
-    const {data, error} = await ctx.vault.submissions.list({
+    const {data, error} = await ctx.vault.endpoints.metrics({
       endpointId: endpoint.id
     });
 
     if (error && error.status !== 404) {
       throw new TRPCError({
-        code: 'INTERNAL_SERVER_ERROR'
+        code: 'INTERNAL_SERVER_ERROR',
+        message: error.message
       });
     }
 
@@ -134,7 +135,7 @@ export const getEndpointMetrics = protectedProcedure
     const dayMetrics = generateLast24HoursData(dayResponse ?? []);
 
     const response = {
-      totalSubmissions: data?.submissions.length ?? 0,
+      totalSubmissions: data?.totalSubmissions ?? 0,
       '30d': monthMetrics,
       '24h': dayMetrics
     };

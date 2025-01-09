@@ -97,7 +97,7 @@ export const createEndpoint = protectedProcedure
       slug: input.slug,
       name: input.name ?? input.slug,
 
-      redirectUrl: 'https://formizee.com/thanks-you',
+      redirectUrl: 'https://formizee.com/f/thanks-you',
       targetEmails: input.targetEmails,
 
       icon: schema.endpointIcon[

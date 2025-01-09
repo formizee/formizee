@@ -91,7 +91,11 @@ export async function createUser(
     slug: 'welcome',
     targetEmails: [newUser.email],
     workspaceId,
-    redirectUrl: 'https://formizee.com/thanks-you'
+    redirectUrl: 'https://formizee.com/f/thanks-you',
+    color:
+      schema.endpointColor[
+        Math.floor(Math.random() * schema.endpointColor.length)
+      ]
   };
 
   await database.insert(schema.endpoint).values(newEndpoint);

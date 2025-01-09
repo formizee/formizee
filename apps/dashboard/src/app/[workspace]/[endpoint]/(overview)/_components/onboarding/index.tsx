@@ -39,13 +39,13 @@ export const OnboardingCard = (props: Props) => {
             <span
               className={cn(
                 getColor(props.color, true).text,
-                'text-sm font-semibold mr-4 select-none'
+                'text-sm font-semibold font-secondary mr-4 select-none'
               )}
             >
               POST
             </span>
           </div>
-          <span className="text-sm flex-1 text-neutral-600 dark:text-neutral-400 truncate">
+          <span className="font-secondary text-sm flex-1 text-neutral-600 dark:text-neutral-400 truncate">
             {endpointUrl}
           </span>
           <Button

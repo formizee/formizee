@@ -10,6 +10,14 @@ interface Props {
 }
 
 export const UsageWidget = (props: Props) => {
+  const currentPlanLimit = () => {
+    if (props.planFeature === 'storage') {
+      return `${props.currentPlanLimits[props.planFeature].toLocaleString()} MB`;
+    }
+
+    return props.currentPlanLimits[props.planFeature].toLocaleString();
+  };
+
   return (
     <div className="flex justify-between items-end gap-2 mt-4">
       <Label className="text-sm">{props.children}</Label>
@@ -17,8 +25,7 @@ export const UsageWidget = (props: Props) => {
         {typeof props.currentPlanLimits[props.planFeature] === 'number' ? (
           <>
             <span>
-              {props.usage} /{' '}
-              {props.currentPlanLimits[props.planFeature].toLocaleString()}
+              {props.usage} / {currentPlanLimit()}
             </span>
             <CircleProgress
               percentage={

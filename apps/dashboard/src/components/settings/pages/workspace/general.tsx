@@ -41,7 +41,7 @@ export const SettingsWorkspaceGeneral = (props: Props) => {
         />
         <div className="flex flex-col max-w-96">
           <span className="font-regular truncate mr-2">{workspace.name}</span>
-          <span className="text-sm text-neutral-600 dark:text-neutral-400 font-regular max-w-[12.5rem] truncate">
+          <span className="font-secondary text-sm text-neutral-600 dark:text-neutral-400 font-regular max-w-[12.5rem] truncate">
             {workspace.slug}
           </span>
         </div>

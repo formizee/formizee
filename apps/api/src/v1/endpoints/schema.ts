@@ -59,13 +59,13 @@ export const EndpointSchema = z.object({
     .url({
       message: 'Invalid redirect url, please check that is correctly typed.'
     })
-    .default('https://formizee.com/thanks-you')
+    .default('https://formizee.com/f/thanks-you')
     .optional()
     .openapi({
       description:
         'The redirect url of the endpoint. When a user send a submission through a form, will be redirected to this url.',
       example: 'https://example.com/thanks-you',
-      default: 'https://formizee.com/thanks-you'
+      default: 'https://formizee.com/f/thanks-you'
     }),
   targetEmails: z
     .string()
@@ -127,13 +127,13 @@ export const PostEndpointSchema = z.object({
     .url({
       message: 'Invalid redirect url, please check that is correctly typed.'
     })
-    .default('https://formizee.com/thanks-you')
+    .default('https://formizee.com/f/thanks-you')
     .optional()
     .openapi({
       description:
         'The redirect url of the endpoint. When a user send a submission through a form, will be redirected to this url.',
       example: 'https://example.com/thanks-you',
-      default: 'https://formizee.com/thanks-you'
+      default: 'https://formizee.com/f/thanks-you'
     }),
   targetEmails: z
     .string()

@@ -28,7 +28,7 @@ export const ChartHeader = (props: Props) => {
       </div>
       <Select value={props.timeRange} onValueChange={props.setTimeRange}>
         <SelectTrigger
-          className="w-[170px] gap-2 rounded-lg sm:ml-auto mr-2"
+          className="border-2 font-secondary font-semibold w-[170px] gap-2 rounded-lg sm:ml-auto mr-2"
           aria-label="Select a value"
         >
           <CalendarIcon />

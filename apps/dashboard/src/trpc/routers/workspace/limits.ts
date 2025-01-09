@@ -37,17 +37,9 @@ export const getWorkspaceLimits = protectedProcedure
       });
     }
 
-    const workspaceEndpoints = await database
-      .select({count: count()})
-      .from(schema.endpoint)
-      .where(eq(schema.endpoint.workspaceId, workspace.id));
-
-    if (!workspaceEndpoints[0]) {
-      throw new TRPCError({
-        code: 'INTERNAL_SERVER_ERROR',
-        message: 'Server Internal Error'
-      });
-    }
+    const endpoints = await database.query.endpoint.findMany({
+      where: (table, {eq}) => eq(table.workspaceId, workspace.id)
+    });
 
     const workspaceKeys = await database
       .select({count: count()})
@@ -78,10 +70,19 @@ export const getWorkspaceLimits = protectedProcedure
       workspace.id
     );
 
+    let totalStorage = 0;
+    Promise.all(
+      endpoints.map(async endpoint => {
+        const {data} = await ctx.vault.storage.get({endpointId: endpoint.id});
+        totalStorage += data?.storageUsed ?? 0;
+      })
+    );
+
     return {
       submissions,
       apiDailyRequests,
-      endpoints: workspaceEndpoints[0].count,
+      storage: totalStorage,
+      endpoints: endpoints.length,
       keys: workspaceKeys[0].count,
       members: members.length
     };

@@ -80,12 +80,18 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
       });
 
     if (!endpoint) {
+      if (contentType !== 'application/json') {
+        return context.redirect('https://formizee.com/f/not-found');
+      }
       throw new HTTPException(404, {
         message: 'Endpoint not found'
       });
     }
 
     if (!endpoint.isEnabled) {
+      if (contentType !== 'application/json') {
+        return context.redirect('https://formizee.com/f/disabled');
+      }
       throw new HTTPException(403, {
         message: 'The endpoint is currently not accepting submissions'
       });
@@ -105,6 +111,9 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
       });
 
     if (!workspace) {
+      if (contentType !== 'application/json') {
+        return context.redirect('https://formizee.com/f/not-found');
+      }
       throw new HTTPException(404, {
         message: 'Workspace not found'
       });
@@ -132,6 +141,9 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
       });
 
       if (!workspaceMember) {
+        if (contentType !== 'application/json') {
+          return context.redirect('https://formizee.com/f/error');
+        }
         throw new HTTPException(500, {
           message: 'Server Internal Error'
         });
@@ -142,6 +154,9 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
       });
 
       if (!workspaceOwner) {
+        if (contentType !== 'application/json') {
+          return context.redirect('https://formizee.com/f/error');
+        }
         throw new HTTPException(500, {
           message: 'Server Internal Error'
         });
@@ -162,6 +177,9 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
           )
         });
       }
+      if (contentType !== 'application/json') {
+        return context.redirect('https://formizee.com/f/disabled');
+      }
       throw new HTTPException(403, {
         message: 'The endpoint is currently not accepting submissions'
       });
@@ -178,6 +196,9 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
       });
 
       if (!workspaceMember) {
+        if (contentType !== 'application/json') {
+          return context.redirect('https://formizee.com/f/error');
+        }
         throw new HTTPException(500, {
           message: 'Server Internal Error'
         });
@@ -188,6 +209,9 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
       });
 
       if (!workspaceOwner) {
+        if (contentType !== 'application/json') {
+          return context.redirect('https://formizee.com/f/error');
+        }
         throw new HTTPException(500, {
           message: 'Server Internal Error'
         });
@@ -223,6 +247,11 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
 
     if (error) {
       logger.error(`vault.submissions.post(${endpointId})`, {error});
+      if (contentType !== 'application/json') {
+        return context.redirect(
+          `https://formizee.com/f/error?message=${error.message}`
+        );
+      }
       throw new HTTPException(error.status, {
         message: error.message
       });
@@ -248,6 +277,7 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
           }
         })
       );
+      console.info(`Storage Used by the submission: ${storageUsed}`);
       await vault.storage.post({endpointId: endpoint.id, storageUsed});
     }
 
@@ -272,7 +302,7 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
       }
     }
 
-    metrics.emit({
+    await metrics.forceEmit({
       metric: 'submission.upload',
       endpointId: endpoint.id,
       workspaceId: workspace.id,

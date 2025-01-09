@@ -9,6 +9,7 @@ import ErrorPage from '../error';
 import {
   UpdateEndpointNameForm,
   UpdateEndpointNotificationsForm,
+  UpdateEndpointRedirectUrlForm,
   UpdateEndpointSlugForm,
   UpdateEndpointStatusForm,
   UpdateEndpointTargetEmailsForm
@@ -83,6 +84,10 @@ export default function Settings({params}: Props) {
             Copy
           </Button>
         </div>
+        <UpdateEndpointRedirectUrlForm
+          id={endpoint.id}
+          defaultValue={endpoint.redirectUrl}
+        />
       </section>
       <h2 className="font-semibold mt-8">Notifications</h2>
       <Separator className="mt-2 w-full" />
