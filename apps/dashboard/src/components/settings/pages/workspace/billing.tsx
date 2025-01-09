@@ -91,6 +91,13 @@ export const SettingsWorkspaceBilling = (props: Props) => {
           </UsageWidget>
           <UsageWidget
             currentPlanLimits={currentPlanLimits}
+            planFeature="storage"
+            usage={usage.storage}
+          >
+            Storage
+          </UsageWidget>
+          <UsageWidget
+            currentPlanLimits={currentPlanLimits}
             planFeature="endpoints"
             usage={usage.endpoints}
           >
