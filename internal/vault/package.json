@@ -10,6 +10,7 @@
     "check": "tsc --noEmit"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "4.20250109.0",
     "@formizee/tsconfig": "workspace:*",
     "@types/node": "22.0.0"
   },
