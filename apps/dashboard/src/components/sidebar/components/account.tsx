@@ -59,7 +59,7 @@ export const Account = (props: AccountProps) => {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <SidebarMenuButton className="h-14">
-                <div className="flex flex-row items-center justify-center size-10 rounded-md bg-neutral-600 dark:bg-neutral-400">
+                <div className="flex flex-row items-center justify-center min-w-10 size-10 rounded-md bg-neutral-600 dark:bg-neutral-400">
                   <span className="fixed text-lg text-neutral-50 dark:text-neutral-950 font-semibold">
                     {data.name.split('')[0]?.toUpperCase()}
                   </span>
