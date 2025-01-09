@@ -6,15 +6,21 @@ import {showWaitlist} from '@/flags';
 import {Button} from '@formizee/ui';
 import Link from 'next/link';
 import {WaitlistDialog} from '@/components/waitlist-dialog';
+import {LaunchBanner} from '@/components/banner';
 
 async function Home() {
   const waitlist = await showWaitlist();
 
   return (
     <main className="relative flex flex-col min-h-screen gap-32">
+      {waitlist ? (
+        <LaunchBanner>✨ Public Beta available the 29 of January!</LaunchBanner>
+      ) : (
+        <div />
+      )}
       <header className="flex flex-col px-4 items-center">
         <BlurFade>
-          <div className="flex flex-col gap-8 items-center mt-32 sm:mt-48">
+          <div className="flex flex-col gap-8 items-center mt-40 sm:mt-48">
             <GithubLabel />
             <h1 className="text-neutral-900 dark:text-neutral-50 font-bold text-[2.25rem] leading-tight sm:text-[3rem] text-center">
               The Open-Source
