@@ -1,3 +1,4 @@
+import type {Fetcher} from '@cloudflare/workers-types';
 import project from '../../../package.json';
 import {z} from 'zod';
 
@@ -13,6 +14,7 @@ export const zEnv = z.object({
 
   //Cloudflare Bindings
   cache: z.custom<KVNamespace>(),
+  vault: z.custom<Fetcher>(),
 
   // Databases
   DATABASE_URL: z.string().url().default('http://localhost:8080'),

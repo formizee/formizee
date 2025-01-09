@@ -2,6 +2,7 @@ name = "api"
 main = "src/index.ts"
 compatibility_date = "2024-09-23"
 compatibility_flags = ["nodejs_compat"]
+services = [ {binding = "vault", service = "vault"}]
 
 [placement]
 mode = "smart"
@@ -18,6 +19,7 @@ preview_id = "20acddf9715c4701b923250853fccf39"
 [env.development]
 name = "api-development"
 vars = { ENVIROMENT = "development" }
+services = [ {binding = "vault", service = "vault-development"}]
 routes = [ { pattern = "api-development.formizee.com", custom_domain = true } ]
 
 [vars]
@@ -31,6 +33,7 @@ DASHBOARD_URL="http://localhost:3001"
 
 [env.preview]
 name = "api-preview"
+services = [ {binding = "vault", service = "vault-preview"}]
 routes = [ { pattern = "api-preview.formizee.com", custom_domain = true } ]
 kv_namespaces = [{ binding = "cache", id = "20acddf9715c4701b923250853fccf39" }]
 
@@ -45,6 +48,7 @@ DASHBOARD_URL="https://dashboard.formizee.com"
 
 [env.production]
 name = "api-production"
+services = [ {binding = "vault", service = "vault-production"}]
 routes = [ { pattern = "api.formizee.com", custom_domain = true } ]
 kv_namespaces = [{ binding = "cache", id = "5afb50fb9774441e8fc927078e274790" }]
 

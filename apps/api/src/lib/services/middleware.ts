@@ -58,7 +58,8 @@ export function services(): MiddlewareHandler<HonoEnv> {
 
     const vault = new Vault({
       url: c.env.VAULT_URL,
-      token: c.env.VAULT_SECRET
+      token: c.env.VAULT_SECRET,
+      serviceBinding: c.env.vault
     });
 
     const email = new Resend(
