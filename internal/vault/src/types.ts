@@ -1,9 +1,11 @@
+import type {Fetcher} from '@cloudflare/workers-types';
 import type {StatusCode} from './http-status';
 export type {StatusCode};
 
 export interface VaultOptions {
   url: string;
   token: string;
+  serviceBinding?: Fetcher;
 }
 
 export interface ErrorResponse {

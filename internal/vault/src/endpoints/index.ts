@@ -1,19 +1,22 @@
 import type {DeleteRequest, DeleteResponse} from './types';
 import type {StatusCode, VaultOptions} from '../types';
+import {FetchWrapper} from '../fetcher';
 
 export class Endpoints {
   private readonly url: string;
   private readonly token: string;
+  private readonly service: FetchWrapper;
 
   constructor(opts: VaultOptions) {
     this.url = opts.url;
     this.token = opts.token;
+    this.service = new FetchWrapper(opts.serviceBinding);
   }
 
   public async delete(input: DeleteRequest): Promise<DeleteResponse> {
     const url = `${this.url}/v1/endpoint/${input.endpointId}`;
 
-    const response = await fetch(url, {
+    const response = await this.service.fetch(url, {
       headers: {Authorization: `Bearer ${this.token}`},
       method: 'DELETE'
     });

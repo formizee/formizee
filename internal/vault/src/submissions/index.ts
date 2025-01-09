@@ -1,4 +1,5 @@
 import type {StatusCode, VaultOptions} from '../types';
+import {FetchWrapper} from '../fetcher';
 
 import type {
   DeleteRequest,
@@ -20,16 +21,18 @@ import type {
 export class Submissions {
   private readonly url: string;
   private readonly token: string;
+  private readonly service: FetchWrapper;
 
   constructor(opts: VaultOptions) {
     this.url = opts.url;
     this.token = opts.token;
+    this.service = new FetchWrapper(opts.serviceBinding);
   }
 
   public async get(input: GetRequest): Promise<GetResponse> {
     const url = `${this.url}/v1/submission/${input.endpointId}/${input.id}`;
 
-    const response = await fetch(url, {
+    const response = await this.service.fetch(url, {
       headers: {Authorization: `Bearer ${this.token}`},
       method: 'GET'
     });
@@ -68,7 +71,7 @@ export class Submissions {
       queryUrl.searchParams.append('limit', String(input.limit));
     }
 
-    const response = await fetch(queryUrl, {
+    const response = await this.service.fetch(queryUrl.toString(), {
       headers: {Authorization: `Bearer ${this.token}`},
       method: 'GET'
     });
@@ -100,7 +103,7 @@ export class Submissions {
   public async post(input: PostRequest): Promise<PostResponse> {
     const url = `${this.url}/v1/submission`;
 
-    const response = await fetch(url, {
+    const response = await this.service.fetch(url, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${this.token}`,
@@ -136,7 +139,7 @@ export class Submissions {
   public async put(input: PutRequest): Promise<PutResponse> {
     const url = `${this.url}/v1/submission/${input.endpointId}/${input.id}`;
 
-    const response = await fetch(url, {
+    const response = await this.service.fetch(url, {
       headers: {
         Authorization: `Bearer ${this.token}`,
         'Content-Type': 'application/json'
@@ -172,7 +175,7 @@ export class Submissions {
   public async delete(input: DeleteRequest): Promise<DeleteResponse> {
     const url = `${this.url}/v1/submission/${input.endpointId}/${input.id}`;
 
-    const response = await fetch(url, {
+    const response = await this.service.fetch(url, {
       headers: {Authorization: `Bearer ${this.token}`},
       method: 'DELETE'
     });

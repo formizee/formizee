@@ -1,19 +1,22 @@
 import type {GetRequest, GetResponse, PostRequest, PostResponse} from './types';
 import type {StatusCode, VaultOptions} from '../types';
+import {FetchWrapper} from '../fetcher';
 
 export class Storage {
   private readonly url: string;
   private readonly token: string;
+  private readonly service: FetchWrapper;
 
   constructor(opts: VaultOptions) {
     this.url = opts.url;
     this.token = opts.token;
+    this.service = new FetchWrapper(opts.serviceBinding);
   }
 
   public async get(input: GetRequest): Promise<GetResponse> {
     const url = `${this.url}/v1/storage/${input.endpointId}`;
 
-    const response = await fetch(url, {
+    const response = await this.service.fetch(url, {
       headers: {Authorization: `Bearer ${this.token}`},
       method: 'GET'
     });
@@ -45,7 +48,7 @@ export class Storage {
   public async post(input: PostRequest): Promise<PostResponse> {
     const url = `${this.url}/v1/storage/${input.endpointId}`;
 
-    const response = await fetch(url, {
+    const response = await this.service.fetch(url, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${this.token}`,
