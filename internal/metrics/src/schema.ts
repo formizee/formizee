@@ -92,6 +92,7 @@ export const metricSchema = z.discriminatedUnion('metric', [
       'submissions.post',
       'submissions.put',
       'submissions.delete',
+      'endpoints.metrics',
       'endpoints.delete'
     ]),
     latency: z.number()
