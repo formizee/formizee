@@ -135,7 +135,7 @@ export const getEndpointMetrics = protectedProcedure
     const dayMetrics = generateLast24HoursData(dayResponse ?? []);
 
     const response = {
-      totalSubmissions: data?.totalSubmissions,
+      totalSubmissions: data?.totalSubmissions ?? 0,
       '30d': monthMetrics,
       '24h': dayMetrics
     };
