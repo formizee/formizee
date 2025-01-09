@@ -110,8 +110,7 @@ export const getEndpointMetrics = protectedProcedure
       });
     }
 
-    /*
-    const {data, error} = await ctx.vault.submissions.list({
+    const {data, error} = await ctx.vault.endpoints.metrics({
       endpointId: endpoint.id
     });
 
@@ -121,7 +120,6 @@ export const getEndpointMetrics = protectedProcedure
         message: error.message
       });
     }
-    */
 
     const monthResponse = await ctx.analytics.queryFormizeeMetricsSubmissions(
       endpoint.id,
@@ -137,7 +135,7 @@ export const getEndpointMetrics = protectedProcedure
     const dayMetrics = generateLast24HoursData(dayResponse ?? []);
 
     const response = {
-      totalSubmissions: 999,
+      totalSubmissions: data?.totalSubmissions,
       '30d': monthMetrics,
       '24h': dayMetrics
     };
