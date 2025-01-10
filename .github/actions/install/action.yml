@@ -34,5 +34,5 @@ runs:
     - name: Install dependencies
       shell: bash
       run: |
-        pnpm install --no-frozen-lockfile
+        pnpm install --recursive
         npm i -g wrangler
