@@ -11,6 +11,7 @@ import {
   Input,
   Button,
   Dialog,
+  DialogDescription,
   DialogContent,
   DialogHeader,
   DialogTitle,
@@ -22,7 +23,6 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage
 } from '@formizee/ui/form';
 import {useForm} from 'react-hook-form';
@@ -75,7 +75,7 @@ export const DeleteSubmissionDialog = (props: Props) => {
   return (
     <Dialog open={props.open} onOpenChange={props.setOpen}>
       <DialogContent className="border-2">
-        <DialogHeader className="mb-4">
+        <DialogHeader>
           <DialogTitle className="w-full flex flex-col gap-6 items-center text-left text-xl font-bold">
             <Image
               src={trashIcon}
@@ -86,6 +86,9 @@ export const DeleteSubmissionDialog = (props: Props) => {
             />
             Delete Submission
           </DialogTitle>
+          <DialogDescription className="pt-4">
+            To verify, type <b>delete submission</b> below:
+          </DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form
@@ -97,9 +100,6 @@ export const DeleteSubmissionDialog = (props: Props) => {
               name="description"
               render={({field}) => (
                 <FormItem>
-                  <FormLabel>
-                    To verify, type <b>delete submission</b> below:
-                  </FormLabel>
                   <FormControl>
                     <Input required autoComplete="off" {...field} />
                   </FormControl>

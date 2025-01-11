@@ -193,7 +193,7 @@ export const IconPicker = ({endpoint}: Props) => {
                   </Button>
                 </div>
                 <Tooltip>
-                  <TooltipTrigger>
+                  <TooltipTrigger asChild>
                     <Button variant="ghost" size="icon" onClick={randomizeIcon}>
                       <ReloadIcon className="text-neutral-400 dark:text-neutral-600 hover:text-neutral-950 dark:hover:text-neutral-50" />
                     </Button>

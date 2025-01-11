@@ -14,7 +14,8 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  toast
+  toast,
+  DialogDescription
 } from '@formizee/ui';
 
 import {
@@ -22,7 +23,6 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage
 } from '@formizee/ui/form';
 import {useForm} from 'react-hook-form';
@@ -79,7 +79,7 @@ export const DeleteSubmissionGroupDialog = (props: Props) => {
   return (
     <Dialog open={props.open} onOpenChange={props.setOpen}>
       <DialogContent className="border-2">
-        <DialogHeader className="mb-4">
+        <DialogHeader>
           <DialogTitle className="w-full flex flex-col gap-6 items-center text-left text-xl font-bold">
             <Image
               src={trashIcon}
@@ -90,6 +90,9 @@ export const DeleteSubmissionGroupDialog = (props: Props) => {
             />
             Delete Submissions
           </DialogTitle>
+          <DialogDescription className="pt-4">
+            To verify, type <b>delete all</b> below:
+          </DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form
@@ -101,9 +104,6 @@ export const DeleteSubmissionGroupDialog = (props: Props) => {
               name="description"
               render={({field}) => (
                 <FormItem>
-                  <FormLabel>
-                    To verify, type <b>delete all</b> below:
-                  </FormLabel>
                   <FormControl>
                     <Input required autoComplete="off" {...field} />
                   </FormControl>
