@@ -1,6 +1,5 @@
 import {protectedProcedure} from '@/trpc';
-import {TRPCError} from '@trpc/server';
-import {database} from '@/lib/db';
+import {authorize} from '@/trpc/utils';
 import {z} from 'zod';
 
 export const getWorkspaceBySlug = protectedProcedure
@@ -10,30 +9,13 @@ export const getWorkspaceBySlug = protectedProcedure
     })
   )
   .query(async ({input, ctx}) => {
-    const workspace = await database.query.workspace.findFirst({
-      where: (table, {eq}) => eq(table.slug, input.slug)
-    });
+    const {workspace, error} = await authorize(
+      {workspaceSlug: input.slug},
+      ctx
+    );
 
     if (!workspace) {
-      throw new TRPCError({
-        code: 'NOT_FOUND',
-        message: 'Workspace not found.'
-      });
-    }
-
-    const authorized = await database.query.usersToWorkspaces.findFirst({
-      where: (table, {and, eq}) =>
-        and(
-          eq(table.userId, ctx.user.id ?? ''),
-          eq(table.workspaceId, workspace.id)
-        )
-    });
-
-    if (!authorized) {
-      throw new TRPCError({
-        code: 'UNAUTHORIZED',
-        message: 'You do not have permission to view this workspace.'
-      });
+      throw error;
     }
 
     return workspace;
