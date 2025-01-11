@@ -2,6 +2,7 @@ import {protectedProcedure} from '@/trpc';
 import {TRPCError} from '@trpc/server';
 import {database} from '@/lib/db';
 import {z} from 'zod';
+import {authorize} from '@/trpc/utils';
 
 export const listSubmissions = protectedProcedure
   .input(
@@ -21,30 +22,10 @@ export const listSubmissions = protectedProcedure
       });
     }
 
-    const workspace = await database.query.workspace.findFirst({
-      where: (table, {eq}) => eq(table.id, endpoint.workspaceId)
-    });
+    const authorized = await authorize({id: endpoint.workspaceId}, ctx);
 
-    if (!workspace) {
-      throw new TRPCError({
-        code: 'NOT_FOUND',
-        message: 'Workspace not found.'
-      });
-    }
-
-    const authorized = await database.query.usersToWorkspaces.findFirst({
-      where: (table, {and, eq}) =>
-        and(
-          eq(table.userId, ctx.user.id ?? ''),
-          eq(table.workspaceId, workspace.id)
-        )
-    });
-
-    if (!authorized) {
-      throw new TRPCError({
-        code: 'UNAUTHORIZED',
-        message: 'You do not have permission to view this endpoint.'
-      });
+    if (!authorized.workspace) {
+      throw authorized.error;
     }
 
     const {data, error} = await ctx.vault.submissions.list({

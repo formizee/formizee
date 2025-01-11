@@ -2,6 +2,7 @@ import {protectedProcedure} from '@/trpc';
 import {TRPCError} from '@trpc/server';
 import {database} from '@/lib/db';
 import {z} from 'zod';
+import {authorize} from '@/trpc/utils';
 
 export const deleteSubmission = protectedProcedure
   .input(
@@ -22,35 +23,15 @@ export const deleteSubmission = protectedProcedure
       });
     }
 
-    const workspace = await database.query.workspace.findFirst({
-      where: (table, {eq}) => eq(table.id, endpoint.workspaceId)
-    });
+    const authorized = await authorize({id: endpoint.workspaceId}, ctx);
 
-    if (!workspace) {
-      throw new TRPCError({
-        code: 'NOT_FOUND',
-        message: 'Workspace not found.'
-      });
+    if (!authorized.workspace) {
+      throw authorized.error;
     }
 
-    const authorized = await database.query.usersToWorkspaces.findFirst({
-      where: (table, {and, eq}) =>
-        and(
-          eq(table.userId, ctx.user.id ?? ''),
-          eq(table.workspaceId, workspace.id)
-        )
-    });
+    const response = await ctx.vault.submissions.delete(input);
 
-    if (!authorized) {
-      throw new TRPCError({
-        code: 'UNAUTHORIZED',
-        message: 'You do not have permission to view this workspace.'
-      });
-    }
-
-    const {error} = await ctx.vault.submissions.delete(input);
-
-    if (error) {
+    if (response.error) {
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message:
