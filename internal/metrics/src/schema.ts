@@ -1,5 +1,7 @@
 import {z} from 'zod';
 
+const latencySchema = z.number().transform(latency => Math.round(latency));
+
 export const metricSchema = z.discriminatedUnion('metric', [
   // HTTP metrics
   z.object({
@@ -9,7 +11,7 @@ export const metricSchema = z.discriminatedUnion('metric', [
     method: z.string(),
     status: z.number(),
     error: z.string().optional(),
-    serviceLatency: z.number(),
+    serviceLatency: latencySchema,
     // ms since worker initilized for the first time
     // a non zero value means the worker is reused
     isolateLifetime: z.number(),
@@ -29,17 +31,17 @@ export const metricSchema = z.discriminatedUnion('metric', [
     metric: z.literal('cache.read'),
     hit: z.boolean(),
     key: z.string(),
-    latency: z.number()
+    latency: latencySchema
   }),
   z.object({
     metric: z.literal('cache.write'),
     key: z.string(),
-    latency: z.number()
+    latency: latencySchema
   }),
   z.object({
     metric: z.literal('cache.delete'),
     key: z.string(),
-    latency: z.number()
+    latency: latencySchema
   }),
 
   // Database metrics
@@ -62,7 +64,7 @@ export const metricSchema = z.discriminatedUnion('metric', [
 
       'usersToWorkspaces.get'
     ]),
-    latency: z.number()
+    latency: latencySchema
   }),
   z.object({
     metric: z.literal('main.db.write'),
@@ -83,7 +85,7 @@ export const metricSchema = z.discriminatedUnion('metric', [
       'workspaces.post',
       'workspaces.delete'
     ]),
-    latency: z.number()
+    latency: latencySchema
   }),
   z.object({
     metric: z.literal('vault.latency'),
@@ -98,7 +100,7 @@ export const metricSchema = z.discriminatedUnion('metric', [
       'endpoints.metrics',
       'endpoints.delete'
     ]),
-    latency: z.number()
+    latency: latencySchema
   }),
 
   // Entities Metrics
