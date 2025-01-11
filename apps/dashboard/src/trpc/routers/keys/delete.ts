@@ -1,5 +1,6 @@
 import {database, eq, schema} from '@/lib/db';
 import {protectedProcedure} from '@/trpc';
+import {authorize} from '@/trpc/utils';
 import {TRPCError} from '@trpc/server';
 import {z} from 'zod';
 
@@ -21,30 +22,10 @@ export const deleteKey = protectedProcedure
       });
     }
 
-    const workspace = await database.query.workspace.findFirst({
-      where: (table, {eq}) => eq(table.id, key.workspaceId)
-    });
+    const {workspace, error} = await authorize({id: key.workspaceId}, ctx);
 
     if (!workspace) {
-      throw new TRPCError({
-        code: 'NOT_FOUND',
-        message: 'Workspace not found.'
-      });
-    }
-
-    const authorized = await database.query.usersToWorkspaces.findFirst({
-      where: (table, {and, eq}) =>
-        and(
-          eq(table.userId, ctx.user.id ?? ''),
-          eq(table.workspaceId, workspace.id)
-        )
-    });
-
-    if (!authorized) {
-      throw new TRPCError({
-        code: 'UNAUTHORIZED',
-        message: 'You do not have permission to view this workspace.'
-      });
+      throw error;
     }
 
     const deletedKey = await database
