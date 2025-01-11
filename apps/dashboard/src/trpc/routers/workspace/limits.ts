@@ -81,9 +81,9 @@ export const getWorkspaceLimits = protectedProcedure
     return {
       submissions,
       apiDailyRequests,
-      storage: totalStorage,
+      members: members.length,
       endpoints: endpoints.length,
       keys: workspaceKeys[0].count,
-      members: members.length
+      storage: totalStorage / (1024 * 1024)
     };
   });
