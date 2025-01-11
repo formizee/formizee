@@ -19,6 +19,7 @@
     "@formizee/email": "workspace:*",
     "@formizee/id": "workspace:*",
     "@formizee/keys": "workspace:*",
+    "@formizee/metrics": "workspace:*",
     "@formizee/plans": "workspace:*",
     "@formizee/ui": "workspace:*",
     "@formizee/vault": "workspace:*",

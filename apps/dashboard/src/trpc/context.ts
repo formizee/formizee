@@ -1,9 +1,10 @@
 import type {FetchCreateContextFnOptions} from '@trpc/server/adapters/fetch';
 import type {inferAsyncReturnType} from '@trpc/server';
-import {auth} from '@/lib/auth';
 import {Analytics} from '@formizee/analytics';
+import { Metrics } from '@formizee/metrics';
 import {Vault} from '@formizee/vault';
 import {env} from '@/lib/enviroment';
+import {auth} from '@/lib/auth';
 
 export async function createContext({req}: FetchCreateContextFnOptions) {
   const session = await auth();
@@ -18,6 +19,11 @@ export async function createContext({req}: FetchCreateContextFnOptions) {
         'unknown'
     },
     analytics: new Analytics({
+      tinybirdToken:
+        env().VERCEL_ENV === 'development' ? env().TINYBIRD_TOKEN : undefined,
+      tinybirdUrl: env().TINYBIRD_URL
+    }),
+    metrics: new Metrics({
       tinybirdToken:
         env().VERCEL_ENV === 'development' ? env().TINYBIRD_TOKEN : undefined,
       tinybirdUrl: env().TINYBIRD_URL
