@@ -18,10 +18,19 @@ export const listEndpoints = protectedProcedure
       throw error;
     }
 
-    const endpoints = await database.query.endpoint.findMany({
-      where: (table, {eq}) => eq(table.workspaceId, workspace.id),
-      orderBy: (endpoints, {asc}) => [asc(endpoints.createdAt)]
-    });
+    const queryStart = performance.now();
+    const endpoints = await database.query.endpoint
+      .findMany({
+        where: (table, {eq}) => eq(table.workspaceId, workspace.id),
+        orderBy: (endpoints, {asc}) => [asc(endpoints.createdAt)]
+      })
+      .finally(() => {
+        ctx.metrics.emit({
+          metric: 'main.db.read',
+          query: 'endpoints.list',
+          latency: performance.now() - queryStart
+        });
+      });
 
     if (!endpoints) {
       throw new TRPCError({

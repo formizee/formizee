@@ -11,7 +11,7 @@ export const deleteEndpoint = protectedProcedure
     })
   )
   .mutation(async ({input, ctx}) => {
-    const endpointQueryStart = performance.now();
+    const queryStart = performance.now();
     const endpoint = await database.query.endpoint
       .findFirst({
         where: (table, {eq}) => eq(table.id, input.id)
@@ -20,7 +20,7 @@ export const deleteEndpoint = protectedProcedure
         ctx.metrics.emit({
           metric: 'main.db.read',
           query: 'endpoints.get',
-          latency: performance.now() - endpointQueryStart
+          latency: performance.now() - queryStart
         });
       });
 
@@ -37,10 +37,18 @@ export const deleteEndpoint = protectedProcedure
       throw error;
     }
 
+    const mutationStart = performance.now();
     const deletedEndpoint = await database
       .delete(schema.endpoint)
       .where(eq(schema.endpoint.id, endpoint.id))
-      .returning();
+      .returning()
+      .finally(() => {
+        ctx.metrics.emit({
+          metric: 'main.db.write',
+          mutation: 'endpoints.delete',
+          latency: performance.now() - mutationStart
+        });
+      });
 
     if (!deletedEndpoint[0]) {
       throw new TRPCError({

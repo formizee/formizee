@@ -18,13 +18,22 @@ export const getEndpointBySlug = protectedProcedure
       throw error;
     }
 
-    const endpoint = await database.query.endpoint.findFirst({
-      where: (table, {and, eq}) =>
-        and(
-          eq(table.slug, input.endpointSlug),
-          eq(table.workspaceId, workspace.id)
-        )
-    });
+    const queryStart = performance.now();
+    const endpoint = await database.query.endpoint
+      .findFirst({
+        where: (table, {and, eq}) =>
+          and(
+            eq(table.slug, input.endpointSlug),
+            eq(table.workspaceId, workspace.id)
+          )
+      })
+      .finally(() => {
+        ctx.metrics.emit({
+          metric: 'main.db.read',
+          query: 'endpoints.get',
+          latency: performance.now() - queryStart
+        });
+      });
 
     if (!endpoint) {
       throw new TRPCError({
