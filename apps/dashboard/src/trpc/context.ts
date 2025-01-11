@@ -1,7 +1,7 @@
 import type {FetchCreateContextFnOptions} from '@trpc/server/adapters/fetch';
 import type {inferAsyncReturnType} from '@trpc/server';
 import {Analytics} from '@formizee/analytics';
-import { Metrics } from '@formizee/metrics';
+import {Metrics} from '@formizee/metrics';
 import {Vault} from '@formizee/vault';
 import {env} from '@/lib/enviroment';
 import {auth} from '@/lib/auth';
