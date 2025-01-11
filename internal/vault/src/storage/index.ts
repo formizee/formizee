@@ -1,4 +1,4 @@
-import type {GetRequest, GetResponse, PostRequest, PostResponse} from './types';
+import type {GetRequest, GetResponse, PutRequest, PutResponse} from './types';
 import type {StatusCode, VaultOptions} from '../types';
 import {FetchWrapper} from '../fetcher';
 
@@ -45,11 +45,11 @@ export class Storage {
     }
   }
 
-  public async post(input: PostRequest): Promise<PostResponse> {
+  public async put(input: PutRequest): Promise<PutResponse> {
     const url = `${this.url}/v1/storage/${input.endpointId}`;
 
     const response = await this.service.fetch(url, {
-      method: 'POST',
+      method: 'PUT',
       headers: {
         Authorization: `Bearer ${this.token}`,
         'Content-Type': 'application/json'

@@ -277,8 +277,7 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
           }
         })
       );
-      console.info(`Storage Used by the submission: ${storageUsed}`);
-      await vault.storage.post({endpointId: endpoint.id, storageUsed});
+      await vault.storage.put({endpointId: endpoint.id, storageUsed});
     }
 
     if (

@@ -8,12 +8,12 @@ export interface GetRequest {
 
 export type GetResponse = Response<{storageUsed: number}>;
 
-// POST
+// PUT
 
-export interface PostRequest {
+export interface PutRequest {
   endpointId: string;
   storageUsed: number;
 }
 
 // biome-ignore lint/complexity/noBannedTypes: <explanation>
-export type PostResponse = Response<{}>;
+export type PutResponse = Response<{}>;
