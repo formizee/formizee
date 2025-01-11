@@ -2,6 +2,7 @@ import {protectedProcedure} from '@/trpc';
 import {TRPCError} from '@trpc/server';
 import {database, eq, schema} from '@/lib/db';
 import {z} from 'zod';
+import {authorize} from '@/trpc/utils';
 
 export const updateEndpointRedirectUrl = protectedProcedure
   .input(
@@ -11,9 +12,18 @@ export const updateEndpointRedirectUrl = protectedProcedure
     })
   )
   .mutation(async ({input, ctx}) => {
-    const endpoint = await database.query.endpoint.findFirst({
-      where: (table, {eq}) => eq(table.id, input.id)
-    });
+    const endpointQueryStart = performance.now();
+    const endpoint = await database.query.endpoint
+      .findFirst({
+        where: (table, {eq}) => eq(table.id, input.id)
+      })
+      .finally(() => {
+        ctx.metrics.emit({
+          metric: 'main.db.read',
+          query: 'endpoints.get',
+          latency: performance.now() - endpointQueryStart
+        });
+      });
 
     if (!endpoint) {
       throw new TRPCError({
@@ -22,38 +32,26 @@ export const updateEndpointRedirectUrl = protectedProcedure
       });
     }
 
-    const workspace = await database.query.workspace.findFirst({
-      where: (table, {eq}) => eq(table.id, endpoint.workspaceId)
-    });
+    const {workspace, error} = await authorize({id: endpoint.workspaceId}, ctx);
 
     if (!workspace) {
-      throw new TRPCError({
-        code: 'NOT_FOUND',
-        message: 'Workspace not found.'
-      });
-    }
-
-    const authorized = await database.query.usersToWorkspaces.findFirst({
-      where: (table, {and, eq}) =>
-        and(
-          eq(table.userId, ctx.user.id ?? ''),
-          eq(table.workspaceId, workspace.id)
-        )
-    });
-
-    if (!authorized) {
-      throw new TRPCError({
-        code: 'UNAUTHORIZED',
-        message: 'You do not have permission to view this workspace.'
-      });
+      throw error;
     }
 
     try {
+      const mutationStart = performance.now();
       const updatedEndpoint = await database
         .update(schema.endpoint)
         .set({redirectUrl: input.redirectUrl ?? endpoint.redirectUrl})
         .where(eq(schema.endpoint.id, endpoint.id))
-        .returning();
+        .returning()
+        .finally(() => {
+          ctx.metrics.emit({
+            metric: 'main.db.write',
+            mutation: 'endpoints.put',
+            latency: performance.now() - mutationStart
+          });
+        });
 
       // Ingest audit logs
       await ctx.analytics.ingestFormizeeAuditLogs({

@@ -2,7 +2,11 @@ import {protectedProcedure} from '@/trpc';
 import {TRPCError} from '@trpc/server';
 import {database} from '@/lib/db';
 import {z} from 'zod';
-import { authorize, generateLast24HoursData, generateLast30DaysData } from '@/trpc/utils';
+import {
+  authorize,
+  generateLast24HoursData,
+  generateLast30DaysData
+} from '@/trpc/utils';
 
 export const getEndpointMetrics = protectedProcedure
   .input(
@@ -24,8 +28,8 @@ export const getEndpointMetrics = protectedProcedure
 
     const authorized = await authorize({id: endpoint.workspaceId}, ctx);
 
-    if(!authorized.workspace) {
-      throw authorized.error; 
+    if (!authorized.workspace) {
+      throw authorized.error;
     }
 
     const {data, error} = await ctx.vault.endpoints.metrics({

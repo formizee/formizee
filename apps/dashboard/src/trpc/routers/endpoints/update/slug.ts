@@ -2,6 +2,7 @@ import {protectedProcedure} from '@/trpc';
 import {TRPCError} from '@trpc/server';
 import {database, eq, schema} from '@/lib/db';
 import {z} from 'zod';
+import {authorize} from '@/trpc/utils';
 
 export const updateEndpointSlug = protectedProcedure
   .input(
@@ -20,9 +21,18 @@ export const updateEndpointSlug = protectedProcedure
     })
   )
   .mutation(async ({input, ctx}) => {
-    const endpoint = await database.query.endpoint.findFirst({
-      where: (table, {eq}) => eq(table.id, input.id)
-    });
+    const endpointQueryStart = performance.now();
+    const endpoint = await database.query.endpoint
+      .findFirst({
+        where: (table, {eq}) => eq(table.id, input.id)
+      })
+      .finally(() => {
+        ctx.metrics.emit({
+          metric: 'main.db.read',
+          query: 'endpoints.get',
+          latency: performance.now() - endpointQueryStart
+        });
+      });
 
     if (!endpoint) {
       throw new TRPCError({
@@ -31,49 +41,26 @@ export const updateEndpointSlug = protectedProcedure
       });
     }
 
-    const workspace = await database.query.workspace.findFirst({
-      where: (table, {eq}) => eq(table.id, endpoint.workspaceId)
-    });
+    const {workspace, error} = await authorize({id: endpoint.workspaceId}, ctx);
 
     if (!workspace) {
-      throw new TRPCError({
-        code: 'NOT_FOUND',
-        message: 'Workspace not found.'
-      });
-    }
-
-    const authorized = await database.query.usersToWorkspaces.findFirst({
-      where: (table, {and, eq}) =>
-        and(
-          eq(table.userId, ctx.user.id ?? ''),
-          eq(table.workspaceId, workspace.id)
-        )
-    });
-
-    if (!authorized) {
-      throw new TRPCError({
-        code: 'UNAUTHORIZED',
-        message: 'You do not have permission to view this workspace.'
-      });
-    }
-
-    const slugAlreadyTaken = await database.query.endpoint.findFirst({
-      where: (table, {eq}) => eq(table.slug, input.slug)
-    });
-
-    if (slugAlreadyTaken) {
-      throw new TRPCError({
-        code: 'CONFLICT',
-        message: 'Slug has to be unique and has already been taken'
-      });
+      throw error;
     }
 
     try {
+      const mutationStart = performance.now();
       const updatedEndpoint = await database
         .update(schema.endpoint)
         .set({slug: input.slug ?? endpoint.slug})
         .where(eq(schema.endpoint.id, endpoint.id))
-        .returning();
+        .returning()
+        .finally(() => {
+          ctx.metrics.emit({
+            metric: 'main.db.write',
+            mutation: 'endpoints.put',
+            latency: performance.now() - mutationStart
+          });
+        });
 
       // Ingest audit logs
       await ctx.analytics.ingestFormizeeAuditLogs({

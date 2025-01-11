@@ -4,6 +4,7 @@ import {getLimits} from '@formizee/plans';
 import {TRPCError} from '@trpc/server';
 import {newId} from '@formizee/id';
 import {z} from 'zod';
+import {authorize} from '@/trpc/utils';
 
 export const createEndpoint = protectedProcedure
   .input(
@@ -15,38 +16,26 @@ export const createEndpoint = protectedProcedure
     })
   )
   .mutation(async ({input, ctx}) => {
-    const workspace = await database.query.workspace.findFirst({
-      where: (table, {eq}) => eq(table.slug, input.workspaceSlug)
-    });
+    const {workspace, error} = await authorize(input, ctx);
 
     if (!workspace) {
-      throw new TRPCError({
-        code: 'NOT_FOUND',
-        message: 'Workspace not found'
-      });
-    }
-
-    const authorized = await database.query.usersToWorkspaces.findFirst({
-      where: (table, {and, eq}) =>
-        and(
-          eq(table.userId, ctx.user.id ?? ''),
-          eq(table.workspaceId, workspace.id)
-        )
-    });
-
-    if (!authorized) {
-      throw new TRPCError({
-        code: 'UNAUTHORIZED',
-        message: 'You do not have permission to create in this workspace.'
-      });
+      throw error;
     }
 
     const limits = getLimits(workspace.plan);
 
+    const countQueryStart = performance.now();
     const workspaceEndpoints = await database
       .select({count: count()})
       .from(schema.endpoint)
-      .where(eq(schema.endpoint.workspaceId, workspace.id));
+      .where(eq(schema.endpoint.workspaceId, workspace.id))
+      .finally(() => {
+        ctx.metrics.emit({
+          metric: 'main.db.read',
+          query: 'endpoints.count',
+          latency: performance.now() - countQueryStart
+        });
+      });
 
     if (!workspaceEndpoints[0]) {
       throw new TRPCError({
@@ -66,10 +55,19 @@ export const createEndpoint = protectedProcedure
     }
 
     // Check Slug
-    const slugExists = await database.query.endpoint.findFirst({
-      where: (table, {and, eq}) =>
-        and(eq(table.workspaceId, workspace.id), eq(table.slug, input.slug))
-    });
+    const endpointQueryStart = performance.now();
+    const slugExists = await database.query.endpoint
+      .findFirst({
+        where: (table, {and, eq}) =>
+          and(eq(table.workspaceId, workspace.id), eq(table.slug, input.slug))
+      })
+      .finally(() => {
+        ctx.metrics.emit({
+          metric: 'main.db.read',
+          query: 'endpoints.get',
+          latency: performance.now() - endpointQueryStart
+        });
+      });
 
     if (slugExists) {
       throw new TRPCError({
@@ -109,7 +107,17 @@ export const createEndpoint = protectedProcedure
         ]
     };
 
-    await database.insert(schema.endpoint).values(data);
+    const mutationStart = performance.now();
+    await database
+      .insert(schema.endpoint)
+      .values(data)
+      .finally(() => {
+        ctx.metrics.emit({
+          metric: 'main.db.write',
+          mutation: 'endpoints.post',
+          latency: performance.now() - mutationStart
+        });
+      });
 
     // Ingest audit logs
     await ctx.analytics.ingestFormizeeAuditLogs({
