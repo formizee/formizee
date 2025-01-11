@@ -6,11 +6,11 @@ import type {User} from 'next-auth';
 type InputLike =
   | {
       workspaceSlug: string;
-      workspaceId?: undefined;
+      id?: undefined;
     }
   | {
       workspaceSlug?: undefined;
-      workspaceId: string;
+      id: string;
     };
 
 interface ContextLike {
@@ -27,7 +27,7 @@ export const authorize = async (
 > => {
   const type = input.workspaceSlug !== undefined ? 'slug' : 'id';
   const inputValue =
-    input.workspaceSlug !== undefined ? input.workspaceSlug : input.workspaceId;
+    input.workspaceSlug !== undefined ? input.workspaceSlug : input.id;
 
   const workspaceQueryStart = performance.now();
   const workspace = await database.query.workspace
