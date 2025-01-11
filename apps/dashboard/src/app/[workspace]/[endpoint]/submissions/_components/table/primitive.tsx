@@ -1,4 +1,4 @@
-import {ColumnHeader} from './components';
+import {ColumnHeader, FileLink} from './components';
 import type {Color} from '@/lib/colors';
 
 import {
@@ -24,6 +24,17 @@ interface DataTableProps<TData> {
   className?: string;
   color: Color;
 }
+
+const isAttachment = (value: unknown): boolean => {
+  return (
+    value !== null &&
+    typeof value === 'object' &&
+    'url' in value &&
+    'name' in value &&
+    typeof value.url === 'string' &&
+    typeof value.name === 'string'
+  );
+};
 
 export function Table<TData>({
   columns,
@@ -65,17 +76,29 @@ export function Table<TData>({
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
                 >
-                  {row.getVisibleCells().map(cell => (
-                    <TableCell
-                      key={cell.id}
-                      className="border-t border-neutral-200 dark:border-neutral-800 py-3 truncate"
-                    >
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
+                  {row.getVisibleCells().map(cell => {
+                    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+                    const value = cell.getValue() as any;
+                    return (
+                      <TableCell
+                        key={cell.id}
+                        className="border-t border-neutral-200 dark:border-neutral-800 py-3 truncate"
+                      >
+                        {isAttachment(value) ? (
+                          <FileLink
+                            color={color}
+                            url={value.url}
+                            name={value.name}
+                          />
+                        ) : (
+                          flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )
+                        )}
+                      </TableCell>
+                    );
+                  })}
                 </TableRow>
               );
             })

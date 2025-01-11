@@ -1,4 +1,5 @@
 export * from './empty';
+export * from './link';
 export * from './error';
 export * from './export';
 export * from './footer';
