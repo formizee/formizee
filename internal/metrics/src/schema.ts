@@ -55,9 +55,12 @@ export const metricSchema = z.discriminatedUnion('metric', [
 
       'endpoints.get',
       'endpoints.list',
+      'endpoints.count',
 
       'workspaces.get',
-      'workspaces.list'
+      'workspaces.list',
+
+      'usersToWorkspaces.get'
     ]),
     latency: z.number()
   }),
