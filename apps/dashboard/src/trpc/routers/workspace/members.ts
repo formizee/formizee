@@ -19,10 +19,19 @@ export const getWorkspaceMembers = protectedProcedure
       throw error;
     }
 
-    const members = await database.query.usersToWorkspaces.findMany({
-      where: (table, {eq}) => eq(table.workspaceId, workspace.id),
-      with: {user: true}
-    });
+    const queryStart = performance.now();
+    const members = await database.query.usersToWorkspaces
+      .findMany({
+        where: (table, {eq}) => eq(table.workspaceId, workspace.id),
+        with: {user: true}
+      })
+      .finally(() => {
+        ctx.metrics.emit({
+          metric: 'main.db.read',
+          query: 'usersToWorkspaces.list',
+          latency: performance.now() - queryStart
+        });
+      });
 
     return members;
   });

@@ -21,14 +21,31 @@ export const getWorkspaceLimits = protectedProcedure
       throw error;
     }
 
-    const endpoints = await database.query.endpoint.findMany({
-      where: (table, {eq}) => eq(table.workspaceId, workspace.id)
-    });
+    const queryEndpointsStart = performance.now();
+    const endpoints = await database.query.endpoint
+      .findMany({
+        where: (table, {eq}) => eq(table.workspaceId, workspace.id)
+      })
+      .finally(() => {
+        ctx.metrics.emit({
+          metric: 'main.db.read',
+          query: 'endpoints.list',
+          latency: performance.now() - queryEndpointsStart
+        });
+      });
 
+    const queryKeysStart = performance.now();
     const workspaceKeys = await database
       .select({count: count()})
       .from(schema.key)
-      .where(eq(schema.key.workspaceId, workspace.id));
+      .where(eq(schema.key.workspaceId, workspace.id))
+      .finally(() => {
+        ctx.metrics.emit({
+          metric: 'main.db.read',
+          query: 'keys.count',
+          latency: performance.now() - queryKeysStart
+        });
+      });
 
     if (!workspaceKeys[0]) {
       throw new TRPCError({
@@ -37,10 +54,19 @@ export const getWorkspaceLimits = protectedProcedure
       });
     }
 
-    const members = await database.query.usersToWorkspaces.findMany({
-      where: (table, {eq}) => eq(table.workspaceId, workspace.id),
-      with: {user: true}
-    });
+    const queryMembersStart = performance.now();
+    const members = await database.query.usersToWorkspaces
+      .findMany({
+        where: (table, {eq}) => eq(table.workspaceId, workspace.id),
+        with: {user: true}
+      })
+      .finally(() => {
+        ctx.metrics.emit({
+          metric: 'main.db.read',
+          query: 'usersToWorkspaces.list',
+          latency: performance.now() - queryMembersStart
+        });
+      });
 
     const billingCycle = calculatePlanCycleDates(workspace);
 

@@ -39,9 +39,18 @@ export const updateWorkspaceSlug = protectedProcedure
       throw error;
     }
 
-    const slugAlreadyTaken = await database.query.workspace.findFirst({
-      where: (table, {eq}) => eq(table.slug, input.slug)
-    });
+    const queryStart = performance.now();
+    const slugAlreadyTaken = await database.query.workspace
+      .findFirst({
+        where: (table, {eq}) => eq(table.slug, input.slug)
+      })
+      .finally(() => {
+        ctx.metrics.emit({
+          metric: 'main.db.read',
+          query: 'workspaces.get',
+          latency: performance.now() - queryStart
+        });
+      });
 
     if (slugAlreadyTaken) {
       throw new TRPCError({
@@ -51,11 +60,19 @@ export const updateWorkspaceSlug = protectedProcedure
     }
 
     try {
+      const mutationStart = performance.now();
       const updatedWorkspace = await database
         .update(schema.workspace)
         .set({slug: input.slug ?? workspace.slug})
         .where(eq(schema.workspace.id, workspace.id))
-        .returning();
+        .returning()
+        .finally(() => {
+          ctx.metrics.emit({
+            metric: 'main.db.write',
+            mutation: 'workspaces.put',
+            latency: performance.now() - mutationStart
+          });
+        });
 
       // Ingest audit logs
       await ctx.analytics.ingestFormizeeAuditLogs({

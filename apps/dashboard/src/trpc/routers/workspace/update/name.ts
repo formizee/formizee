@@ -19,13 +19,21 @@ export const updateWorkspaceName = protectedProcedure
     }
 
     try {
+      const mutationStart = performance.now();
       const updatedWorkspace = await database
         .update(schema.workspace)
         .set({
           name: input.name ?? workspace.name
         })
         .where(eq(schema.workspace.id, workspace.id))
-        .returning();
+        .returning()
+        .finally(() => {
+          ctx.metrics.emit({
+            metric: 'main.db.write',
+            mutation: 'workspaces.put',
+            latency: performance.now() - mutationStart
+          });
+        });
 
       // Ingest audit logs
       await ctx.analytics.ingestFormizeeAuditLogs({
