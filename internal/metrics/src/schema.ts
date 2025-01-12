@@ -53,6 +53,7 @@ export const metricSchema = z.discriminatedUnion('metric', [
 
       'keys.get',
       'keys.list',
+      'keys.count',
       'keys.verify',
 
       'endpoints.get',
@@ -62,7 +63,9 @@ export const metricSchema = z.discriminatedUnion('metric', [
       'workspaces.get',
       'workspaces.list',
 
-      'usersToWorkspaces.get'
+      'usersToEmails.get',
+      'usersToWorkspaces.get',
+      'usersToWorkspaces.list'
     ]),
     latency: latencySchema
   }),
@@ -83,7 +86,10 @@ export const metricSchema = z.discriminatedUnion('metric', [
 
       'workspaces.put',
       'workspaces.post',
-      'workspaces.delete'
+      'workspaces.delete',
+
+      'usersToEmails.post',
+      'usersToEmails.delete'
     ]),
     latency: latencySchema
   }),
