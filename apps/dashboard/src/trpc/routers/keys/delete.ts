@@ -11,9 +11,18 @@ export const deleteKey = protectedProcedure
     })
   )
   .mutation(async ({input, ctx}) => {
-    const key = await database.query.key.findFirst({
-      where: (table, {eq}) => eq(table.id, input.id)
-    });
+    const queryStart = performance.now();
+    const key = await database.query.key
+      .findFirst({
+        where: (table, {eq}) => eq(table.id, input.id)
+      })
+      .finally(() => {
+        ctx.metrics.emit({
+          metric: 'main.db.read',
+          query: 'keys.get',
+          latency: performance.now() - queryStart
+        });
+      });
 
     if (!key) {
       throw new TRPCError({
@@ -28,10 +37,18 @@ export const deleteKey = protectedProcedure
       throw error;
     }
 
+    const mutationStart = performance.now();
     const deletedKey = await database
       .delete(schema.key)
       .where(eq(schema.key.id, key.id))
-      .returning();
+      .returning()
+      .finally(() => {
+        ctx.metrics.emit({
+          metric: 'main.db.write',
+          mutation: 'keys.delete',
+          latency: performance.now() - mutationStart
+        });
+      });
 
     if (!deletedKey[0]) {
       throw new TRPCError({

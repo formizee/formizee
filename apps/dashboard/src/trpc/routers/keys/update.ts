@@ -12,9 +12,18 @@ export const updateKey = protectedProcedure
     })
   )
   .mutation(async ({input, ctx}) => {
-    const key = await database.query.key.findFirst({
-      where: (table, {eq}) => eq(table.id, input.id)
-    });
+    const queryStart = performance.now();
+    const key = await database.query.key
+      .findFirst({
+        where: (table, {eq}) => eq(table.id, input.id)
+      })
+      .finally(() => {
+        ctx.metrics.emit({
+          metric: 'main.db.read',
+          query: 'keys.get',
+          latency: performance.now() - queryStart
+        });
+      });
 
     if (!key) {
       throw new TRPCError({
@@ -30,11 +39,19 @@ export const updateKey = protectedProcedure
     }
 
     try {
+      const mutationStart = performance.now();
       const updatedKey = await database
         .update(schema.key)
         .set({name: input.name ?? key.name})
         .where(eq(schema.endpoint.id, key.id))
-        .returning();
+        .returning()
+        .finally(() => {
+          ctx.metrics.emit({
+            metric: 'main.db.write',
+            mutation: 'keys.put',
+            latency: performance.now() - mutationStart
+          });
+        });
 
       // Ingest audit logs
       await ctx.analytics.ingestFormizeeAuditLogs({

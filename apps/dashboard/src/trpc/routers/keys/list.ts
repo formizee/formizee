@@ -16,9 +16,18 @@ export const listKeys = protectedProcedure
       throw error;
     }
 
-    const data = await database.query.key.findMany({
-      where: (table, {eq}) => eq(table.workspaceId, workspace.id)
-    });
+    const queryStart = performance.now();
+    const data = await database.query.key
+      .findMany({
+        where: (table, {eq}) => eq(table.workspaceId, workspace.id)
+      })
+      .finally(() => {
+        ctx.metrics.emit({
+          metric: 'main.db.read',
+          query: 'keys.list',
+          latency: performance.now() - queryStart
+        });
+      });
 
     const keys = data.map(key => {
       const lastAccess =

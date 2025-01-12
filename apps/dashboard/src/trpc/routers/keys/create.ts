@@ -23,10 +23,18 @@ export const createKey = protectedProcedure
 
     const limits = getLimits(workspace.plan);
 
+    const queryStart = performance.now();
     const workspaceKeys = await database
       .select({count: count()})
       .from(schema.key)
-      .where(eq(schema.key.workspaceId, workspace.id));
+      .where(eq(schema.key.workspaceId, workspace.id))
+      .finally(() => {
+        ctx.metrics.emit({
+          metric: 'main.db.read',
+          query: 'keys.count',
+          latency: performance.now() - queryStart
+        });
+      });
 
     if (!workspaceKeys[0]) {
       throw new TRPCError({
@@ -56,7 +64,17 @@ export const createKey = protectedProcedure
       workspaceId: workspace.id
     };
 
-    await database.insert(schema.key).values(data);
+    const mutationStart = performance.now();
+    await database
+      .insert(schema.key)
+      .values(data)
+      .finally(() => {
+        ctx.metrics.emit({
+          metric: 'main.db.write',
+          mutation: 'keys.post',
+          latency: performance.now() - mutationStart
+        });
+      });
 
     // Ingest audit logs
     await ctx.analytics.ingestFormizeeAuditLogs({
