@@ -11,9 +11,18 @@ export const listSubmissions = protectedProcedure
     })
   )
   .query(async ({input, ctx}) => {
-    const endpoint = await database.query.endpoint.findFirst({
-      where: (table, {eq}) => eq(table.id, input.endpointId)
-    });
+    const queryStart = performance.now();
+    const endpoint = await database.query.endpoint
+      .findFirst({
+        where: (table, {eq}) => eq(table.id, input.endpointId)
+      })
+      .finally(() => {
+        ctx.metrics.emit({
+          metric: 'main.db.read',
+          query: 'endpoints.get',
+          latency: performance.now() - queryStart
+        });
+      });
 
     if (!endpoint) {
       throw new TRPCError({
