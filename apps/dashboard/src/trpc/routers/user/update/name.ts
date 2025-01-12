@@ -10,10 +10,19 @@ export const updateUserName = protectedProcedure
       name: z.string().optional()
     })
   )
-  .mutation(async ({input}) => {
-    const user = await database.query.user.findFirst({
-      where: (table, {eq}) => eq(table.id, input.id)
-    });
+  .mutation(async ({input, ctx}) => {
+    const queryStart = performance.now();
+    const user = await database.query.user
+      .findFirst({
+        where: (table, {eq}) => eq(table.id, input.id)
+      })
+      .finally(() => {
+        ctx.metrics.emit({
+          metric: 'main.db.read',
+          query: 'users.get',
+          latency: performance.now() - queryStart
+        });
+      });
 
     if (!user) {
       throw new TRPCError({
@@ -22,13 +31,21 @@ export const updateUserName = protectedProcedure
       });
     }
 
+    const mutationStart = performance.now();
     const updateUser = await database
       .update(schema.user)
       .set({
         name: input.name ?? user.name
       })
       .where(eq(schema.user.id, user.id))
-      .returning();
+      .returning()
+      .finally(() => {
+        ctx.metrics.emit({
+          metric: 'main.db.write',
+          mutation: 'users.put',
+          latency: performance.now() - mutationStart
+        });
+      });
 
     if (!updateUser[0]) {
       throw new TRPCError({

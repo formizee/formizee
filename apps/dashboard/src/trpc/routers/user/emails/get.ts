@@ -10,9 +10,18 @@ export const getUserEmails = protectedProcedure
     })
   )
   .query(async ({input, ctx}) => {
-    const user = await database.query.user.findFirst({
-      where: (table, {eq}) => eq(table.id, input.id)
-    });
+    const queryUserStart = performance.now();
+    const user = await database.query.user
+      .findFirst({
+        where: (table, {eq}) => eq(table.id, input.id)
+      })
+      .finally(() => {
+        ctx.metrics.emit({
+          metric: 'main.db.read',
+          query: 'users.get',
+          latency: performance.now() - queryUserStart
+        });
+      });
 
     if (!user) {
       throw new TRPCError({
@@ -21,9 +30,18 @@ export const getUserEmails = protectedProcedure
       });
     }
 
-    const emails = await database.query.usersToEmails.findMany({
-      where: (table, {eq}) => eq(table.userId, ctx.user.id ?? '')
-    });
+    const queryEmailsStart = performance.now();
+    const emails = await database.query.usersToEmails
+      .findMany({
+        where: (table, {eq}) => eq(table.userId, user.id)
+      })
+      .finally(() => {
+        ctx.metrics.emit({
+          metric: 'main.db.read',
+          query: 'usersToEmails.get',
+          latency: performance.now() - queryEmailsStart
+        });
+      });
 
     return emails;
   });

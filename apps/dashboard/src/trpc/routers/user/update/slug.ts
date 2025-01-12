@@ -10,10 +10,19 @@ export const updateUserSlug = protectedProcedure
       slug: z.string().optional()
     })
   )
-  .mutation(async ({input}) => {
-    const user = await database.query.user.findFirst({
-      where: (table, {eq}) => eq(table.id, input.id)
-    });
+  .mutation(async ({input, ctx}) => {
+    const queryUserStart = performance.now();
+    const user = await database.query.user
+      .findFirst({
+        where: (table, {eq}) => eq(table.id, input.id)
+      })
+      .finally(() => {
+        ctx.metrics.emit({
+          metric: 'main.db.read',
+          query: 'users.get',
+          latency: performance.now() - queryUserStart
+        });
+      });
 
     if (!user) {
       throw new TRPCError({
@@ -23,9 +32,18 @@ export const updateUserSlug = protectedProcedure
     }
 
     if (input.slug !== undefined) {
-      const slugExists = await database.query.user.findFirst({
-        where: (table, {eq}) => eq(table.slug, input.slug ?? '')
-      });
+      const querySlugStart = performance.now();
+      const slugExists = await database.query.user
+        .findFirst({
+          where: (table, {eq}) => eq(table.slug, input.slug ?? '')
+        })
+        .finally(() => {
+          ctx.metrics.emit({
+            metric: 'main.db.read',
+            query: 'users.get',
+            latency: performance.now() - querySlugStart
+          });
+        });
 
       if (slugExists) {
         throw new TRPCError({
@@ -35,13 +53,21 @@ export const updateUserSlug = protectedProcedure
       }
     }
 
+    const mutationStart = performance.now();
     const updateUser = await database
       .update(schema.user)
       .set({
         slug: input.slug ?? user.slug
       })
       .where(eq(schema.user.id, user.id))
-      .returning();
+      .returning()
+      .finally(() => {
+        ctx.metrics.emit({
+          metric: 'main.db.write',
+          mutation: 'users.put',
+          latency: performance.now() - mutationStart
+        });
+      });
 
     if (!updateUser[0]) {
       throw new TRPCError({

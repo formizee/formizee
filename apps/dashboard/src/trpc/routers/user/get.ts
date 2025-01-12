@@ -9,10 +9,19 @@ export const getUser = protectedProcedure
       id: z.string()
     })
   )
-  .query(async ({input}) => {
-    const user = await database.query.user.findFirst({
-      where: (table, {eq}) => eq(table.id, input.id)
-    });
+  .query(async ({input, ctx}) => {
+    const queryStart = performance.now();
+    const user = await database.query.user
+      .findFirst({
+        where: (table, {eq}) => eq(table.id, input.id)
+      })
+      .finally(() => {
+        ctx.metrics.emit({
+          metric: 'main.db.read',
+          query: 'users.get',
+          latency: performance.now() - queryStart
+        });
+      });
 
     if (!user) {
       throw new TRPCError({
