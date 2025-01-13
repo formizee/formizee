@@ -81,10 +81,16 @@ export const getWorkspaceLimits = protectedProcedure
     );
 
     let totalStorage = 0;
-    Promise.all(
+    await Promise.all(
       endpoints.map(async endpoint => {
-        const {data} = await ctx.vault.storage.get({endpointId: endpoint.id});
-        totalStorage += data?.storageUsed ?? 0;
+        const {data, error} = await ctx.vault.storage.get({
+          endpointId: endpoint.id
+        });
+
+        if (error) {
+          return;
+        }
+        totalStorage += data.storageUsed;
       })
     );
 
@@ -94,6 +100,6 @@ export const getWorkspaceLimits = protectedProcedure
       members: members.length,
       endpoints: endpoints.length,
       keys: workspaceKeys[0].count,
-      storage: totalStorage / (1024 * 1024)
+      storage: Math.round(totalStorage / (1024 * 1024))
     };
   });
