@@ -5,6 +5,7 @@ import {
   CheckIcon,
   CreditCardIcon,
   DocumentChartIcon,
+  DocumentIcon,
   FlagIcon,
   GiftIcon,
   GridIcon,
@@ -152,6 +153,12 @@ export const HeaderIcon = (props: {icon: unknown; className?: string}) => {
       return <CheckIcon className={props.className} />;
     case 'captcha':
       return <LockIcon className={props.className} />;
+
+    // File fields
+    case 'attachment':
+      return <DocumentIcon className={props.className} />;
+    case 'file':
+      return <DocumentIcon className={props.className} />;
 
     default:
       return <></>;
