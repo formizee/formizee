@@ -1,16 +1,16 @@
 import {SubmissionSchema, EndpointParamsSchema} from './schema';
-import {calculatePlanCycleDates, getLimits} from '@formizee/plans';
 import type {submissions as submissionsApi} from '.';
 import {openApiErrorResponses} from '@/lib/errors';
 import {HTTPException} from 'hono/http-exception';
 import {createRoute} from '@hono/zod-openapi';
-
-import {
-  SubmissionEmail,
-  PlanLimitReached,
-  PlanLimitWarning
-} from '@formizee/email/templates';
 import {uploadObject} from '@/lib/storage';
+
+import {SubmissionEmail} from '@formizee/email/templates';
+import {
+  checkSubmissionPlanLimits,
+  sendPlanLimitReached,
+  sendPlanLimitNear
+} from '@/lib/limits';
 
 export const postRoute = createRoute({
   method: 'post',
@@ -121,62 +121,31 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
 
     // Check plan limits.
 
-    const limits = getLimits(workspace.plan);
-    const billingCycle = calculatePlanCycleDates(workspace);
-
-    const submissionsCount = await analytics.queryFormizeeMonthlySubmissions(
-      workspace.id,
-      billingCycle.startDate,
-      billingCycle.endDate
+    const currentUsage = await checkSubmissionPlanLimits(
+      {workspace},
+      {database, vault, analytics}
     );
 
-    // Limit Reached
     if (
-      typeof limits.submissions === 'number' &&
-      submissionsCount >= limits.submissions
+      currentUsage.submissions === '100%' ||
+      currentUsage.storage === '100%'
     ) {
-      const workspaceMember = await database.query.usersToWorkspaces.findFirst({
-        where: (table, {and, eq}) =>
-          and(eq(table.workspaceId, workspace.id), eq(table.role, 'owner'))
-      });
+      const limit =
+        currentUsage.submissions === '100%' ? 'submissions' : 'storage';
 
-      if (!workspaceMember) {
+      const {error} = await sendPlanLimitReached(
+        {limit, workspace, environment: context.env.ENVIROMENT},
+        {database, smtp: emailService}
+      );
+
+      if (error) {
         if (contentType !== 'application/json') {
           return context.redirect('https://formizee.com/f/error');
         }
-        throw new HTTPException(500, {
-          message: 'Server Internal Error'
-        });
+
+        throw error;
       }
 
-      const workspaceOwner = await database.query.user.findFirst({
-        where: (table, {eq}) => eq(table.id, workspaceMember.userId)
-      });
-
-      if (!workspaceOwner) {
-        if (contentType !== 'application/json') {
-          return context.redirect('https://formizee.com/f/error');
-        }
-        throw new HTTPException(500, {
-          message: 'Server Internal Error'
-        });
-      }
-
-      if (context.env.ENVIROMENT === 'production') {
-        await emailService.emails.send({
-          subject: "Action Required: You've reached the limits of your plan",
-          reply_to: 'Formizee Support <support@formizee.com>',
-          from: 'Formizee Billing <payments@formizee.com>',
-          to: workspaceOwner.email,
-          react: (
-            <PlanLimitReached
-              limit={'submissions'}
-              username={workspaceOwner.name}
-              currentPlan={workspace.plan}
-            />
-          )
-        });
-      }
       if (contentType !== 'application/json') {
         return context.redirect('https://formizee.com/f/disabled');
       }
@@ -185,54 +154,25 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
       });
     }
 
-    // 80% Warning
-    if (
-      typeof limits.submissions === 'number' &&
-      submissionsCount >= Math.abs(limits.submissions * 0.8)
-    ) {
-      const workspaceMember = await database.query.usersToWorkspaces.findFirst({
-        where: (table, {and, eq}) =>
-          and(eq(table.workspaceId, workspace.id), eq(table.role, 'owner'))
-      });
+    if (currentUsage.submissions === '80%' || currentUsage.storage === '80%') {
+      const limit =
+        currentUsage.submissions === '80%' ? 'submissions' : 'storage';
 
-      if (!workspaceMember) {
+      const {error} = await sendPlanLimitNear(
+        {limit, workspace, environment: context.env.ENVIROMENT},
+        {database, smtp: emailService}
+      );
+
+      if (error) {
         if (contentType !== 'application/json') {
           return context.redirect('https://formizee.com/f/error');
         }
-        throw new HTTPException(500, {
-          message: 'Server Internal Error'
-        });
-      }
 
-      const workspaceOwner = await database.query.user.findFirst({
-        where: (table, {eq}) => eq(table.id, workspaceMember.userId)
-      });
-
-      if (!workspaceOwner) {
-        if (contentType !== 'application/json') {
-          return context.redirect('https://formizee.com/f/error');
-        }
-        throw new HTTPException(500, {
-          message: 'Server Internal Error'
-        });
-      }
-
-      if (context.env.ENVIROMENT === 'production') {
-        await emailService.emails.send({
-          subject: "You've reached the 80% monthly usage of your plan",
-          reply_to: 'Formizee Support <support@formizee.com>',
-          from: 'Formizee Billing <payments@formizee.com>',
-          to: workspaceOwner.email,
-          react: (
-            <PlanLimitWarning
-              limit={'submissions'}
-              username={workspaceOwner.name}
-              currentPlan={workspace.plan}
-            />
-          )
-        });
+        throw error;
       }
     }
+
+    // Publish submission
 
     const fileUploads = input.fileUploads.map(entry => {
       return {name: entry.file.name, field: entry.field};
@@ -257,6 +197,8 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
       });
     }
 
+    // Uploads files
+
     if (data.pendingUploads.length > 0) {
       let storageUsed = 0;
       await Promise.all(
@@ -280,6 +222,8 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
       await vault.storage.put({endpointId: endpoint.id, storageUsed});
     }
 
+    // Send the submission email
+
     if (
       endpoint.emailNotifications &&
       context.env.ENVIROMENT === 'production'
@@ -300,6 +244,8 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
         });
       }
     }
+
+    // Ingest metrics
 
     await metrics.forceEmit({
       metric: 'submission.upload',
