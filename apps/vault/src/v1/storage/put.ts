@@ -65,9 +65,12 @@ export const registerPutStorage = (api: typeof storageAPI) => {
       });
     }
 
-    await originDatabase.update(schema.endpoint).set({
-      storageUsed: endpoint.storageUsed + input.storageUsed
-    });
+    await originDatabase
+      .update(schema.endpoint)
+      .set({
+        storageUsed: endpoint.storageUsed + input.storageUsed
+      })
+      .where(eq(schema.endpoint.id, endpointId));
 
     metrics.emit({
       metric: 'vault.latency',
