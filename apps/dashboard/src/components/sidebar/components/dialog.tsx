@@ -55,6 +55,7 @@ export const CreateEndpointDialog = (props: Props) => {
     }
   });
 
+  const utils = api.useUtils();
   const router = useRouter();
 
   const createEndpoint = api.endpoint.create.useMutation({
@@ -67,6 +68,7 @@ export const CreateEndpointDialog = (props: Props) => {
     },
     onSuccess: newEndpoint => {
       props.setOpen(false);
+      utils.endpoint.list.invalidate();
       router.push(`/${props.workspaceSlug}/${newEndpoint.slug}`);
     }
   });

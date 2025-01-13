@@ -49,6 +49,7 @@ export const DeleteEndpointDialog = (props: Props) => {
   });
 
   const [open, setOpen] = useState(false);
+  const utils = api.useUtils();
   const router = useRouter();
 
   const deleteEndpoint = api.endpoint.delete.useMutation({
@@ -59,6 +60,7 @@ export const DeleteEndpointDialog = (props: Props) => {
       });
     },
     onSuccess: () => {
+      utils.endpoint.list.invalidate();
       router.replace('/');
     }
   });
