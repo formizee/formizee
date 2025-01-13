@@ -5,6 +5,7 @@
       "drizzle/migrations",
       "node_modules/**",
       "packages/ui/**",
+      ".venv/**",
       ".wrangler/**",
       "coverage/**",
       ".vercel/**",
