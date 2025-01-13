@@ -7,7 +7,7 @@ import EmptyPage from './empty';
 import 'server-only';
 
 interface Params {
-  workspaceSlug: string;
+  workspace: string;
 }
 
 const DashboardRedirect = async ({params}: {params: Params}) => {
@@ -18,7 +18,7 @@ const DashboardRedirect = async ({params}: {params: Params}) => {
   }
 
   const workspace = await handleTrpcServerAction(
-    api.workspace.get.query({slug: params.workspaceSlug})
+    api.workspace.get.query({slug: params.workspace})
   );
 
   const endpoint = await database.query.endpoint.findFirst({
