@@ -1,7 +1,7 @@
 'use client';
 
+import {SubmissionsTable} from './_components';
 import {Transition} from '@/components';
-import {Table} from './_components';
 import ErrorPage from '../error';
 
 import {api} from '@/trpc/client';
@@ -29,7 +29,7 @@ export default function Submissions({params}: Props) {
 
   return (
     <Transition className="flex flex-col w-full items-start">
-      <Table id={data.id} color={data.color} />
+      <SubmissionsTable id={data.id} color={data.color} />
     </Transition>
   );
 }

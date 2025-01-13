@@ -14,6 +14,7 @@ export const generateColumns = (submissionColumns: Column[], color: Color) => {
   const tableSelectColumn = [
     {
       id: 'formizee_internal_select',
+      accessorKey: 'formizee_internal_select',
       // biome-ignore lint/suspicious/noExplicitAny: <explanation>
       header: ({table}: any) => (
         <Checkbox
@@ -43,6 +44,9 @@ export const generateColumns = (submissionColumns: Column[], color: Color) => {
   const tableActionsColumn = [
     {
       id: 'formizee_internal_actions',
+      accessorKey: 'formizee_internal_actions',
+      enableSorting: false,
+      enableHiding: false,
       // biome-ignore lint/suspicious/noExplicitAny: <explanation>
       cell: ({row}: any) => {
         const submission = row.original;

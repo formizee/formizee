@@ -7,7 +7,9 @@ import {authorize} from '@/trpc/utils';
 export const listSubmissions = protectedProcedure
   .input(
     z.object({
-      endpointId: z.string()
+      endpointId: z.string(),
+      pageSize: z.number(),
+      pageIndex: z.number()
     })
   )
   .query(async ({input, ctx}) => {
@@ -38,7 +40,9 @@ export const listSubmissions = protectedProcedure
     }
 
     const {data, error} = await ctx.vault.submissions.list({
-      endpointId: endpoint.id
+      limit: input.pageSize,
+      endpointId: endpoint.id,
+      page: input.pageIndex
     });
 
     if (error) {
@@ -54,6 +58,9 @@ export const listSubmissions = protectedProcedure
         ...submission.data
       })
     );
+
+    const pageCount = data._metadata.totalPages;
+    const pageSize = data._metadata.itemsPerPage;
 
     const baseColumns = [
       {
@@ -72,6 +79,8 @@ export const listSubmissions = protectedProcedure
 
     return {
       columns,
+      pageSize,
+      pageCount,
       submissions
     };
   });
