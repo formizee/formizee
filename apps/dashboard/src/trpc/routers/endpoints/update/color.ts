@@ -32,7 +32,7 @@ export const updateEndpointColor = protectedProcedure
       });
     }
 
-    const {workspace, error} = await authorize({id: endpoint.id}, ctx);
+    const {workspace, error} = await authorize({id: endpoint.workspaceId}, ctx);
 
     if (!workspace) {
       throw error;
