@@ -23,7 +23,7 @@ export default auth(async req => {
       throw new Error('User not found.');
     }
 
-    const getWorspaces = async (userId: string) => {
+    const getWorkspaces = async (userId: string) => {
       return await database
         .select()
         .from(schema.usersToWorkspaces)
@@ -38,7 +38,7 @@ export default auth(async req => {
         .where(eq(schema.user.id, userId));
     };
 
-    const allowedWorkspaces = await getWorspaces(user.id);
+    const allowedWorkspaces = await getWorkspaces(user.id);
 
     if (!allowedWorkspaces || !allowedWorkspaces[0]?.workspaces) {
       throw new Error('Workspaces not found.');
