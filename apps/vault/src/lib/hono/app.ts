@@ -41,7 +41,12 @@ export const newApp = (): OpenAPIHono<HonoEnv> => {
   app.use(timeout);
   app.use(
     cors({
-      origin: '*',
+      origin: [
+        'https://dashboard.formizee.com',
+        'https://api.formizee.com',
+        'http://localhost:3001',
+        'https://formizee.com',
+      ],
       allowHeaders: ['Content-Type', 'Authorization']
     })
   );
