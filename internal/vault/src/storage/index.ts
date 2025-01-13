@@ -54,7 +54,7 @@ export class Storage {
         Authorization: `Bearer ${this.token}`,
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(input.storageUsed)
+      body: JSON.stringify({storageUsed: input.storageUsed})
     });
 
     try {
