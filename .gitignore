@@ -12,6 +12,9 @@ coverage
 # sentry
 .env.sentry-build-plugin
 
+# python
+.venv/
+
 # next.js
 .next/
 out/
