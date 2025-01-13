@@ -4,7 +4,7 @@ import {authorize} from '@/trpc/utils';
 import {TRPCError} from '@trpc/server';
 import {z} from 'zod';
 
-const RESERVED_SLUGS = ['api', 'auth', 'billing', 'login', 'acme', 'formizee'];
+const RESERVED_SLUGS = ['api', 'auth', 'billing', 'settings', 'login', 'acme', 'formizee'];
 
 export const updateWorkspaceSlug = protectedProcedure
   .input(
