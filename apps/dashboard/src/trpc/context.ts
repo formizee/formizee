@@ -19,13 +19,11 @@ export async function createContext({req}: FetchCreateContextFnOptions) {
         'unknown'
     },
     analytics: new Analytics({
-      tinybirdToken:
-        env().VERCEL_ENV === 'development' ? env().TINYBIRD_TOKEN : undefined,
+      tinybirdToken: env().TINYBIRD_TOKEN,
       tinybirdUrl: env().TINYBIRD_URL
     }),
     metrics: new Metrics({
-      tinybirdToken:
-        env().VERCEL_ENV === 'development' ? env().TINYBIRD_TOKEN : undefined,
+      tinybirdToken: env().TINYBIRD_TOKEN,
       tinybirdUrl: env().TINYBIRD_URL
     }),
     vault: new Vault({
