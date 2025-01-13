@@ -12,8 +12,9 @@ coverage
 # sentry
 .env.sentry-build-plugin
 
-# python
+# tinybird
 .venv/
+.tinyb
 
 # next.js
 .next/

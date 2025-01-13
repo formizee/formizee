@@ -1,0 +1,15 @@
+VERSION 1
+DESCRIPTION >
+    The submission metrics of Formizee
+
+SCHEMA >
+    `context_location` String `json:$.context.location`,
+    `context_userAgent` String `json:$.context.userAgent`,
+    `endpointId` String `json:$.endpointId`,
+    `metric` String `json:$.metric`,
+    `uploadedAt` DateTime64(3) `json:$.uploadedAt`,
+    `workspaceId` String `json:$.workspaceId`
+
+ENGINE "MergeTree"
+ENGINE_PARTITION_KEY "toYear(uploadedAt)"
+ENGINE_SORTING_KEY "uploadedAt, endpointId, metric, workspaceId"

@@ -1,0 +1,22 @@
+VERSION 1
+DESCRIPTION >
+	The endpoint to query the monthly submissions
+
+
+TOKEN "Formizee API" READ
+
+TOKEN "Formizee Dashboard" READ
+
+TOKEN "metrics__submission_0_endpoint_read_4329" READ
+
+NODE submissions__pipe___v1_0
+SQL >
+
+    %
+    SELECT COUNT(*) AS count
+    FROM metrics__submission
+    WHERE  workspaceId = {{String(workspaceId)}}
+      AND uploadedAt >= {{DateTime(startDate)}}
+      AND uploadedAt <= {{DateTime(endDate)}}
+
+

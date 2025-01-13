@@ -1,0 +1,18 @@
+VERSION 1
+TOKEN "Formizee API" READ
+
+TOKEN "Formizee Dashboard" READ
+
+TOKEN "api__requests__pipe_endpoint_read_2916" READ
+
+NODE api__requests__pipe_0
+SQL >
+
+    %
+    SELECT COUNT(*) AS count
+    FROM metrics__api
+    WHERE  workspaceId = {{String(workspaceId)}}
+      AND time >= {{DateTime(startDate)}}
+      AND time <= {{DateTime(endDate)}}
+
+

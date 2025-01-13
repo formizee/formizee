@@ -1,0 +1,9 @@
+VERSION 1
+
+SCHEMA >
+    `latency` Int32 `json:$.latency`,
+    `metric` String `json:$.metric`,
+    `query` String `json:$.query`
+
+ENGINE "MergeTree"
+ENGINE_SORTING_KEY "latency, metric, query"

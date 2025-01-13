@@ -1,0 +1,26 @@
+VERSION 1
+DESCRIPTION >
+	The endpoint to query for the analytics charts monthly
+
+
+TOKEN "Formizee Dashboard" READ
+
+TOKEN "submissions__metrics__pipe__v1_endpoint_read_8173" READ
+
+NODE submissions__metrics__month_pipe___v1_0
+SQL >
+
+    %
+    SELECT
+        toStartOfDay(uploadedAt) AS dateTime,
+        count() AS submissions
+     FROM metrics__submission
+        WHERE endpointId = {{String(endpointId)}}  -- replace with the actual endpointId you're filtering for
+        AND uploadedAt >= now() - INTERVAL 30 DAY
+    GROUP BY
+        dateTime
+    ORDER BY
+        dateTime DESC
+
+
+
