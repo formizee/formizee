@@ -45,7 +45,7 @@ export const newApp = (): OpenAPIHono<HonoEnv> => {
         'https://dashboard.formizee.com',
         'https://api.formizee.com',
         'http://localhost:3001',
-        'https://formizee.com',
+        'https://formizee.com'
       ],
       allowHeaders: ['Content-Type', 'Authorization']
     })
