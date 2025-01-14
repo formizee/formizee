@@ -11,8 +11,7 @@ export const createEndpoint = protectedProcedure
     z.object({
       workspaceSlug: z.string(),
       name: z.string().max(64),
-      slug: z.string().max(64),
-      targetEmails: z.string().email().array()
+      slug: z.string().max(64)
     })
   )
   .mutation(async ({input, ctx}) => {
@@ -76,15 +75,15 @@ export const createEndpoint = protectedProcedure
       });
     }
 
-    // Check target emails
-    const validTargetEmails = input.targetEmails.every(email =>
-      workspace.availableEmails.includes(email)
-    );
-    if (!validTargetEmails) {
+    // Get user email
+    const user = await database.query.user.findFirst({
+      where: (table, {eq}) => eq(table.id, ctx.user.id ?? '')
+    });
+
+    if (!user) {
       throw new TRPCError({
-        code: 'FORBIDDEN',
-        message:
-          'All the target emails needs to be available in the current workspace'
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'The user does not exists'
       });
     }
 
@@ -96,7 +95,7 @@ export const createEndpoint = protectedProcedure
       name: input.name ?? input.slug,
 
       redirectUrl: 'https://formizee.com/f/thanks-you',
-      targetEmails: input.targetEmails,
+      targetEmails: [user.email],
 
       icon: schema.endpointIcon[
         Math.floor(Math.random() * schema.endpointIcon.length)

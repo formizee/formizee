@@ -76,7 +76,6 @@ export const CreateEndpointDialog = (props: Props) => {
   const onSubmit = form.handleSubmit(data =>
     createEndpoint.mutate({
       workspaceSlug: props.workspaceSlug,
-      targetEmails: [],
       ...data
     })
   );
