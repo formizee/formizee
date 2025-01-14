@@ -20,6 +20,7 @@ export default async function AuthVerify() {
         <header className="mb-8 flex w-full flex-col items-center sm:items-start gap-8">
           <div className="dark:reflection dark:shadow-[0_0_60px_15px_rgba(252,211,77,0.1)]">
             <Image
+              priority
               alt="Email"
               className="z-[999] rounded-xl border-4 dark:border-neutral-600 border-neutral-300 shadow-[0_0_60px_12px_rgba(217,119,6,0.5)]"
               src={emailIcon}

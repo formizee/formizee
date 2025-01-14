@@ -13,6 +13,7 @@ export const ChartError = () => {
   return (
     <Transition className="flex flex-col items-center justify-center border dark:border-neutral-800 w-full h-[450px] mt-4 rounded-md">
       <Image
+        priority
         src={errorIcon}
         alt="Error Icon"
         width={64}

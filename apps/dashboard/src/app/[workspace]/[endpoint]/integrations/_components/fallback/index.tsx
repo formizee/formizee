@@ -7,6 +7,7 @@ export const FallbackCard = () => {
   return (
     <Transition className="flex flex-col items-center justify-center border border-dotted dark:border-neutral-800 w-full h-[450px] mt-4 rounded-md">
       <Image
+        priority
         src={integrationsIcon}
         alt="Integrations Icon"
         width={64}

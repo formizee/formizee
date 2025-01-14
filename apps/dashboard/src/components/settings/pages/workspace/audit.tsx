@@ -30,6 +30,7 @@ export const SettingsWorkspaceAudit = (props: Props) => {
       <section className="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full gap-4 my-4">
         <div className="flex flex-row gap-4">
           <Image
+            priority
             height={48}
             width={48}
             src={lockIcon}

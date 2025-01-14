@@ -33,6 +33,7 @@ export const SettingsAccountGeneral = (props: Props) => {
     <Transition className="flex flex-col w-full">
       <div className="flex gap-4 my-4">
         <Image
+          priority
           height={48}
           width={48}
           src={accountIcon}

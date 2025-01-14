@@ -74,6 +74,7 @@ export const DeleteKeyDialog = (props: Props) => {
         <DialogHeader className="mb-4">
           <DialogTitle className="w-full flex flex-col gap-6 items-center text-left text-xl font-bold">
             <Image
+              priority
               src={trashIcon}
               alt="Trash Icon"
               width={64}

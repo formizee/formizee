@@ -8,6 +8,7 @@ export default function ErrorPage() {
   return (
     <Transition className="flex flex-col w-full h-full items-center justify-center">
       <Image
+        priority
         src={errorIcon}
         alt="Error Icon"
         width={64}

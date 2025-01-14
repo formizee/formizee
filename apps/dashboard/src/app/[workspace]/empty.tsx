@@ -6,6 +6,7 @@ const EmptyPage = () => {
   return (
     <Transition className="flex flex-col w-full h-full items-center justify-center">
       <Image
+        priority
         src={workspaceIcon}
         alt="Workspace Icon"
         width={64}

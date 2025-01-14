@@ -96,6 +96,7 @@ export const CreateKeyButton = (props: {workspaceSlug: string}) => {
             <DialogHeader>
               <DialogTitle className="w-full flex flex-col gap-6 items-center text-left text-xl font-bold">
                 <Image
+                  priority
                   src={keyIcon}
                   alt="Key Icon"
                   width={64}

@@ -5,6 +5,7 @@ import Image from 'next/image';
 export const PageError = () => (
   <Transition className="flex flex-col w-full h-full items-center justify-center">
     <Image
+      priority
       src={errorIcon}
       alt="Error Icon"
       width={64}
