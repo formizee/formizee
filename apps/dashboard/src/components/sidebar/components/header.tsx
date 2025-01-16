@@ -68,7 +68,7 @@ export const ShinyBadge = () => {
 
 export const Header = ({workspaceSlug}: SidebarHeaderProps) => {
   const workspace = api.workspace.get.useQuery({slug: workspaceSlug});
-  const isPro = true; //workspace.data?.plan === 'pro';
+  const isPro = workspace.data?.plan === 'pro';
 
   return (
     <SidebarHeader>
