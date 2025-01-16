@@ -20,9 +20,9 @@ export const env = () =>
       VAULT_SECRET: z.string().default(''),
 
       // Billing
-      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string(),
-      STRIPE_WEBHOOK_SECRET: z.string(),
-      STRIPE_SECRET_KEY: z.string(),
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string().default(''),
+      STRIPE_WEBHOOK_SECRET: z.string().default(''),
+      STRIPE_SECRET_KEY: z.string().default(''),
 
       // Analytics
       TINYBIRD_URL: z.string().url().optional(),
