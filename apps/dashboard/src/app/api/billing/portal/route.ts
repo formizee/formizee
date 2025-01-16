@@ -7,7 +7,10 @@ import {auth} from '@/lib/auth';
 export const GET = auth(async function GET(req) {
   const url = new URL(req.url);
   const workspaceId = url.searchParams.get('workspaceId') ?? '';
-  const billing = new BillingService({apiKey: env().STRIPE_SECRET_KEY});
+  const billing = new BillingService({
+    apiKey: env().STRIPE_SECRET_KEY,
+    testMode: env().VERCEL_ENV === 'development'
+  });
 
   const workspace = await database.query.workspace.findFirst({
     where: (table, {eq}) => eq(table.id, workspaceId)

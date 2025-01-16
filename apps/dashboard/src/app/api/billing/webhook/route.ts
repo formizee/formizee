@@ -170,7 +170,7 @@ export async function POST(req: Request) {
 
   const billing = new BillingService({
     apiKey: env().STRIPE_SECRET_KEY,
-    testMode: env().VERCEL_ENV !== 'production'
+    testMode: env().VERCEL_ENV === 'development'
   });
 
   if (!signature) {
