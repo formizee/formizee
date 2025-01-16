@@ -37,7 +37,6 @@ export const SettingsWorkspaceBilling = (props: Props) => {
   const usage = usageRequest.data;
 
   const currentPlanLimits = getLimits(workspace.plan);
-
   const {endDate} = calculatePlanCycleDates(workspace);
 
   return (
@@ -66,12 +65,16 @@ export const SettingsWorkspaceBilling = (props: Props) => {
         <div className="flex flex-col">
           <span className="flex flex-row w-full text-sm mt-4 justify-between">
             Next Billing At
-            <span className="text-xs mr-4">{endDate.toDateString()}</span>
+            <span className="text-sm mr-4">{endDate.toDateString()}</span>
           </span>
           <span className="flex flex-row w-full text-sm my-4 justify-between">
             Total Due
             <span className=" text-sm mr-4 font-medium">
-              ${planConfig[workspace.plan].price}
+              {new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                currencySign: 'standard'
+              }).format(planConfig[workspace.plan].price)}
             </span>
           </span>
           <span className="font-semibold mt-8">Current Usage</span>

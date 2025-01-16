@@ -1,5 +1,5 @@
-import {NextResponse} from 'next/server';
 import {BillingService} from '@formizee/billing';
+import {NextResponse} from 'next/server';
 import {env} from '@/lib/enviroment';
 import {database} from '@/lib/db';
 import {auth} from '@/lib/auth';
@@ -7,7 +7,25 @@ import {auth} from '@/lib/auth';
 export const GET = auth(async function GET(req) {
   const url = new URL(req.url);
   const workspaceId = url.searchParams.get('workspaceId') ?? '';
-  const billing = new BillingService({apiKey: env().LEMONSQUEEZY_API_KEY});
+
+  const billing = new BillingService({
+    apiKey: env().STRIPE_SECRET_KEY,
+    testMode: env().VERCEL_ENV === 'development'
+  });
+
+  const workspace = await database.query.workspace.findFirst({
+    where: (table, {eq}) => eq(table.id, workspaceId)
+  });
+
+  if (!workspace) {
+    return NextResponse.json(
+      {
+        code: 'NOT_FOUND',
+        message: 'Workspace not found.'
+      },
+      {status: 404}
+    );
+  }
 
   const authorized = await database.query.usersToWorkspaces.findFirst({
     where: (table, {and, eq}) =>
@@ -27,33 +45,20 @@ export const GET = auth(async function GET(req) {
     );
   }
 
-  const user = await database.query.user.findFirst({
-    where: (table, {eq}) => eq(table.id, authorized.userId)
+  const successUrl = `${req.nextUrl.protocol}//${req.nextUrl.host}/billing/confirmation`;
+  const cancelUrl = `${req.nextUrl.protocol}//${req.nextUrl.host}/`;
+
+  const responseUrl = await billing.createFormizeeProPlanCheckout({
+    cancelUrl: cancelUrl,
+    successUrl: successUrl,
+    workspaceId: workspace.id,
+    stripeId: workspace.stripeId,
+    email: req.auth?.user?.email ?? ''
   });
 
-  if (!user) {
-    return NextResponse.json(
-      {
-        code: 'NOT_FOUND',
-        message: 'User not found.'
-      },
-      {status: 404}
-    );
-  }
-
-  const confirmationUrl = `${req.nextUrl.protocol}//${req.nextUrl.host}/billing/confirmation`;
-
-  try {
-    const responseUrl = await billing.createFormizeeProPlanCheckout({
-      email: user.email,
-      variantId: '467798',
-      redirectUrl: confirmationUrl,
-      workspaceId: authorized.workspaceId,
-      storeId: env().LEMONSQUEEZY_STORE_ID
-    });
-
-    return NextResponse.redirect(responseUrl);
-  } catch {
+  if (!responseUrl) {
     return NextResponse.error();
   }
+
+  return NextResponse.redirect(responseUrl);
 });

@@ -65,8 +65,10 @@ const UpgradeButton = (props: {
   if (props.workspacePlan === 'pro') {
     if (props.plan === 'hobby') {
       return (
-        <Button variant="outline" className="w-full">
-          Change Plan
+        <Button variant="outline" className="w-full" asChild>
+          <Link href={`/api/billing/portal?workspaceId=${props.workspaceId}`}>
+            Change Plan
+          </Link>
         </Button>
       );
     }

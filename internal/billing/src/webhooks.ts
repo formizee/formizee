@@ -1,30 +1,25 @@
-type Event =
-  | 'subscription_created'
-  | 'subscription_updated'
-  | 'subscription_cancelled'
-  | 'subscription_resumed'
-  | 'subscription_expired'
-  | 'subscription_paused'
-  | 'subscription_unpaused'
-  | 'subscription_payment_failed'
-  | 'subscription_payment_success'
-  | 'subscription_payment_recovered'
-  | 'subscription_payment_refund';
+import type Stripe from 'stripe';
 
-export interface Webhook {
-  meta: {
-    event_name: Event;
-    test_mode: boolean;
-    webhook_id: string;
-    custom_data: Record<string, string>;
-  };
-  data: {
-    attributes: {
-      subscription_id: number;
-      customer_id: number;
-      cancelled: boolean;
-      renews_at: string;
-      ends_at: string | null;
-    };
-  };
-}
+export const allowedEvents = [
+  'customer.created',
+  'checkout.session.completed',
+  'customer.subscription.created',
+  'customer.subscription.updated',
+  'customer.subscription.deleted',
+  'customer.subscription.paused',
+  'customer.subscription.resumed',
+  'customer.subscription.pending_update_applied',
+  'customer.subscription.pending_update_expired',
+  'customer.subscription.trial_will_end',
+  'invoice.paid',
+  'invoice.payment_failed',
+  'invoice.payment_action_required',
+  'invoice.upcoming',
+  'invoice.marked_uncollectible',
+  'invoice.payment_succeeded',
+  'payment_intent.succeeded',
+  'payment_intent.payment_failed',
+  'payment_intent.canceled'
+] as Stripe.Event.Type[];
+
+export type Event = Stripe.Event;

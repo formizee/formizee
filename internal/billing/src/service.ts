@@ -1,80 +1,79 @@
-import {
-  type NewCheckout,
-  lemonSqueezySetup,
-  createCheckout,
-  listSubscriptionInvoices,
-  cancelSubscription,
-  getSubscriptionInvoice,
-  getSubscription
-} from '@lemonsqueezy/lemonsqueezy.js';
+import Stripe from 'stripe';
 
 export class BillingService {
-  constructor(opts?: {apiKey: string}) {
-    lemonSqueezySetup({
-      apiKey: opts?.apiKey,
-      onError: error => console.error('Billing Error: ', error)
+  readonly stripe: Stripe;
+  private readonly testMode: boolean;
+
+  private readonly FORMIZEE_PRO_PRICE = 'price_1QhEPbEwRlAi5vvJykRZbVz0';
+  private readonly FORMIZEE_PRO_TEST_PRICE = 'price_1QhERkEwRlAi5vvJadjNrZ0h';
+
+  constructor(opts?: {apiKey: string; testMode?: boolean}) {
+    this.testMode = opts?.testMode ?? false;
+
+    this.stripe = new Stripe(opts?.apiKey ?? '', {
+      apiVersion: '2024-12-18.acacia',
+      appInfo: {
+        name: 'Formizee.',
+        url: 'https://dashboard.formizee.com'
+      }
     });
   }
 
-  public async createFormizeeProPlanCheckout(
-    input: {
-      email: string;
-      storeId: string;
-      variantId: string;
-      workspaceId: string;
-      redirectUrl: string;
-    },
-    opts?: {testMode: boolean}
-  ) {
-    const newCheckout: NewCheckout = {
-      productOptions: {
-        redirectUrl: input.redirectUrl,
-        receiptButtonText: 'Go to Dashboard'
-      },
-      checkoutOptions: {
-        embed: false
-      },
-      checkoutData: {
+  public buildWebhookEvent(body: string, signature: string, secret: string) {
+    return this.stripe.webhooks.constructEvent(body, signature, secret);
+  }
+
+  public async getStripeCustomer(id: string): Promise<Stripe.Customer | null> {
+    const result = await this.stripe.customers.retrieve(id);
+
+    if (result.deleted) {
+      return Promise.resolve(null);
+    }
+
+    return Promise.resolve(result);
+  }
+
+  public async createFormizeeProPlanCheckout(input: {
+    email: string;
+    cancelUrl: string;
+    successUrl: string;
+    workspaceId: string;
+    stripeId: string | null;
+  }) {
+    let customerId = input.stripeId;
+
+    if (customerId === null) {
+      const customer = await this.stripe.customers.create({
         email: input.email,
-        custom: {
+        metadata: {
           workspaceId: input.workspaceId
         }
-      },
-      testMode: opts?.testMode ?? false
-    };
-
-    const {data, error} = await createCheckout(
-      input.storeId,
-      input.variantId,
-      newCheckout
-    );
-
-    if (!data) {
-      return Promise.reject(error);
+      });
+      customerId = customer.id;
     }
 
-    return Promise.resolve(data.data.attributes.url);
+    const newCheckout = await this.stripe.checkout.sessions.create({
+      mode: 'subscription',
+      line_items: [
+        {
+          quantity: 1,
+          price: this.testMode
+            ? this.FORMIZEE_PRO_TEST_PRICE
+            : this.FORMIZEE_PRO_PRICE
+        }
+      ],
+      customer: customerId,
+      cancel_url: input.cancelUrl,
+      success_url: input.successUrl
+    });
+
+    return Promise.resolve(newCheckout.url);
   }
 
-  public async getFormizeeSubscriptionPortalUrl(subscriptionId: string) {
-    const {data, error} = await getSubscription(subscriptionId);
-
-    if (!data) {
-      return Promise.reject(error);
-    }
-
-    return Promise.resolve(data.data.attributes.urls.customer_portal);
-  }
-
-  public async cancelFormizeeProPlanSubscription(subscriptionId: string) {
-    return await cancelSubscription(subscriptionId);
-  }
-
-  public async getFormizeePlanInvoice(subscriptionInvoiceId: string) {
-    return await getSubscriptionInvoice(subscriptionInvoiceId);
-  }
-
-  public async listFormizeePlanInvoices(subscriptionId: string) {
-    return await listSubscriptionInvoices({filter: {subscriptionId}});
+  public async getFormizeeSubscriptionPortalUrl(customerId: string) {
+    const session = await this.stripe.billingPortal.sessions.create({
+      customer: customerId
+    });
+    return Promise.resolve(session.url);
   }
 }
