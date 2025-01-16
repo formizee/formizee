@@ -7,7 +7,21 @@ import {auth} from '@/lib/auth';
 export const GET = auth(async function GET(req) {
   const url = new URL(req.url);
   const workspaceId = url.searchParams.get('workspaceId') ?? '';
-  const billing = new BillingService({apiKey: env().LEMONSQUEEZY_API_KEY});
+  const billing = new BillingService({apiKey: env().STRIPE_SECRET_KEY});
+
+  const workspace = await database.query.workspace.findFirst({
+    where: (table, {eq}) => eq(table.id, workspaceId)
+  });
+
+  if (!workspace) {
+    return NextResponse.json(
+      {
+        code: 'NOT_FOUND',
+        message: 'Workspace not found.'
+      },
+      {status: 404}
+    );
+  }
 
   const authorized = await database.query.usersToWorkspaces.findFirst({
     where: (table, {and, eq}) =>
@@ -21,33 +35,20 @@ export const GET = auth(async function GET(req) {
     return NextResponse.json(
       {
         code: 'UNAUTHORIZED',
-        message: 'You do not have permission to upgrade this plan.'
+        message: 'You do not have permission to manage this workspace.'
       },
       {status: 401}
     );
   }
 
-  const workspace = await database.query.workspace.findFirst({
-    where: (table, {eq}) => eq(table.id, authorized.workspaceId)
-  });
-
-  if (!workspace) {
-    return NextResponse.json(
-      {
-        code: 'NOT_FOUND',
-        message: 'Workspace not found.'
-      },
-      {status: 404}
-    );
-  }
-
   try {
     const responseUrl = await billing.getFormizeeSubscriptionPortalUrl(
-      workspace.subscriptionId ?? ''
+      workspace.stripeId ?? ''
     );
 
     return NextResponse.redirect(responseUrl);
-  } catch {
+  } catch (error) {
+    console.error(error);
     return NextResponse.error();
   }
 });

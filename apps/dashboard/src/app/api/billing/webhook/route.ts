@@ -1,34 +1,35 @@
-import type {Webhook} from '@formizee/billing';
+import {allowedEvents, type Event} from '@formizee/billing/webhooks';
+import {BillingService} from '@formizee/billing';
 import {database, eq, schema} from '@/lib/db';
 import {NextResponse} from 'next/server';
 import {env} from '@/lib/enviroment';
-import crypto from 'node:crypto';
 
-export async function POST(request: Request) {
-  const rawBody = await request.text();
-  const secret = env().LEMONSQUEEZY_WEBHOOK_SECRET;
+const webhookSecret = env().STRIPE_WEBHOOK_SECRET;
 
-  const signature = Buffer.from(
-    request.headers.get('X-Signature') ?? '',
-    'hex'
-  );
-
-  const hmac = Buffer.from(
-    crypto.createHmac('sha256', secret).update(rawBody).digest('hex'),
-    'hex'
-  );
-
-  if (!crypto.timingSafeEqual(hmac, signature)) {
-    return new Response('Invalid signature', {status: 400});
+async function processEvent(event: Event, billing: BillingService) {
+  if (!allowedEvents.includes(event?.type)) {
+    return;
   }
 
-  const data = JSON.parse(rawBody) as Webhook;
+  switch (event.type) {
+    // Upgrade plan on payment succeeded
+    case 'invoice.payment_succeeded': {
+      const customerId = event.data.object.customer as string;
+      const customer = await billing.getStripeCustomer(customerId);
 
-  switch (data.meta.event_name) {
-    case 'subscription_payment_success': {
+      if (!customer) {
+        return NextResponse.json(
+          {
+            message:
+              'Stripe customer not found, please contact with support@formizee.com'
+          },
+          {status: 404}
+        );
+      }
+
       const workspace = await database.query.workspace.findFirst({
         where: (table, {eq}) =>
-          eq(table.id, data.meta.custom_data.workspace_id ?? '')
+          eq(table.id, customer.metadata.workspaceId ?? 'ws_1234')
       });
 
       if (!workspace) {
@@ -45,18 +46,18 @@ export async function POST(request: Request) {
         .update(schema.workspace)
         .set({
           plan: 'pro',
-          stripeId: data.data.attributes.customer_id.toString(),
-          subscriptionId: data.data.attributes.subscription_id.toString()
+          subscriptionId: event.data.object.id
         })
         .where(eq(schema.workspace.id, workspace.id));
 
       break;
     }
 
-    case 'subscription_updated': {
+    // Assign a stripe id to the workspace
+    case 'customer.created': {
       const workspace = await database.query.workspace.findFirst({
         where: (table, {eq}) =>
-          eq(table.id, data.meta.custom_data?.workspace_id ?? '')
+          eq(table.id, event.data.object.metadata.workspaceId ?? 'ws_1234')
       });
 
       if (!workspace) {
@@ -72,21 +73,70 @@ export async function POST(request: Request) {
       await database
         .update(schema.workspace)
         .set({
-          plan: data.data.attributes.cancelled ? 'hobby' : 'pro',
-          paidUntil: new Date(data.data.attributes.renews_at),
-          endsAt: data.data.attributes.ends_at
-            ? new Date(data.data.attributes.ends_at)
-            : null
+          stripeId: event.data.object.id
         })
         .where(eq(schema.workspace.id, workspace.id));
 
       break;
     }
 
-    case 'subscription_cancelled': {
+    // Update subscription dates
+    case 'customer.subscription.updated': {
+      const customerId = event.data.object.customer as string;
+      const customer = await billing.getStripeCustomer(customerId);
+
+      if (!customer) {
+        return NextResponse.json(
+          {
+            message:
+              'Stripe customer not found, please contact with support@formizee.com'
+          },
+          {status: 404}
+        );
+      }
+
       const workspace = await database.query.workspace.findFirst({
         where: (table, {eq}) =>
-          eq(table.id, data.meta.custom_data?.workspace_id ?? '')
+          eq(table.id, customer.metadata.workspaceId ?? '')
+      });
+
+      if (!workspace) {
+        return NextResponse.json(
+          {
+            message:
+              'Workspace not found, please contact with support@formizee.com'
+          },
+          {status: 404}
+        );
+      }
+
+      await database
+        .update(schema.workspace)
+        .set({
+          subscriptionId: event.data.object.id,
+          endsAt: new Date(Number(event.data.object.current_period_end * 1000))
+        })
+        .where(eq(schema.workspace.id, workspace.id));
+      break;
+    }
+
+    // Disable plan
+    case 'customer.subscription.deleted': {
+      const customerId = event.data.object.customer as string;
+      const customer = await billing.getStripeCustomer(customerId);
+
+      if (!customer) {
+        return NextResponse.json(
+          {
+            message:
+              'Stripe customer not found, please contact with support@formizee.com'
+          },
+          {status: 404}
+        );
+      }
+      const workspace = await database.query.workspace.findFirst({
+        where: (table, {eq}) =>
+          eq(table.id, customer.metadata.workspaceId ?? '')
       });
 
       if (!workspace) {
@@ -105,34 +155,41 @@ export async function POST(request: Request) {
           plan: 'hobby'
         })
         .where(eq(schema.workspace.id, workspace.id));
+
       break;
     }
 
-    case 'subscription_expired': {
-      const workspace = await database.query.workspace.findFirst({
-        where: (table, {eq}) =>
-          eq(table.id, data.meta.custom_data?.workspace_id ?? '')
-      });
-
-      if (!workspace) {
-        return NextResponse.json(
-          {
-            message:
-              'Workspace not found, please contact with support@formizee.com'
-          },
-          {status: 404}
-        );
-      }
-
-      await database
-        .update(schema.workspace)
-        .set({
-          plan: 'hobby'
-        })
-        .where(eq(schema.workspace.id, workspace.id));
-      break;
-    }
+    default:
+      console.info(`[STRIPE HOOK] event not tracked ${event.type}`);
   }
+}
+
+export async function POST(req: Request) {
+  const signature = req.headers.get('Stripe-Signature');
+  const body = await req.text();
+
+  const billing = new BillingService({
+    apiKey: env().STRIPE_SECRET_KEY,
+    testMode: env().VERCEL_ENV !== 'production'
+  });
+
+  if (!signature) {
+    return NextResponse.json({}, {status: 400});
+  }
+
+  async function doEventProcessing() {
+    if (typeof signature !== 'string') {
+      throw new Error("[STRIPE HOOK] Header isn't a string???");
+    }
+
+    const event = billing.buildWebhookEvent(body, signature, webhookSecret);
+
+    await processEvent(event, billing);
+  }
+
+  await doEventProcessing().catch(error => {
+    console.error('[STRIPE HOOK] Error processing event', error);
+  });
 
   return NextResponse.json({received: true});
 }

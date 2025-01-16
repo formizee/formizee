@@ -20,9 +20,9 @@ export const env = () =>
       VAULT_SECRET: z.string().default(''),
 
       // Billing
-      LEMONSQUEEZY_API_KEY: z.string().default(''),
-      LEMONSQUEEZY_STORE_ID: z.string().default(''),
-      LEMONSQUEEZY_WEBHOOK_SECRET: z.string().default(''),
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string(),
+      STRIPE_WEBHOOK_SECRET: z.string(),
+      STRIPE_SECRET_KEY: z.string(),
 
       // Analytics
       TINYBIRD_URL: z.string().url().optional(),
