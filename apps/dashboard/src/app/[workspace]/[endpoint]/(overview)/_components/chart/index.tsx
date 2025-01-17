@@ -47,7 +47,7 @@ export function Chart({id, color}: Props) {
       />
       <div className="relative px-2 pt-4 sm:px-6 sm:pt-6 w-full">
         {timeRangeSubmissions < 1 ? (
-          <div className="flex flex-col gap-2 animate-in fade-in z-50 absolute rounded-md flex top-0 left-0 w-full h-full items-center justify-center bg-neutral-50/60 dark:bg-neutral-950/60 backdrop-blur-xl">
+          <div className="flex flex-col gap-2 animate-in fade-in z-50 absolute rounded-md flex top-0 left-0 w-full h-full items-center justify-center bg-neutral-50/80 dark:bg-neutral-950/80">
             <span className="font-semibold text-neutral-950 dark:text-neutral-50">
               No Data
             </span>
@@ -60,7 +60,7 @@ export function Chart({id, color}: Props) {
         )}
         <ChartContainer
           config={chartConfig}
-          className="animate-fade-in aspect-auto h-[450px] w-full"
+          className="animate-fade-in aspect-auto h-[300px] sm:h-[450px] w-full"
         >
           <BarChart
             accessibilityLayer

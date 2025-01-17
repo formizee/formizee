@@ -14,7 +14,7 @@ export const LoadingSkeleton = () => (
           <Skeleton className="h-6 w-12 rounded-xl" />
         </div>
       </div>
-      <Skeleton className="h-8 w-40 mr-4" />
+      <Skeleton className="hidden sm:flex h-8 w-40 mr-4" />
     </header>
   </Transition>
 );
