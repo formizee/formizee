@@ -17,7 +17,6 @@ import {
   Skeleton
 } from '@formizee/ui';
 import {
-  BookIcon,
   ChevronUpDownIcon,
   HomeIcon,
   LogoutIcon,
@@ -75,40 +74,38 @@ export const Account = (props: AccountProps) => {
                 <ChevronUpDownIcon className="w-8 h-8" />
               </SidebarMenuButton>
             </DropdownMenuTrigger>
-            <DropdownMenuContent side="right" align="end">
-              <DropdownMenuItem>
-                <Link
-                  target="_blank"
-                  href="https://docs.formizee.com"
-                  className="flex flex-row items-center gap-2"
-                >
-                  <BookIcon variant="outline" />
-                  <span>Documentation</span>
-                </Link>
-              </DropdownMenuItem>
+            <DropdownMenuContent className="border-2" side="right" align="end">
               <ThemeToggle />
               <DropdownMenuItem>
                 <Link
                   href="https://formizee.com"
-                  className="flex flex-row items-center gap-2"
+                  className="font-secondary text-neutral-600 dark:text-neutral-400 flex flex-row items-center gap-2"
                 >
-                  <HomeIcon variant="outline" />
+                  <HomeIcon />
                   Homepage
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem
+                className="text-neutral-600 dark:text-neutral-400"
                 onClick={() => {
                   setRoute('account.general');
                   setOpen(open => !open);
                 }}
               >
-                <SettingsIcon variant="outline" />
-                <span>Settings</span>
+                <SettingsIcon />
+                <span className="font-secondary text-neutral-600 dark:text-neutral-400">
+                  Settings
+                </span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={async () => logout()}>
+              <DropdownMenuItem
+                onClick={async () => logout()}
+                className="text-neutral-600 dark:text-neutral-400"
+              >
                 <LogoutIcon />
-                <span>Sign out</span>
+                <span className="font-secondary text-neutral-600 dark:text-neutral-400">
+                  Sign out
+                </span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
