@@ -27,7 +27,7 @@ export default async function Login({
   const redirectTo = search.success ? search.data.redirectTo : '/';
 
   return (
-    <main className="w-full flex flex-col min-h-screen items-center justify-center p-8">
+    <main className="w-full flex flex-col min-h-dvh items-center justify-center p-8">
       <Transition className="flex flex-col max-w-96 gap-4">
         <header className="mb-8 flex w-full flex-col items-center sm:items-start gap-8">
           <Image
