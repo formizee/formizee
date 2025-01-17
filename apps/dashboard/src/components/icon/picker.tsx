@@ -127,7 +127,7 @@ export const IconPicker = ({endpoint}: Props) => {
     <div className="flex flex-col">
       <Popover>
         <PopoverTrigger asChild>
-          <Button variant="outline" size="icon" className="size-12">
+          <Button variant="outline" size="icon" className="size-10 sm:size-12">
             {isLoading ? (
               <LoadingIcon className="size-8" />
             ) : (
@@ -135,7 +135,7 @@ export const IconPicker = ({endpoint}: Props) => {
                 selected={true}
                 icon={endpoint.icon}
                 color={endpoint.color}
-                className="animate-fade-in size-8"
+                className="animate-fade-in size-6 sm:size-8"
               />
             )}
           </Button>
