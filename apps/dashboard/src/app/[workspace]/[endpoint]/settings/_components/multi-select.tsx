@@ -51,7 +51,7 @@ export function MultiSelectInput(props: Props) {
             variant="outline"
             role="combobox"
             aria-expanded={openCombobox}
-            className="w-96 justify-between text-foreground"
+            className="w-80 sm:w-96 justify-between text-foreground"
           >
             <span className="truncate">
               {props.selectedValues.length === 0 && 'Select emails'}
@@ -64,7 +64,7 @@ export function MultiSelectInput(props: Props) {
             <ChevronUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-96 dark:border-neutral-800 p-0">
+        <PopoverContent className="w-80 sm:w-96 dark:border-neutral-800 p-0">
           <Command loop>
             <CommandInput
               ref={inputRef}

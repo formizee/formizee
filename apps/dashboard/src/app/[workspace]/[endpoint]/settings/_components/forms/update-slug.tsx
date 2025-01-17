@@ -80,7 +80,10 @@ export const UpdateEndpointSlugForm = (props: Props) => {
   });
   return (
     <Form {...form}>
-      <form onSubmit={onSubmit} className="flex flex-row gap-2 items-end mt-8">
+      <form
+        onSubmit={onSubmit}
+        className="flex flex-col sm:flex-row gap-2 items-start sm:!items-end mt-4"
+      >
         <FormField
           control={form.control}
           name="newSlug"
@@ -95,7 +98,7 @@ export const UpdateEndpointSlugForm = (props: Props) => {
                   required
                   maxLength={64}
                   autoComplete="off"
-                  className="w-96"
+                  className="w-80 sm:w-96"
                   placeholder="my-cool-slug"
                   {...field}
                 />

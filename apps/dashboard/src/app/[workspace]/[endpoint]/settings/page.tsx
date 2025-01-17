@@ -47,7 +47,7 @@ export default function Settings({params}: Props) {
     <Transition className="flex flex-col w-full ml-2 items-start">
       <h2 className="font-semibold mt-4">General Information</h2>
       <Separator className="mt-2 w-full" />
-      <section className="w-full grid grid-cols-1 2xl:grid-cols-2 gap-4">
+      <section className="max-w-96 sm:max-w-full grid grid-cols-1 2xl:grid-cols-2 gap-4">
         <UpdateEndpointNameForm
           id={endpoint.id}
           defaultValue={endpoint.name ?? ''}
@@ -57,7 +57,7 @@ export default function Settings({params}: Props) {
           slug={endpoint.slug}
           defaultValue={endpoint.slug}
         />
-        <div className="flex items-end gap-2 mt-8">
+        <div className="flex flex-col sm:flex-row gap-2 items-start sm:!items-end mt-4">
           <div className="flex flex-col gap-2">
             <Label htmlFor="id" className="text-sm">
               Formizee ID
@@ -68,7 +68,7 @@ export default function Settings({params}: Props) {
             <Input
               id="id"
               disabled
-              className="w-96"
+              className="w-80 sm:w-96 border-neutral-200 dark:border-neutral-800"
               defaultValue={endpoint.id}
             />
           </div>
@@ -91,7 +91,7 @@ export default function Settings({params}: Props) {
       </section>
       <h2 className="font-semibold mt-8">Notifications</h2>
       <Separator className="mt-2 w-full" />
-      <section className="w-full grid grid-cols-1 2xl:grid-cols-2 gap-4">
+      <section className="max-w-96 sm:max-w-full grid grid-cols-1 2xl:grid-cols-2 gap-4">
         <UpdateEndpointNotificationsForm
           defaultValue={endpoint.emailNotifications}
           workspaceSlug={params.workspace}
@@ -108,7 +108,7 @@ export default function Settings({params}: Props) {
       </section>
       <h2 className="font-semibold mt-8 text-red-500">Danger Zone</h2>
       <Separator className="mt-2 w-full" />
-      <section className="w-full grid grid-cols-1 2xl:grid-cols-2 gap-4">
+      <section className="max-w-96 sm:max-w-full grid-cols-1 2xl:grid-cols-2 gap-4">
         <UpdateEndpointStatusForm
           defaultValue={endpoint.isEnabled}
           workspaceSlug={params.workspace}

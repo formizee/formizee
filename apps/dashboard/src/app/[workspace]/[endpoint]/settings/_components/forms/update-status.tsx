@@ -69,7 +69,7 @@ export const UpdateEndpointStatusForm = (props: Props) => {
         <Label htmlFor="form-status-switch" className="text-sm">
           Form Status
         </Label>
-        <div className="flex flex-row justify-between w-[26.5rem]">
+        <div className="flex flex-col gap-4 sm:gap-0 sm:flex-row justify-between sm:w-[26.5rem]">
           <p className="text-xs text-neutral-600 dark:text-neutral-400 max-w-[500px]">
             This checks if the form is still accepting submissions
           </p>

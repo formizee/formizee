@@ -68,23 +68,25 @@ export const UpdateEndpointNameForm = (props: Props) => {
   });
   return (
     <Form {...form}>
-      <form onSubmit={onSubmit} className="flex flex-row gap-2 items-end mt-4">
+      <form
+        onSubmit={onSubmit}
+        className="flex flex-col sm:flex-row gap-2 items-start sm:!items-end mt-4"
+      >
         <FormField
           control={form.control}
           name="newName"
           render={({field}) => (
             <FormItem>
               <FormLabel>Display Name</FormLabel>
-              <FormDescription className="text-xs text-neutral-600 dark:text-neutral-400">
-                {' '}
-                This name will be visible by the members of the workspace.{' '}
+              <FormDescription className="text-xs max-w-80 sm:max-w-96 text-neutral-600 dark:text-neutral-400">
+                This name will be visible by the members of the workspace.
               </FormDescription>
               <FormControl>
                 <Input
                   required
                   maxLength={64}
                   autoComplete="off"
-                  className="w-96"
+                  className="w-80 sm:w-96"
                   placeholder="My Cool Form..."
                   {...field}
                 />
