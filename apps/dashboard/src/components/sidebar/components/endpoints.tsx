@@ -8,7 +8,7 @@ import {
 } from '@formizee/ui/sidebar';
 import {api} from '@/trpc/client';
 import {EndpointItem, EndpointSkeleton} from './item';
-import Transition from '@/components/transition';
+import {AnimatePresence, motion} from 'motion/react';
 import {Create} from './create';
 
 interface Props {
@@ -28,12 +28,19 @@ export const Endpoints = (props: Props) => {
             Forms
           </SidebarGroupLabel>
           <SidebarMenu>
-            <Transition>
+            <AnimatePresence>
               {Array.from({length: 5}).map((_, index) => (
-                // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-                <EndpointSkeleton key={index} />
+                <motion.div
+                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                  key={index}
+                  initial={{translateY: -5, opacity: 0}}
+                  animate={{translateY: 0, opacity: 1}}
+                  exit={{translateY: 30, rotateZ: 15, opacity: 0}}
+                >
+                  <EndpointSkeleton />
+                </motion.div>
               ))}
-            </Transition>
+            </AnimatePresence>
           </SidebarMenu>
         </SidebarGroupContent>
       </SidebarGroup>
@@ -50,17 +57,19 @@ export const Endpoints = (props: Props) => {
       <Create workspaceSlug={props.workspaceSlug} />
       <SidebarGroupContent>
         <SidebarMenu>
-          {endpoints.map(endpoint => (
-            <EndpointItem
-              href={`/${props.workspaceSlug}/${endpoint.slug}`}
-              color={endpoint.color}
-              icon={endpoint.icon}
-              key={endpoint.id}
-              selected={false}
-            >
-              {endpoint.name}
-            </EndpointItem>
-          ))}
+          <AnimatePresence>
+            {endpoints.map(endpoint => (
+              <EndpointItem
+                href={`/${props.workspaceSlug}/${endpoint.slug}`}
+                color={endpoint.color}
+                icon={endpoint.icon}
+                key={endpoint.id}
+                selected={false}
+              >
+                {endpoint.name}
+              </EndpointItem>
+            ))}
+          </AnimatePresence>
         </SidebarMenu>
       </SidebarGroupContent>
     </SidebarGroup>
