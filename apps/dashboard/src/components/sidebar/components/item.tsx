@@ -1,11 +1,15 @@
 'use client';
 
-import {SidebarMenuButton, SidebarMenuItem} from '@formizee/ui/sidebar';
+import {
+  SidebarMenuButton,
+  SidebarMenuItem,
+  useSidebar
+} from '@formizee/ui/sidebar';
 import type {Color} from '@/lib/colors';
 import {Icon} from '@/components/icon';
 import {Skeleton} from '@formizee/ui';
 import {motion} from 'motion/react';
-import Link from 'next/link';
+import {useRouter} from 'next/navigation';
 
 interface EndpointItemProps {
   children: React.ReactNode;
@@ -16,6 +20,14 @@ interface EndpointItemProps {
 }
 
 export const EndpointItem = (props: EndpointItemProps) => {
+  const {setOpenMobile} = useSidebar();
+  const router = useRouter();
+
+  const onClick = () => {
+    router.push(props.href);
+    setOpenMobile(false);
+  };
+
   return (
     <SidebarMenuItem>
       <motion.div
@@ -27,14 +39,14 @@ export const EndpointItem = (props: EndpointItemProps) => {
           asChild
           className="transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-800"
         >
-          <Link href={props.href}>
+          <button type="button" onClick={onClick}>
             <Icon
               icon={props.icon}
               color={props.color}
               selected={props.selected}
             />
             <span>{props.children}</span>
-          </Link>
+          </button>
         </SidebarMenuButton>
       </motion.div>
     </SidebarMenuItem>
