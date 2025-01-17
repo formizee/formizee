@@ -39,7 +39,7 @@ const data = [
 
 export const Tabs = (props: Props) => {
   return (
-    <nav className="flex flex-row gap-2">
+    <nav className="flex flex-row w-full max-w-80 sm:max-w-full justify-between sm:!justify-start gap-2">
       {data.map(tab => {
         const href = `/${props.workspaceSlug}/${props.endpointSlug}${tab.path}`;
 
@@ -82,8 +82,8 @@ const TabItem = (props: ItemProps) => {
         <span
           className={
             props.isSelected
-              ? 'text-neutral-950 dark:text-neutral-50'
-              : 'text-neutral-600 dark:text-neutral-400'
+              ? 'flex text-neutral-950 dark:text-neutral-50'
+              : 'hidden sm:flex text-neutral-600 dark:text-neutral-400'
           }
         >
           {props.name}

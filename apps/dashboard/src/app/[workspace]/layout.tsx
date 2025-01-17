@@ -30,8 +30,8 @@ export default async function DashboardLayout({
       >
         <CommandPaletteProvider workspaceSlug={params.workspace}>
           <AppSidebar {...params} />
-          <main className="flex w-full h-screen bg-white no-overflow dark:bg-black">
-            <SidebarTrigger className="rounded-none size-6 px-1 h-screen opacity-0 hover:opacity-100" />
+          <main className="flex w-full h-dvh bg-white no-overflow dark:bg-black">
+            <SidebarTrigger className="hidden sm:flex rounded-none size-6 px-1 h-dvh opacity-0 hover:opacity-100" />
             <div className="flex w-full flex-col p-2 sm:p-8 items-center overflow-auto  overflow-light-style dark:overflow-dark-style">
               {children}
             </div>

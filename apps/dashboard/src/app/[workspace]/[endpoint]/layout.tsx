@@ -1,5 +1,6 @@
 'use client';
 
+import {MobileNavbar} from '@/components/mobile-navbar';
 import {usePathname} from 'next/navigation';
 import {Heading, Tabs} from './_components';
 import {Transition} from '@/components';
@@ -31,15 +32,15 @@ export default function PageLayout({params, children}: Props) {
     return (
       <Transition className="container flex flex-col gap-4 items-start mt-16 h-full">
         <div className="flex flex-row gap-4 items-center">
-          <Skeleton className="size-12" />
-          <Skeleton className="h-10 w-64" />
+          <Skeleton className="size-10" />
+          <Skeleton className="h-10 w-48 sm:w-64" />
           <Skeleton className="h-6 w-20 rounded-xl" />
         </div>
-        <div className="flex flex-row gap-2 mt-8">
+        <div className="flex flex-row gap-2 sm:gap-2 mt-8">
           <Skeleton className="h-8 w-28" />
-          <Skeleton className="h-8 w-36" />
-          <Skeleton className="h-8 w-36" />
-          <Skeleton className="h-8 w-28" />
+          <Skeleton className="h-8 w-16 sm:w-36" />
+          <Skeleton className="h-8 w-16 sm:w-36" />
+          <Skeleton className="h-8 w-16 sm:w-28" />
         </div>
       </Transition>
     );
@@ -53,14 +54,17 @@ export default function PageLayout({params, children}: Props) {
     return <ErrorPage />;
   }
   return (
-    <Transition className="container flex flex-col gap-4 items-start mt-10 h-full">
-      <Heading endpoint={data} />
-      <Tabs
-        currentPath={currentPath}
-        endpointSlug={params.endpoint}
-        workspaceSlug={params.workspace}
-      />
-      <main className="flex w-full h-full">{children}</main>
-    </Transition>
+    <>
+      <MobileNavbar endpoint={data} />
+      <Transition className="container flex flex-col gap-4 items-start mt-10 h-full">
+        <Heading endpoint={data} />
+        <Tabs
+          currentPath={currentPath}
+          endpointSlug={params.endpoint}
+          workspaceSlug={params.workspace}
+        />
+        <main className="flex w-full h-full">{children}</main>
+      </Transition>
+    </>
   );
 }
