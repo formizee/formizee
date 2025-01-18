@@ -45,10 +45,22 @@ export function Chart({id, color}: Props) {
         totalSubmissions={data.totalSubmissions}
         timeRangeSubmissions={timeRangeSubmissions}
       />
-      <div className="px-2 pt-4 sm:px-6 sm:pt-6 w-full">
+      <div className="relative px-2 pt-4 sm:px-6 sm:pt-6 w-full">
+        {timeRangeSubmissions < 1 ? (
+          <div className="flex flex-col gap-2 animate-in fade-in z-50 absolute rounded-md flex top-0 left-0 w-full h-full items-center justify-center bg-neutral-50/80 dark:bg-neutral-950/80">
+            <span className="font-semibold text-neutral-950 dark:text-neutral-50">
+              No Data
+            </span>
+            <span className="font-secondary text-sm text-neutral-400">
+              There's no data available for your selection.
+            </span>
+          </div>
+        ) : (
+          <div />
+        )}
         <ChartContainer
           config={chartConfig}
-          className="animate-fade-in aspect-auto h-[450px] w-full"
+          className="animate-fade-in aspect-auto h-[300px] sm:h-[450px] w-full"
         >
           <BarChart
             accessibilityLayer

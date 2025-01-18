@@ -15,7 +15,7 @@ export default async function AuthVerify() {
   }
 
   return (
-    <main className="w-full flex flex-col min-h-screen gap-4 items-center justify-center p-24">
+    <main className="w-full flex flex-col min-h-dvh gap-4 items-center justify-center p-24">
       <Transition className="flex flex-col max-w-[50rem] gap-4">
         <header className="mb-8 flex w-full flex-col items-center sm:items-start gap-8">
           <div className="dark:reflection dark:shadow-[0_0_60px_15px_rgba(252,211,77,0.1)]">

@@ -13,7 +13,7 @@ export const ExportButton = () => (
   <TooltipProvider>
     <Tooltip>
       <TooltipTrigger asChild>
-        <Button variant="outline" disabled>
+        <Button className="hidden sm:flex" variant="outline" disabled>
           Export
           <DownloadIcon />
         </Button>

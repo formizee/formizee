@@ -9,9 +9,11 @@ interface HeadingProps {
 
 export const Heading = ({endpoint}: HeadingProps) => {
   return (
-    <div className="flex flex-row gap-4 mb-6 items-center">
+    <div className="flex flex-row gap-4 mt-8 sm:mt-0 mb-2 items-center">
       <IconPicker endpoint={endpoint} />
-      <h1 className="font-bold text-4xl">{endpoint.name}</h1>
+      <h1 className="font-bold max-w-56 truncate text-2xl sm:max-w-96 sm:text-4xl">
+        {endpoint.name}
+      </h1>
       <Badge className="mt-1" variant={endpoint.isEnabled ? 'green' : 'yellow'}>
         {endpoint.isEnabled ? 'Active' : 'Paused'}
       </Badge>

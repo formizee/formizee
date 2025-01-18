@@ -69,8 +69,8 @@ export const UpdateEndpointNotificationsForm = (props: Props) => {
         <Label htmlFor="email-notifications-switch" className="text-sm">
           Email Notifications
         </Label>
-        <div className="flex flex-row justify-between w-[26.5rem]">
-          <p className="text-xs text-neutral-600 dark:text-neutral-400 max-w-[500px]">
+        <div className="flex flex-col gap-4 sm:gap-0 sm:flex-row justify-between sm:w-[26.5rem]">
+          <p className="w-80 sm:w-auto text-xs text-wrap text-neutral-600 dark:text-neutral-400 max-w-[500px]">
             When someone makes a submission, you will receive an email
           </p>
           <Switch

@@ -65,14 +65,17 @@ export const UpdateEndpointRedirectUrlForm = (props: Props) => {
   });
   return (
     <Form {...form}>
-      <form onSubmit={onSubmit} className="flex flex-row gap-2 items-end mt-4">
+      <form
+        onSubmit={onSubmit}
+        className="flex flex-col sm:flex-row gap-2 items-start sm:!items-end mt-4"
+      >
         <FormField
           control={form.control}
           name="newUrl"
           render={({field}) => (
             <FormItem>
               <FormLabel>Redirect URL</FormLabel>
-              <FormDescription className="text-xs text-neutral-600 dark:text-neutral-400">
+              <FormDescription className="text-xs max-w-80 sm:max-w-96 text-neutral-600 dark:text-neutral-400">
                 This is the webpage that you will see after submitting to your
                 form.
               </FormDescription>
@@ -81,7 +84,7 @@ export const UpdateEndpointRedirectUrlForm = (props: Props) => {
                   required
                   maxLength={64}
                   autoComplete="off"
-                  className="w-96"
+                  className="w-80 sm:w-96"
                   placeholder="https://formizee.com/f/thanks-you"
                   {...field}
                 />

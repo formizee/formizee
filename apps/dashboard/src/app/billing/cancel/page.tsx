@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 export default async function Confirmation() {
   return (
-    <main className="w-full flex flex-col min-h-screen items-center justify-center p-8">
+    <main className="w-full flex flex-col min-h-dvh items-center justify-center p-8">
       <Transition className="flex flex-col max-w-[40rem] gap-4 items-center">
         <header className="mb-8 flex w-full flex-col items-center sm:items-start gap-8">
           <Image
