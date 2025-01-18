@@ -86,6 +86,19 @@ export const registerDeleteSubmission = (api: typeof submissionsAPI) => {
       cache.invalidateSubmissions(input)
     ]);
 
+    // Delete the endpoint schema if there's no more submissions
+    const endpointHasMoreSubmissions =
+      await database.query.submission.findFirst({
+        where: (table, {eq}) => eq(table.endpointId, submission.endpointId)
+      });
+
+    if (!endpointHasMoreSubmissions) {
+      await database
+        .update(schema.endpoint)
+        .set({schema: JSON.stringify({})})
+        .where(eq(schema.endpoint.id, submission.endpointId));
+    }
+
     metrics.emit({
       metric: 'vault.latency',
       query: 'submissions.delete',
