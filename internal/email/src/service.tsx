@@ -41,6 +41,7 @@ export class EmailService {
   public async sendSubmissionEmail(req: {
     workspaceSlug: string;
     endpointSlug: string;
+    endpointName: string;
     email: string;
     data: object;
   }) {
@@ -54,6 +55,7 @@ export class EmailService {
           <SubmissionEmail
             workspaceSlug={req.workspaceSlug}
             endpointSlug={req.endpointSlug}
+            endpointName={req.endpointName}
             data={req.data}
           />
         )

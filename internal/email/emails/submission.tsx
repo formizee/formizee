@@ -18,11 +18,24 @@ import {
 interface EmailProps {
   workspaceSlug: string;
   endpointSlug: string;
+  endpointName: string;
   data: object;
 }
 
+const isAttachment = (value: unknown): boolean => {
+  return (
+    value !== null &&
+    typeof value === 'object' &&
+    'url' in value &&
+    'name' in value &&
+    typeof value.url === 'string' &&
+    typeof value.name === 'string'
+  );
+};
+
 export const SubmissionEmail = ({
   workspaceSlug,
+  endpointName,
   endpointSlug,
   data
 }: EmailProps) => {
@@ -30,7 +43,7 @@ export const SubmissionEmail = ({
     <Tailwind config={config}>
       <Html lang="en">
         <Head />
-        <Preview>New form submission from {endpointSlug}</Preview>
+        <Preview>New form submission from {endpointName}</Preview>
         <Body
           style={{fontFamily: 'Inter, System-UI, sans-serif'}}
           className="bg-neutral-50 flex justify-center"
@@ -50,7 +63,7 @@ export const SubmissionEmail = ({
                 href={`https://dashboard.formizee.com/${workspaceSlug}/${endpointSlug}`}
                 className="underline font-medium"
               >
-                {endpointSlug}
+                {endpointName}
               </Link>
               :
             </Text>
@@ -65,9 +78,18 @@ export const SubmissionEmail = ({
                     <Text className="p-0 m-0 font-medium text-neutral-950 text-ellipsis overflow-hidden whitespace-nowrap">
                       {key}
                     </Text>
-                    <Text className="p-0 m-0 font-medium text-neutral-500 text-ellipsis overflow-hidden whitespace-nowrap">
-                      {value}
-                    </Text>
+                    {isAttachment(value) ? (
+                      <Link
+                        href={value.url}
+                        className="p-0 m-0 font-medium text-neutral-500 text-ellipsis overflow-hidden whitespace-nowrap"
+                      >
+                        {value.name}
+                      </Link>
+                    ) : (
+                      <Text className="p-0 m-0 font-medium text-neutral-500 text-ellipsis overflow-hidden whitespace-nowrap">
+                        {value}
+                      </Text>
+                    )}
                   </div>
                 );
               })
@@ -122,6 +144,7 @@ export const SubmissionEmail = ({
 SubmissionEmail.PreviewProps = {
   workspaceSlug: 'formizee',
   endpointSlug: 'my-homepage',
+  endpointName: 'My Homepage',
   data: {
     Name: 'example',
     Email: 'example@formizee.com'

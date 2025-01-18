@@ -236,6 +236,7 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
           to: email,
           react: (
             <SubmissionEmail
+              endpointName={endpoint.name ?? endpoint.slug}
               workspaceSlug={workspace.slug}
               endpointSlug={endpoint.slug}
               data={input.data}
