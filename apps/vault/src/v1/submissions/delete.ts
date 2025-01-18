@@ -93,10 +93,14 @@ export const registerDeleteSubmission = (api: typeof submissionsAPI) => {
       });
 
     if (!endpointHasMoreSubmissions) {
-      await database
-        .update(schema.endpoint)
-        .set({schema: JSON.stringify({})})
-        .where(eq(schema.endpoint.id, submission.endpointId));
+      await Promise.all([
+        database
+          .delete(schema.endpoint)
+          .where(eq(schema.endpoint.id, submission.endpointId)),
+        database
+          .delete(schema.mappings)
+          .where(eq(schema.mappings.endpointId, submission.endpointId))
+      ]);
     }
 
     metrics.emit({
