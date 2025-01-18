@@ -1,7 +1,6 @@
-'use client';
-
 import {NumberTicker} from '@/components/ticker';
 import {BlurFade} from '@/components/blur-fade';
+import {getStadistics} from './actions';
 
 import {
   CodeIcon,
@@ -9,42 +8,32 @@ import {
   InboxIcon,
   UserGroupIcon
 } from '@formizee/ui/icons';
-import {useEffect, useState} from 'react';
 
-export const Metrics = () => {
-  const [data, setData] = useState({
-    submissions: 0,
-    requests: 0,
-    endpoints: 0,
-    workspaces: 0
-  });
-
-  useEffect(() => {
-    fetch('/api/stadistics').then(async res => {
-      const data = await res.json();
-      setData(data);
-    });
-  }, []);
+export default async function Metrics() {
+  const stadistics = await getStadistics();
 
   return (
     <BlurFade inView className="hidden md:flex">
       <article className="grid grid-cols-2 gap-x-8 gap-y-8 p-4 px-8">
-        <MetricsItem label="Submissions Ingested" value={data.submissions}>
+        <MetricsItem
+          label="Submissions Ingested"
+          value={stadistics.submissions}
+        >
           <InboxIcon className="size-4" />
         </MetricsItem>
-        <MetricsItem label="Requests Proccessed" value={data.requests}>
+        <MetricsItem label="Requests Proccessed" value={stadistics.requests}>
           <CodeIcon className="size-4" />
         </MetricsItem>
-        <MetricsItem label="Endpoints Hosted" value={data.endpoints}>
+        <MetricsItem label="Endpoints Hosted" value={stadistics.endpoints}>
           <DocumentIcon className="size-4" />
         </MetricsItem>
-        <MetricsItem label="Workspaces Created" value={data.workspaces}>
+        <MetricsItem label="Workspaces Created" value={stadistics.workspaces}>
           <UserGroupIcon className="size-4" />
         </MetricsItem>
       </article>
     </BlurFade>
   );
-};
+}
 
 interface ItemProps {
   label: string;
@@ -72,5 +61,3 @@ const MetricsItem = (props: ItemProps) => {
     </div>
   );
 };
-
-export default Metrics;
