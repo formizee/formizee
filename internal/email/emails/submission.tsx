@@ -1,4 +1,5 @@
 'use client';
+import {Icon} from '../components/icon';
 import config from '../tailwind.config';
 import {
   Body,
@@ -12,6 +13,7 @@ import {
   Link,
   Preview,
   Tailwind,
+  Font,
   Text
 } from '@react-email/components';
 
@@ -42,22 +44,43 @@ export const SubmissionEmail = ({
   return (
     <Tailwind config={config}>
       <Html lang="en">
-        <Head />
+        <Head>
+          <Font
+            fontFamily="Inter"
+            fallbackFontFamily="sans-serif"
+            webFont={{
+              url: 'https://www.formizee.com/_next/static/media/a34f9d1faa5f3315-s.p.woff2',
+              format: 'woff2'
+            }}
+            fontWeight={400}
+            fontStyle="normal"
+          />
+          <Font
+            fontFamily="Space-Grotesk"
+            fallbackFontFamily="monospace"
+            webFont={{
+              url: 'https://www.formizee.com/_next/static/media/2d141e1a38819612-s.p.woff2',
+              format: 'woff2'
+            }}
+            fontWeight={400}
+            fontStyle="normal"
+          />
+        </Head>
         <Preview>New form submission from {endpointName}</Preview>
-        <Body
-          style={{fontFamily: 'Inter, System-UI, sans-serif'}}
-          className="bg-neutral-50 flex justify-center"
-        >
+        <Body className="bg-white flex justify-center">
           <Container className="max-w-[560px] m-2">
             <Img
               src="https://avatars.githubusercontent.com/u/168822716?s=200&v=4"
               alt="Formizee."
               className="rounded-xl mt-4 w-14 h-14"
             />
-            <Heading className="text-[22px] pt-4 pb-2 font-medium text-neutral-800">
+            <Heading
+              style={{fontFamily: 'Inter, System-UI, sans-serif'}}
+              className="text-[22px] pt-4 pb-0 font-medium text-neutral-800"
+            >
               New form submission on Formizee.
             </Heading>
-            <Text className="text-neutral-600 leading-[1.4] text-[15px]">
+            <Text className="text-neutral-600 leading-[1.4] text-[14px]">
               Someone made a new submission to your form{' '}
               <Link
                 href={`https://dashboard.formizee.com/${workspaceSlug}/${endpointSlug}`}
@@ -65,23 +88,30 @@ export const SubmissionEmail = ({
               >
                 {endpointName}
               </Link>
-              :
             </Text>
             {data ? (
               Object.entries(data).map(([key, value]) => {
+                const title = key.slice(0, 1).toUpperCase() + key.slice(1);
+
                 return (
                   <div
                     key={key}
-                    className="flex flex-row items-center justify-between h-10 my-2 px-8 rounded-md"
-                    style={{border: '1px solid #d4d4d4'}}
+                    className="flex flex-row items-center justify-between bg-neutral-50 h-10 my-2 px-4 rounded-md"
+                    style={{border: '2px solid #d4d4d4'}}
                   >
-                    <Text className="p-0 m-0 font-medium text-neutral-950 text-ellipsis overflow-hidden whitespace-nowrap">
-                      {key}
+                    <Text className="flex items-center gap-2 p-0 m-0 font-medium text-neutral-950 text-ellipsis overflow-hidden whitespace-nowrap">
+                      <Icon
+                        icon={
+                          isAttachment(value) ? 'attachment' : key.toLowerCase()
+                        }
+                        className="size-[0.9rem] text-neutral-950"
+                      />
+                      {title}
                     </Text>
                     {isAttachment(value) ? (
                       <Link
                         href={value.url}
-                        className="p-0 m-0 font-medium text-neutral-500 text-ellipsis overflow-hidden whitespace-nowrap"
+                        className="p-0 m-0 text-sm underline font-medium text-neutral-500 text-ellipsis overflow-hidden whitespace-nowrap"
                       >
                         {value.name}
                       </Link>
@@ -97,31 +127,20 @@ export const SubmissionEmail = ({
               <></>
             )}
             <Button
-              className="flex w-48 px-3 border-neutral-300 py-2 justify-center items-center rounded-md my-8 text-neutral-700"
-              href={`https://dashboard.formizee.com/${workspaceSlug}/${endpointSlug}`}
-              style={{border: '1px solid #d4d4d4'}}
+              className="flex w-48 px-3 bg-neutral-900 py-2 justify-center items-center rounded-md my-8 text-neutral-700"
+              href={`https://dashboard.formizee.com/${workspaceSlug}/${endpointSlug}/submissions`}
+              style={{border: '2px solid #404040', color: '#fafafa'}}
             >
               <div className="flex gap-2">
-                <span className="font-medium text-sm">
+                <span
+                  style={{fontFamily: 'Space-Grotesk', textWrap: 'nowrap'}}
+                  className="font-semibold text-sm"
+                >
                   See On The Dashboard
                 </span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 16 16"
-                  width="18"
-                  height="18"
-                  fill="currentColor"
-                  className="size-4"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M2 8a.75.75 0 0 1 .75-.75h8.69L8.22 4.03a.75.75 0 0 1 1.06-1.06l4.5 4.5a.75.75 0 0 1 0 1.06l-4.5 4.5a.75.75 0 0 1-1.06-1.06l3.22-3.22H2.75A.75.75 0 0 1 2 8Z"
-                    clipRule="evenodd"
-                  />
-                </svg>
               </div>
             </Button>
-            <Text className="text-neutral-600 leading-[1.4] text-[15px]">
+            <Text className="text-neutral-600 leading-[1.4] text-[14px]">
               You are receiving this because you confirmed this email address on
               Formizee.
             </Text>
@@ -146,8 +165,12 @@ SubmissionEmail.PreviewProps = {
   endpointSlug: 'my-homepage',
   endpointName: 'My Homepage',
   data: {
-    Name: 'example',
-    Email: 'example@formizee.com'
+    name: 'example',
+    email: 'example@mail.com',
+    attachment: {
+      name: 'example.md',
+      url: 'https://example.md'
+    }
   }
 } as EmailProps;
 

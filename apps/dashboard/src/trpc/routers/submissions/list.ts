@@ -53,7 +53,8 @@ export const listSubmissions = protectedProcedure
     }
 
     const submissions = data.submissions.map(
-      (submission: {id: string; data: object}) => ({
+      (submission: {id: string; endpointId: string; data: object}) => ({
+        endpointId: submission.endpointId,
         id: submission.id,
         ...submission.data
       })
