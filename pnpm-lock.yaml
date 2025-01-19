@@ -560,6 +560,9 @@ importers:
       '@formizee/tailwind':
         specifier: workspace:*
         version: link:../tailwind
+      '@formizee/ui':
+        specifier: workspace:*
+        version: link:../ui
       '@react-email/components':
         specifier: 0.0.31
         version: 0.0.31(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
