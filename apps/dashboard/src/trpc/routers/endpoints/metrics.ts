@@ -41,32 +41,17 @@ export const getEndpointMetrics = protectedProcedure
       throw authorized.error;
     }
 
-    const {data, error} = await ctx.vault.endpoints.metrics({
-      endpointId: endpoint.id
-    });
+    const [totalSubmissions, monthResponse, dayResponse] = await Promise.all([
+      await ctx.analytics.queryFormizeeMetricsTotalSubmissions(endpoint.id),
+      await ctx.analytics.queryFormizeeMetricsSubmissions(endpoint.id, '30d'),
+      await ctx.analytics.queryFormizeeMetricsSubmissions(endpoint.id, '24h')
+    ]);
 
-    if (error && error.status !== 404) {
-      throw new TRPCError({
-        code: 'INTERNAL_SERVER_ERROR',
-        message: error.message
-      });
-    }
-
-    const monthResponse = await ctx.analytics.queryFormizeeMetricsSubmissions(
-      endpoint.id,
-      '30d'
-    );
-
-    const dayResponse = await ctx.analytics.queryFormizeeMetricsSubmissions(
-      endpoint.id,
-      '24h'
-    );
-
-    const monthMetrics = generateLast30DaysData(monthResponse ?? []);
-    const dayMetrics = generateLast24HoursData(dayResponse ?? []);
+    const monthMetrics = generateLast30DaysData(monthResponse);
+    const dayMetrics = generateLast24HoursData(dayResponse);
 
     const response = {
-      totalSubmissions: data?.totalSubmissions ?? 0,
+      totalSubmissions,
       '30d': monthMetrics,
       '24h': dayMetrics
     };
