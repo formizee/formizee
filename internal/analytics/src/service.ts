@@ -167,6 +167,29 @@ export class Analytics {
   /*
    * Used for Charts and Analytics
    */
+
+  public async queryFormizeeMetricsTotalSubmissions(endpointId: string) {
+    const queryTotalPipe = this.client.buildPipe({
+      pipe: 'submissions__metrics__total__pipe__v1',
+      parameters: z.object({
+        endpointId: z.string()
+      }),
+      data: z.object({
+        submissions: z.number()
+      })
+    });
+
+    try {
+      const response = await queryTotalPipe({endpointId});
+
+      return response.data[0]?.submissions ?? 0;
+    } catch (e) {
+      const error = e as Error;
+      console.error(error.message);
+    }
+    return 0;
+  }
+
   public async queryFormizeeMetricsSubmissions(
     endpointId: string,
     timeRange: '30d' | '24h'
@@ -212,6 +235,8 @@ export class Analytics {
       const error = e as Error;
       console.error(error.message);
     }
+
+    return [];
   }
 
   /*
