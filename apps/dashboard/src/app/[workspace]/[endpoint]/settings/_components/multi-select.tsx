@@ -49,7 +49,7 @@ export function MultiSelectInput(props: Props) {
         <PopoverTrigger asChild>
           <Button
             variant="outline"
-            role="combobox"
+            // role="combobox"
             aria-expanded={openCombobox}
             className="w-80 sm:w-96 justify-between text-foreground"
           >
