@@ -12,13 +12,13 @@
     "local": "pnpm --dir=tools/local local"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.8.3",
-    "@commitlint/config-conventional": "19.2.2",
+    "@biomejs/biome": "1.9.4",
+    "@commitlint/config-conventional": "19.6.0",
     "@formizee/tsconfig": "workspace:*",
-    "commitlint": "19.3.0",
-    "husky": "9.0.11",
-    "turbo": "2.0.6",
-    "typescript": "5.4.5"
+    "commitlint": "19.6.1",
+    "husky": "9.1.7",
+    "turbo": "2.3.3",
+    "typescript": "5.7.3"
   },
   "packageManager": "pnpm@9.0.5",
   "engines": {
