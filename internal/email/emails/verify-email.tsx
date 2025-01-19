@@ -26,8 +26,8 @@ export const AuthVerifyEmail = ({link}: EmailProps) => (
           fontFamily="Space-Grotesk"
           fallbackFontFamily="sans-serif"
           webFont={{
-            url: "https://www.formizee.com/_next/static/media/2d141e1a38819612-s.p.woff2",
-            format: "woff2",
+            url: 'https://www.formizee.com/_next/static/media/2d141e1a38819612-s.p.woff2',
+            format: 'woff2'
           }}
           fontWeight={400}
           fontStyle="normal"
@@ -44,7 +44,10 @@ export const AuthVerifyEmail = ({link}: EmailProps) => (
             className="rounded-xl mt-4 w-14 h-14"
           />
 
-          <Heading style={{fontFamily: 'Inter, System-UI, sans-serif'}} className="text-[22px] pt-4 pb-0 font-medium text-neutral-950">
+          <Heading
+            style={{fontFamily: 'Inter, System-UI, sans-serif'}}
+            className="text-[22px] pt-4 pb-0 font-medium text-neutral-950"
+          >
             Login Request for Formizee.
           </Heading>
           <Text className="text-neutral-600 leading-[1.4] text-[14px]">
@@ -56,7 +59,10 @@ export const AuthVerifyEmail = ({link}: EmailProps) => (
             style={{border: '2px solid #404040', color: '#fafafa'}}
           >
             <div className="flex gap-2">
-              <span style={{fontFamily: 'Space-Grotesk', textWrap: 'nowrap'}} className="font-semibold text-sm">
+              <span
+                style={{fontFamily: 'Space-Grotesk', textWrap: 'nowrap'}}
+                className="font-semibold text-sm"
+              >
                 Sign In
               </span>
             </div>

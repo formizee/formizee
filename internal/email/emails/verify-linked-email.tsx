@@ -34,7 +34,10 @@ export const AuthVerifyLinkedEmail = ({email, link}: EmailProps) => (
             alt="Formizee."
             className="rounded-xl mt-4 w-14 h-14"
           />
-          <Heading style={{fontFamily: 'Inter, System-UI, sans-serif'}} className="text-[22px] pt-4 pb-0 font-medium text-neutral-800">
+          <Heading
+            style={{fontFamily: 'Inter, System-UI, sans-serif'}}
+            className="text-[22px] pt-4 pb-0 font-medium text-neutral-800"
+          >
             Verify your new linked email
           </Heading>
           <Text className="text-neutral-600 leading-[1.4] text-[14px]">
@@ -51,7 +54,10 @@ export const AuthVerifyLinkedEmail = ({email, link}: EmailProps) => (
             style={{border: '2px solid #404040', color: '#fafafa'}}
           >
             <div className="flex gap-2">
-              <span style={{textWrap: 'nowrap'}} className="font-semibold text-sm">
+              <span
+                style={{textWrap: 'nowrap'}}
+                className="font-semibold text-sm"
+              >
                 Verify Email
               </span>
             </div>

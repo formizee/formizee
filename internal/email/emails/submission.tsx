@@ -1,5 +1,5 @@
 'use client';
-import { Icon } from '../components/icon';
+import {Icon} from '../components/icon';
 import config from '../tailwind.config';
 import {
   Body,
@@ -45,26 +45,26 @@ export const SubmissionEmail = ({
     <Tailwind config={config}>
       <Html lang="en">
         <Head>
-        <Font
-          fontFamily="Inter"
-          fallbackFontFamily="sans-serif"
-          webFont={{
-            url: "https://www.formizee.com/_next/static/media/a34f9d1faa5f3315-s.p.woff2",
-            format: "woff2",
-          }}
-          fontWeight={400}
-          fontStyle="normal"
-        />
-        <Font
-          fontFamily="Space-Grotesk"
-          fallbackFontFamily="monospace"
-          webFont={{
-            url: "https://www.formizee.com/_next/static/media/2d141e1a38819612-s.p.woff2",
-            format: "woff2",
-          }}
-          fontWeight={400}
-          fontStyle="normal"
-        />
+          <Font
+            fontFamily="Inter"
+            fallbackFontFamily="sans-serif"
+            webFont={{
+              url: 'https://www.formizee.com/_next/static/media/a34f9d1faa5f3315-s.p.woff2',
+              format: 'woff2'
+            }}
+            fontWeight={400}
+            fontStyle="normal"
+          />
+          <Font
+            fontFamily="Space-Grotesk"
+            fallbackFontFamily="monospace"
+            webFont={{
+              url: 'https://www.formizee.com/_next/static/media/2d141e1a38819612-s.p.woff2',
+              format: 'woff2'
+            }}
+            fontWeight={400}
+            fontStyle="normal"
+          />
         </Head>
         <Preview>New form submission from {endpointName}</Preview>
         <Body className="bg-white flex justify-center">
@@ -74,7 +74,10 @@ export const SubmissionEmail = ({
               alt="Formizee."
               className="rounded-xl mt-4 w-14 h-14"
             />
-            <Heading style={{fontFamily: 'Inter, System-UI, sans-serif'}} className="text-[22px] pt-4 pb-0 font-medium text-neutral-800">
+            <Heading
+              style={{fontFamily: 'Inter, System-UI, sans-serif'}}
+              className="text-[22px] pt-4 pb-0 font-medium text-neutral-800"
+            >
               New form submission on Formizee.
             </Heading>
             <Text className="text-neutral-600 leading-[1.4] text-[14px]">
@@ -97,7 +100,12 @@ export const SubmissionEmail = ({
                     style={{border: '2px solid #d4d4d4'}}
                   >
                     <Text className="flex items-center gap-2 p-0 m-0 font-medium text-neutral-950 text-ellipsis overflow-hidden whitespace-nowrap">
-                      <Icon icon={isAttachment(value) ? "attachment" : key.toLowerCase()} className="size-[0.9rem] text-neutral-950" />
+                      <Icon
+                        icon={
+                          isAttachment(value) ? 'attachment' : key.toLowerCase()
+                        }
+                        className="size-[0.9rem] text-neutral-950"
+                      />
                       {title}
                     </Text>
                     {isAttachment(value) ? (
@@ -124,7 +132,10 @@ export const SubmissionEmail = ({
               style={{border: '2px solid #404040', color: '#fafafa'}}
             >
               <div className="flex gap-2">
-                <span style={{fontFamily: 'Space-Grotesk', textWrap: 'nowrap'}} className="font-semibold text-sm">
+                <span
+                  style={{fontFamily: 'Space-Grotesk', textWrap: 'nowrap'}}
+                  className="font-semibold text-sm"
+                >
                   See On The Dashboard
                 </span>
               </div>
@@ -158,7 +169,7 @@ SubmissionEmail.PreviewProps = {
     email: 'example@mail.com',
     attachment: {
       name: 'example.md',
-      url: 'https://example.md',
+      url: 'https://example.md'
     }
   }
 } as EmailProps;
