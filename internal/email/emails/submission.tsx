@@ -46,17 +46,7 @@ export const SubmissionEmail = ({
       <Html lang="en">
         <Head>
           <Font
-            fontFamily="Inter"
-            fallbackFontFamily="sans-serif"
-            webFont={{
-              url: 'https://www.formizee.com/_next/static/media/a34f9d1faa5f3315-s.p.woff2',
-              format: 'woff2'
-            }}
-            fontWeight={400}
-            fontStyle="normal"
-          />
-          <Font
-            fontFamily="Space-Grotesk"
+            fontFamily="Space Grotesk"
             fallbackFontFamily="monospace"
             webFont={{
               url: 'https://www.formizee.com/_next/static/media/2d141e1a38819612-s.p.woff2',
@@ -133,7 +123,10 @@ export const SubmissionEmail = ({
             >
               <div className="flex gap-2">
                 <span
-                  style={{fontFamily: 'Space-Grotesk', textWrap: 'nowrap'}}
+                  style={{
+                    fontFamily: 'Space Grotesk, monospace',
+                    textWrap: 'nowrap'
+                  }}
                   className="font-semibold text-sm"
                 >
                   See On The Dashboard

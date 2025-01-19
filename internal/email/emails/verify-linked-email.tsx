@@ -49,13 +49,16 @@ export const AuthVerifyLinkedEmail = ({email, link}: EmailProps) => (
             button below.
           </Text>
           <Button
-            className="flex w-24 px-3 bg-neutral-900 py-2 justify-center items-center rounded-md my-8 text-neutral-700"
+            className="flex w-32 px-3 bg-neutral-900 py-2 justify-center items-center rounded-md my-8 text-neutral-700"
             href={link}
             style={{border: '2px solid #404040', color: '#fafafa'}}
           >
             <div className="flex gap-2">
               <span
-                style={{textWrap: 'nowrap'}}
+                style={{
+                  fontFamily: 'Space Grotesk, monospace',
+                  textWrap: 'nowrap'
+                }}
                 className="font-semibold text-sm"
               >
                 Verify Email

@@ -23,8 +23,8 @@ export const AuthVerifyEmail = ({link}: EmailProps) => (
     <Html lang="en">
       <Head>
         <Font
-          fontFamily="Space-Grotesk"
-          fallbackFontFamily="sans-serif"
+          fontFamily="Space Grotesk"
+          fallbackFontFamily="monospace"
           webFont={{
             url: 'https://www.formizee.com/_next/static/media/2d141e1a38819612-s.p.woff2',
             format: 'woff2'
@@ -60,7 +60,10 @@ export const AuthVerifyEmail = ({link}: EmailProps) => (
           >
             <div className="flex gap-2">
               <span
-                style={{fontFamily: 'Space-Grotesk', textWrap: 'nowrap'}}
+                style={{
+                  fontFamily: 'Space Grotesk, monospace',
+                  textWrap: 'nowrap'
+                }}
                 className="font-semibold text-sm"
               >
                 Sign In
