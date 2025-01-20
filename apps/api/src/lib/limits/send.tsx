@@ -3,6 +3,7 @@ import type {EmailClient} from '@formizee/email/client';
 import type {Database, schema} from '@formizee/db';
 import {HTTPException} from 'hono/http-exception';
 import type {Limits} from '@formizee/plans';
+import {render} from '@formizee/email';
 
 interface Input {
   workspace: schema.Workspace;
@@ -52,12 +53,21 @@ export const sendPlanLimitReached = async (
     replyTo: 'Formizee Support <support@formizee.com>',
     from: 'Formizee Billing <payments@formizee.com>',
     to: workspaceOwner.email,
-    react: (
+    html: await render(
       <PlanLimitReached
         limit={limit}
         username={workspaceOwner.name}
         currentPlan={workspace.plan}
-      />
+      />,
+      {pretty: true}
+    ),
+    plainText: await render(
+      <PlanLimitReached
+        limit={limit}
+        username={workspaceOwner.name}
+        currentPlan={workspace.plan}
+      />,
+      {plainText: true}
     )
   });
 
@@ -102,12 +112,21 @@ export const sendPlanLimitNear = async (
     replyTo: 'Formizee Support <support@formizee.com>',
     from: 'Formizee Billing <payments@formizee.com>',
     to: workspaceOwner.email,
-    react: (
+    html: await render(
       <PlanLimitWarning
         limit={limit}
         username={workspaceOwner.name}
         currentPlan={workspace.plan}
-      />
+      />,
+      {pretty: true}
+    ),
+    plainText: await render(
+      <PlanLimitWarning
+        limit={limit}
+        username={workspaceOwner.name}
+        currentPlan={workspace.plan}
+      />,
+      {plainText: true}
     )
   });
 

@@ -6,6 +6,7 @@ import {PlanLimitReached} from '../emails/plan-limit-reached';
 import {PlanLimitWarning} from '../emails/plan-limit-warning';
 import {AuthVerifyEmail} from '../emails/verify-email';
 import {SubmissionEmail} from '../emails/submission';
+import {render} from '@react-email/components';
 
 export class EmailService {
   private readonly smtp: Client;
@@ -23,7 +24,10 @@ export class EmailService {
         from: this.from,
         replyTo: this.replyTo,
         subject: 'Your login request to Formizee.',
-        react: <AuthVerifyEmail link={req.link} />
+        html: await render(<AuthVerifyEmail link={req.link} />, {pretty: true}),
+        plainText: await render(<AuthVerifyEmail link={req.link} />, {
+          plainText: true
+        })
       });
 
       if (!result.error) {
@@ -31,10 +35,8 @@ export class EmailService {
       }
       throw result.error;
     } catch (error) {
-      console.error(
-        'Error occurred sending authentication email',
-        JSON.stringify(error)
-      );
+      console.error('Error occurred sending authentication email');
+      console.error(error);
     }
   }
 
@@ -51,13 +53,23 @@ export class EmailService {
         from: this.from,
         replyTo: this.replyTo,
         subject: 'New Form Submission!',
-        react: (
+        html: await render(
           <SubmissionEmail
             workspaceSlug={req.workspaceSlug}
             endpointSlug={req.endpointSlug}
             endpointName={req.endpointName}
             data={req.data}
-          />
+          />,
+          {pretty: true}
+        ),
+        plainText: await render(
+          <SubmissionEmail
+            workspaceSlug={req.workspaceSlug}
+            endpointSlug={req.endpointSlug}
+            endpointName={req.endpointName}
+            data={req.data}
+          />,
+          {plainText: true}
         )
       });
 
@@ -78,7 +90,14 @@ export class EmailService {
         from: this.from,
         replyTo: this.replyTo,
         subject: 'Verify Your New Email',
-        react: <AuthVerifyLinkedEmail email={req.email} link={req.magicLink} />
+        html: await render(
+          <AuthVerifyLinkedEmail email={req.email} link={req.magicLink} />,
+          {pretty: true}
+        ),
+        plainText: await render(
+          <AuthVerifyLinkedEmail email={req.email} link={req.magicLink} />,
+          {plainText: true}
+        )
       });
 
       if (!result.error) {
@@ -105,12 +124,21 @@ export class EmailService {
         from: 'payments@formizee.com',
         replyTo: this.replyTo,
         subject: "You've reached the 80% monthly usage of your plan",
-        react: (
+        html: await render(
           <PlanLimitWarning
             limit={req.limitReached}
             username={req.username}
             currentPlan={req.currentPlan}
-          />
+          />,
+          {pretty: true}
+        ),
+        plainText: await render(
+          <PlanLimitWarning
+            limit={req.limitReached}
+            username={req.username}
+            currentPlan={req.currentPlan}
+          />,
+          {plainText: true}
         )
       });
 
@@ -138,12 +166,21 @@ export class EmailService {
         from: 'payments@formizee.com',
         replyTo: this.replyTo,
         subject: "Action Required: You've reached the limits of your plan",
-        react: (
+        html: await render(
           <PlanLimitReached
             limit={req.limitReached}
             username={req.username}
             currentPlan={req.currentPlan}
-          />
+          />,
+          {pretty: true}
+        ),
+        plainText: await render(
+          <PlanLimitReached
+            limit={req.limitReached}
+            username={req.username}
+            currentPlan={req.currentPlan}
+          />,
+          {plainText: true}
         )
       });
 

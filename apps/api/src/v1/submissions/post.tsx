@@ -11,6 +11,7 @@ import {
   sendPlanLimitReached,
   sendPlanLimitNear
 } from '@/lib/limits';
+import {render} from '@formizee/email';
 
 export const postRoute = createRoute({
   method: 'post',
@@ -234,13 +235,23 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
           from: 'Formizee <noreply@formizee.com>',
           subject: 'New Form Submission!',
           to: email,
-          react: (
+          html: await render(
             <SubmissionEmail
               endpointName={endpoint.name ?? endpoint.slug}
               workspaceSlug={workspace.slug}
               endpointSlug={endpoint.slug}
               data={input.data}
-            />
+            />,
+            {pretty: true}
+          ),
+          plainText: await render(
+            <SubmissionEmail
+              endpointName={endpoint.name ?? endpoint.slug}
+              workspaceSlug={workspace.slug}
+              endpointSlug={endpoint.slug}
+              data={input.data}
+            />,
+            {plainText: true}
           )
         });
       }
