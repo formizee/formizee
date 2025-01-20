@@ -89,7 +89,7 @@ export const authentication = (): MiddlewareHandler<HonoEnv> => {
       if (context.env.ENVIROMENT === 'production') {
         await email.emails.send({
           subject: "You've reached the 80% monthly usage of your plan",
-          reply_to: 'Formizee Support <support@formizee.com>',
+          replyTo: 'Formizee Support <support@formizee.com>',
           from: 'Formizee Billing <payments@formizee.com>',
           to: workspaceOwner.email,
           react: (

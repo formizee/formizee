@@ -90,7 +90,7 @@ export const AuthVerifyEmail = ({link}: EmailProps) => (
 );
 
 AuthVerifyEmail.PreviewProps = {
-  link: 'https://dashboard.formizee.com/api/auth/callback/resend?callbackUrl=https%3A%2F%2Fformizee%3A3001%2Flogin&token=02cd118467370b7d3e974bf3bfbbea16c572f823946a0fce0f154e476de48b4d&email=example@formizee.com'
+  link: 'https://dashboard.formizee.com/api/auth/callback/http-email?callbackUrl=https%3A%2F%2Fformizee%3A3001%2Flogin&token=02cd118467370b7d3e974bf3bfbbea16c572f823946a0fce0f154e476de48b4d&email=example@formizee.com'
 } as EmailProps;
 
 export default AuthVerifyEmail;

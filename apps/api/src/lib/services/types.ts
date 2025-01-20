@@ -1,10 +1,10 @@
+import type {EmailClient} from '@formizee/email/client';
 import type {ConsoleLogger} from '@formizee/logger';
 import type {Analytics} from '@formizee/analytics';
 import type {Metrics} from '@formizee/metrics';
 import type {KeyService} from '@formizee/keys';
 import type {Database} from '@formizee/db';
 import type {Vault} from '@formizee/vault';
-import type {Resend} from 'resend';
 
 export interface Services {
   logger: ConsoleLogger;
@@ -12,6 +12,6 @@ export interface Services {
   apiKeys: KeyService;
   database: Database;
   metrics: Metrics;
-  email: Resend;
+  email: EmailClient;
   vault: Vault;
 }
