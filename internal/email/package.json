@@ -5,14 +5,19 @@
   "license": "Apache-2.0",
   "exports": {
     ".": {
-      "types": "./src/service.tsx",
-      "import": "./src/service.tsx",
-      "require": "./src/service.tsx"
+      "types": "./src/index.tsx",
+      "import": "./src/index.tsx",
+      "require": "./src/index.tsx"
     },
     "./templates": {
       "types": "./emails/index.ts",
       "import": "./emails/index.ts",
       "require": "./emails/index.ts"
+    },
+    "./client": {
+      "types": "./src/base/index.ts",
+      "import": "./src/base/index.ts",
+      "require": "./src/base/index.ts"
     }
   },
   "scripts": {
@@ -31,16 +36,16 @@
     "vitest": "1.5.0"
   },
   "dependencies": {
-    "@formizee/ui": "workspace:*",
     "@formizee/plans": "workspace:*",
     "@formizee/tailwind": "workspace:*",
+    "@formizee/ui": "workspace:*",
     "@react-email/components": "0.0.31",
     "@react-email/render": "1.0.3",
     "@react-email/tailwind": "1.0.4",
-    "react-email": "3.0.4",
+    "aws4fetch": "1.0.20",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "resend": "3.5.0",
+    "react-email": "3.0.4",
     "zod": "3.23.8"
   }
 }

@@ -1,19 +1,19 @@
-import {Resend as Client} from 'resend';
 import type {WorkspacePlans, Limits} from '@formizee/plans';
+import {EmailClient as Client} from './base';
 
-import {SubmissionEmail} from '../emails/submission';
-import {AuthVerifyEmail} from '../emails/verify-email';
-import {PlanLimitWarning} from '../emails/plan-limit-warning';
-import {PlanLimitReached} from '../emails/plan-limit-reached';
 import {AuthVerifyLinkedEmail} from '../emails/verify-linked-email';
+import {PlanLimitReached} from '../emails/plan-limit-reached';
+import {PlanLimitWarning} from '../emails/plan-limit-warning';
+import {AuthVerifyEmail} from '../emails/verify-email';
+import {SubmissionEmail} from '../emails/submission';
 
 export class EmailService {
   private readonly smtp: Client;
   private readonly from = 'Formizee <noreply@formizee.com>';
   private readonly replyTo = 'Formizee Support <support@formizee.com>';
 
-  constructor(options: {apiKey: string}) {
-    this.smtp = new Client(options.apiKey);
+  constructor(options: {accessKey: string; secretAccesKey: string}) {
+    this.smtp = new Client(options);
   }
 
   public async sendVerifyEmail(req: {email: string; link: string}) {
@@ -21,7 +21,7 @@ export class EmailService {
       const result = await this.smtp.emails.send({
         to: req.email,
         from: this.from,
-        reply_to: this.replyTo,
+        replyTo: this.replyTo,
         subject: 'Your login request to Formizee.',
         react: <AuthVerifyEmail link={req.link} />
       });
@@ -49,7 +49,7 @@ export class EmailService {
       const result = await this.smtp.emails.send({
         to: req.email,
         from: this.from,
-        reply_to: this.replyTo,
+        replyTo: this.replyTo,
         subject: 'New Form Submission!',
         react: (
           <SubmissionEmail
@@ -76,7 +76,7 @@ export class EmailService {
       const result = await this.smtp.emails.send({
         to: req.email,
         from: this.from,
-        reply_to: this.replyTo,
+        replyTo: this.replyTo,
         subject: 'Verify Your New Email',
         react: <AuthVerifyLinkedEmail email={req.email} link={req.magicLink} />
       });
@@ -103,7 +103,7 @@ export class EmailService {
       const result = await this.smtp.emails.send({
         to: req.email,
         from: 'payments@formizee.com',
-        reply_to: this.replyTo,
+        replyTo: this.replyTo,
         subject: "You've reached the 80% monthly usage of your plan",
         react: (
           <PlanLimitWarning
@@ -136,7 +136,7 @@ export class EmailService {
       const result = await this.smtp.emails.send({
         to: req.email,
         from: 'payments@formizee.com',
-        reply_to: this.replyTo,
+        replyTo: this.replyTo,
         subject: "Action Required: You've reached the limits of your plan",
         react: (
           <PlanLimitReached
