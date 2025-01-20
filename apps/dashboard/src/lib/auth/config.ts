@@ -1,7 +1,6 @@
 import {sendVerificationRequest} from './helpers';
 import Google from '@auth/core/providers/google';
 import GitHub from 'next-auth/providers/github';
-import Resend from 'next-auth/providers/resend';
 import type {NextAuthConfig} from 'next-auth';
 import {database} from '@/lib/db';
 import {allowNewUsers} from '@/flags';
@@ -14,12 +13,15 @@ export const authConfig = {
     GitHub({
       allowDangerousEmailAccountLinking: true
     }),
-    Resend({
+    {
+      id: 'http-email',
+      type: 'email',
+      name: 'Email',
       from: 'Formizee <noreply@formizee.com>',
-      sendVerificationRequest({identifier, url, provider}) {
-        sendVerificationRequest({provider, identifier, url});
-      }
-    })
+      maxAge: 60 * 60 * 24,
+      sendVerificationRequest,
+      options: {}
+    }
   ],
   callbacks: {
     signIn: async ({user}) => {

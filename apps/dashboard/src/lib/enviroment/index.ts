@@ -30,6 +30,8 @@ export const env = () =>
 
       // Communications
       RESEND_TOKEN: z.string().default('re_123456789'),
+      AWS_SES_SECRET_ACCESS_KEY: z.string().default(''),
+      AWS_SES_ACCESS_KEY: z.string().default(''),
 
       // Authentication
       AUTH_SECRET: z.string().default('')

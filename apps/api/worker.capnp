@@ -21,7 +21,8 @@ bindings = [
     ( name = "TINYBIRD_URL", fromEnvironment= "TINYBIRD_URL"),
     ( name = "TINYBIRD_TOKEN", fromEnvironment= "TINYBIRD_TOKEN"),
 
-    ( name = "RESEND_TOKEN", fromEnvironment= "RESEND_TOKEN"),
+    ( name = "AWS_SES_ACCESS_KEY", fromEnvironment= "AWS_SES_ACCESS_KEY"),
+    ( name = "AWS_SES_SECRET_ACCESS_KEY", fromEnvironment= "AWS_SES_SECRET_ACCESS_KEY"),
 
     ( name = "LOGTAIL_TOKEN", fromEnvironment= "LOGTAIL_TOKEN"),
     ( name = "EMIT_LOGS", fromEnvironment= "EMIT_LOGS"),

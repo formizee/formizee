@@ -5,6 +5,7 @@ import {database, schema, eq} from '@/lib/db';
 import {EmailService} from '@formizee/email';
 import {newId} from '@formizee/id';
 import {z} from 'zod';
+import {env} from '../enviroment';
 
 export async function signupDisabled() {
   throw new Error(
@@ -132,6 +133,9 @@ export async function sendVerificationRequest(params: {
   identifier: string;
   url: string;
 }) {
-  const smtp = new EmailService({apiKey: params.provider.apiKey ?? ''});
+  const smtp = new EmailService({
+    secretAccesKey: env().AWS_SES_SECRET_ACCESS_KEY,
+    accessKey: env().AWS_SES_ACCESS_KEY
+  });
   await smtp.sendVerifyEmail({email: params.identifier, link: params.url});
 }

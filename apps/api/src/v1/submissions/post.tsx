@@ -230,7 +230,7 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
     ) {
       for (const email of endpoint.targetEmails) {
         await emailService.emails.send({
-          reply_to: 'Formizee Support <support@formizee.com>',
+          replyTo: 'Formizee Support <support@formizee.com>',
           from: 'Formizee <noreply@formizee.com>',
           subject: 'New Form Submission!',
           to: email,

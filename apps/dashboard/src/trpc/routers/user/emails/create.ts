@@ -80,7 +80,10 @@ export const addLinkedEmail = protectedProcedure
     const token = sign(payload, env().AUTH_SECRET, {expiresIn: '1h'});
     const magicLink = `${env().DASHBOARD_URL}/api/linked-emails/verify?token=${token}`;
 
-    const emailService = new EmailService({apiKey: env().RESEND_TOKEN});
+    const emailService = new EmailService({
+      accessKey: env().AWS_SES_ACCESS_KEY,
+      secretAccesKey: env().AWS_SES_SECRET_ACCESS_KEY
+    });
     await emailService.sendVerifyLinkedEmail({
       email: input.email,
       magicLink

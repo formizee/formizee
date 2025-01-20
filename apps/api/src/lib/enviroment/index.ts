@@ -38,7 +38,9 @@ export const zEnv = z.object({
   /* --- Secrets --- */
 
   // Communication
-  RESEND_TOKEN: z.string().optional()
+  RESEND_TOKEN: z.string().optional(),
+  AWS_SES_ACCESS_KEY: z.string().default(''),
+  AWS_SES_SECRET_ACCESS_KEY: z.string().default('')
 });
 
 export type Env = z.infer<typeof zEnv>;

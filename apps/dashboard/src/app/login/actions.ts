@@ -3,7 +3,7 @@
 import {signIn} from '@/lib/auth';
 
 export const emailLogin = async (formData: {email: string}) => {
-  await signIn('resend', formData);
+  await signIn('http-email', formData);
 };
 
 export const githubLogin = async (redirectTo: string) => {

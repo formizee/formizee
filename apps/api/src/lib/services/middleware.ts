@@ -2,12 +2,12 @@ import type {MiddlewareHandler} from 'hono';
 import type {HonoEnv} from '@/lib/hono';
 import {newId} from '@formizee/id';
 
+import {EmailClient} from '@formizee/email/client';
+import {ConsoleLogger} from '@formizee/logger';
 import {Analytics} from '@formizee/analytics';
 import {createConnection} from '@formizee/db';
 import {Metrics} from '@formizee/metrics';
 import {KeyService} from '@formizee/keys';
-import {Resend} from 'resend';
-import {ConsoleLogger} from '@formizee/logger';
 import {Vault} from '@formizee/vault';
 
 export function services(): MiddlewareHandler<HonoEnv> {
@@ -63,9 +63,10 @@ export function services(): MiddlewareHandler<HonoEnv> {
         c.env.ENVIROMENT === 'development' ? undefined : c.env.vault
     });
 
-    const email = new Resend(
-      c.env.ENVIROMENT === 'production' ? c.env.RESEND_TOKEN : 're_123456789'
-    );
+    const email = new EmailClient({
+      accessKey: c.env.AWS_SES_ACCESS_KEY,
+      secretAccesKey: c.env.AWS_SES_SECRET_ACCESS_KEY
+    });
 
     const apiKeys = new KeyService({
       database,

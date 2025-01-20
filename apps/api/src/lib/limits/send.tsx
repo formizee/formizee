@@ -1,8 +1,8 @@
 import {PlanLimitReached, PlanLimitWarning} from '@formizee/email/templates';
+import type {EmailClient} from '@formizee/email/client';
 import type {Database, schema} from '@formizee/db';
 import {HTTPException} from 'hono/http-exception';
 import type {Limits} from '@formizee/plans';
-import type {Resend} from 'resend';
 
 interface Input {
   workspace: schema.Workspace;
@@ -11,7 +11,7 @@ interface Input {
 }
 interface Services {
   database: Database;
-  smtp: Resend;
+  smtp: EmailClient;
 }
 
 export const sendPlanLimitReached = async (
@@ -49,7 +49,7 @@ export const sendPlanLimitReached = async (
 
   await smtp.emails.send({
     subject: "Action Required: You've reached the limits of your plan",
-    reply_to: 'Formizee Support <support@formizee.com>',
+    replyTo: 'Formizee Support <support@formizee.com>',
     from: 'Formizee Billing <payments@formizee.com>',
     to: workspaceOwner.email,
     react: (
@@ -99,7 +99,7 @@ export const sendPlanLimitNear = async (
 
   await smtp.emails.send({
     subject: "You've reached the 80% monthly usage of your plan",
-    reply_to: 'Formizee Support <support@formizee.com>',
+    replyTo: 'Formizee Support <support@formizee.com>',
     from: 'Formizee Billing <payments@formizee.com>',
     to: workspaceOwner.email,
     react: (
