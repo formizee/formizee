@@ -1,9 +1,7 @@
 <p align="center" >
     <h1 align="center">
-        <picture>
             <img width="360" src="./.github/assets/logo-light.png#gh-light-mode-only">
             <img width="360" src="./.github/assets/logo-dark.png#gh-dark-mode-only">
-        </picture>
     </h1>
 </p>
 <h3 align="center">The Open-Source Form Platform.</h3>
@@ -13,16 +11,13 @@ Formizee is the modern approach to create forms.
 Design, build and analytics all at an affordable price,
 all-in-one solution 
 </p>
-<p align="center">Try out Formizee using our hosted version at <a href="https://formizee.com">formizee.com</a></p>
-<br/>
-
-<p align="center">
-   <a href="https://discord.gg/BU8n8pJv8S"><img src="https://img.shields.io/badge/Discord-unsend-%235865F2" alt="Join Unsend on Discord"></a>
-   <a href="https://github.com/unsend-dev/unsend/stargazers"><img src="https://img.shields.io/github/stars/unsend-dev%2Funsend" alt="Github Stars"></a>
-   <a href="https://github.com/unsend-dev/unsend/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-AGPLv3-purple" alt="License"></a>
-   <a href="https://hub.docker.com/r/unsend/unsend"><img alt="Docker Automated build" src="https://img.shields.io/docker/pulls/unsend/unsend"></a>
-</p>
-<div align="center">
+  <p align="center">
+    <a href="https://discord.gg/SGKd8XsG3K">Discord</a>
+    .
+    <a href="https://formizee.com">Website</a>
+    ·
+    <a href="https://github.com/formizee/formizee/issues">Issues</a>
+  </p><div align="center">
     <img width="1100px" src="./.github/assets/showcase.png"/>
 </div>
 
