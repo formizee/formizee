@@ -3,6 +3,7 @@ import {Transition} from '@/components';
 import {notFound} from 'next/navigation';
 import DateFormatter from '../_components/date-formatter';
 import {BlurFade} from '@/components/blur-fade';
+import CoverImage from '../_components/cover-image';
 
 export default async function Page(props: {params: {slug: string}}) {
   const post = getBySlug(props.params.slug);
@@ -16,7 +17,7 @@ export default async function Page(props: {params: {slug: string}}) {
   return (
     <BlurFade className="flex flex-grow w-full items-center flex-col px-4 mt-32">
       <div className="flex flex-col w-full max-w-[700px]">
-        <div className="rounded-md overflow-clip aspect-video border dark:border-neutral-800" />
+        <CoverImage src={post.coverImage} title={post.title} />
         <div className="mt-4 flex flex-row items-center justify-between">
           <h3 className="font-secondary text-xl font-bold">{post.title}</h3>
           <DateFormatter

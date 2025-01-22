@@ -7,7 +7,7 @@
 }
 
 .markdown p {
-  @apply text-neutral-600 dark:text-neutral-400 leading-relaxed;
+  @apply opacity-60 leading-relaxed;
 }
 
 .markdown ol {

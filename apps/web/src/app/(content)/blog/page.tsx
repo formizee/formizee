@@ -1,4 +1,4 @@
-import type {Post} from '@/lib/markdown';
+import {getAllPosts, type Post} from '@/lib/markdown';
 import {BlurFade} from '@/components/blur-fade';
 import {PostCard} from './_components/card';
 
@@ -19,7 +19,7 @@ const RenderPosts = ({posts}: {posts: Post[]}) => {
 };
 
 export default function Page() {
-  const posts: Post[] = [];
+  const posts: Post[] = getAllPosts();
 
   return (
     <BlurFade className="flex flex-col flex-grow w-full items-center flex-col px-4 mt-32">
@@ -28,16 +28,9 @@ export default function Page() {
         Cool stories, guides and fun facts about us
       </h2>
       <section
-        //className={`grid grid-cols-1 ${posts.length > 1 ? 'sm:grid-cols-[auto,auto]' : ''} place-items-center mt-16 w-full`}
-        className="flex flex-col flex-grow items-center justify-center w-full"
+        className={`grid grid-cols-1 ${posts.length > 1 ? 'sm:grid-cols-[auto,auto]' : ''} place-items-center mt-16 w-full`}
       >
-        {posts.length < 1 ? (
-          <h3 className="font-secondary text-xl mt-16">
-            There's nothing here right now...
-          </h3>
-        ) : (
-          <RenderPosts posts={posts} />
-        )}
+        <RenderPosts posts={posts} />
       </section>
     </BlurFade>
   );
