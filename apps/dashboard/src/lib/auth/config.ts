@@ -4,6 +4,7 @@ import GitHub from 'next-auth/providers/github';
 import type {NextAuthConfig} from 'next-auth';
 import {database} from '@/lib/db';
 import {allowNewUsers} from '@/flags';
+import {env} from '../enviroment';
 
 export const authConfig = {
   providers: [
@@ -25,6 +26,10 @@ export const authConfig = {
   ],
   callbacks: {
     signIn: async ({user}) => {
+      if (env().SELF_HOSTING) {
+        return true;
+      }
+
       // Disable new signups by feature flag
       const enabled = await allowNewUsers();
       if (!enabled) {

@@ -11,6 +11,12 @@ export const env = () =>
       VERCEL_URL: z.string().optional(),
       DASHBOARD_URL: z.string().default('http://localhost:3002'),
       VAULT_URL: z.string().default('http://localhost:8888'),
+      SELF_HOSTING: z
+        .string()
+        .toLowerCase()
+        .transform(x => x === 'true')
+        .pipe(z.boolean())
+        .default('false'),
 
       // Databases
       DATABASE_URL: z.string().url().default('http://localhost:8080'),

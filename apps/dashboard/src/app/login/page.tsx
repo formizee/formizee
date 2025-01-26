@@ -1,12 +1,12 @@
+import {redirect} from 'next/navigation';
+import logo from '@/../public/logo.svg';
+import {env} from '@/lib/enviroment';
+import {auth} from '@/lib/auth';
+import {z} from 'zod';
+
 import {Transition} from '@/components';
 import {LoginForm} from './form';
 import Image from 'next/image';
-import Link from 'next/link';
-
-import {redirect} from 'next/navigation';
-import logo from '@/../public/logo.svg';
-import {auth} from '@/lib/auth';
-import {z} from 'zod';
 
 const searchParamsSchema = z.object({
   redirectTo: z.string().optional().default('/')
@@ -42,24 +42,7 @@ export default async function Login({
             Log In To Formizee
           </h1>
         </header>
-        <LoginForm redirectTo={redirectTo} />
-        <p className="mt-2 text-balance text-center text-neutral-600 dark:text-neutral-400 text-xs">
-          {'By signing in, you agree to our '}
-          <Link
-            className="underline underline-offset-2 transition-colors hover:text-neutral-950 dark:hover:text-neutral-50"
-            href="https://formizee.com/legal/terms-of-service"
-          >
-            Terms of Service
-          </Link>
-          {' and '}{' '}
-          <Link
-            className="underline underline-offset-2 transition-colors hover:text-neutral-950 dark:hover:text-neutral-50"
-            href="https://formizee.com/legal/privacy-policy"
-          >
-            Privacy Policy
-          </Link>
-          .
-        </p>
+        <LoginForm selfHosting={env().SELF_HOSTING} redirectTo={redirectTo} />
       </Transition>
     </main>
   );
