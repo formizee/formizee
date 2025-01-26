@@ -34,16 +34,27 @@ That’s why I’ve poured so much energy into making Formizee innovative, fast,
 
 ## Tech Stack
 
-- [Hono + Cloudflare Workers](https://hono.dev/) - Backend Framework
-- [Turso](https://turso.tech/) - Libsql Edge Database
+- [Hono](https://hono.dev/) - Backend Framework
 - [Next.js](https://nextjs.org/) - Frontend Framework
-- [Tinybird](https://tinybird.co/) - Analytics & Metrics
+- [Libsql](https://github.com/tursodatabase/libsql) - SQLite Client
+- [Clickhouse](https://github.com/ClickHouse/ClickHouse) - Analytics & Metrics
 - [Drizzle](https://www.orm.drizzle.team) - Database ORM
 - [Shadcn](https://ui.shadcn.com/) - Component Library
 - [Auth.js](https://authjs.dev/) - Authentication
-- [Sentry](https://sentry.io/) - Error Logging
 - [tRPC](https://trpc.io/) - Typed API
 - [Tailwind](https://tailwindcss.com/) - CSS
+
+
+## Hosting Providers
+
+- [Vercel](https://vercel.com) - Web & Dashboard Hosting
+- [Cloudflare](https://cloudflare.com) - API & Vault Hosting
+- [Tinybird](https://tinybird.co/) - Clickhouse Hosting
+- [BetterStack](https://betterstack.com) - Status Page
+- [AWS](https://aws.amazon.com) - SMTP Relay
+- [Turso](https://turso.tech) - Edge Database
+- [Mintlify](https://mintlify.com) - Documentation
+- [Sentry](https://sentry.io/) - Error Logging
 - [Stripe](https://stripe.com/) - Payments
 
 ## Contributing
