@@ -1,4 +1,4 @@
-name: formizee
+name: formizee-dev
 
 services:
   database:
@@ -43,7 +43,7 @@ services:
   vault:
     container_name: vault
     build:
-      context: ..
+      context: ../..
       dockerfile: ./apps/vault/Dockerfile.dev
     ports:
       - 8888:8888
@@ -73,7 +73,7 @@ services:
   api:
     container_name: api
     build:
-      context: ..
+      context: ../..
       dockerfile: ./apps/api/Dockerfile.dev
     ports:
       - 8787:8787

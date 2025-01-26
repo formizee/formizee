@@ -7,7 +7,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 export async function startContainers(services: Array<string>) {
-  const cwd = path.join(__dirname, '../../../deployment');
+  const cwd = path.join(__dirname, '../../../deployment/dev');
 
   await task('starting docker services', async s => {
     for (const service of services) {
