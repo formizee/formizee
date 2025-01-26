@@ -1,12 +1,13 @@
 import {Join, Comparations, Bentos, Features} from './_components/sections';
-import {CodeBlock} from './_components/code-block';
+import {WaitlistDialog} from '@/components/waitlist-dialog';
+import {Code} from './_components/sections/code';
+import {Showcase} from './_components/showcase';
+import {LaunchBanner} from '@/components/banner';
 import {GithubLabel} from './_components/github';
 import {BlurFade} from '@/components/blur-fade';
 import {showWaitlist} from '@/flags';
 import {Button} from '@formizee/ui';
 import Link from 'next/link';
-import {WaitlistDialog} from '@/components/waitlist-dialog';
-import {LaunchBanner} from '@/components/banner';
 
 async function Home() {
   const waitlist = await showWaitlist();
@@ -18,7 +19,7 @@ async function Home() {
       ) : (
         <div />
       )}
-      <header className="flex flex-col px-4 items-center">
+      <header className="flex flex-col items-center">
         <BlurFade>
           <div className="flex flex-col gap-8 items-center mt-40 sm:mt-48">
             <GithubLabel />
@@ -50,8 +51,9 @@ async function Home() {
             )}
           </div>
         </BlurFade>
-        <CodeBlock />
+        <Showcase />
       </header>
+      <Code />
       <Bentos />
       <Comparations />
       <Features />

@@ -7,7 +7,6 @@ import {STACKS, DATA} from './data';
 import type {Stack} from './types';
 import {Sidebar} from './sidebar';
 import {Topbar} from './topbar';
-import {BlurFade} from '@/components/blur-fade';
 import {Footer} from './footer';
 
 export const CodeBlock = () => {
@@ -25,17 +24,11 @@ export const CodeBlock = () => {
   }, []);
 
   if (!mounted) {
-    return (
-      <div className="w-full h-[29.3rem] max-w-[62rem] rounded-lg mt-16" />
-    );
+    return <div className="w-full h-[29.3rem] max-w-[62rem] rounded-lg" />;
   }
 
   return (
-    <BlurFade
-      delay={0.5}
-      inView
-      className="w-full max-w-[62rem] border dark:border-neutral-800 rounded-lg mt-16 shadow-sm"
-    >
+    <article className="w-full max-w-[62rem] border dark:border-neutral-800 rounded-lg shadow-sm">
       <Topbar example={example} stack={stack} setStack={setStack} />
       <div className="flex flex-col sm:flex-row h-[24rem] p-2 sm:p-4 overflow-scroll overflow-light-style dark:overflow-dark-style">
         <Sidebar
@@ -55,6 +48,6 @@ export const CodeBlock = () => {
         </Component>
       </div>
       <Footer example={example} />
-    </BlurFade>
+    </article>
   );
 };
