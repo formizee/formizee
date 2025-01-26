@@ -5,6 +5,7 @@ import {AppSidebar} from '@/components/sidebar';
 import {redirect} from 'next/navigation';
 import {cookies} from 'next/headers';
 import {auth} from '@/lib/auth';
+import {env} from '@/lib/enviroment';
 
 export default async function DashboardLayout({
   params,
@@ -25,6 +26,7 @@ export default async function DashboardLayout({
   return (
     <SidebarProvider defaultOpen={defaultOpen}>
       <SettingsProvider
+        selfHosting={env().SELF_HOSTING}
         workspaceSlug={params.workspace}
         userId={session.user.id}
       >

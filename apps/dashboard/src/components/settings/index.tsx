@@ -13,6 +13,8 @@ interface SettingsContextType {
 
   setRoute: React.Dispatch<React.SetStateAction<Route>>;
   route: Route;
+
+  selfHosting: boolean;
 }
 
 const SettingsContext = createContext<SettingsContextType | undefined>(
@@ -22,20 +24,30 @@ const SettingsContext = createContext<SettingsContextType | undefined>(
 interface SettingsProviderProps {
   children: React.ReactNode;
   workspaceSlug: string;
+  selfHosting: boolean;
   userId: string;
 }
 
 export function SettingsProvider({
+  workspaceSlug,
+  selfHosting,
   children,
-  userId,
-  workspaceSlug
+  userId
 }: SettingsProviderProps) {
   const [route, setRoute] = useState<Route>('account.general');
   const [open, setOpen] = useState(false);
 
   return (
     <SettingsContext.Provider
-      value={{open, setOpen, route, setRoute, workspaceSlug, userId}}
+      value={{
+        open,
+        setOpen,
+        route,
+        setRoute,
+        workspaceSlug,
+        userId,
+        selfHosting
+      }}
     >
       <SettingsDialog />
       {children}

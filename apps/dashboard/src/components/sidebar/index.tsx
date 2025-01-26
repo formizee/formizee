@@ -17,6 +17,7 @@ import {
   Account,
   New
 } from './components';
+import {env} from '@/lib/enviroment';
 
 interface AppSidebarProps {
   workspace: string;
@@ -31,7 +32,10 @@ export const AppSidebar = async (props: AppSidebarProps) => {
 
   return (
     <Sidebar className="bg-white/80 dark:bg-black/80 backdrop-blur-sm dark:border-neutral-800">
-      <Header workspaceSlug={props.workspace} />
+      <Header
+        workspaceSlug={props.workspace}
+        selfHosting={env().SELF_HOSTING}
+      />
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>

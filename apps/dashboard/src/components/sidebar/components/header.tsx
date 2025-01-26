@@ -7,6 +7,7 @@ import {api} from '@/trpc/client';
 
 interface SidebarHeaderProps {
   workspaceSlug: string;
+  selfHosting: boolean;
 }
 
 export const ShinyBadge = () => {
@@ -66,21 +67,27 @@ export const ShinyBadge = () => {
   );
 };
 
-export const Header = ({workspaceSlug}: SidebarHeaderProps) => {
-  const workspace = api.workspace.get.useQuery({slug: workspaceSlug});
+export const Badge = (props: SidebarHeaderProps) => {
+  const workspace = api.workspace.get.useQuery({slug: props.workspaceSlug});
   const isPro = workspace.data?.plan === 'pro';
 
+  if (!workspace.isLoading && isPro) {
+    return <ShinyBadge />;
+  }
+
+  return (
+    <span className="flex items-center gap-2 font-secondary px-3 py-0.5 border select-none border-neutral-300 dark:border-neutral-700 rounded-xl text-xs text-neutral-700 dark:text-neutral-100">
+      {props.selfHosting ? 'Community' : 'Beta'}
+    </span>
+  );
+};
+
+export const Header = (props: SidebarHeaderProps) => {
   return (
     <SidebarHeader>
-      <div className="flex flex-row items-center h-14 pl-2 gap-5">
+      <div className="flex flex-row items-center h-14 pl-2 gap-4">
         <Logo />
-        {!workspace.isLoading && isPro ? (
-          <ShinyBadge />
-        ) : (
-          <span className="flex items-center gap-2 font-secondary px-3 py-0.5 border select-none border-neutral-300 dark:border-neutral-700 rounded-xl text-xs text-neutral-700 dark:text-neutral-100">
-            Beta
-          </span>
-        )}
+        <Badge {...props} />
       </div>
     </SidebarHeader>
   );

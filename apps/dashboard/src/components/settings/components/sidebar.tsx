@@ -21,12 +21,15 @@ import {
   SidebarMenu,
   SidebarMenuItem
 } from '@formizee/ui/sidebar';
+import {useSettings} from '..';
 
 interface Props {
   setCurrentRoute: React.Dispatch<React.SetStateAction<Route>>;
 }
 
 export const SettingsSidebar = (props: Props) => {
+  const {selfHosting} = useSettings();
+
   return (
     <Sidebar collapsible="none" className="w-40">
       <SidebarContent className="bg-neutral-100 dark:bg-neutral-900">
@@ -84,6 +87,7 @@ export const SettingsSidebar = (props: Props) => {
                 <Item
                   setCurrentRoute={props.setCurrentRoute}
                   route="workspace.plans"
+                  hideOn={selfHosting}
                 >
                   <UpgradeIcon />
                   Plans
@@ -91,6 +95,7 @@ export const SettingsSidebar = (props: Props) => {
                 <Item
                   setCurrentRoute={props.setCurrentRoute}
                   route="workspace.billing"
+                  hideOn={selfHosting}
                 >
                   <CreditCardIcon />
                   Billing
@@ -121,12 +126,15 @@ export const SettingsSidebar = (props: Props) => {
 interface ItemProps {
   setCurrentRoute: React.Dispatch<React.SetStateAction<Route>>;
   children: React.ReactNode;
+  hideOn?: boolean;
   route: Route;
 }
 
 const Item = (props: ItemProps) => {
   return (
-    <SidebarMenuItem className="rounded-md text-neutral-700 dark:text-neutral-300 transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-800">
+    <SidebarMenuItem
+      className={`${props.hideOn ? 'hidden' : 'flex'} rounded-md text-neutral-700 dark:text-neutral-300 transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-800`}
+    >
       <SidebarMenuButton onClick={() => props.setCurrentRoute(props.route)}>
         {props.children}
       </SidebarMenuButton>
