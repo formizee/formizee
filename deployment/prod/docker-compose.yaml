@@ -1,0 +1,138 @@
+name: formizee
+
+services:
+  database:
+    container_name: database
+    image: ghcr.io/tursodatabase/libsql-server:latest
+    platform: linux/amd64
+    ports:
+      - "8080:8080"
+    environment:
+      SQLD_NODE: primary
+      SQLD_DB_PATH: /var/lib/sqld/formizee
+    volumes:
+      - database:/var/lib/sqld
+
+  submissions-database:
+    container_name: submissions-database
+    image: ghcr.io/tursodatabase/libsql-server:latest
+    platform: linux/amd64
+    ports:
+      - "8081:8080"
+    environment:
+      SQLD_NODE: primary
+      SQLD_DB_PATH: /var/lib/sqld/submissions
+    volumes:
+      - database:/var/lib/sqld
+
+  storage:
+    container_name: storage
+    image: bitnami/minio:latest
+    ports:
+      - 3902:3902
+      - 3903:3903
+    environment:
+      MINIO_ROOT_PASSWORD: "minio_root_password"
+      MINIO_ROOT_USER: "minio_root_user"
+      MINIO_CONSOLE_PORT_NUMBER: "3903"
+      MINIO_DEFAULT_BUCKETS: "storage"
+      MINIO_API_PORT_NUMBER: "3902"
+    volumes:
+      - storage:/data
+
+  vault:
+    container_name: vault
+    build:
+      context: ../..
+      dockerfile: ./apps/vault/Dockerfile
+    ports:
+      - 8888:8888
+    command:
+      [
+        "pnpm",
+        "wrangler",
+        "dev",
+        "src/index.ts",
+        "--ip=0.0.0.0",
+        "--var=MASTER_KEY_V1:eyJrZXlfb3BzIjpbImVuY3J5cHQiLCJkZWNyeXB0Il0sImV4dCI6dHJ1ZSwia3R5Ijoib2N0IiwiayI6ImdzTVRJc3ZGVzI0WEJqV0dSZk50ZjZFbUxGTXlHNWNlRnlsb2E3MEwyanMiLCJhbGciOiJBMjU2R0NNIn0",
+        "--var=TINYBIRD_URL:https://api.eu-central-1.aws.tinybird.co",
+        "--var=STORAGE_SECRET_ACCESS_KEY:minio_root_password",
+        "--var=STORAGE_ACCESS_KEY_ID:minio_root_user",
+        "--var=STORAGE_ENDPOINT:http://storage:3902",
+        "--var=DATABASE_URL:http://submissions-database:8080",
+        "--var=ENVIROMENT:development",
+        "--var=STORAGE_BUCKET:storage",
+        "--var=LOGTAIL_TOKEN:example",
+        "--var=VAULT_SECRET:example",
+        "--var=EMIT_LOGS:false",
+      ]
+    depends_on:
+      - submissions-database
+      - storage
+
+  api:
+    container_name: api
+    build:
+      context: ../..
+      dockerfile: ./apps/api/Dockerfile
+    ports:
+      - 8787:8787
+    command:
+      [
+        "pnpm",
+        "wrangler",
+        "dev",
+        "src/index.ts",
+        "--ip=0.0.0.0",
+        "--var=TINYBIRD_URL:https://api.eu-central-1.aws.tinybird.co",
+        "--var=DASHBOARD_URL:http://localhost:3001",
+        "--var=DATABASE_URL:http://database:8080",
+        "--var=DOCS_URL:http://localhost:3002",
+        "--var=API_URL:http://0.0.0.0:8787",
+        "--var=WEB_URL:http://localhost:3000",
+        "--var=VAULT_URL:http://vault:8888",
+        "--var=ENVIROMENT:development",
+        "--var=LOGTAIL_TOKEN:example",
+        "--var=VAULT_SECRET:example",
+        "--var=EMIT_LOGS:false",
+      ]
+    depends_on:
+      - database
+
+  dashboard:
+    container_name: dashboard
+    build:
+      context: ../..
+      dockerfile: ./apps/dashboard/Dockerfile
+    ports:
+      - 3000:3000
+    environment:
+      # Base
+      SELF_HOSTING: "true"
+      VERCEL_ENV: "production"
+      API_URL: "http://api:8787"
+      WEB_URL: "https://formizee.com"
+      DASHBOARD_URL: "http://0.0.0.0:3000"
+      DOCS_URL: "https://docs.formizee.com"
+      DATABASE_URL: "http://database:8080"
+
+      # Email
+      # AWS_SES_SECRET_ACCESS_KEY: ""
+      #AWS_SES_ACCESS_KEY: ""
+
+      # Analytics
+      # TINYBIRD_TOKEN: ""
+      # TINYBIRD_URL: ""
+      # Vault
+      VAULT_URL: "http://vault:8888"
+      AUTH_TRUST_HOST: "true"
+      VAULT_SECRET: "example"
+      AUTH_SECRET: "example"
+
+    depends_on:
+      - vault
+      - api
+
+volumes:
+  database:
+  storage:
