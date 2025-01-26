@@ -1,4 +1,5 @@
 import {BlurFade} from '@/components/blur-fade';
+import type {Metadata} from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -12,6 +13,13 @@ interface Props {
     type: 'not-found' | 'error' | 'thanks-you' | 'disabled';
   };
 }
+
+export const metadata: Metadata = {
+  robots: {
+    index: false,
+    follow: false
+  }
+};
 
 const title = {
   'not-found': 'Form Not Found',
