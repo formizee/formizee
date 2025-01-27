@@ -28,6 +28,11 @@ export const authConfig = {
       // Disable new signups by feature flag
       const enabled = await allowNewUsers();
       if (!enabled) {
+        // Always allow formizee emails.
+        if (user.email?.includes('@formizee.com')) {
+          return true;
+        }
+
         const userExists = await database.query.user.findFirst({
           where: (table, {eq}) => eq(table.id, user.id ?? '')
         });
