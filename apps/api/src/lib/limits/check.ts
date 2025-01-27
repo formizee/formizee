@@ -55,7 +55,7 @@ export const checkSubmissionPlanLimits = async (
 
   // Check submissions
 
-  if (submissionsCount >= Math.abs(limits.submissions * 0.8)) {
+  if (submissionsCount === Math.abs(limits.submissions * 0.8)) {
     submissionsLimit = '80%';
   }
 

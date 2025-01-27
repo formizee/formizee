@@ -155,12 +155,9 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
       });
     }
 
-    if (currentUsage.submissions === '80%' || currentUsage.storage === '80%') {
-      const limit =
-        currentUsage.submissions === '80%' ? 'submissions' : 'storage';
-
+    if (currentUsage.submissions === '80%') {
       const {error} = await sendPlanLimitNear(
-        {limit, workspace, environment: context.env.ENVIROMENT},
+        {limit: 'submissions', workspace, environment: context.env.ENVIROMENT},
         {database, smtp: emailService}
       );
 
