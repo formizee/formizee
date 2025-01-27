@@ -57,7 +57,10 @@ const UsageBreakdown = (props: UsageBreakdownProps) => {
       <Text className="flex flex-row items-center gap-1 p-0 m-0 font-medium text-neutral-500 text-ellipsis overflow-hidden whitespace-nowrap">
         <span className="text-orange-500">{Math.abs(Number(limit) * 0.8)}</span>
         <span>/</span>
-        <span>{limit}</span>
+        <span>
+          {limit}
+          {props.limit === 'storage' ? ' MB' : ''}
+        </span>
       </Text>
     </div>
   );

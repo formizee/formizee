@@ -40,7 +40,7 @@ const UsageBreakdown = (props: UsageBreakdownProps) => {
         }
       }
     }
-    return undefined; // Return undefined if the key is not found
+    return undefined;
   }
 
   const limit = getLimit(props.currentPlan, props.limit);
@@ -57,7 +57,10 @@ const UsageBreakdown = (props: UsageBreakdownProps) => {
       <Text className="flex flex-row items-center gap-1 p-0 m-0 font-medium text-neutral-500 text-ellipsis overflow-hidden whitespace-nowrap">
         <span className="text-red-500">{limit}</span>
         <span>/</span>
-        <span>{limit}</span>
+        <span>
+          {limit}
+          {props.limit === 'storage' ? ' MB' : ''}
+        </span>
       </Text>
     </div>
   );
