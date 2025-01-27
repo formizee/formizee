@@ -36,16 +36,6 @@ export const authentication = (): MiddlewareHandler<HonoEnv> => {
     context.set('key', {id: val.id, name: val.name});
     context.set('limits', limits);
 
-    metrics.emit({
-      metric: 'api.request',
-      workspaceId: val.workspace.id,
-      time: new Date(),
-      context: {
-        location: context.get('location'),
-        userAgent: context.get('userAgent')
-      }
-    });
-
     const dailyRequests = await analytics.queryFormizeeDailyRequests(
       val.workspace.id
     );
@@ -60,6 +50,16 @@ export const authentication = (): MiddlewareHandler<HonoEnv> => {
           'API Daily rate limit reached, please try again tomorrow or upgrade to a better plan.'
       });
     }
+
+    metrics.emit({
+      metric: 'api.request',
+      workspaceId: val.workspace.id,
+      time: new Date(),
+      context: {
+        location: context.get('location'),
+        userAgent: context.get('userAgent')
+      }
+    });
 
     // 80% percent warning
     if (
