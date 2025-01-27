@@ -6,7 +6,7 @@ export type WorkspacePlans = schema.WorkspacePlans;
 export const planConfig: Record<
   schema.WorkspacePlans,
   {
-    title: 'Hobby' | 'Pro' | 'Teams' | 'Enterprise';
+    title: 'Hobby' | 'Pro' | 'Teams' | 'Enterprise' | 'community';
     description: string;
     price: number;
     limits: Limits;
@@ -63,6 +63,20 @@ export const planConfig: Record<
       endpoints: 'unlimited',
       submissions: 100000,
       storage: 10000,
+      members: 'unlimited',
+      keys: 'unlimited',
+      apiDailyRequests: 'unlimited'
+    }
+  },
+  community: {
+    title: 'community',
+    description: 'The Self-Hosted Version',
+    price: 0,
+    limits: {
+      support: 'community',
+      endpoints: 'unlimited',
+      submissions: Number.POSITIVE_INFINITY,
+      storage: Number.POSITIVE_INFINITY,
       members: 'unlimited',
       keys: 'unlimited',
       apiDailyRequests: 'unlimited'
