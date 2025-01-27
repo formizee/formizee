@@ -64,7 +64,7 @@ export const authentication = (): MiddlewareHandler<HonoEnv> => {
     // 80% percent warning
     if (
       typeof limits.apiDailyRequests === 'number' &&
-      dailyRequests >= Math.abs(limits.apiDailyRequests * 0.8)
+      dailyRequests === Math.abs(limits.apiDailyRequests * 0.8)
     ) {
       const workspaceMember = await database.query.usersToWorkspaces.findFirst({
         where: (table, {and, eq}) =>
