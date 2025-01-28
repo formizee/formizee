@@ -16,6 +16,9 @@ export const env = () =>
 
       // Analytics
       TINYBIRD_URL: z.string().url().optional(),
-      TINYBIRD_TOKEN: z.string().optional()
+      TINYBIRD_TOKEN: z.string().optional(),
+
+      // Others
+      PRODUCTHUNT_TOKEN: z.string().default('')
     })
     .parse(process.env);
