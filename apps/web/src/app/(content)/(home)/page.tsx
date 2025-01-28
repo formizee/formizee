@@ -2,7 +2,6 @@ import {Join, Comparations, Bentos, Features} from './_components/sections';
 import {WaitlistDialog} from '@/components/waitlist-dialog';
 import {Code} from './_components/sections/code';
 import {Showcase} from './_components/showcase';
-import {LaunchBanner} from '@/components/banner';
 import {GithubLabel} from './_components/github';
 import {BlurFade} from '@/components/blur-fade';
 import {getProductHuntVotes} from './actions';
@@ -16,11 +15,6 @@ async function Home() {
 
   return (
     <main className="relative flex flex-col min-h-screen gap-32">
-      {waitlist ? (
-        <LaunchBanner>✨ Public Beta available the 29 of January!</LaunchBanner>
-      ) : (
-        <div />
-      )}
       <header className="flex flex-col items-center">
         <BlurFade>
           <div className="flex flex-col gap-8 items-center mt-40 sm:mt-48">
