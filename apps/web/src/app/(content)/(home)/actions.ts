@@ -31,7 +31,7 @@ export const getProductHuntVotes = cache(
 
     const content = await response.json();
 
-    return formatNumber(content.data.post.votesCount ?? 0);
+    return formatNumber(content?.data?.post?.votesCount ?? 0);
   },
   ['product-hunt'],
   {
