@@ -4,8 +4,8 @@ import {
   AccordionItem,
   AccordionTrigger
 } from '@formizee/ui';
-import {PricingCard, TeamsPricingCard} from './_components';
 import {BlurFade} from '@/components/blur-fade';
+import {PricingCard} from './_components';
 
 export default function PricingPage() {
   return (
@@ -26,7 +26,6 @@ export default function PricingPage() {
             <PricingCard plan="hobby" />
             <PricingCard plan="pro" />
           </div>
-          <TeamsPricingCard />
         </BlurFade>
       </section>
       <BlurFade inView>

@@ -46,7 +46,7 @@ export const PricingCard = (props: CardProps) => {
   const plan = getPlanConfig(props.plan);
 
   return (
-    <article className="flex w-full max-w-80 sm:max-w-96 flex-col items-center border dark:border-neutral-800 rounded-lg p-4 shadow-md hover:scale-[1.03] transition-transform">
+    <article className="flex w-full max-w-80 sm:max-w-96 flex-col items-center border dark:border-neutral-800 rounded-lg p-4 shadow-md hover:scale-[1.01] transition-transform">
       <div className="relative mt-2 mb-4 flex w-16 h-16 overflow-hidden rounded-lg bg-background md:shadow-xl">
         <Image
           src={props.plan === 'hobby' ? hobbyPlanIcon : proPlanIcon}
@@ -123,16 +123,18 @@ export const PricingCard = (props: CardProps) => {
             <CheckIcon className="text-neutral-400 dark:text-neutral-500" />
           </PricingItem>
 
-          <Button
-            asChild
-            className="mt-4 font-secondary border-2 hover:border-neutral-500 border-neutral-700 bg-neutral-900"
-          >
-            <Link href="https://dashboard.formizee.com">
-              {props.plan === 'hobby'
-                ? 'Start for Free'
-                : 'Get Started with Pro'}
-            </Link>
-          </Button>
+          {props.plan === 'hobby' ? (
+            <Button
+              asChild
+              className="mt-4 font-secondary border-2 hover:border-neutral-500 border-neutral-700 bg-neutral-900"
+            >
+              <Link href="https://dashboard.formizee.com">Start for Free</Link>
+            </Button>
+          ) : (
+            <Button disabled variant="outline" className="mt-4">
+              Coming Soon
+            </Button>
+          )}
         </ul>
       </div>
     </article>
