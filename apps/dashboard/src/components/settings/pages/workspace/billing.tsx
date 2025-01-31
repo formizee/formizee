@@ -5,7 +5,6 @@ import {PageError} from '../../components/error';
 import Transition from '@/components/transition';
 import {Button, Separator} from '@formizee/ui';
 import cardIcon from '@/../public/card.webp';
-import {useSettings} from '../..';
 import {api} from '@/trpc/client';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -15,8 +14,6 @@ interface Props {
 }
 
 export const SettingsWorkspaceBilling = (props: Props) => {
-  const {setRoute} = useSettings();
-
   const workspaceRequest = api.workspace.get.useQuery({
     slug: props.workspaceSlug
   });
@@ -125,11 +122,7 @@ export const SettingsWorkspaceBilling = (props: Props) => {
         <div className="mt-4">
           {workspace.plan === 'hobby' ? (
             <div className="flex flex-row w-full justify-between items-center">
-              <div className="flex flex-row gap-2">
-                <Button onClick={() => setRoute('workspace.plans')}>
-                  Upgrade Plan
-                </Button>
-              </div>
+              <div />
               <Link
                 href="mailto:support@formizee.com"
                 className="text-xs hover:border-b text-neutral-400 dark:text-neutral-600"

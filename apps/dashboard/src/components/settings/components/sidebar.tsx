@@ -6,7 +6,6 @@ import {
   LockIcon,
   MailIcon,
   SettingsIcon,
-  UpgradeIcon,
   UserGroupIcon,
   UserIcon
 } from '@formizee/ui/icons';
@@ -80,13 +79,6 @@ export const SettingsSidebar = (props: Props) => {
                 >
                   <UserGroupIcon />
                   Members
-                </Item>
-                <Item
-                  setCurrentRoute={props.setCurrentRoute}
-                  route="workspace.plans"
-                >
-                  <UpgradeIcon />
-                  Plans
                 </Item>
                 <Item
                   setCurrentRoute={props.setCurrentRoute}
