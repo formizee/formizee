@@ -1,11 +1,10 @@
 import type {Querier} from '@/client';
-import {dateTimeToUnix} from '@/utils';
 import {z} from 'zod';
 
 const params = z.object({
   workspaceId: z.string(),
-  startDate: dateTimeToUnix,
-  endDate: dateTimeToUnix
+  startDate: z.number(),
+  endDate: z.number()
 });
 
 export function getBillableSubmissions(ch: Querier) {
@@ -14,9 +13,9 @@ export function getBillableSubmissions(ch: Querier) {
 SELECT
     count() AS submissions
  FROM metrics.raw_submissions_v1
-    WHERE workspaceId = {workspaceId}
-      AND uploadedAt >= {startDate}
-      AND uploadedAt <= {endDate}
+    WHERE workspaceId = {workspaceId: String}
+      AND uploadedAt >= {startDate: Int64}
+      AND uploadedAt <= {endDate: Int64}
     `;
 
     return ch.query({
@@ -35,9 +34,9 @@ export function getBillableApiRequests(ch: Querier) {
 SELECT
     count() AS requests
  FROM metrics.raw_api_requests_v1
-    WHERE workspaceId = {workspaceId}
-      AND uploadedAt >= {startDate}
-      AND uploadedAt <= {endDate}
+    WHERE workspace_id = {workspaceId: String}
+      AND time >= {startDate: Int64}
+      AND time <= {endDate: Int64}
     `;
 
     return ch.query({
