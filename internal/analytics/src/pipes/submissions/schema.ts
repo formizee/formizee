@@ -7,7 +7,7 @@ export const params = z.object({
 export const schema = z.object({
   workspaceId: z.string(),
   endpointId: z.string(),
-  uploadedAt: z.date(),
+  uploadedAt: z.number(),
   context: z.object({
     location: z.string(),
     userAgent: z.string().optional()
