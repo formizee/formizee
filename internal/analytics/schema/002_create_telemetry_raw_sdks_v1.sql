@@ -11,7 +11,7 @@ CREATE TABLE telemetry.raw_sdks_v1(
   -- ie: vercel
   platform String,
 
-  -- ie: [ "@unkey/api@1.2.3", "@unkey/ratelimit@4.5.6" ]
+  -- ie: [ "@formizee/api@1.2.3"]
   versions Array(String)
 )
 ENGINE = MergeTree()
