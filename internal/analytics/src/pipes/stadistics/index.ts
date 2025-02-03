@@ -2,7 +2,7 @@ import type {Querier} from '@/client';
 import {z} from 'zod';
 
 export function getFormizeeStadistics(ch: Querier) {
-  return async () => {
+  return async (args: object) => {
     const query = `
 SELECT 
     (SELECT COUNT(*) FROM metrics.raw_api_requests_v1) AS requests,
@@ -15,6 +15,6 @@ SELECT
         requests: z.number(),
         submissions: z.number()
       })
-    });
+    })(args);
   };
 }
