@@ -77,7 +77,7 @@ export class Analytics {
   public get billing() {
     return {
       billableApiRequests: getBillableApiRequests(this.querier),
-      billablesubmissions: getBillableSubmissions(this.querier)
+      billableSubmissions: getBillableSubmissions(this.querier)
     };
   }
 
