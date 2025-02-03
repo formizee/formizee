@@ -5,7 +5,7 @@ import {newId} from '@formizee/id';
 import {Analytics} from '@/index';
 
 test(
-  'inserts a single row',
+  'inserts a single log',
   {
     timeout: 300_000
   },
