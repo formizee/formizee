@@ -1,12 +1,13 @@
 /// This functions are used to generate the metrics for the endpoints ///
 
 export const generateLast30DaysData = (
-  rows: {submissions: number; dateTime: string}[]
+  rows: {submissions: number; dateTime: number}[]
 ) => {
   // Step 1: Create a map from the input rows, normalizing the keys to date-only
   const dataMap = new Map(
     rows.map(row => {
-      const dateOnly = row.dateTime.split(' ')[0]; // Extract the date part (YYYY-MM-DD)
+      const date = new Date(row.dateTime * 1000).toISOString();
+      const dateOnly = date.split('T')[0]; // Extract the date part (YYYY-MM-DD)
       return [dateOnly, row.submissions];
     })
   );
@@ -31,11 +32,14 @@ export const generateLast30DaysData = (
 };
 
 export const generateLast24HoursData = (
-  rows: {submissions: number; dateTime: string}[]
+  rows: {submissions: number; dateTime: number}[]
 ) => {
   // Step 1: Create a map from the query result for quick lookup
   const dataMap = new Map(
-    rows.map(row => [new Date(row.dateTime).toISOString(), row.submissions])
+    rows.map(row => [
+      new Date(row.dateTime * 1000).toISOString(),
+      row.submissions
+    ])
   );
 
   // Step 2: Generate the last 24 hours as ISO strings in UTC

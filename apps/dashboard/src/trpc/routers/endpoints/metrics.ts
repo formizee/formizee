@@ -47,11 +47,17 @@ export const getEndpointMetrics = protectedProcedure
       await ctx.analytics.submissions.perDay({endpointId: endpoint.id})
     ]);
 
-    const monthMetrics = generateLast30DaysData(monthResponse);
-    const dayMetrics = generateLast24HoursData(dayResponse);
+    const monthMetrics = generateLast30DaysData(
+      monthResponse.err ? [] : monthResponse.val
+    );
+    const dayMetrics = generateLast24HoursData(
+      dayResponse.err ? [] : dayResponse.val
+    );
 
     const response = {
-      totalSubmissions,
+      totalSubmissions: totalSubmissions.err
+        ? 0
+        : totalSubmissions.val[0]?.submissions,
       '30d': monthMetrics,
       '24h': dayMetrics
     };

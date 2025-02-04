@@ -72,14 +72,14 @@ export const getWorkspaceLimits = protectedProcedure
 
     const [submissions, apiDailyRequests] = await Promise.all([
       ctx.analytics.billing.billableSubmissions({
-        workspaceId: workspace.id,
-        startDate: billingCycle.startDate,
-        endDate: billingCycle.endDate
+        startDate: Math.floor(billingCycle.startDate.getTime() / 1000),
+        endDate: Math.floor(billingCycle.endDate.getTime() / 1000),
+        workspaceId: workspace.id
       }),
       ctx.analytics.billing.billableApiRequests({
-        workspaceId: workspace.id,
-        startDate: billingCycle.startDate,
-        endDate: billingCycle.endDate
+        startDate: Math.floor(billingCycle.startDate.getTime() / 1000),
+        endDate: Math.floor(billingCycle.endDate.getTime() / 1000),
+        workspaceId: workspace.id
       })
     ]);
 
@@ -98,11 +98,13 @@ export const getWorkspaceLimits = protectedProcedure
     );
 
     return {
-      submissions,
-      apiDailyRequests,
       members: members.length,
       endpoints: endpoints.length,
       keys: workspaceKeys[0].count,
-      storage: Math.round(totalStorage / (1024 * 1024))
+      storage: Math.round(totalStorage / (1024 * 1024)),
+      submissions: submissions.err ? 0 : submissions.val[0]?.submissions,
+      apiDailyRequests: apiDailyRequests.err
+        ? 0
+        : apiDailyRequests.val[0]?.requests
     };
   });
