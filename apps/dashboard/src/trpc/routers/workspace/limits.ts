@@ -27,8 +27,8 @@ export const getWorkspaceLimits = protectedProcedure
         where: (table, {eq}) => eq(table.workspaceId, workspace.id)
       })
       .finally(() => {
-        ctx.metrics.emit({
-          metric: 'main.db.read',
+        ctx.analytics.metrics.insertDatabase({
+          type: 'read',
           query: 'endpoints.list',
           latency: performance.now() - queryEndpointsStart
         });
@@ -40,8 +40,8 @@ export const getWorkspaceLimits = protectedProcedure
       .from(schema.key)
       .where(eq(schema.key.workspaceId, workspace.id))
       .finally(() => {
-        ctx.metrics.emit({
-          metric: 'main.db.read',
+        ctx.analytics.metrics.insertDatabase({
+          type: 'read',
           query: 'keys.count',
           latency: performance.now() - queryKeysStart
         });
@@ -61,8 +61,8 @@ export const getWorkspaceLimits = protectedProcedure
         with: {user: true}
       })
       .finally(() => {
-        ctx.metrics.emit({
-          metric: 'main.db.read',
+        ctx.analytics.metrics.insertDatabase({
+          type: 'read',
           query: 'usersToWorkspaces.list',
           latency: performance.now() - queryMembersStart
         });
@@ -70,15 +70,18 @@ export const getWorkspaceLimits = protectedProcedure
 
     const billingCycle = calculatePlanCycleDates(workspace);
 
-    const submissions = await ctx.analytics.queryFormizeeMonthlySubmissions(
-      workspace.id,
-      billingCycle.startDate,
-      billingCycle.endDate
-    );
-
-    const apiDailyRequests = await ctx.analytics.queryFormizeeDailyRequests(
-      workspace.id
-    );
+    const [submissions, apiDailyRequests] = await Promise.all([
+      ctx.analytics.billing.billableSubmissions({
+        workspaceId: workspace.id,
+        startDate: billingCycle.startDate,
+        endDate: billingCycle.endDate
+      }),
+      ctx.analytics.billing.billableApiRequests({
+        workspaceId: workspace.id,
+        startDate: billingCycle.startDate,
+        endDate: billingCycle.endDate
+      })
+    ]);
 
     let totalStorage = 0;
     await Promise.all(

@@ -25,8 +25,7 @@ export const env = () =>
       STRIPE_SECRET_KEY: z.string().default(''),
 
       // Analytics
-      TINYBIRD_URL: z.string().url().optional(),
-      TINYBIRD_TOKEN: z.string().optional(),
+      CLICKHOUSE_URL: z.string().url().optional(),
 
       // Communications
       RESEND_TOKEN: z.string().default('re_123456789'),

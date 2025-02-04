@@ -26,8 +26,8 @@ export const getWorkspaceMembers = protectedProcedure
         with: {user: true}
       })
       .finally(() => {
-        ctx.metrics.emit({
-          metric: 'main.db.read',
+        ctx.analytics.metrics.insertDatabase({
+          type: 'read',
           query: 'usersToWorkspaces.list',
           latency: performance.now() - queryStart
         });

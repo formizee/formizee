@@ -18,8 +18,8 @@ export const updateEndpointIcon = protectedProcedure
         where: (table, {eq}) => eq(table.id, input.id)
       })
       .finally(() => {
-        ctx.metrics.emit({
-          metric: 'main.db.read',
+        ctx.analytics.metrics.insertDatabase({
+          type: 'read',
           query: 'endpoints.get',
           latency: performance.now() - endpointQueryStart
         });
@@ -46,9 +46,9 @@ export const updateEndpointIcon = protectedProcedure
         .where(eq(schema.endpoint.id, endpoint.id))
         .returning()
         .finally(() => {
-          ctx.metrics.emit({
-            metric: 'main.db.write',
-            mutation: 'endpoints.put',
+          ctx.analytics.metrics.insertDatabase({
+            type: 'write',
+            query: 'endpoints.put',
             latency: performance.now() - mutationStart
           });
         });

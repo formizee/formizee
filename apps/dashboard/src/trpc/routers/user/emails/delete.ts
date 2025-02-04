@@ -16,8 +16,8 @@ export const deleteLinkedEmail = protectedProcedure
         where: (table, {eq}) => eq(table.id, ctx.user?.id ?? '')
       })
       .finally(() => {
-        ctx.metrics.emit({
-          metric: 'main.db.read',
+        ctx.analytics.metrics.insertDatabase({
+          type: 'read',
           query: 'users.get',
           latency: performance.now() - queryUserStart
         });
@@ -37,8 +37,8 @@ export const deleteLinkedEmail = protectedProcedure
           and(eq(table.userId, user.id), eq(table.email, input.email))
       })
       .finally(() => {
-        ctx.metrics.emit({
-          metric: 'main.db.read',
+        ctx.analytics.metrics.insertDatabase({
+          type: 'read',
           query: 'usersToEmails.get',
           latency: performance.now() - queryEmailStart
         });
@@ -68,8 +68,8 @@ export const deleteLinkedEmail = protectedProcedure
           }
         })
         .finally(() => {
-          ctx.metrics.emit({
-            metric: 'main.db.read',
+          ctx.analytics.metrics.insertDatabase({
+            type: 'read',
             query: 'usersToWorkspaces.list',
             latency: performance.now() - queryWorkspacesStart
           });
@@ -86,9 +86,9 @@ export const deleteLinkedEmail = protectedProcedure
           .set({availableEmails})
           .where(eq(schema.workspace.id, workspace.workspaceId))
           .finally(() => {
-            ctx.metrics.emit({
-              metric: 'main.db.write',
-              mutation: 'workspaces.put',
+            ctx.analytics.metrics.insertDatabase({
+              type: 'write',
+              query: 'workspaces.put',
               latency: performance.now() - mutateWorkspaceStart
             });
           });
@@ -105,9 +105,9 @@ export const deleteLinkedEmail = protectedProcedure
         )
       )
       .finally(() => {
-        ctx.metrics.emit({
-          metric: 'main.db.write',
-          mutation: 'usersToEmails.delete',
+        ctx.analytics.metrics.insertDatabase({
+          type: 'write',
+          query: 'usersToEmails.delete',
           latency: performance.now() - mutateEmailStart
         });
       });

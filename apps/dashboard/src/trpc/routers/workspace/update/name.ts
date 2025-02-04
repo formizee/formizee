@@ -28,15 +28,15 @@ export const updateWorkspaceName = protectedProcedure
         .where(eq(schema.workspace.id, workspace.id))
         .returning()
         .finally(() => {
-          ctx.metrics.emit({
-            metric: 'main.db.write',
-            mutation: 'workspaces.put',
+          ctx.analytics.metrics.insertDatabase({
+            type: 'write',
+            query: 'workspaces.put',
             latency: performance.now() - mutationStart
           });
         });
 
       // Ingest audit logs
-      await ctx.analytics.ingestFormizeeAuditLogs({
+      await ctx.analytics.auditLogs.insert({
         event: 'workspace.update',
         workspaceId: workspace.id,
         actor: {

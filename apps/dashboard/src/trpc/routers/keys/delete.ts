@@ -17,8 +17,8 @@ export const deleteKey = protectedProcedure
         where: (table, {eq}) => eq(table.id, input.id)
       })
       .finally(() => {
-        ctx.metrics.emit({
-          metric: 'main.db.read',
+        ctx.analytics.metrics.insertDatabase({
+          type: 'read',
           query: 'keys.get',
           latency: performance.now() - queryStart
         });
@@ -43,9 +43,9 @@ export const deleteKey = protectedProcedure
       .where(eq(schema.key.id, key.id))
       .returning()
       .finally(() => {
-        ctx.metrics.emit({
-          metric: 'main.db.write',
-          mutation: 'keys.delete',
+        ctx.analytics.metrics.insertDatabase({
+          type: 'write',
+          query: 'keys.delete',
           latency: performance.now() - mutationStart
         });
       });
@@ -59,7 +59,7 @@ export const deleteKey = protectedProcedure
     }
 
     // Ingest audit logs
-    await ctx.analytics.ingestFormizeeAuditLogs({
+    await ctx.analytics.auditLogs.insert({
       event: 'key.delete',
       workspaceId: workspace.id,
       actor: {

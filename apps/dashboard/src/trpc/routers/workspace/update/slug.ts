@@ -53,8 +53,8 @@ export const updateWorkspaceSlug = protectedProcedure
         where: (table, {eq}) => eq(table.slug, input.slug)
       })
       .finally(() => {
-        ctx.metrics.emit({
-          metric: 'main.db.read',
+        ctx.analytics.metrics.insertDatabase({
+          type: 'read',
           query: 'workspaces.get',
           latency: performance.now() - queryStart
         });
@@ -75,15 +75,15 @@ export const updateWorkspaceSlug = protectedProcedure
         .where(eq(schema.workspace.id, workspace.id))
         .returning()
         .finally(() => {
-          ctx.metrics.emit({
-            metric: 'main.db.write',
-            mutation: 'workspaces.put',
+          ctx.analytics.metrics.insertDatabase({
+            type: 'write',
+            query: 'workspaces.put',
             latency: performance.now() - mutationStart
           });
         });
 
       // Ingest audit logs
-      await ctx.analytics.ingestFormizeeAuditLogs({
+      await ctx.analytics.auditLogs.insert({
         event: 'workspace.update',
         workspaceId: workspace.id,
         actor: {
