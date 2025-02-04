@@ -284,6 +284,9 @@ importers:
 
   apps/vault:
     dependencies:
+      '@formizee/analytics':
+        specifier: workspace:*
+        version: link:../../internal/analytics
       '@formizee/cache':
         specifier: workspace:*
         version: link:../../internal/cache
@@ -305,9 +308,6 @@ importers:
       '@formizee/logger':
         specifier: workspace:*
         version: link:../../internal/logger
-      '@formizee/metrics':
-        specifier: workspace:*
-        version: link:../../internal/metrics
       '@formizee/storage':
         specifier: workspace:*
         version: link:../../internal/storage

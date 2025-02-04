@@ -3,7 +3,7 @@ import type {HonoEnv} from '@/lib/hono';
 
 import {createConnection} from '@formizee/db/submissions';
 import {ConsoleLogger} from '@formizee/logger';
-import {Metrics} from '@formizee/metrics';
+import {Analytics} from '@formizee/analytics';
 import {Storage} from '@formizee/storage';
 import {Cache} from '@formizee/cache';
 import {newId} from '@formizee/id';
@@ -57,10 +57,8 @@ export function services(): MiddlewareHandler<HonoEnv> {
       defaultFields: {environment: c.env.ENVIROMENT}
     });
 
-    const metrics = new Metrics({
-      tinybirdToken:
-        c.env.ENVIROMENT === 'production' ? c.env.TINYBIRD_TOKEN : undefined,
-      tinybirdUrl: c.env.TINYBIRD_URL
+    const analytics = new Analytics({
+      url: c.env.ENVIROMENT === 'production' ? c.env.CLICKHOUSE_URL : undefined
     });
 
     const database = createConnection({
@@ -78,13 +76,13 @@ export function services(): MiddlewareHandler<HonoEnv> {
       bucket: c.env.STORAGE_BUCKET
     });
 
-    const cache = new Cache({client: c.env.cache, metrics});
+    const cache = new Cache({client: c.env.cache, analytics});
     const keys = new Keys({client: c.env.keys, logger});
 
     c.set('services', {
+      analytics,
       database,
       storage,
-      metrics,
       logger,
       cache,
       keys

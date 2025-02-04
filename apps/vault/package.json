@@ -14,6 +14,7 @@
     "dev": "wrangler dev --show-interactive-dev-session=false"
   },
   "dependencies": {
+    "@formizee/analytics": "workspace:*",
     "@formizee/cache": "workspace:*",
     "@formizee/db": "workspace:*",
     "@formizee/encoding": "workspace:*",
@@ -21,7 +22,6 @@
     "@formizee/error": "workspace:*",
     "@formizee/id": "workspace:*",
     "@formizee/logger": "workspace:*",
-    "@formizee/metrics": "workspace:*",
     "@formizee/storage": "workspace:*",
     "@formizee/tsconfig": "workspace:*",
     "@hono/zod-openapi": "0.16.4",

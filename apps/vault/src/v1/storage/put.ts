@@ -36,7 +36,7 @@ export const putRoute = createRoute({
 
 export const registerPutStorage = (api: typeof storageAPI) => {
   return api.openapi(putRoute, async context => {
-    const {metrics, database, cache} = context.get('services');
+    const {analytics, database, cache} = context.get('services');
     const {endpointId} = context.req.valid('param');
     const input = context.req.valid('json');
     const mutationStart = performance.now();
@@ -72,8 +72,8 @@ export const registerPutStorage = (api: typeof storageAPI) => {
       })
       .where(eq(schema.endpoint.id, endpointId));
 
-    metrics.emit({
-      metric: 'vault.latency',
+    analytics.metrics.insertVault({
+      type: 'latency',
       query: 'storage.post',
       latency: performance.now() - mutationStart
     });

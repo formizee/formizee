@@ -38,7 +38,7 @@ export const postRoute = createRoute({
 
 export const registerPostSubmission = (api: typeof submissionsAPI) => {
   return api.openapi(postRoute, async context => {
-    const {metrics, logger, database, cache, storage, keys} =
+    const {analytics, logger, database, cache, storage, keys} =
       context.get('services');
     const input = context.req.valid('json');
     const mutationStart = performance.now();
@@ -102,8 +102,8 @@ export const registerPostSubmission = (api: typeof submissionsAPI) => {
       pendingUploads: pendingUploads
     });
 
-    metrics.emit({
-      metric: 'vault.latency',
+    analytics.metrics.insertVault({
+      type: 'latency',
       query: 'submissions.post',
       latency: performance.now() - mutationStart
     });
