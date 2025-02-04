@@ -3,19 +3,21 @@ import {z} from 'zod';
 
 export const cacheSchema = z.discriminatedUnion('type', [
   z.object({
-    type: z.literal('read'),
+    key: z.string(),
     hit: z.boolean(),
-    key: z.string(),
+    type: z.literal('read'),
     latency: z.number().transform(latency => Math.round(latency))
   }),
   z.object({
+    key: z.string(),
     type: z.literal('write'),
-    key: z.string(),
+    hit: z.boolean().default(false),
     latency: z.number().transform(latency => Math.round(latency))
   }),
   z.object({
-    type: z.literal('delete'),
     key: z.string(),
+    type: z.literal('delete'),
+    hit: z.boolean().default(false),
     latency: z.number().transform(latency => Math.round(latency))
   })
 ]);
