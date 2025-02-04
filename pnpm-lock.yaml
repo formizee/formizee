@@ -697,6 +697,9 @@ importers:
 
   internal/keys:
     dependencies:
+      '@formizee/analytics':
+        specifier: workspace:*
+        version: link:../analytics
       '@formizee/cache':
         specifier: workspace:*
         version: link:../cache
@@ -709,9 +712,6 @@ importers:
       '@formizee/hashing':
         specifier: workspace:*
         version: link:../hashing
-      '@formizee/metrics':
-        specifier: workspace:*
-        version: link:../metrics
       base-x:
         specifier: 5.0.0
         version: 5.0.0

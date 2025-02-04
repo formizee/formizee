@@ -17,11 +17,11 @@
     "vitest": "1.5.0"
   },
   "dependencies": {
+    "@formizee/analytics": "workspace:*",
     "@formizee/cache": "workspace:*",
     "@formizee/db": "workspace:*",
     "@formizee/error": "workspace:*",
     "@formizee/hashing": "workspace:*",
-    "@formizee/metrics": "workspace:*",
     "base-x": "5.0.0"
   }
 }

@@ -1,6 +1,6 @@
 import {ErrorCodeEnum, BaseError, Err, Ok, type Result} from '@formizee/error';
 import {type Database, eq, schema} from '@formizee/db';
-import type {Metrics} from '@formizee/metrics';
+import type {Analytics} from '@formizee/analytics';
 import {sha256} from '@formizee/hashing';
 import {Cache} from '@formizee/cache';
 import {newKey} from './utils';
@@ -34,12 +34,12 @@ export class KeyService {
   constructor(options: {
     database: Database;
     cache?: KVNamespace;
-    metrics: Metrics;
+    analytics: Analytics;
   }) {
     this.database = options.database;
     this.cache =
       options.cache !== undefined
-        ? new Cache({client: options.cache, metrics: options.metrics})
+        ? new Cache({client: options.cache, analytics: options.analytics})
         : undefined;
   }
 
