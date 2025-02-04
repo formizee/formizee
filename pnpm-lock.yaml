@@ -742,22 +742,6 @@ importers:
         specifier: 22.10.1
         version: 22.10.1
 
-  internal/metrics:
-    dependencies:
-      '@chronark/zod-bird':
-        specifier: 0.3.10
-        version: 0.3.10
-      zod:
-        specifier: 3.23.8
-        version: 3.23.8
-    devDependencies:
-      '@formizee/tsconfig':
-        specifier: workspace:*
-        version: link:../tsconfig
-      '@types/node':
-        specifier: 22.10.1
-        version: 22.10.1
-
   internal/plans:
     dependencies:
       '@formizee/db':
@@ -1141,9 +1125,6 @@ packages:
     engines: {node: '>=14.21.3'}
     cpu: [x64]
     os: [win32]
-
-  '@chronark/zod-bird@0.3.10':
-    resolution: {integrity: sha512-QkGvy8Lz+NTGPOfBH2lIEAxiaizp9vrEufxsi1wYz8WM0/ADqs4hUqO1zRjt7ntoZdKiXCcnpZtzUMdOjfo5AQ==}
 
   '@clack/core@0.3.5':
     resolution: {integrity: sha512-5cfhQNH+1VQ2xLQlmzXMqUoiaH0lRBq9/CLW9lTyMbuKLC3+xEK01tHVvyut++mLOn5urSHmkm6I0Lg9MaJSTQ==}
@@ -9266,10 +9247,6 @@ snapshots:
 
   '@biomejs/cli-win32-x64@1.9.4':
     optional: true
-
-  '@chronark/zod-bird@0.3.10':
-    dependencies:
-      zod: 3.24.1
 
   '@clack/core@0.3.5':
     dependencies:
