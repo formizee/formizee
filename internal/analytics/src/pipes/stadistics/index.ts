@@ -1,4 +1,4 @@
-import type {Querier} from '@/client';
+import type {Querier} from '../../client';
 import {z} from 'zod';
 
 export function getFormizeeStadistics(ch: Querier) {

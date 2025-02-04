@@ -1,4 +1,4 @@
-import type {Inserter} from '@/client';
+import type {Inserter} from '../../client';
 import {schema} from './schema';
 
 export function insertSDKTelemetry(ch: Inserter) {

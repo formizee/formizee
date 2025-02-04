@@ -1,4 +1,4 @@
-import type {Inserter} from '@/client';
+import type {Inserter} from '../../client';
 import {z} from 'zod';
 
 export const cacheSchema = z.discriminatedUnion('type', [

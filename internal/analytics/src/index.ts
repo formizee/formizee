@@ -1,17 +1,17 @@
 import {Client, Noop, type Inserter, type Querier} from './client';
 
-import {getBillableApiRequests, getBillableSubmissions} from '@/pipes/billing';
+import {getBillableApiRequests, getBillableSubmissions} from './pipes/billing';
 import {insertCacheMetrics, insertDatabaseMetrics} from './pipes/metrics';
-import {getLatestAuditLogs, insertAuditLogs} from '@/pipes/audit';
-import {getFormizeeStadistics} from '@/pipes/stadistics';
-import {insertSDKTelemetry} from '@/pipes/telemetry';
-import {insertApiRequest} from '@/pipes/requests';
+import {getLatestAuditLogs, insertAuditLogs} from './pipes/audit';
+import {getFormizeeStadistics} from './pipes/stadistics';
+import {insertSDKTelemetry} from './pipes/telemetry';
+import {insertApiRequest} from './pipes/requests';
 import {
   getSubmissionsPerDay,
   getSubmissionsPerEndpoint,
   getSubmissionsPerMonth,
   insertSubmissions
-} from '@/pipes/submissions';
+} from './pipes/submissions';
 
 export type ClickHouseConfig =
   | {

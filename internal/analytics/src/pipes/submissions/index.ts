@@ -1,4 +1,4 @@
-import type {Inserter, Querier} from '@/client';
+import type {Inserter, Querier} from '../../client';
 import {params, schema} from './schema';
 import {z} from 'zod';
 

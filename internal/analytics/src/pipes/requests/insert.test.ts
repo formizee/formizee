@@ -1,8 +1,8 @@
-import {ClickHouseContainer} from '@/testutils';
+import {ClickHouseContainer} from '../../testutils';
 import {randomUUID} from 'node:crypto';
 import {expect, test} from 'vitest';
 import {newId} from '@formizee/id';
-import {Analytics} from '@/index';
+import {Analytics} from '../../index';
 
 test(
   'inserts a single request',

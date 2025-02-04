@@ -1,9 +1,9 @@
+import {ClickHouseContainer} from '../../testutils';
 import type {schema} from '../submissions/schema';
-import {ClickHouseContainer} from '@/testutils';
 import {randomUUID} from 'node:crypto';
+import {Analytics} from '../../index';
 import {expect, test} from 'vitest';
 import {newId} from '@formizee/id';
-import {Analytics} from '@/index';
 import type {z} from 'zod';
 
 type Submission = z.infer<typeof schema>;

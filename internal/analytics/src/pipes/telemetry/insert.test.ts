@@ -1,7 +1,7 @@
-import {ClickHouseContainer} from '@/testutils';
+import {ClickHouseContainer} from '../../testutils';
+import {Analytics} from '../../index';
 import {expect, test} from 'vitest';
 import {newId} from '@formizee/id';
-import {Analytics} from '@/index';
 
 test(
   'inserts a single telemetry log',

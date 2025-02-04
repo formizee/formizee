@@ -1,6 +1,6 @@
-import {ClickHouseContainer} from '@/testutils';
+import {ClickHouseContainer} from '../../testutils';
 import {expect, test} from 'vitest';
-import {Analytics} from '@/index';
+import {Analytics} from '../../index';
 
 test(
   'inserts a single cache metric',

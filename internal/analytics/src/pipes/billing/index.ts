@@ -1,4 +1,4 @@
-import type {Querier} from '@/client';
+import type {Querier} from '../../client';
 import {z} from 'zod';
 
 const params = z.object({
