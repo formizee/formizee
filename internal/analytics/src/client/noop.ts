@@ -4,9 +4,10 @@ import type {Inserter, Querier} from './interface';
 import type {z} from 'zod';
 
 export class Noop implements Querier, Inserter {
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   public query<
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     TIn extends z.ZodSchema<any>,
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     TOut extends z.ZodSchema<any>
   >(req: {
     // The SQL query to run.
