@@ -510,12 +510,12 @@ importers:
 
   internal/cache:
     dependencies:
+      '@formizee/analytics':
+        specifier: workspace:*
+        version: link:../analytics
       '@formizee/db':
         specifier: workspace:*
         version: link:../db
-      '@formizee/metrics':
-        specifier: workspace:*
-        version: link:../metrics
     devDependencies:
       '@cloudflare/workers-types':
         specifier: 4.20241022.0
