@@ -10,6 +10,9 @@ runs:
       with:
         node-version: lts/*
 
+    - name: Setup Go
+      uses: actions/setup-go@v5
+
     - uses: pnpm/action-setup@v4
       with:
         run_install: false
@@ -36,3 +39,7 @@ runs:
       run: |
         pnpm install --recursive
         npm i -g wrangler
+
+    - name: Install goose
+          run: go install github.com/pressly/goose/v3/cmd/goose@latest
+          shell: bash
