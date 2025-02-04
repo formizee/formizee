@@ -1,6 +1,7 @@
 import {Client, Noop, type Inserter, type Querier} from './client';
 
 import {getBillableApiRequests, getBillableSubmissions} from '@/pipes/billing';
+import {insertCacheMetrics, insertDatabaseMetrics} from './pipes/metrics';
 import {getLatestAuditLogs, insertAuditLogs} from '@/pipes/audit';
 import {getFormizeeStadistics} from '@/pipes/stadistics';
 import {insertSDKTelemetry} from '@/pipes/telemetry';
@@ -84,6 +85,13 @@ export class Analytics {
   public get stadistics() {
     return {
       get: getFormizeeStadistics(this.querier)
+    };
+  }
+
+  public get metrics() {
+    return {
+      insertCache: insertCacheMetrics(this.inserter),
+      insertDatabase: insertDatabaseMetrics(this.inserter)
     };
   }
 }
