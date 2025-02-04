@@ -53,9 +53,6 @@ importers:
       '@formizee/logger':
         specifier: workspace:*
         version: link:../../internal/logger
-      '@formizee/metrics':
-        specifier: workspace:*
-        version: link:../../internal/metrics
       '@formizee/plans':
         specifier: workspace:*
         version: link:../../internal/plans

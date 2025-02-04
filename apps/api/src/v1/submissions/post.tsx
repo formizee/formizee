@@ -58,7 +58,6 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
     const {
       analytics,
       vault,
-      metrics,
       database,
       logger,
       email: emailService
@@ -73,8 +72,8 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
         where: (table, {eq}) => eq(table.id, endpointId)
       })
       .finally(() => {
-        metrics.emit({
-          metric: 'main.db.read',
+        analytics.metrics.insertDatabase({
+          type: 'read',
           query: 'endpoints.get',
           latency: performance.now() - queryEndpointStart
         });
@@ -104,8 +103,8 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
         where: (table, {eq}) => eq(table.id, endpoint.workspaceId)
       })
       .finally(() => {
-        metrics.emit({
-          metric: 'main.db.read',
+        analytics.metrics.insertDatabase({
+          type: 'read',
           query: 'endpoints.get',
           latency: performance.now() - queryWorkspaceStart
         });
@@ -255,12 +254,10 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
     }
 
     // Ingest metrics
-
-    await metrics.forceEmit({
-      metric: 'submission.upload',
+    await analytics.submissions.insert({
       endpointId: endpoint.id,
       workspaceId: workspace.id,
-      uploadedAt: new Date(),
+      uploadedAt: Date.now(),
       context: {
         location: context.get('location'),
         userAgent: context.get('userAgent')

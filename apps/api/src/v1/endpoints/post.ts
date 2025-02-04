@@ -35,7 +35,7 @@ export const postRoute = createRoute({
 
 export const registerPostEndpoint = (api: typeof endpointsAPI) => {
   return api.openapi(postRoute, async context => {
-    const {analytics, metrics, database} = context.get('services');
+    const {analytics, database} = context.get('services');
     const workspace = context.get('workspace');
     const input = context.req.valid('json');
     const limits = context.get('limits');
@@ -48,8 +48,8 @@ export const registerPostEndpoint = (api: typeof endpointsAPI) => {
       .from(schema.endpoint)
       .where(eq(schema.endpoint.workspaceId, workspace.id))
       .finally(() => {
-        metrics.emit({
-          metric: 'main.db.read',
+        analytics.metrics.insertDatabase({
+          type: 'read',
           query: 'endpoints.list',
           latency: performance.now() - queryListStart
         });
@@ -78,8 +78,8 @@ export const registerPostEndpoint = (api: typeof endpointsAPI) => {
         where: (table, {eq}) => eq(table.slug, input.slug)
       })
       .finally(() => {
-        metrics.emit({
-          metric: 'main.db.read',
+        analytics.metrics.insertDatabase({
+          type: 'read',
           query: 'endpoints.get',
           latency: performance.now() - queryGetStart
         });
@@ -125,14 +125,15 @@ export const registerPostEndpoint = (api: typeof endpointsAPI) => {
       .insert(schema.endpoint)
       .values(data)
       .finally(() => {
-        metrics.emit({
-          metric: 'main.db.write',
-          mutation: 'endpoints.post',
+        analytics.metrics.insertDatabase({
+          type: 'write',
+          query: 'endpoints.post',
           latency: performance.now() - mutationStart
         });
       });
 
-    await analytics.ingestFormizeeAuditLogs({
+    await analytics.auditLogs.insert({
+      time: Date.now(),
       event: 'endpoint.create',
       workspaceId: workspace.id,
       actor: {
@@ -147,15 +148,6 @@ export const registerPostEndpoint = (api: typeof endpointsAPI) => {
         }
       ],
       description: `Created ${data.id}`,
-      context: {
-        location: context.get('location'),
-        userAgent: context.get('userAgent')
-      }
-    });
-
-    metrics.emit({
-      metric: 'endpoint.created',
-      workspaceId: workspace.id,
       context: {
         location: context.get('location'),
         userAgent: context.get('userAgent')

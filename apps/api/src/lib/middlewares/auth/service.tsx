@@ -9,8 +9,7 @@ import {render} from '@formizee/email';
 
 export const authentication = (): MiddlewareHandler<HonoEnv> => {
   return async function auth(context, next) {
-    const {apiKeys, analytics, metrics, database, email} =
-      context.get('services');
+    const {apiKeys, analytics, database, email} = context.get('services');
 
     const authorization = context.req
       .header('authorization')
@@ -36,9 +35,34 @@ export const authentication = (): MiddlewareHandler<HonoEnv> => {
     context.set('key', {id: val.id, name: val.name});
     context.set('limits', limits);
 
-    const dailyRequests = await analytics.queryFormizeeDailyRequests(
-      val.workspace.id
+    const now = new Date();
+
+    const startDate = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+      0,
+      0,
+      0,
+      0
     );
+
+    const endDate = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+      23,
+      59,
+      59,
+      999
+    );
+
+    const result = await analytics.billing.billableApiRequests({
+      startDate: Math.floor(startDate.getTime() / 1000),
+      endDate: Math.floor(endDate.getTime() / 1000),
+      workspaceId: val.workspace.id
+    });
+    const dailyRequests = result.err ? 0 : (result.val[0]?.requests ?? 0);
 
     // Daily limit reached
     if (
@@ -50,16 +74,6 @@ export const authentication = (): MiddlewareHandler<HonoEnv> => {
           'API Daily rate limit reached, please try again tomorrow or upgrade to a better plan.'
       });
     }
-
-    metrics.emit({
-      metric: 'api.request',
-      workspaceId: val.workspace.id,
-      time: new Date(),
-      context: {
-        location: context.get('location'),
-        userAgent: context.get('userAgent')
-      }
-    });
 
     // 80% percent warning
     if (
@@ -89,7 +103,7 @@ export const authentication = (): MiddlewareHandler<HonoEnv> => {
 
       if (context.env.ENVIROMENT === 'production') {
         await email.emails.send({
-          subject: "You've reached the 80% monthly usage of your plan",
+          subject: "You've reached the 80% daily usage of your plan",
           replyTo: 'Formizee Support <support@formizee.com>',
           from: 'Formizee Billing <payments@formizee.com>',
           to: workspaceOwner.email,

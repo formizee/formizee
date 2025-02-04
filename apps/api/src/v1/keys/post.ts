@@ -35,7 +35,7 @@ export const postRoute = createRoute({
 
 export const registerPostKey = (api: typeof keysAPI) => {
   return api.openapi(postRoute, async context => {
-    const {analytics, database, metrics, apiKeys} = context.get('services');
+    const {analytics, database, apiKeys} = context.get('services');
     const workspace = context.get('workspace');
     const input = context.req.valid('json');
     const limits = context.get('limits');
@@ -48,8 +48,8 @@ export const registerPostKey = (api: typeof keysAPI) => {
       .from(schema.key)
       .where(eq(schema.key.workspaceId, workspace.id))
       .finally(() => {
-        metrics.emit({
-          metric: 'main.db.read',
+        analytics.metrics.insertDatabase({
+          type: 'read',
           query: 'keys.list',
           latency: performance.now() - queryStart
         });
@@ -88,14 +88,15 @@ export const registerPostKey = (api: typeof keysAPI) => {
       .insert(schema.key)
       .values(data)
       .finally(() => {
-        metrics.emit({
-          metric: 'main.db.write',
-          mutation: 'keys.post',
+        analytics.metrics.insertDatabase({
+          type: 'write',
+          query: 'keys.post',
           latency: performance.now() - mutationStart
         });
       });
 
-    await analytics.ingestFormizeeAuditLogs({
+    await analytics.auditLogs.insert({
+      time: Date.now(),
       event: 'key.create',
       workspaceId: workspace.id,
       actor: {

@@ -28,7 +28,7 @@ export const deleteRoute = createRoute({
 export const registerDeleteSubmission = (api: typeof submissionsApi) => {
   return api.openapi(deleteRoute, async context => {
     const workspaceId = context.get('workspace').id;
-    const {database, vault, metrics, logger} = context.get('services');
+    const {database, vault, analytics, logger} = context.get('services');
     const input = context.req.valid('param');
 
     const queryStart = performance.now();
@@ -37,8 +37,8 @@ export const registerDeleteSubmission = (api: typeof submissionsApi) => {
         where: (table, {eq}) => eq(table.id, input.endpointId)
       })
       .finally(() => {
-        metrics.emit({
-          metric: 'main.db.read',
+        analytics.metrics.insertDatabase({
+          type: 'read',
           query: 'endpoints.get',
           latency: performance.now() - queryStart
         });

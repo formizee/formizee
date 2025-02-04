@@ -34,7 +34,7 @@ export const putRoute = createRoute({
 
 export const registerPutSubmission = (api: typeof submissionsApi) => {
   return api.openapi(putRoute, async context => {
-    const {database, vault, metrics, logger} = context.get('services');
+    const {database, vault, analytics, logger} = context.get('services');
     const workspaceId = context.get('workspace').id;
     const params = context.req.valid('param');
     const input = context.req.valid('json');
@@ -45,8 +45,8 @@ export const registerPutSubmission = (api: typeof submissionsApi) => {
         where: (table, {eq}) => eq(table.id, params.endpointId)
       })
       .finally(() => {
-        metrics.emit({
-          metric: 'main.db.read',
+        analytics.metrics.insertDatabase({
+          type: 'read',
           query: 'endpoints.get',
           latency: performance.now() - queryStart
         });

@@ -36,7 +36,7 @@ export const listRoute = createRoute({
 
 export const registerListEndpoints = (api: typeof endpointsAPI) => {
   return api.openapi(listRoute, async context => {
-    const {database, metrics} = context.get('services');
+    const {database, analytics} = context.get('services');
     const {page, limit} = context.get('pagination');
     const workspace = context.get('workspace');
 
@@ -48,8 +48,8 @@ export const registerListEndpoints = (api: typeof endpointsAPI) => {
         limit
       })
       .finally(() => {
-        metrics.emit({
-          metric: 'main.db.read',
+        analytics.metrics.insertDatabase({
+          type: 'read',
           query: 'endpoints.list',
           latency: performance.now() - queryStart
         });
@@ -68,8 +68,8 @@ export const registerListEndpoints = (api: typeof endpointsAPI) => {
         .from(schema.endpoint)
         .where(eq(schema.endpoint.workspaceId, workspace.id))
         .finally(() => {
-          metrics.emit({
-            metric: 'main.db.read',
+          analytics.metrics.insertDatabase({
+            type: 'read',
             query: 'endpoints.list',
             latency: performance.now() - queryStart
           });

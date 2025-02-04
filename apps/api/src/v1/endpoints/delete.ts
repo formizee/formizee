@@ -28,8 +28,7 @@ export const deleteRoute = createRoute({
 
 export const registerDeleteEndpoint = (api: typeof endpointsAPI) => {
   return api.openapi(deleteRoute, async context => {
-    const {analytics, metrics, database, vault, logger} =
-      context.get('services');
+    const {analytics, database, vault, logger} = context.get('services');
     const workspace = context.get('workspace');
     const {id} = context.req.valid('param');
     const rootKey = context.get('key');
@@ -43,8 +42,8 @@ export const registerDeleteEndpoint = (api: typeof endpointsAPI) => {
         )
       })
       .finally(() => {
-        metrics.emit({
-          metric: 'main.db.read',
+        analytics.metrics.insertDatabase({
+          type: 'read',
           query: 'endpoints.get',
           latency: performance.now() - queryStart
         });
@@ -61,9 +60,9 @@ export const registerDeleteEndpoint = (api: typeof endpointsAPI) => {
       .delete(schema.endpoint)
       .where(eq(schema.endpoint.id, id))
       .finally(() => {
-        metrics.emit({
-          metric: 'main.db.write',
-          mutation: 'endpoints.delete',
+        analytics.metrics.insertDatabase({
+          type: 'write',
+          query: 'endpoints.delete',
           latency: performance.now() - mutationStart
         });
       });
@@ -76,7 +75,8 @@ export const registerDeleteEndpoint = (api: typeof endpointsAPI) => {
       });
     }
 
-    await analytics.ingestFormizeeAuditLogs({
+    await analytics.auditLogs.insert({
+      time: Date.now(),
       event: 'endpoint.delete',
       workspaceId: workspace.id,
       actor: {
