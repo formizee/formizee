@@ -6,18 +6,21 @@ export const cacheSchema = z.discriminatedUnion('type', [
     key: z.string(),
     hit: z.boolean(),
     type: z.literal('read'),
+    time: z.number().default(Date.now()),
     latency: z.number().transform(latency => Math.round(latency))
   }),
   z.object({
     key: z.string(),
     type: z.literal('write'),
     hit: z.boolean().default(false),
+    time: z.number().default(Date.now()),
     latency: z.number().transform(latency => Math.round(latency))
   }),
   z.object({
     key: z.string(),
     type: z.literal('delete'),
     hit: z.boolean().default(false),
+    time: z.number().default(Date.now()),
     latency: z.number().transform(latency => Math.round(latency))
   })
 ]);
@@ -26,6 +29,7 @@ export const databaseSchema = z.discriminatedUnion('type', [
   z.object({
     type: z.literal('read'),
     dbName: z.string().default('main'),
+    time: z.number().default(Date.now()),
     latency: z.number().transform(latency => Math.round(latency)),
     query: z.enum([
       'users.get',
@@ -51,6 +55,7 @@ export const databaseSchema = z.discriminatedUnion('type', [
   z.object({
     type: z.literal('write'),
     dbName: z.string().default('main'),
+    time: z.number().default(Date.now()),
     latency: z.number().transform(latency => Math.round(latency)),
     query: z.enum([
       'users.put',
@@ -75,10 +80,36 @@ export const databaseSchema = z.discriminatedUnion('type', [
   })
 ]);
 
+export const vaultSchema = z.discriminatedUnion('type', [
+  z.object({
+    query: z.enum([
+      'storage.get',
+      'storage.post',
+      'submissions.get',
+      'submissions.list',
+      'submissions.post',
+      'submissions.put',
+      'submissions.delete',
+      'endpoints.metrics',
+      'endpoints.delete'
+    ]),
+    type: z.literal('latency'),
+    time: z.number().default(Date.now()),
+    latency: z.number().transform(latency => Math.round(latency))
+  })
+]);
+
 export function insertCacheMetrics(ch: Inserter) {
   return ch.insert({
     table: 'metrics.raw_cache_v1',
     schema: cacheSchema
+  });
+}
+
+export function insertVaultMetrics(ch: Inserter) {
+  return ch.insert({
+    table: 'metrics.raw_vault_v1',
+    schema: vaultSchema
   });
 }
 

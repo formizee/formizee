@@ -4,6 +4,7 @@ CREATE TABLE metrics.raw_database_v1(
     query String,
     type String,
     latency Int64,
+    time Int64,
 )
 ENGINE = MergeTree()
 ORDER BY (dbName, query, type)

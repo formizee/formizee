@@ -44,3 +44,24 @@ test(
     expect(res.err).toBeUndefined();
   }
 );
+
+test(
+  'inserts a single vault metric',
+  {
+    timeout: 300_000
+  },
+  async t => {
+    const container = await ClickHouseContainer.start(t);
+
+    const analytics = new Analytics({url: container.url()});
+
+    const res = await analytics.metrics.insertVault({
+      query: 'submissions.get',
+      type: 'latency',
+      latency: 10
+    });
+
+    expect(res.val?.executed).toBe(true);
+    expect(res.err).toBeUndefined();
+  }
+);
