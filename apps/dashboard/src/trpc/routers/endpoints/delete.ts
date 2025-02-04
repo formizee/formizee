@@ -59,6 +59,7 @@ export const deleteEndpoint = protectedProcedure
     }
 
     await ctx.analytics.auditLogs.insert({
+      time: Date.now(),
       event: 'endpoint.delete',
       workspaceId: workspace.id,
       actor: {

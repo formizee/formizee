@@ -120,6 +120,7 @@ export const createEndpoint = protectedProcedure
 
     // Ingest audit logs
     await ctx.analytics.auditLogs.insert({
+      time: Date.now(),
       event: 'endpoint.create',
       workspaceId: workspace.id,
       actor: {

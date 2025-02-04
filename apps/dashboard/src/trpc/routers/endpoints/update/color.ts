@@ -47,7 +47,7 @@ export const updateEndpointColor = protectedProcedure
         .returning()
         .finally(() => {
           ctx.analytics.metrics.insertDatabase({
-            metric: 'write',
+            type: 'write',
             query: 'endpoints.put',
             latency: performance.now() - mutationStart
           });

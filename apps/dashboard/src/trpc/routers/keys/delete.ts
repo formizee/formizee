@@ -60,6 +60,7 @@ export const deleteKey = protectedProcedure
 
     // Ingest audit logs
     await ctx.analytics.auditLogs.insert({
+      time: Date.now(),
       event: 'key.delete',
       workspaceId: workspace.id,
       actor: {

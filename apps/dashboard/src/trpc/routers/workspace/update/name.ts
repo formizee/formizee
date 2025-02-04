@@ -37,6 +37,7 @@ export const updateWorkspaceName = protectedProcedure
 
       // Ingest audit logs
       await ctx.analytics.auditLogs.insert({
+        time: Date.now(),
         event: 'workspace.update',
         workspaceId: workspace.id,
         actor: {

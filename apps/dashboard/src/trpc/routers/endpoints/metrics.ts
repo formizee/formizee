@@ -57,7 +57,7 @@ export const getEndpointMetrics = protectedProcedure
     const response = {
       totalSubmissions: totalSubmissions.err
         ? 0
-        : totalSubmissions.val[0]?.submissions,
+        : (totalSubmissions.val[0]?.submissions ?? 0),
       '30d': monthMetrics,
       '24h': dayMetrics
     };

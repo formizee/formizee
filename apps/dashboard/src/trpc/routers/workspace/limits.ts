@@ -102,9 +102,9 @@ export const getWorkspaceLimits = protectedProcedure
       endpoints: endpoints.length,
       keys: workspaceKeys[0].count,
       storage: Math.round(totalStorage / (1024 * 1024)),
-      submissions: submissions.err ? 0 : submissions.val[0]?.submissions,
+      submissions: submissions.err ? 0 : (submissions.val[0]?.submissions ?? 0),
       apiDailyRequests: apiDailyRequests.err
         ? 0
-        : apiDailyRequests.val[0]?.requests
+        : (apiDailyRequests.val[0]?.requests ?? 0)
     };
   });
