@@ -36,7 +36,7 @@ export function services(): MiddlewareHandler<HonoEnv> {
     c.set('isolateCreatedAt', isolateCreatedAt);
 
     const requestId = newId('request');
-    c.set('requestId', newId('request'));
+    c.set('requestId', requestId);
 
     c.set('userAgent', c.req.header('User-Agent') ?? '');
     c.set('requestStartedAt', Date.now());
