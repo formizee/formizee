@@ -1,4 +1,3 @@
-import {newId} from '@formizee/id';
 import {z} from 'zod';
 
 export const params = z.object({
@@ -40,57 +39,3 @@ export const events = z.enum([
   'key.update',
   'key.delete'
 ]);
-
-export const schema = z.object({
-  /**
-   * The workspace owning this audit log
-   */
-  workspaceId: z.string(),
-
-  /**
-   * Buckets are used as namespaces for different logs belonging to a single workspace
-   */
-  auditLogId: z.string().default(newId('auditlog')),
-  event: events,
-  description: z.string().optional(),
-  time: z.number(),
-  meta: z
-    .record(
-      z.union([z.string(), z.number(), z.boolean(), z.null(), z.undefined()])
-    )
-    .optional(),
-  actor: z.object({
-    type: z.enum(['user', 'key']),
-    id: z.string(),
-    name: z.string().optional(),
-    meta: z
-      .record(
-        z.union([z.string(), z.number(), z.boolean(), z.null(), z.undefined()])
-      )
-      .optional()
-  }),
-  resources: z.array(
-    z.object({
-      type: z.enum(['key', 'auth', 'user', 'endpoint', 'workspace']),
-      name: z.string().optional(),
-      id: z.string(),
-      meta: z
-        .record(
-          z.union([
-            z.string(),
-            z.number(),
-            z.boolean(),
-            z.null(),
-            z.undefined()
-          ])
-        )
-        .optional()
-    })
-  ),
-  context: z.object({
-    location: z.string(),
-    userAgent: z.string().optional()
-  })
-});
-
-export type AuditLog = z.infer<typeof schema>;

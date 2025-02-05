@@ -1,5 +1,4 @@
 import {ClickHouseContainer} from '../../testutils';
-import type {AuditLog} from './schema';
 import {Analytics} from '../../index';
 import {expect, test} from 'vitest';
 import {newId} from '@formizee/id';
@@ -14,7 +13,7 @@ test(
 
     const analytics = new Analytics({url: container.url()});
 
-    const auditLog: AuditLog = {
+    const auditLog = {
       workspaceId: newId('workspace'),
       auditLogId: newId('auditlog'),
       event: 'workspace.create',
@@ -36,7 +35,8 @@ test(
       }
     };
 
-    const {err: insertErr} = await analytics.auditLogs.insert(auditLog);
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+    const {err: insertErr} = await analytics.auditLogs.insert(auditLog as any);
     expect(insertErr).toBeUndefined();
 
     const latestAuditLogs = await analytics.auditLogs.perWeek({
