@@ -30,8 +30,8 @@ test(
         }
       ],
       context: {
-        location: '',
-        userAgent: ''
+        location: 'Valencia',
+        userAgent: 'Arc Browser'
       }
     };
 
@@ -47,5 +47,9 @@ test(
     expect(latestAuditLogs.val!.length).toBe(1);
     expect(latestAuditLogs.val![0]?.time).toBe(auditLog.time);
     expect(latestAuditLogs.val![0]?.event).toBe(auditLog.event);
+    expect(latestAuditLogs.val![0]?.actor.id).toBe(auditLog.actor.id);
+    expect(latestAuditLogs.val![0]?.context.location).toBe(
+      auditLog.context.location
+    );
   }
 );

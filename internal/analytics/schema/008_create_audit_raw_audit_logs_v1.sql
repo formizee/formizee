@@ -1,13 +1,18 @@
 -- +goose up
 CREATE TABLE audit.raw_audit_logs_v1(
     -- Actor properties
-    actor_id String,
-    actor_name String,
-    actor_type String,
+    actor Tuple(
+      type String,
+      id   String,
+      name Nullable(String),
+      meta Nullable(String)
+    ),
     
     -- context
-    context_location String,
-    context_userAgent String,
+    context Tuple(
+      location String,
+      userAgent Nullable(String)
+    ),
 
     -- unix milli
     time Int64,
@@ -15,12 +20,19 @@ CREATE TABLE audit.raw_audit_logs_v1(
     workspaceId String,
     auditLogId String,
 
+    resources Array(
+      Tuple(
+        type String,
+        name Nullable(String),
+        id String,
+        meta Nullable(String)
+      )
+    ),
     description String,
-    resources String,
     event String,
 )
 ENGINE = MergeTree()
-ORDER BY (resources, workspaceId, time)
+ORDER BY (workspaceId, event, time)
 ;
 
 -- +goose down

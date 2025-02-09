@@ -13,11 +13,11 @@ export function getSubmissionsPerDay(ch: Querier) {
   return async (args: z.input<typeof params>) => {
     const query = `
 SELECT
-    uploadedAt as dateTime,
+    toStartOfHour(fromUnixTimestamp64Milli(uploadedAt)) AS dateTime,
     count() AS submissions
  FROM metrics.raw_submissions_v1
     WHERE endpointId = {endpointId: String}
-    AND dateTime >= (toUnixTimestamp(now()) * 1000 - 1 * 24 * 60 * 60 * 1000)
+    AND uploadedAt >= (toUnixTimestamp(now()) * 1000 - 1 * 24 * 60 * 60 * 1000)
 GROUP BY
     dateTime
 ORDER BY
@@ -28,7 +28,7 @@ ORDER BY
       query,
       params: params,
       schema: z.object({
-        dateTime: z.number(),
+        dateTime: z.string(),
         submissions: z.number()
       })
     })(args);
@@ -39,11 +39,11 @@ export function getSubmissionsPerMonth(ch: Querier) {
   return async (args: z.input<typeof params>) => {
     const query = `
 SELECT
-    uploadedAt AS dateTime,
+    toStartOfDay(fromUnixTimestamp64Milli(uploadedAt)) AS dateTime,
     count() AS submissions
  FROM metrics.raw_submissions_v1
     WHERE endpointId = {endpointId: String}
-    AND dateTime >= (toUnixTimestamp(now()) * 1000 - 30 * 24 * 60 * 60 * 1000)
+    AND uploadedAt >= (toUnixTimestamp(now()) * 1000 - 30 * 24 * 60 * 60 * 1000)
 GROUP BY
     dateTime
 ORDER BY
@@ -54,7 +54,7 @@ ORDER BY
       query,
       params: params,
       schema: z.object({
-        dateTime: z.number(),
+        dateTime: z.string(),
         submissions: z.number()
       })
     })(args);

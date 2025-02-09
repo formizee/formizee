@@ -69,17 +69,19 @@ export const getWorkspaceLimits = protectedProcedure
       });
 
     const billingCycle = calculatePlanCycleDates(workspace);
+    const startDate = billingCycle.startDate.getTime();
+    const endDate = billingCycle.endDate.getTime();
 
     const [submissions, apiDailyRequests] = await Promise.all([
       ctx.analytics.billing.billableSubmissions({
-        startDate: Math.floor(billingCycle.startDate.getTime() / 1000),
-        endDate: Math.floor(billingCycle.endDate.getTime() / 1000),
-        workspaceId: workspace.id
+        workspaceId: workspace.id,
+        startDate,
+        endDate
       }),
       ctx.analytics.billing.billableApiRequests({
-        startDate: Math.floor(billingCycle.startDate.getTime() / 1000),
-        endDate: Math.floor(billingCycle.endDate.getTime() / 1000),
-        workspaceId: workspace.id
+        workspaceId: workspace.id,
+        startDate,
+        endDate
       })
     ]);
 

@@ -35,7 +35,7 @@ export const columns: ColumnDef<any>[] = [
 
       return (
         <div className="flex flex-row gap-4 items-center">
-          {data.actor_type === 'key' ? (
+          {data.actor.type === 'key' ? (
             <KeyIcon className="text-neutral-600 dark:text-neutal-400" />
           ) : (
             <UserIcon className="text-neutral-600 dark:text-neutal-400" />
@@ -45,22 +45,22 @@ export const columns: ColumnDef<any>[] = [
               <Tooltip>
                 <TooltipTrigger className="flex justify-start">
                   <span className="font-medium truncate">
-                    {String(data.actor_name)}
+                    {String(data.actor.name)}
                   </span>
                 </TooltipTrigger>
-                <TooltipContent>{String(data.actor_name)}</TooltipContent>
+                <TooltipContent>{String(data.actor.name)}</TooltipContent>
               </Tooltip>
               <Tooltip>
                 <TooltipTrigger className="flex justify-start">
                   <span className="text-xs text-neutral-600 dark:text-neutral-400 truncate">
-                    {data.actor_type === 'user'
-                      ? String(data.actor_id)
-                      : `${String(data.actor_id).slice(0, 6)}${'*'.repeat(19)}`}
+                    {data.actor.type === 'user'
+                      ? String(data.actor.id)
+                      : `${String(data.actor.id).slice(0, 6)}${'*'.repeat(19)}`}
                   </span>
                 </TooltipTrigger>
                 <TooltipContent>
-                  {data.actor_type === 'user'
-                    ? String(data.actor_id)
+                  {data.actor.type === 'user'
+                    ? String(data.actor.id)
                     : 'Sensitive content'}
                 </TooltipContent>
               </Tooltip>

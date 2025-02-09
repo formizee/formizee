@@ -18,5 +18,6 @@ export const listLogs = protectedProcedure
     const response = await ctx.analytics.auditLogs.perWeek({
       workspaceId: workspace.id
     });
+
     return response.err ? [] : response.val;
   });
