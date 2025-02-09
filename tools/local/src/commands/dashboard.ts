@@ -16,13 +16,28 @@ export function bootstrapDashboard() {
   const env = marshalEnv({
     General: {
       DASHBOARD_URL: 'http://localhost:3001',
-      VAULT_URL: 'http://localhost:8888',
       DOCS_URL: 'http://localhost:3002',
       WEB_URL: 'http://localhost:3000',
-      API_URL: 'http://localhost:8787'
+      API_URL: 'http://localhost:8787',
+      SELF_HOSTING: 'false'
+    },
+    Email: {
+      AWS_SES_ACCESS_KEY: 'not required for dev',
+      AWS_SES_SECRET_ACCESS_KEY: 'not required for dev'
     },
     Database: {
-      DATABASE_URL: 'http://localhost:8080'
+      DATABASE_URL: 'http://localhost:8080',
+      DATABASE_AUTH_TOKEN: 'not required for dev'
+    },
+    Storage: {
+      VAULT_URL: 'http://localhost:8888',
+      VAULT_SECRET: 'example'
+    },
+    Analytics: {
+      CLICKHOUSE_URL: 'http://default:password@localhost:8123'
+    },
+    Authentication: {
+      AUTH_SECRET: 'example'
     }
   });
 
