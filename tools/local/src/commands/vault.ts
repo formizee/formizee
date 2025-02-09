@@ -20,10 +20,18 @@ export async function bootstrapVault() {
       STORAGE_SECRET_ACCESS_KEY: 'minio_root_password',
       STORAGE_ACCESS_KEY_ID: 'minio_root_user',
       STORAGE_ENDPOINT: 'http://storage:3902',
-      STORAGE_BUCKET: 'storage'
+      STORAGE_BUCKET: 'storage',
+      VAULT_SECRET: 'example'
     },
     Database: {
-      DATABASE_URL: 'http://localhost:8081'
+      DATABASE_URL: 'http://localhost:8081',
+      DATABASE_AUTH_TOKEN: 'not required for dev'
+    },
+    Analytics: {
+      CLICKHOUSE_URL: 'http://default:password@localhost:8123'
+    },
+    Logs: {
+      LOGTAIL_TOKEN: 'not required for dev'
     }
   });
 

@@ -1,7 +1,11 @@
 FROM node:lts AS base
 
-RUN npm i -g pnpm turbo
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+
+RUN npm i -g corepack turbo
 RUN corepack enable
+RUN corepack prepare pnpm@9.0.5 --activate
 
 
 FROM base AS builder

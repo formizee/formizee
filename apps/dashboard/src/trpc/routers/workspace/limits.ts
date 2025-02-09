@@ -27,8 +27,8 @@ export const getWorkspaceLimits = protectedProcedure
         where: (table, {eq}) => eq(table.workspaceId, workspace.id)
       })
       .finally(() => {
-        ctx.metrics.emit({
-          metric: 'main.db.read',
+        ctx.analytics.metrics.insertDatabase({
+          type: 'read',
           query: 'endpoints.list',
           latency: performance.now() - queryEndpointsStart
         });
@@ -40,8 +40,8 @@ export const getWorkspaceLimits = protectedProcedure
       .from(schema.key)
       .where(eq(schema.key.workspaceId, workspace.id))
       .finally(() => {
-        ctx.metrics.emit({
-          metric: 'main.db.read',
+        ctx.analytics.metrics.insertDatabase({
+          type: 'read',
           query: 'keys.count',
           latency: performance.now() - queryKeysStart
         });
@@ -61,24 +61,29 @@ export const getWorkspaceLimits = protectedProcedure
         with: {user: true}
       })
       .finally(() => {
-        ctx.metrics.emit({
-          metric: 'main.db.read',
+        ctx.analytics.metrics.insertDatabase({
+          type: 'read',
           query: 'usersToWorkspaces.list',
           latency: performance.now() - queryMembersStart
         });
       });
 
     const billingCycle = calculatePlanCycleDates(workspace);
+    const startDate = billingCycle.startDate.getTime();
+    const endDate = billingCycle.endDate.getTime();
 
-    const submissions = await ctx.analytics.queryFormizeeMonthlySubmissions(
-      workspace.id,
-      billingCycle.startDate,
-      billingCycle.endDate
-    );
-
-    const apiDailyRequests = await ctx.analytics.queryFormizeeDailyRequests(
-      workspace.id
-    );
+    const [submissions, apiDailyRequests] = await Promise.all([
+      ctx.analytics.billing.billableSubmissions({
+        workspaceId: workspace.id,
+        startDate,
+        endDate
+      }),
+      ctx.analytics.billing.billableApiRequests({
+        workspaceId: workspace.id,
+        startDate,
+        endDate
+      })
+    ]);
 
     let totalStorage = 0;
     await Promise.all(
@@ -95,11 +100,13 @@ export const getWorkspaceLimits = protectedProcedure
     );
 
     return {
-      submissions,
-      apiDailyRequests,
       members: members.length,
       endpoints: endpoints.length,
       keys: workspaceKeys[0].count,
-      storage: Math.round(totalStorage / (1024 * 1024))
+      storage: Math.round(totalStorage / (1024 * 1024)),
+      submissions: submissions.err ? 0 : (submissions.val[0]?.submissions ?? 0),
+      apiDailyRequests: apiDailyRequests.err
+        ? 0
+        : (apiDailyRequests.val[0]?.requests ?? 0)
     };
   });

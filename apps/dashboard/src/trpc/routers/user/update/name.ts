@@ -17,8 +17,8 @@ export const updateUserName = protectedProcedure
         where: (table, {eq}) => eq(table.id, input.id)
       })
       .finally(() => {
-        ctx.metrics.emit({
-          metric: 'main.db.read',
+        ctx.analytics.metrics.insertDatabase({
+          type: 'read',
           query: 'users.get',
           latency: performance.now() - queryStart
         });
@@ -40,9 +40,9 @@ export const updateUserName = protectedProcedure
       .where(eq(schema.user.id, user.id))
       .returning()
       .finally(() => {
-        ctx.metrics.emit({
-          metric: 'main.db.write',
-          mutation: 'users.put',
+        ctx.analytics.metrics.insertDatabase({
+          type: 'write',
+          query: 'users.put',
           latency: performance.now() - mutationStart
         });
       });

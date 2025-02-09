@@ -58,7 +58,13 @@ async function main() {
     }
 
     case 'api': {
-      await startContainers(['database', 'submissions-database', 'vault']);
+      await startContainers([
+        'analytics',
+        'database',
+        'submissions-database',
+        'vault',
+        'analytics_migrator'
+      ]);
       await prepareDatabase('submissions');
       await prepareDatabase('main');
 
@@ -67,7 +73,12 @@ async function main() {
     }
 
     case 'vault': {
-      await startContainers(['submissions-database', 'storage']);
+      await startContainers([
+        'analytics',
+        'submissions-database',
+        'storage',
+        'analytics_migrator'
+      ]);
       await prepareDatabase('submissions');
 
       await bootstrapVault();
@@ -78,8 +89,10 @@ async function main() {
       await startContainers([
         'database',
         'submissions-database',
+        'analytics',
         'api',
-        'vault'
+        'vault',
+        'analytics_migrator'
       ]);
       await prepareDatabase('submissions');
       await prepareDatabase('main');
@@ -93,7 +106,7 @@ async function main() {
   }
 
   await task('Building ...', async s => {
-    await run(`pnpm turbo run build --filter=./apps/${app}^...`, {
+    await run(`pnpm turbo run build --filter=./apps/${String(app)}^...`, {
       cwd: path.join(__dirname, '../../../')
     });
     s.stop('build complete');
@@ -106,11 +119,14 @@ async function main() {
     initialValue: true
   });
   if (runDev) {
-    execSync(`pnpm --dir=apps/${app} dev`, {cwd: '../..', stdio: 'inherit'});
+    execSync(`pnpm --dir=apps/${String(app)} dev`, {
+      cwd: '../..',
+      stdio: 'inherit'
+    });
   } else {
     clack.note(
-      `pnpm --dir=apps/${app} dev`,
-      `Run the ${app} later with the following command`
+      `pnpm --dir=apps/${String(app)} dev`,
+      `Run the ${String(app)} later with the following command`
     );
   }
 

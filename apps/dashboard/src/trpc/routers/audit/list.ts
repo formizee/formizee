@@ -15,6 +15,9 @@ export const listLogs = protectedProcedure
       throw error;
     }
 
-    const response = await ctx.analytics.queryFormizeeAuditLogs(workspace.id);
-    return response;
+    const response = await ctx.analytics.auditLogs.perWeek({
+      workspaceId: workspace.id
+    });
+
+    return response.err ? [] : response.val;
   });

@@ -24,8 +24,7 @@ export const zEnv = z.object({
   VAULT_SECRET: z.string().default(''),
 
   // Analytics
-  TINYBIRD_URL: z.string().url().optional(),
-  TINYBIRD_TOKEN: z.string().optional(),
+  CLICKHOUSE_URL: z.string().url().optional(),
 
   // Logs
   LOGTAIL_TOKEN: z.string(),

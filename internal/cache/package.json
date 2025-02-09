@@ -15,7 +15,7 @@
     "@types/node": "22.0.0"
   },
   "dependencies": {
-    "@formizee/metrics": "workspace:*",
+    "@formizee/analytics": "workspace:*",
     "@formizee/db": "workspace:*"
   }
 }

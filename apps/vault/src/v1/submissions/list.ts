@@ -43,7 +43,7 @@ export const listRoute = createRoute({
 
 export const registerListSubmissions = (api: typeof submissionsAPI) => {
   return api.openapi(listRoute, async context => {
-    const {metrics, logger, database, storage, cache, keys} =
+    const {analytics, logger, database, storage, cache, keys} =
       context.get('services');
     const {page, limit} = context.get('pagination');
     const input = context.req.valid('param');
@@ -173,8 +173,8 @@ export const registerListSubmissions = (api: typeof submissionsAPI) => {
       );
       const endpointSchema = JSON.parse(endpoint.schema);
 
-      metrics.emit({
-        metric: 'vault.latency',
+      analytics.metrics.insertVault({
+        type: 'latency',
         query: 'submissions.list',
         latency: performance.now() - queryStart
       });

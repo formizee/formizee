@@ -19,8 +19,8 @@ export const addLinkedEmail = protectedProcedure
         where: (table, {eq}) => eq(table.id, ctx.user?.id ?? '')
       })
       .finally(() => {
-        ctx.metrics.emit({
-          metric: 'main.db.read',
+        ctx.analytics.metrics.insertDatabase({
+          type: 'read',
           query: 'users.get',
           latency: performance.now() - queryUserStart
         });
@@ -39,8 +39,8 @@ export const addLinkedEmail = protectedProcedure
         where: (table, {eq}) => eq(table.email, input.email)
       })
       .finally(() => {
-        ctx.metrics.emit({
-          metric: 'main.db.read',
+        ctx.analytics.metrics.insertDatabase({
+          type: 'read',
           query: 'usersToEmails.get',
           latency: performance.now() - queryEmailStart
         });
@@ -69,9 +69,9 @@ export const addLinkedEmail = protectedProcedure
         userId: user.id
       })
       .finally(() => {
-        ctx.metrics.emit({
-          metric: 'main.db.write',
-          mutation: 'usersToEmails.post',
+        ctx.analytics.metrics.insertDatabase({
+          type: 'write',
+          query: 'usersToEmails.post',
           latency: performance.now() - mutationStart
         });
       });

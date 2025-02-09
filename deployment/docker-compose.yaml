@@ -55,7 +55,7 @@ services:
         "src/index.ts",
         "--ip=0.0.0.0",
         "--var=MASTER_KEY_V1:eyJrZXlfb3BzIjpbImVuY3J5cHQiLCJkZWNyeXB0Il0sImV4dCI6dHJ1ZSwia3R5Ijoib2N0IiwiayI6ImdzTVRJc3ZGVzI0WEJqV0dSZk50ZjZFbUxGTXlHNWNlRnlsb2E3MEwyanMiLCJhbGciOiJBMjU2R0NNIn0",
-        "--var=TINYBIRD_URL:https://api.eu-central-1.aws.tinybird.co",
+        "--var=CLICKHOUSE_URL=http://default:password@localhost:8123",
         "--var=STORAGE_SECRET_ACCESS_KEY:minio_root_password",
         "--var=STORAGE_ACCESS_KEY_ID:minio_root_user",
         "--var=STORAGE_ENDPOINT:http://storage:3902",
@@ -68,6 +68,7 @@ services:
       ]
     depends_on:
       - submissions-database
+      - analytics
       - storage
 
   api:
@@ -84,7 +85,7 @@ services:
         "dev",
         "src/index.ts",
         "--ip=0.0.0.0",
-        "--var=TINYBIRD_URL:https://api.eu-central-1.aws.tinybird.co",
+        "--var=CLICKHOUSE_URL=http://default:password@localhost:8123",
         "--var=DASHBOARD_URL:http://localhost:3001",
         "--var=DATABASE_URL:http://database:8080",
         "--var=DOCS_URL:http://localhost:3002",
@@ -97,8 +98,31 @@ services:
         "--var=EMIT_LOGS:false",
       ]
     depends_on:
+      - analytics
       - database
+      - vault
+
+  analytics:
+    image: bitnami/clickhouse:latest
+    container_name: analytics
+    environment:
+      CLICKHOUSE_ADMIN_USER: default
+      CLICKHOUSE_ADMIN_PASSWORD: password
+    ports:
+      - '8123:8123'
+      - '9000:9000'
+    volumes:
+      - analytics:/bitnami/clickhouse
+
+  analytics_migrator:
+    container_name: analytics_migrator
+    build:
+      context: ../internal/analytics
+      dockerfile: ./Dockerfile
+    depends_on:
+      - analytics
 
 volumes:
+  analytics:
   database:
   storage:

@@ -35,7 +35,7 @@ export const putRoute = createRoute({
 
 export const registerPutEndpoint = (api: typeof endpointsAPI) => {
   return api.openapi(putRoute, async context => {
-    const {analytics, database, metrics} = context.get('services');
+    const {analytics, database} = context.get('services');
     const workspace = context.get('workspace');
     const {id} = context.req.valid('param');
     const input = context.req.valid('json');
@@ -48,8 +48,8 @@ export const registerPutEndpoint = (api: typeof endpointsAPI) => {
           and(eq(table.workspaceId, workspace.id), eq(table.id, id))
       })
       .finally(() => {
-        metrics.emit({
-          metric: 'main.db.read',
+        analytics.metrics.insertDatabase({
+          type: 'read',
           query: 'endpoints.get',
           latency: performance.now() - queryStart
         });
@@ -68,8 +68,8 @@ export const registerPutEndpoint = (api: typeof endpointsAPI) => {
           where: eq(schema.endpoint.slug, input.slug)
         })
         .finally(() => {
-          metrics.emit({
-            metric: 'main.db.read',
+          analytics.metrics.insertDatabase({
+            type: 'read',
             query: 'endpoints.get',
             latency: performance.now() - querySlugStart
           });
@@ -107,14 +107,15 @@ export const registerPutEndpoint = (api: typeof endpointsAPI) => {
       .where(eq(schema.endpoint.id, id))
       .returning()
       .finally(() => {
-        metrics.emit({
-          metric: 'main.db.write',
-          mutation: 'endpoints.put',
+        analytics.metrics.insertDatabase({
+          type: 'write',
+          query: 'endpoints.put',
           latency: performance.now() - mutationStart
         });
       });
 
-    await analytics.ingestFormizeeAuditLogs({
+    await analytics.auditLogs.insert({
+      time: Date.now(),
       event: 'endpoint.update',
       workspaceId: workspace.id,
       actor: {

@@ -27,11 +27,15 @@ export const checkSubmissionPlanLimits = async (
 
   // Get submissions
 
-  const submissionsCount = await analytics.queryFormizeeMonthlySubmissions(
-    workspace.id,
-    billingCycle.startDate,
-    billingCycle.endDate
-  );
+  const response = await analytics.billing.billableSubmissions({
+    startDate: Math.floor(billingCycle.startDate.getTime() / 1000),
+    endDate: Math.floor(billingCycle.endDate.getTime() / 1000),
+    workspaceId: workspace.id
+  });
+
+  const submissionsCount = response.err
+    ? 0
+    : (response.val[0]?.submissions ?? 0);
 
   // Get storage
 

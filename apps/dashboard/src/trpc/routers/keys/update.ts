@@ -18,8 +18,8 @@ export const updateKey = protectedProcedure
         where: (table, {eq}) => eq(table.id, input.id)
       })
       .finally(() => {
-        ctx.metrics.emit({
-          metric: 'main.db.read',
+        ctx.analytics.metrics.insertDatabase({
+          type: 'read',
           query: 'keys.get',
           latency: performance.now() - queryStart
         });
@@ -46,15 +46,16 @@ export const updateKey = protectedProcedure
         .where(eq(schema.endpoint.id, key.id))
         .returning()
         .finally(() => {
-          ctx.metrics.emit({
-            metric: 'main.db.write',
-            mutation: 'keys.put',
+          ctx.analytics.metrics.insertDatabase({
+            type: 'write',
+            query: 'keys.put',
             latency: performance.now() - mutationStart
           });
         });
 
       // Ingest audit logs
-      await ctx.analytics.ingestFormizeeAuditLogs({
+      await ctx.analytics.auditLogs.insert({
+        time: Date.now(),
         event: 'key.update',
         workspaceId: workspace.id,
         actor: {

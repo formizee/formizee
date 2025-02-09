@@ -31,7 +31,7 @@ export const metricsRoute = createRoute({
 
 export const registerMetricsEndpoint = (api: typeof endpointsAPI) => {
   return api.openapi(metricsRoute, async context => {
-    const {metrics, database, cache} = context.get('services');
+    const {analytics, database, cache} = context.get('services');
     const input = context.req.valid('param');
     const mutationStart = performance.now();
 
@@ -66,8 +66,8 @@ export const registerMetricsEndpoint = (api: typeof endpointsAPI) => {
 
     const totalSubmissions = submissions[0]?.count ?? 0;
 
-    metrics.emit({
-      metric: 'vault.latency',
+    analytics.metrics.insertVault({
+      type: 'latency',
       query: 'endpoints.metrics',
       latency: performance.now() - mutationStart
     });

@@ -28,8 +28,8 @@ export const getEndpointBySlug = protectedProcedure
           )
       })
       .finally(() => {
-        ctx.metrics.emit({
-          metric: 'main.db.read',
+        ctx.analytics.metrics.insertDatabase({
+          type: 'read',
           query: 'endpoints.get',
           latency: performance.now() - queryStart
         });

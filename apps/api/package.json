@@ -21,7 +21,6 @@
     "@formizee/id": "workspace:*",
     "@formizee/keys": "workspace:*",
     "@formizee/logger": "workspace:*",
-    "@formizee/metrics": "workspace:*",
     "@formizee/plans": "workspace:*",
     "@formizee/tsconfig": "workspace:*",
     "@formizee/vault": "workspace:*",

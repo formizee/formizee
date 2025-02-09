@@ -7,22 +7,23 @@ import {env} from '@/lib/environment';
 
 export const getStadistics = cache(
   async () => {
-    const analytics = new Analytics({
-      tinybirdUrl: env().TINYBIRD_URL,
-      tinybirdToken: env().TINYBIRD_TOKEN
-    });
+    const analytics = new Analytics({url: env().CLICKHOUSE_URL});
 
-    const [events, endpoints, workspaces] = await Promise.all([
-      await analytics.queryFormizeeStadistics(),
+    const [{err, val: events}, endpoints, workspaces] = await Promise.all([
+      await analytics.stadistics.get({}),
       await database.select({count: count()}).from(schema.endpoint),
       await database.select({count: count()}).from(schema.workspace)
     ]);
 
+    if (err) {
+      throw new Error('Clickhouse: Stadistics are not available.');
+    }
+
     return {
-      submissions: events.submissions,
+      submissions: events[0]?.submissions ?? 0,
       workspaces: workspaces[0]?.count ?? 0,
       endpoints: endpoints[0]?.count ?? 0,
-      requests: events.requests
+      requests: events[0]?.requests ?? 0
     };
   },
   ['stadistics'],

@@ -29,8 +29,8 @@ export const createKey = protectedProcedure
       .from(schema.key)
       .where(eq(schema.key.workspaceId, workspace.id))
       .finally(() => {
-        ctx.metrics.emit({
-          metric: 'main.db.read',
+        ctx.analytics.metrics.insertDatabase({
+          type: 'read',
           query: 'keys.count',
           latency: performance.now() - queryStart
         });
@@ -69,15 +69,16 @@ export const createKey = protectedProcedure
       .insert(schema.key)
       .values(data)
       .finally(() => {
-        ctx.metrics.emit({
-          metric: 'main.db.write',
-          mutation: 'keys.post',
+        ctx.analytics.metrics.insertDatabase({
+          type: 'write',
+          query: 'keys.post',
           latency: performance.now() - mutationStart
         });
       });
 
     // Ingest audit logs
-    await ctx.analytics.ingestFormizeeAuditLogs({
+    await ctx.analytics.auditLogs.insert({
+      time: Date.now(),
       event: 'key.create',
       workspaceId: workspace.id,
       actor: {

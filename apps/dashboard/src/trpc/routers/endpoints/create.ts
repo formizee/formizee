@@ -29,8 +29,8 @@ export const createEndpoint = protectedProcedure
       .from(schema.endpoint)
       .where(eq(schema.endpoint.workspaceId, workspace.id))
       .finally(() => {
-        ctx.metrics.emit({
-          metric: 'main.db.read',
+        ctx.analytics.metrics.insertDatabase({
+          type: 'read',
           query: 'endpoints.count',
           latency: performance.now() - countQueryStart
         });
@@ -61,8 +61,8 @@ export const createEndpoint = protectedProcedure
           and(eq(table.workspaceId, workspace.id), eq(table.slug, input.slug))
       })
       .finally(() => {
-        ctx.metrics.emit({
-          metric: 'main.db.read',
+        ctx.analytics.metrics.insertDatabase({
+          type: 'read',
           query: 'endpoints.get',
           latency: performance.now() - endpointQueryStart
         });
@@ -111,15 +111,16 @@ export const createEndpoint = protectedProcedure
       .insert(schema.endpoint)
       .values(data)
       .finally(() => {
-        ctx.metrics.emit({
-          metric: 'main.db.write',
-          mutation: 'endpoints.post',
+        ctx.analytics.metrics.insertDatabase({
+          type: 'write',
+          query: 'endpoints.post',
           latency: performance.now() - mutationStart
         });
       });
 
     // Ingest audit logs
-    await ctx.analytics.ingestFormizeeAuditLogs({
+    await ctx.analytics.auditLogs.insert({
+      time: Date.now(),
       event: 'endpoint.create',
       workspaceId: workspace.id,
       actor: {

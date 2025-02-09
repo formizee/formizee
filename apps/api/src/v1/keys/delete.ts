@@ -28,7 +28,7 @@ export const deleteRoute = createRoute({
 
 export const registerDeleteKey = (api: typeof keysAPI) => {
   return api.openapi(deleteRoute, async context => {
-    const {database, metrics, analytics} = context.get('services');
+    const {database, analytics} = context.get('services');
     const workspace = context.get('workspace');
     const {id} = context.req.valid('param');
     const rootKey = context.get('key');
@@ -42,9 +42,9 @@ export const registerDeleteKey = (api: typeof keysAPI) => {
         )
       })
       .finally(() => {
-        metrics.emit({
+        analytics.metrics.insertDatabase({
+          type: 'read',
           query: 'keys.get',
-          metric: 'main.db.read',
           latency: performance.now() - queryStart
         });
       });
@@ -60,14 +60,15 @@ export const registerDeleteKey = (api: typeof keysAPI) => {
       .delete(schema.key)
       .where(eq(schema.key.id, id))
       .finally(() => {
-        metrics.emit({
-          mutation: 'keys.delete',
-          metric: 'main.db.write',
+        analytics.metrics.insertDatabase({
+          type: 'write',
+          query: 'keys.delete',
           latency: performance.now() - mutationStart
         });
       });
 
-    await analytics.ingestFormizeeAuditLogs({
+    await analytics.auditLogs.insert({
+      time: Date.now(),
       event: 'key.delete',
       workspaceId: workspace.id,
       actor: {

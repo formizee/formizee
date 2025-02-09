@@ -1,5 +1,5 @@
+import type {Analytics} from '@formizee/analytics';
 import {database, type schema} from '@/lib/db';
-import type {Metrics} from '@formizee/metrics';
 import {TRPCError} from '@trpc/server';
 import type {User} from 'next-auth';
 
@@ -14,8 +14,8 @@ type InputLike =
     };
 
 interface ContextLike {
+  analytics: Analytics;
   user: User;
-  metrics: Metrics;
 }
 
 export const authorize = async (
@@ -35,8 +35,8 @@ export const authorize = async (
       where: (table, {eq}) => eq(table[type], inputValue)
     })
     .finally(() => {
-      ctx.metrics.emit({
-        metric: 'main.db.read',
+      ctx.analytics.metrics.insertDatabase({
+        type: 'read',
         query: 'workspaces.get',
         latency: performance.now() - workspaceQueryStart
       });
@@ -62,8 +62,8 @@ export const authorize = async (
         )
     })
     .finally(() => {
-      ctx.metrics.emit({
-        metric: 'main.db.read',
+      ctx.analytics.metrics.insertDatabase({
+        type: 'read',
         query: 'usersToWorkspaces.get',
         latency: performance.now() - authorizedQueryStart
       });

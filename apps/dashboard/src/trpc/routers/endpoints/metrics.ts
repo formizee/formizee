@@ -21,8 +21,8 @@ export const getEndpointMetrics = protectedProcedure
         where: (table, {eq}) => eq(table.id, input.id)
       })
       .finally(() => {
-        ctx.metrics.emit({
-          metric: 'main.db.read',
+        ctx.analytics.metrics.insertDatabase({
+          type: 'read',
           query: 'endpoints.get',
           latency: performance.now() - queryStart
         });
@@ -42,16 +42,22 @@ export const getEndpointMetrics = protectedProcedure
     }
 
     const [totalSubmissions, monthResponse, dayResponse] = await Promise.all([
-      await ctx.analytics.queryFormizeeMetricsTotalSubmissions(endpoint.id),
-      await ctx.analytics.queryFormizeeMetricsSubmissions(endpoint.id, '30d'),
-      await ctx.analytics.queryFormizeeMetricsSubmissions(endpoint.id, '24h')
+      await ctx.analytics.submissions.perEndpoint({endpointId: endpoint.id}),
+      await ctx.analytics.submissions.perMonth({endpointId: endpoint.id}),
+      await ctx.analytics.submissions.perDay({endpointId: endpoint.id})
     ]);
 
-    const monthMetrics = generateLast30DaysData(monthResponse);
-    const dayMetrics = generateLast24HoursData(dayResponse);
+    const monthMetrics = generateLast30DaysData(
+      monthResponse.err ? [] : monthResponse.val
+    );
+    const dayMetrics = generateLast24HoursData(
+      dayResponse.err ? [] : dayResponse.val
+    );
 
     const response = {
-      totalSubmissions,
+      totalSubmissions: totalSubmissions.err
+        ? 0
+        : (totalSubmissions.val[0]?.submissions ?? 0),
       '30d': monthMetrics,
       '24h': dayMetrics
     };

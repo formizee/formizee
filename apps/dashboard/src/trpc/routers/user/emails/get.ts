@@ -16,8 +16,8 @@ export const getUserEmails = protectedProcedure
         where: (table, {eq}) => eq(table.id, input.id)
       })
       .finally(() => {
-        ctx.metrics.emit({
-          metric: 'main.db.read',
+        ctx.analytics.metrics.insertDatabase({
+          type: 'read',
           query: 'users.get',
           latency: performance.now() - queryUserStart
         });
@@ -36,8 +36,8 @@ export const getUserEmails = protectedProcedure
         where: (table, {eq}) => eq(table.userId, user.id)
       })
       .finally(() => {
-        ctx.metrics.emit({
-          metric: 'main.db.read',
+        ctx.analytics.metrics.insertDatabase({
+          type: 'read',
           query: 'usersToEmails.get',
           latency: performance.now() - queryEmailsStart
         });

@@ -25,8 +25,8 @@ export const listEndpoints = protectedProcedure
         orderBy: (endpoints, {asc}) => [asc(endpoints.createdAt)]
       })
       .finally(() => {
-        ctx.metrics.emit({
-          metric: 'main.db.read',
+        ctx.analytics.metrics.insertDatabase({
+          type: 'read',
           query: 'endpoints.list',
           latency: performance.now() - queryStart
         });

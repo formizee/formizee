@@ -36,7 +36,7 @@ export const listRoute = createRoute({
 
 export const registerListKeys = (api: typeof keysApi) => {
   return api.openapi(listRoute, async context => {
-    const {database, metrics} = context.get('services');
+    const {database, analytics} = context.get('services');
     const {page, limit} = context.get('pagination');
     const workspace = context.get('workspace');
 
@@ -48,8 +48,8 @@ export const registerListKeys = (api: typeof keysApi) => {
         limit
       })
       .finally(() => {
-        metrics.emit({
-          metric: 'main.db.read',
+        analytics.metrics.insertDatabase({
+          type: 'read',
           query: 'keys.list',
           latency: performance.now() - queryStart
         });
@@ -68,8 +68,8 @@ export const registerListKeys = (api: typeof keysApi) => {
         .from(schema.key)
         .where(eq(schema.key.workspaceId, workspace.id))
         .finally(() => {
-          metrics.emit({
-            metric: 'main.db.read',
+          analytics.metrics.insertDatabase({
+            type: 'read',
             query: 'keys.list',
             latency: performance.now() - queryStart
           });

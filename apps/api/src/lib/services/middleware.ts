@@ -6,16 +6,40 @@ import {EmailClient} from '@formizee/email/client';
 import {ConsoleLogger} from '@formizee/logger';
 import {Analytics} from '@formizee/analytics';
 import {createConnection} from '@formizee/db';
-import {Metrics} from '@formizee/metrics';
 import {KeyService} from '@formizee/keys';
 import {Vault} from '@formizee/vault';
+
+/**
+ * workerId and coldStartAt are used to track the lifetime of the worker
+ * and are set once when the worker is first initialized.
+ *
+ * subsequent requests will use the same workerId and coldStartAt
+ */
+let isolateId: string | undefined = undefined;
+let isolateCreatedAt: number | undefined = undefined;
+/**
+ * Initialize all services.
+ *
+ * Call this once before any hono handlers run
+ **/
 
 export function services(): MiddlewareHandler<HonoEnv> {
   return async (c, next) => {
     // Metrics
+    if (!isolateId) {
+      isolateId = crypto.randomUUID();
+    }
+    if (!isolateCreatedAt) {
+      isolateCreatedAt = Date.now();
+    }
+    c.set('isolateId', isolateId);
+    c.set('isolateCreatedAt', isolateCreatedAt);
+
     const requestId = newId('request');
     c.set('requestId', requestId);
+
     c.set('userAgent', c.req.header('User-Agent') ?? '');
+    c.set('requestStartedAt', Date.now());
     c.res.headers.set('formizee-request-id', requestId);
     c.set(
       'location',
@@ -36,17 +60,7 @@ export function services(): MiddlewareHandler<HonoEnv> {
       defaultFields: {environment: c.env.ENVIROMENT}
     });
 
-    const analytics = new Analytics({
-      tinybirdToken:
-        c.env.ENVIROMENT === 'production' ? c.env.TINYBIRD_TOKEN : undefined,
-      tinybirdUrl: c.env.TINYBIRD_URL
-    });
-
-    const metrics = new Metrics({
-      tinybirdToken:
-        c.env.ENVIROMENT === 'production' ? c.env.TINYBIRD_TOKEN : undefined,
-      tinybirdUrl: c.env.TINYBIRD_URL
-    });
+    const analytics = new Analytics({url: c.env.CLICKHOUSE_URL});
 
     const database = createConnection({
       databaseUrl: c.env.DATABASE_URL,
@@ -70,14 +84,13 @@ export function services(): MiddlewareHandler<HonoEnv> {
 
     const apiKeys = new KeyService({
       database,
-      cache: c.env.cache,
-      metrics
+      analytics,
+      cache: c.env.cache
     });
 
     c.set('services', {
       analytics,
       database,
-      metrics,
       apiKeys,
       logger,
       vault,

@@ -27,7 +27,7 @@ export const getRoute = createRoute({
 
 export const registerGetEndpoint = (api: typeof endpointsAPI) => {
   return api.openapi(getRoute, async context => {
-    const {database, metrics} = context.get('services');
+    const {analytics, database} = context.get('services');
     const workspace = context.get('workspace');
     const {id} = context.req.valid('param');
 
@@ -38,8 +38,8 @@ export const registerGetEndpoint = (api: typeof endpointsAPI) => {
           and(eq(table.workspaceId, workspace.id), eq(table.id, id))
       })
       .finally(() => {
-        metrics.emit({
-          metric: 'main.db.read',
+        analytics.metrics.insertDatabase({
+          type: 'read',
           query: 'endpoints.get',
           latency: performance.now() - queryStart
         });

@@ -22,8 +22,8 @@ export const listKeys = protectedProcedure
         where: (table, {eq}) => eq(table.workspaceId, workspace.id)
       })
       .finally(() => {
-        ctx.metrics.emit({
-          metric: 'main.db.read',
+        ctx.analytics.metrics.insertDatabase({
+          type: 'read',
           query: 'keys.list',
           latency: performance.now() - queryStart
         });

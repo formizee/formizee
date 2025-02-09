@@ -18,8 +18,8 @@ export const deleteSubmission = protectedProcedure
         where: (table, {eq}) => eq(table.id, input.endpointId)
       })
       .finally(() => {
-        ctx.metrics.emit({
-          metric: 'main.db.read',
+        ctx.analytics.metrics.insertDatabase({
+          type: 'read',
           query: 'endpoints.get',
           latency: performance.now() - queryStart
         });

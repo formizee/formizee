@@ -15,8 +15,7 @@ export const env = () =>
       DATABASE_AUTH_TOKEN: z.string().default(''),
 
       // Analytics
-      TINYBIRD_URL: z.string().url().optional(),
-      TINYBIRD_TOKEN: z.string().optional(),
+      CLICKHOUSE_URL: z.string().url().optional(),
 
       // Others
       PRODUCTHUNT_TOKEN: z.string().default('')

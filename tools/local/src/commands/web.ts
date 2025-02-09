@@ -19,6 +19,13 @@ export function bootstrapWeb() {
       DOCS_URL: 'http://localhost:3002',
       WEB_URL: 'http://localhost:3000',
       API_URL: 'http://localhost:8787'
+    },
+    Database: {
+      DATABASE_URL: 'http://localhost:8080',
+      DATABASE_AUTH_TOKEN: 'not required for dev'
+    },
+    Analytics: {
+      CLICKHOUSE_URL: 'http://default:password@localhost:8123'
     }
   });
 

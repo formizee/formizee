@@ -22,8 +22,7 @@ export const zEnv = z.object({
   STORAGE_BUCKET: z.string().default('storage'),
 
   // Analytics
-  TINYBIRD_URL: z.string().url().optional(),
-  TINYBIRD_TOKEN: z.string().optional(),
+  CLICKHOUSE_URL: z.string().url().optional(),
 
   // Logs
   LOGTAIL_TOKEN: z.string(),

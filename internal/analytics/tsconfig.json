@@ -1,12 +1,5 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "extends": "@formizee/tsconfig/base.json",
-  "exclude": ["dist", "node_modules"],
-  "compilerOptions": {
-    "module": "CommonJS",
-    "moduleResolution": "Node",
-    "target": "ES2022",
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true
-  }
+  "extends": "@formizee/tsconfig/api.json",
+  "exclude": ["dist", "node_modules"]
 }

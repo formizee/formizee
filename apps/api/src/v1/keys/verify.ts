@@ -35,15 +35,15 @@ export const verifyRoute = createRoute({
 
 export const registerVerifyKey = (api: typeof keysApi) => {
   return api.openapi(verifyRoute, async context => {
-    const {analytics, metrics, apiKeys} = context.get('services');
+    const {analytics, apiKeys} = context.get('services');
     const workspaceId = context.get('workspace').id;
     const {key} = context.req.valid('json');
     const rootKey = context.get('key');
 
     const dbStart = performance.now();
     const {val, err} = await apiKeys.verifyKey(key).finally(() => {
-      metrics.emit({
-        metric: 'main.db.read',
+      analytics.metrics.insertDatabase({
+        type: 'read',
         query: 'keys.verify',
         latency: performance.now() - dbStart
       });
@@ -55,7 +55,8 @@ export const registerVerifyKey = (api: typeof keysApi) => {
       });
     }
 
-    await analytics.ingestFormizeeAuditLogs({
+    await analytics.auditLogs.insert({
+      time: Date.now(),
       event: 'key.verify',
       workspaceId,
       actor: {

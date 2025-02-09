@@ -17,8 +17,8 @@ export const deleteEndpoint = protectedProcedure
         where: (table, {eq}) => eq(table.id, input.id)
       })
       .finally(() => {
-        ctx.metrics.emit({
-          metric: 'main.db.read',
+        ctx.analytics.metrics.insertDatabase({
+          type: 'read',
           query: 'endpoints.get',
           latency: performance.now() - queryStart
         });
@@ -43,9 +43,9 @@ export const deleteEndpoint = protectedProcedure
       .where(eq(schema.endpoint.id, endpoint.id))
       .returning()
       .finally(() => {
-        ctx.metrics.emit({
-          metric: 'main.db.write',
-          mutation: 'endpoints.delete',
+        ctx.analytics.metrics.insertDatabase({
+          type: 'write',
+          query: 'endpoints.delete',
           latency: performance.now() - mutationStart
         });
       });
@@ -58,7 +58,8 @@ export const deleteEndpoint = protectedProcedure
       });
     }
 
-    await ctx.analytics.ingestFormizeeAuditLogs({
+    await ctx.analytics.auditLogs.insert({
+      time: Date.now(),
       event: 'endpoint.delete',
       workspaceId: workspace.id,
       actor: {
