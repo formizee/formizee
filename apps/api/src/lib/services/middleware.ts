@@ -60,9 +60,7 @@ export function services(): MiddlewareHandler<HonoEnv> {
       defaultFields: {environment: c.env.ENVIROMENT}
     });
 
-    const analytics = new Analytics({
-      url: c.env.ENVIROMENT === 'production' ? c.env.CLICKHOUSE_URL : undefined
-    });
+    const analytics = new Analytics({url: c.env.CLICKHOUSE_URL});
 
     const database = createConnection({
       databaseUrl: c.env.DATABASE_URL,
