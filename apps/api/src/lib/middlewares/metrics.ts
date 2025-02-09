@@ -1,7 +1,4 @@
-import type {StatusCode} from 'hono/utils/http-status';
 import type {Context, MiddlewareHandler} from 'hono';
-import {HTTPException} from 'hono/http-exception';
-import {codeToStatus} from '@formizee/error';
 import type {HonoEnv} from '@/lib/hono';
 
 export function metrics(): MiddlewareHandler<HonoEnv> {
@@ -136,18 +133,14 @@ async function getWorkspaceId(c: Context<HonoEnv>) {
   const authorization = c.req.header('authorization')?.replace('Bearer ', '');
 
   if (!authorization) {
-    throw new HTTPException(401, {
-      message: 'API key required'
-    });
+    return '';
   }
 
   const {val, err} = await apiKeys.verifyKey(authorization);
 
   if (err || !val) {
-    throw new HTTPException(codeToStatus(err.code) as StatusCode, {
-      message: err.message
-    });
+    return '';
   }
 
-  return val.id ?? '';
+  return val.workspace.id ?? '';
 }
