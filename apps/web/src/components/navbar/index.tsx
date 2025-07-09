@@ -26,10 +26,12 @@ const items = [
     name: 'Pricing',
     href: '/pricing'
   },
+  /*
   {
     name: 'Blog',
     href: '/blog'
   },
+  */
   {
     name: 'Docs',
     href: 'https://docs.formizee.com'
