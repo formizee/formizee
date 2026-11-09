@@ -97,13 +97,17 @@ export const createEndpoint = protectedProcedure
       redirectUrl: 'https://formizee.com/f/thanks-you',
       targetEmails: [user.email],
 
-      icon: schema.endpointIcon[
-        Math.floor(Math.random() * schema.endpointIcon.length)
-      ],
+      isEnabled: true,
+      emailNotifications: true,
+
+      icon:
+        schema.endpointIcon[
+          Math.floor(Math.random() * schema.endpointIcon.length)
+        ] ?? 'file',
       color:
         schema.endpointColor[
           Math.floor(Math.random() * schema.endpointColor.length)
-        ]
+        ] ?? 'gray'
     };
 
     const mutationStart = performance.now();

@@ -1,4 +1,4 @@
-import type {StatusCode, VaultOptions} from '../types';
+import type {ContentfulStatusCode, VaultOptions} from '../types';
 import {FetchWrapper} from '../fetcher';
 
 import type {
@@ -45,7 +45,7 @@ export class Submissions {
         return Promise.resolve({
           data: null,
           error: {
-            status: response.status as StatusCode,
+            status: response.status as ContentfulStatusCode,
             message: body.message ?? 'Unexpected Error'
           }
         });
@@ -84,7 +84,7 @@ export class Submissions {
         return Promise.resolve({
           data: null,
           error: {
-            status: response.status as StatusCode,
+            status: response.status as ContentfulStatusCode,
             message: body.message
           }
         });
@@ -120,7 +120,7 @@ export class Submissions {
         return Promise.resolve({
           data: null,
           error: {
-            status: response.status as StatusCode,
+            status: response.status as ContentfulStatusCode,
             message: body.message
           }
         });
@@ -156,7 +156,7 @@ export class Submissions {
         return Promise.resolve({
           data: null,
           error: {
-            status: response.status as StatusCode,
+            status: response.status as ContentfulStatusCode,
             message: body.message
           }
         });
@@ -188,7 +188,7 @@ export class Submissions {
         return Promise.resolve({
           data: null,
           error: {
-            status: response.status as StatusCode,
+            status: response.status as ContentfulStatusCode,
             message: body.message
           }
         });

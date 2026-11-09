@@ -1,8 +1,8 @@
 import sharedConfig from '@formizee/tailwind';
-import type {Config} from 'tailwindcss';
+import type {TailwindConfig} from '@react-email/tailwind';
 
-const config: Pick<Config, 'presets'> = {
-  presets: [sharedConfig]
+const config: TailwindConfig = {
+  presets: [sharedConfig as unknown as TailwindConfig]
 };
 
 export default config;

@@ -32,7 +32,7 @@ describe('SchemaError', () => {
       {
         code: 'invalid_type',
         expected: 'string',
-        received: 'number',
+        input: 123,
         path: ['field1'],
         message: 'Expected string, received number'
       }
