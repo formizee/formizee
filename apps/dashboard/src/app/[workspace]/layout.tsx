@@ -14,9 +14,7 @@ export default async function DashboardLayout(
 ) {
   const params = await props.params;
 
-  const {
-    children
-  } = props;
+  const {children} = props;
 
   const cookiesState = (await cookies()).get('sidebar:state')?.value;
   const defaultOpen =

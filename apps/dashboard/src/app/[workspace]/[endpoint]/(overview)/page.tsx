@@ -1,5 +1,5 @@
 'use client';
-import { use } from "react";
+import {use} from 'react';
 
 import {Chart, OnboardingCard} from './_components';
 import {Transition} from '@/components';

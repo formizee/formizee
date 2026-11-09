@@ -1,6 +1,6 @@
 import {createTRPCProxyClient, loggerLink} from '@trpc/client';
 import type {AppRouter} from './routers';
-import { headers } from 'next/headers';
+import {headers} from 'next/headers';
 import {endingLink} from './shared';
 import superjson from 'superjson';
 

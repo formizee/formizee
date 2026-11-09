@@ -1,5 +1,5 @@
 'use client';
-import { use } from "react";
+import {use} from 'react';
 
 import {Button, Input, Label, Separator, toast} from '@formizee/ui';
 import {DeleteEndpointDialog} from './_components/dialogs';
