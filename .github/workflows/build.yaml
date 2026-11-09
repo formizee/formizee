@@ -46,6 +46,7 @@ jobs:
     env:
       TURBO_TEAM: ${{ secrets.VERCEL_ORG_ID }}
       TURBO_TOKEN: ${{ secrets.VERCEL_API_TOKEN }}
+      NEXT_TELEMETRY_DISABLED: 1
     steps:
       - uses: actions/checkout@v4
 
@@ -53,4 +54,4 @@ jobs:
         uses: ./.github/actions/install
 
       - name: Build
-        run: pnpm turbo run build --filter api --filter vault
+        run: pnpm turbo run build --filter api --filter vault --filter web --filter dashboard
