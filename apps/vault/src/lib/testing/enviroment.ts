@@ -10,8 +10,10 @@ export const testingEnviroment = z.object({
   VERSION: z.string().default('1.0.0'),
 
   //Cloudflare Bindings
-  cache: z.custom<KVNamespace>(),
-  keys: z.custom<KVNamespace>(),
+  // These are provided by the Cloudflare runtime in production, but are not
+  // available when the test harness parses process.env, so they are optional.
+  cache: z.custom<KVNamespace>().optional(),
+  keys: z.custom<KVNamespace>().optional(),
 
   // Databases
   DATABASE_URL: z.string().url().default('http://localhost:8081'),

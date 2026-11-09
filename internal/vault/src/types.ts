@@ -1,6 +1,6 @@
 import type {Fetcher} from '@cloudflare/workers-types';
-import type {StatusCode} from './http-status';
-export type {StatusCode};
+import type {StatusCode, ContentfulStatusCode} from './http-status';
+export type {StatusCode, ContentfulStatusCode};
 
 export interface VaultOptions {
   url: string;
@@ -9,7 +9,7 @@ export interface VaultOptions {
 }
 
 export interface ErrorResponse {
-  status: StatusCode;
+  status: ContentfulStatusCode;
   message: string;
 }
 

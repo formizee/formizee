@@ -47,7 +47,8 @@ export async function fetchRoute<
     waitUntil: (promise: Promise<any>) => {
       promise.catch(() => {});
     },
-    passThroughOnException: () => {}
+    passThroughOnException: () => {},
+    props: {}
   };
 
   const res = await app.request(

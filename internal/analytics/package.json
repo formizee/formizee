@@ -14,8 +14,8 @@
     "@types/node": "22.0.0"
   },
   "dependencies": {
-    "@chronark/zod-bird": "0.3.9",
+    "@chronark/zod-bird": "1.0.0",
     "@formizee/id": "workspace:*",
-    "zod": "3.23.8"
+    "zod": "4.6.7"
   }
 }

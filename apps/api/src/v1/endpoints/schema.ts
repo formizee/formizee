@@ -110,13 +110,13 @@ export const PostEndpointSchema = z.object({
       example: 'My Endpoint'
     })
     .optional(),
-  isEnabled: z.boolean().default(true).optional().openapi({
+  isEnabled: z.boolean().optional().openapi({
     description:
       "The state of the endpoint. If is false, the endpoint don't receive more submissions",
     example: true,
     default: true
   }),
-  emailNotifications: z.boolean().default(true).optional().openapi({
+  emailNotifications: z.boolean().optional().openapi({
     description:
       'The state of the email notifications. If is true, the endpoint will send a notification for each submission created',
     example: false,
@@ -127,7 +127,6 @@ export const PostEndpointSchema = z.object({
     .url({
       message: 'Invalid redirect url, please check that is correctly typed.'
     })
-    .default('https://formizee.com/f/thanks-you')
     .optional()
     .openapi({
       description:
@@ -144,12 +143,12 @@ export const PostEndpointSchema = z.object({
     .openapi({
       example: ['example1@formizee.com', 'example2@formizee.com']
     }),
-  icon: z.enum(schema.endpointIcon).default('file').optional().openapi({
+  icon: z.enum(schema.endpointIcon).optional().openapi({
     description: 'The icon of the endpoint',
     default: 'file',
     example: 'bolt'
   }),
-  color: z.enum(schema.endpointColor).default('gray').optional().openapi({
+  color: z.enum(schema.endpointColor).optional().openapi({
     description: 'The color the endpoint icon',
     default: 'gray',
     example: 'pink'
@@ -158,6 +157,6 @@ export const PostEndpointSchema = z.object({
 
 export const PutEndpointSchema = PostEndpointSchema.partial();
 
-export type RequestPostEndpoint = z.infer<typeof PostEndpointSchema>;
-export type RequestPutEndpoint = z.infer<typeof PutEndpointSchema>;
+export type RequestPostEndpoint = z.input<typeof PostEndpointSchema>;
+export type RequestPutEndpoint = z.input<typeof PutEndpointSchema>;
 export type ResponseEndpoint = z.infer<typeof EndpointSchema>;

@@ -4,7 +4,7 @@ import type {
   MetricsRequest,
   MetricsResponse
 } from './types';
-import type {StatusCode, VaultOptions} from '../types';
+import type {ContentfulStatusCode, VaultOptions} from '../types';
 import {FetchWrapper} from '../fetcher';
 
 export class Endpoints {
@@ -34,7 +34,7 @@ export class Endpoints {
         return Promise.resolve({
           data: null,
           error: {
-            status: response.status as StatusCode,
+            status: response.status as ContentfulStatusCode,
             message: body.message
           }
         });
@@ -66,7 +66,7 @@ export class Endpoints {
         return Promise.resolve({
           data: null,
           error: {
-            status: response.status as StatusCode,
+            status: response.status as ContentfulStatusCode,
             message: body.message
           }
         });

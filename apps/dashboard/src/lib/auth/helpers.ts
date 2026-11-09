@@ -93,10 +93,13 @@ export async function createUser(
     targetEmails: [newUser.email],
     workspaceId,
     redirectUrl: 'https://formizee.com/f/thanks-you',
+    icon: 'file',
+    isEnabled: true,
+    emailNotifications: true,
     color:
       schema.endpointColor[
         Math.floor(Math.random() * schema.endpointColor.length)
-      ]
+      ] ?? 'gray'
   };
 
   await database.insert(schema.endpoint).values(newEndpoint);

@@ -1,7 +1,6 @@
 FROM node:lts AS base
 
 RUN npm i -g pnpm turbo
-RUN corepack enable
 
 
 FROM base AS builder

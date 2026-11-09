@@ -110,14 +110,14 @@ export const registerPostEndpoint = (api: typeof endpointsAPI) => {
       slug: input.slug,
       name: input.name ?? input.slug,
 
-      isEnabled: input.isEnabled,
-      emailNotifications: input.emailNotifications,
+      isEnabled: input.isEnabled ?? true,
+      emailNotifications: input.emailNotifications ?? true,
 
       redirectUrl: input.redirectUrl ?? `${context.env.WEB_URL}/thanks-you`,
       targetEmails: input.targetEmails,
 
-      icon: input.icon,
-      color: input.color
+      icon: input.icon ?? 'file',
+      color: input.color ?? 'gray'
     };
 
     const mutationStart = performance.now();

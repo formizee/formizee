@@ -22,6 +22,6 @@
     "@formizee/error": "workspace:*",
     "@formizee/hashing": "workspace:*",
     "@formizee/metrics": "workspace:*",
-    "base-x": "5.0.0"
+    "base-x": "5.0.1"
   }
 }
