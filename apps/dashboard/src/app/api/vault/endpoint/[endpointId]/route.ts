@@ -4,8 +4,10 @@ import {database} from '@/lib/db';
 import {auth} from '@/lib/auth';
 
 export const DELETE = auth(async function DELETE(req, ctx) {
+  const params = await ctx.params;
+  const endpointId = String(params?.endpointId ?? '');
   const endpoint = await database.query.endpoint.findFirst({
-    where: (table, {eq}) => eq(table.id, String(ctx.params?.endpointId ?? ''))
+    where: (table, {eq}) => eq(table.id, endpointId)
   });
 
   if (!endpoint) {

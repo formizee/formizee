@@ -4,8 +4,10 @@ import {database} from '@/lib/db';
 import {auth} from '@/lib/auth';
 
 export const GET = auth(async function GET(req, ctx) {
+  const params = await ctx.params;
+  const endpointId = String(params?.endpointId ?? '');
   const endpoint = await database.query.endpoint.findFirst({
-    where: (table, {eq}) => eq(table.id, String(ctx.params?.endpointId ?? ''))
+    where: (table, {eq}) => eq(table.id, endpointId)
   });
 
   if (!endpoint) {
@@ -37,7 +39,7 @@ export const GET = auth(async function GET(req, ctx) {
     method: 'POST',
     mode: 'no-cors',
     credentials: 'include',
-    body: JSON.stringify({endpointId: ctx.params?.endpointId}),
+    body: JSON.stringify({endpointId: endpointId}),
     headers: {
       Authorization: env().VAULT_SECRET,
       'Content-Type': 'application/json'

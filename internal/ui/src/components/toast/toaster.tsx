@@ -10,7 +10,7 @@ import {
 } from './toast';
 import {useToast} from './use-toast';
 
-export function Toaster(): JSX.Element {
+export function Toaster(): React.JSX.Element {
   const {toasts} = useToast();
 
   return (

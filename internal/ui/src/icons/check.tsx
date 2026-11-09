@@ -5,7 +5,7 @@ interface CheckIconProps extends IconProps {
   variant?: 'default' | 'outline';
 }
 
-export function CheckIcon(props: CheckIconProps): JSX.Element {
+export function CheckIcon(props: CheckIconProps): React.JSX.Element {
   return (
     <svg
       className={cn('h-4 w-4', props.className)}

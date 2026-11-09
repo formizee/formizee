@@ -1,4 +1,4 @@
-import workspaceIcon from '@/../../public/workspace.webp';
+import workspaceIcon from '../../../public/workspace.webp';
 import {UndoIcon} from '@formizee/ui/icons';
 import {Transition} from '@/components';
 import {Button} from '@formizee/ui';

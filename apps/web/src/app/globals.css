@@ -1,6 +1,8 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@import "@formizee/tailwind/theme.css";
+@import "@formizee/ui/globals.css";
+
+@source "../../../../internal/ui/src";
 
 @layer base {
   .overflow-dark-style {

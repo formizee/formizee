@@ -1,7 +1,7 @@
 import {cn} from '../lib/ui';
 import type {IconProps} from './types';
 
-export function SunIcon(props: IconProps): JSX.Element {
+export function SunIcon(props: IconProps): React.JSX.Element {
   if (props.variant === 'outline') {
     return (
       <svg

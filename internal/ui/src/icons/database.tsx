@@ -1,7 +1,7 @@
 import {cn} from '../lib/ui';
 import type {IconProps} from './types';
 
-export function DatabaseIcon(props: IconProps): JSX.Element {
+export function DatabaseIcon(props: IconProps): React.JSX.Element {
   return (
     <svg
       className={cn('h-4 w-4', props.className)}

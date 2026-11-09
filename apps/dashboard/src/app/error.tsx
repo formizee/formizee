@@ -15,7 +15,7 @@ export default function ErrorPage({
 }: {
   error: Error & {digest?: string};
   reset: () => void;
-}): JSX.Element {
+}): React.JSX.Element {
   useEffect(() => {
     Sentry.captureException(error);
   }, [error]);

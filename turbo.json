@@ -32,6 +32,10 @@
       "outputs": [".next/**", "!.next/cache/**"],
       "dependsOn": ["^build"]
     },
+    "dashboard#build": {
+      "outputs": [".next/**", "!.next/cache/**"],
+      "dependsOn": ["^build"]
+    },
     "api#build": {
       "outputs": ["dist/**"],
       "dependsOn": ["^build"],

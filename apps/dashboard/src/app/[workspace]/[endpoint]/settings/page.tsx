@@ -1,4 +1,5 @@
 'use client';
+import {use} from 'react';
 
 import {Button, Input, Label, Separator, toast} from '@formizee/ui';
 import {DeleteEndpointDialog} from './_components/dialogs';
@@ -17,13 +18,14 @@ import {
 import {LoadingSkeleton} from './_components/skeleton';
 
 interface Props {
-  params: {
+  params: Promise<{
     workspace: string;
     endpoint: string;
-  };
+  }>;
 }
 
-export default function Settings({params}: Props) {
+export default function Settings(props: Props) {
+  const params = use(props.params);
   const workspaceRequest = api.workspace.get.useQuery({
     slug: params.workspace
   });

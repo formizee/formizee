@@ -1,7 +1,7 @@
 import {cn} from '../lib/ui';
 import type {IconProps} from './types';
 
-export function LoadingIcon(props: IconProps): JSX.Element {
+export function LoadingIcon(props: IconProps): React.JSX.Element {
   return (
     <svg
       className={cn('h-20 w-20 animate-spin duration-500', props.className)}

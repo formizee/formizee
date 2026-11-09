@@ -6,14 +6,17 @@ import {redirect} from 'next/navigation';
 import {cookies} from 'next/headers';
 import {auth} from '@/lib/auth';
 
-export default async function DashboardLayout({
-  params,
-  children
-}: Readonly<{
-  params: {workspace: string};
-  children: React.ReactNode;
-}>) {
-  const cookiesState = cookies().get('sidebar:state')?.value;
+export default async function DashboardLayout(
+  props: Readonly<{
+    params: Promise<{workspace: string}>;
+    children: React.ReactNode;
+  }>
+) {
+  const params = await props.params;
+
+  const {children} = props;
+
+  const cookiesState = (await cookies()).get('sidebar:state')?.value;
   const defaultOpen =
     cookiesState === undefined ? true : cookiesState === 'true';
   const session = await auth();

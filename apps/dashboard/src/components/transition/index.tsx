@@ -38,7 +38,7 @@ export function Transition({
   inView = false,
   inViewMargin = '-50px',
   blur = '6px'
-}: TransitionProps): JSX.Element {
+}: TransitionProps): React.JSX.Element {
   const ref = useRef(null);
   const inViewResult = useInView(ref, {once: true, margin: inViewMargin});
   const isInView = !inView || inViewResult;

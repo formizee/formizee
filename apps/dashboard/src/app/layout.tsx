@@ -6,12 +6,11 @@ import {Toaster} from '@formizee/ui/toaster';
 import type {Metadata} from 'next';
 import {cn} from '@formizee/ui';
 
-import '@formizee/ui/globals.css';
 import './globals.css';
 
 const font = Inter({
   subsets: ['latin'],
-  variable: '--font-sans'
+  variable: '--font-inter'
 });
 
 const secondaryFont = Space_Grotesk({
@@ -36,7 +35,7 @@ export default function RootLayout({
   children
 }: Readonly<{
   children: React.ReactNode;
-}>): JSX.Element {
+}>): React.JSX.Element {
   return (
     <html lang="en" suppressHydrationWarning>
       <body

@@ -12,11 +12,10 @@ const searchParamsSchema = z.object({
   redirectTo: z.string().optional().default('/')
 });
 
-export default async function Login({
-  searchParams
-}: {
-  searchParams: {[key: string]: string | string[] | undefined};
+export default async function Login(props: {
+  searchParams: Promise<{[key: string]: string | string[] | undefined}>;
 }) {
+  const searchParams = await props.searchParams;
   const session = await auth();
 
   if (session?.user?.id) {

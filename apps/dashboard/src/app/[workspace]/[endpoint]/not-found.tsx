@@ -1,4 +1,4 @@
-import formIcon from '@/../../public/form.webp';
+import formIcon from '../../../../public/form.webp';
 import {Transition} from '@/components';
 import Image from 'next/image';
 import Link from 'next/link';

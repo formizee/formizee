@@ -9,7 +9,7 @@ export default function ErrorPage({
 }: {
   error: Error & {digest?: string};
   reset: () => void;
-}): JSX.Element {
+}): React.JSX.Element {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center">
       <Transition className="z-20 flex flex-col px-5 text-neutral-950 dark:text-neutral-50 items-center gap-4">

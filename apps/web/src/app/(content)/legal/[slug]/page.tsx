@@ -2,8 +2,11 @@ import {getBySlug, markdownStyles, markdownToHtml} from '@/lib/markdown';
 import {BlurFade} from '@/components/blur-fade';
 import {notFound} from 'next/navigation';
 
-export default async function Page(props: {params: {slug: string}}) {
-  const post = getBySlug(props.params.slug, 'src/app/(content)/legal/_content');
+export default async function Page(props: {params: Promise<{slug: string}>}) {
+  const post = getBySlug(
+    (await props.params).slug,
+    'src/app/(content)/legal/_content'
+  );
 
   if (!post) {
     return notFound();

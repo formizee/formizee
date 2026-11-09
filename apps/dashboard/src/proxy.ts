@@ -2,7 +2,7 @@ import {database, schema, eq} from './lib/db';
 import {NextResponse} from 'next/server';
 import {auth} from '@/lib/auth';
 
-export default auth(async req => {
+export const proxy = auth(async req => {
   const url = req.nextUrl.clone();
   const pathname = url.pathname;
 
@@ -65,5 +65,7 @@ export default auth(async req => {
 });
 
 export const config = {
-  matcher: ['/((?!api|auth|_next/static|_next/image|favicon.ico).*)']
+  matcher: ['/((?!api|auth|monitoring|_next/static|_next/image|favicon.ico).*)']
 };
+
+export default proxy;

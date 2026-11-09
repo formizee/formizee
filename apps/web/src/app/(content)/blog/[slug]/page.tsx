@@ -5,8 +5,8 @@ import DateFormatter from '../_components/date-formatter';
 import {BlurFade} from '@/components/blur-fade';
 import CoverImage from '../_components/cover-image';
 
-export default async function Page(props: {params: {slug: string}}) {
-  const post = getBySlug(props.params.slug);
+export default async function Page(props: {params: Promise<{slug: string}>}) {
+  const post = getBySlug((await props.params).slug);
 
   if (!post) {
     return notFound();

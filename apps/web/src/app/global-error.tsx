@@ -10,7 +10,7 @@ export default function GlobalError({
 }: {
   error: Error & {digest?: string};
   reset: () => void;
-}): JSX.Element {
+}): React.JSX.Element {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-black">
       <div className="pointer-events-none absolute inset-0 z-50 flex items-center justify-center bg-white opacity-5 [mask-image:radial-gradient(ellipse_at_center,white_10%,transparent_60%)]" />
@@ -25,7 +25,7 @@ export default function GlobalError({
             src="/logo.svg"
             width={64}
           />
-          <h1 className="bg-gradient-to-b from-white to-neutral-400 bg-clip-text font-bold text-transparent text-xl">
+          <h1 className="bg-linear-to-b from-white to-neutral-400 bg-clip-text font-bold text-transparent text-xl">
             Something Went Wrong!
           </h1>
           <p className="max-w-96 text-balance text-center sm:text-wrap sm:text-start">

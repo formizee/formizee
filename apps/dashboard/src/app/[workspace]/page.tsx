@@ -10,7 +10,8 @@ interface Params {
   workspace: string;
 }
 
-const DashboardRedirect = async ({params}: {params: Params}) => {
+const DashboardRedirect = async (props: {params: Promise<Params>}) => {
+  const params = await props.params;
   const session = await auth();
 
   if (!session?.user?.id) {

@@ -30,7 +30,7 @@ export const AppSidebar = async (props: AppSidebarProps) => {
   }
 
   return (
-    <Sidebar className="bg-white/80 dark:bg-black/80 backdrop-blur-sm dark:border-neutral-800">
+    <Sidebar className="bg-white/80 dark:bg-black/80 backdrop-blur-xs dark:border-neutral-800">
       <Header workspaceSlug={props.workspace} />
       <SidebarContent>
         <SidebarGroup>

@@ -30,14 +30,12 @@
       "import": "./dist/icons/index.mjs",
       "require": "./dist/icons/index.js"
     },
-    "./globals.css": "./dist/index.css"
+    "./globals.css": "./src/styles/globals.css"
   },
   "scripts": {
     "check": "tsc --noEmit",
     "build": "NODE_OPTIONS='--max-old-space-size=4096' tsup",
-    "dev:styles": "tailwindcss -i ./src/styles/globals.css -o ./dist/index.css --watch",
-    "build:styles": "tailwindcss -i ./src/styles/globals.css -o ./dist/index.css --minify",
-    "dev": "NODE_OPTIONS='--max-old-space-size=4096' tsup --watch --onSuccess 'tsc -d; echo DTS ⚡️ Build succeed'"
+    "dev": "NODE_OPTIONS='--max-old-space-size=4096' tsup --watch --onSuccess 'tsc -d; echo DTS \u26a1\ufe0f Build succeed'"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "1.3.1",
@@ -57,27 +55,22 @@
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
     "cmdk": "1.1.1",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
     "react-hook-form": "7.91.0",
     "recharts": "2.15.0",
     "tailwind-merge": "2.6.1"
   },
   "devDependencies": {
-    "@formizee/tailwind": "workspace:*",
     "@formizee/tsconfig": "workspace:*",
     "@types/node": "22.10.2",
-    "@types/react": "18.3.3",
-    "@types/react-dom": "18.3.0",
-    "autoprefixer": "10.6.2",
-    "postcss": "8.5.32",
-    "tailwindcss": "3.4.19",
-    "tailwindcss-animate": "1.0.7",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
     "tsup": "8.5.1",
     "typescript": "5.7.2"
   },
   "peerDependencies": {
-    "react": "^18.3.1",
+    "react": "^18.3.1 || ^19.0.0",
     "react-hook-form": ">=7.54.2"
   }
 }
