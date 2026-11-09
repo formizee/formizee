@@ -121,7 +121,8 @@ describe('List submissions', () => {
     expect(res.body).toStrictEqual({
       code: 'BAD_REQUEST',
       docs: `${harness.env.DOCS_URL}/api-references/errors/code/BAD_REQUEST`,
-      message: "invalid_type in 'page': Invalid input: expected number, received NaN",
+      message:
+        "invalid_type in 'page': Invalid input: expected number, received NaN",
       requestId: res.headers['formizee-request-id']
     });
     expect(res.status).toBe(400);
