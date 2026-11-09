@@ -5,6 +5,7 @@ import {HTTPException} from 'hono/http-exception';
 import {schema} from '@formizee/db/submissions';
 import {createRoute} from '@hono/zod-openapi';
 import {assignOriginDatabase} from '@/lib/databases';
+import {aes} from '@formizee/encryption';
 
 export const putRoute = createRoute({
   method: 'put',
@@ -36,7 +37,7 @@ export const putRoute = createRoute({
 
 export const registerPutSubmission = (api: typeof submissionsAPI) => {
   return api.openapi(putRoute, async context => {
-    const {metrics, database, cache} = context.get('services');
+    const {metrics, database, cache, keys} = context.get('services');
     const {endpointId, id} = context.req.valid('param');
     const input = context.req.valid('json');
     const mutationStart = performance.now();
@@ -86,7 +87,21 @@ export const registerPutSubmission = (api: typeof submissionsAPI) => {
       latency: performance.now() - mutationStart
     });
 
-    const response = SubmissionSchema.parse(newSubmissionData);
+    const key = await keys.getEndpointDEK(context.env, endpointId);
+    const decryptedSubmission = await aes.decrypt(
+      {iv: submission.iv, cipherText: submission.cipherText},
+      key
+    );
+
+    const response = SubmissionSchema.parse({
+      id: submission.id,
+      endpointId: submission.endpointId,
+      data: JSON.parse(decryptedSubmission),
+      isSpam: newSubmissionData.isSpam,
+      isRead: newSubmissionData.isRead,
+      location: submission.location,
+      createdAt: submission.createdAt
+    });
     return context.json(response, 200);
   });
 };
