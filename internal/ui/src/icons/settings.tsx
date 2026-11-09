@@ -1,7 +1,7 @@
 import {cn} from '../lib/ui';
 import type {IconProps} from './types';
 
-export function SettingsIcon(props: IconProps): JSX.Element {
+export function SettingsIcon(props: IconProps): React.JSX.Element {
   if (props.variant === 'outline') {
     return (
       <svg

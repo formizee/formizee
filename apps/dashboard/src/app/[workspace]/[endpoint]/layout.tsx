@@ -1,4 +1,5 @@
 'use client';
+import { use } from "react";
 
 import {MobileNavbar} from '@/components/mobile-navbar';
 import {usePathname} from 'next/navigation';
@@ -16,10 +17,16 @@ interface Params {
 
 interface Props {
   children: React.ReactNode;
-  params: Params;
+  params: Promise<Params>;
 }
 
-export default function PageLayout({params, children}: Props) {
+export default function PageLayout(props: Props) {
+  const params = use(props.params);
+
+  const {
+    children
+  } = props;
+
   const {data, isLoading, error} = api.endpoint.get.useQuery(
     {workspaceSlug: params.workspace, endpointSlug: params.endpoint},
     {

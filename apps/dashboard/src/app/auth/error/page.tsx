@@ -48,11 +48,12 @@ const generateErrorLabel = (data: {error: string} | undefined) => {
   }
 };
 
-export default async function AuthError({
-  searchParams
-}: {
-  searchParams: {[key: string]: string | string[] | undefined};
-}) {
+export default async function AuthError(
+  props: {
+    searchParams: Promise<{[key: string]: string | string[] | undefined}>;
+  }
+) {
+  const searchParams = await props.searchParams;
   const data = errorParamsSchema.safeParse(searchParams);
   const error = generateErrorLabel(data.data);
 

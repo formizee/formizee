@@ -20,7 +20,7 @@ export const getBaseUrl = () => {
 };
 
 export const endingLink = (opts?: {
-  headers?: HTTPHeaders | (() => HTTPHeaders);
+  headers?: HTTPHeaders | (() => HTTPHeaders | Promise<HTTPHeaders>);
 }) =>
   (runtime => {
     const sharedOpts = {

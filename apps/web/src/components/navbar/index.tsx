@@ -38,7 +38,7 @@ const items = [
   }
 ];
 
-export function Navbar(props: NavbarProps): JSX.Element {
+export function Navbar(props: NavbarProps): React.JSX.Element {
   return (
     <nav
       className={cn(

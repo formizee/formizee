@@ -2,7 +2,7 @@ import {Transition} from '@/components';
 import {Button} from '@formizee/ui';
 import Link from 'next/link';
 
-function NotFound(): JSX.Element {
+function NotFound(): React.JSX.Element {
   return (
     <main className="flex flex-grow min-h-[650px] flex-col items-center justify-center">
       <Transition className="flex flex-col px-5">

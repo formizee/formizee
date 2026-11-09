@@ -1,7 +1,7 @@
 import {cn} from '../lib/ui';
 import type {IconProps} from './types';
 
-export function DashIcon(props: IconProps): JSX.Element {
+export function DashIcon(props: IconProps): React.JSX.Element {
   return (
     <svg
       className={cn('h-4 w-4', props.className)}

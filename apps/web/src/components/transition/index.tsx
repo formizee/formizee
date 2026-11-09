@@ -5,7 +5,7 @@ interface TransitionProps {
   children: React.ReactNode;
 }
 
-export function Transition(props: TransitionProps): JSX.Element {
+export function Transition(props: TransitionProps): React.JSX.Element {
   return (
     <div className={cn('animate-fade-in', props.className)}>
       {props.children}

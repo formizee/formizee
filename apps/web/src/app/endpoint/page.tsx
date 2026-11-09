@@ -9,9 +9,9 @@ import checkIcon from '@public/check.webp';
 import errorIcon from '@public/error.webp';
 
 interface Props {
-  searchParams: {
+  searchParams: Promise<{
     type: 'not-found' | 'error' | 'thanks-you' | 'disabled';
-  };
+  }>;
 }
 
 export const metadata: Metadata = {
@@ -43,7 +43,8 @@ const image = {
   'not-found': notFoundIcon
 };
 
-export default function Page({searchParams}: Props) {
+export default async function Page(props: Props) {
+  const searchParams = await props.searchParams;
   const {type} = searchParams;
 
   return (

@@ -1,4 +1,5 @@
 'use client';
+import { use } from "react";
 
 import {Chart, OnboardingCard} from './_components';
 import {Transition} from '@/components';
@@ -7,13 +8,14 @@ import ErrorPage from '../error';
 import {api} from '@/trpc/client';
 
 interface Props {
-  params: {
+  params: Promise<{
     workspace: string;
     endpoint: string;
-  };
+  }>;
 }
 
-export default function Overview({params}: Props) {
+export default function Overview(props: Props) {
+  const params = use(props.params);
   const {data, isLoading, error} = api.endpoint.get.useQuery({
     workspaceSlug: params.workspace,
     endpointSlug: params.endpoint

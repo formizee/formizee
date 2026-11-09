@@ -15,7 +15,7 @@ interface CodeBlockProps {
   theme?: 'light' | 'dark';
 }
 
-export function CodeBlock(props: CodeBlockProps): JSX.Element {
+export function CodeBlock(props: CodeBlockProps): React.JSX.Element {
   const theme = getTheme(props.color, props.theme);
 
   return (
