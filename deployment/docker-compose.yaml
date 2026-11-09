@@ -27,7 +27,7 @@ services:
 
   storage:
     container_name: storage
-    image: bitnami/minio:latest
+    image: bitnamilegacy/minio:latest
     ports:
       - 3902:3902
       - 3903:3903
