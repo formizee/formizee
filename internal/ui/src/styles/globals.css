@@ -1,7 +1,3 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 @layer base {
   :root {
     --sidebar-background: 0 0% 98%;
@@ -51,10 +47,8 @@
   }
 }
 
-@layer utilities {
-  .bg-grid-pattern {
-    background-image: linear-gradient(#0a0a0a 0.1em, transparent 0.1em),
-      linear-gradient(90deg, #0a0a0a 0.1em, transparent 0.1em);
-    background-size: 56px 56px;
-  }
+@utility bg-grid-pattern {
+  background-image: linear-gradient(#0a0a0a 0.1em, transparent 0.1em),
+    linear-gradient(90deg, #0a0a0a 0.1em, transparent 0.1em);
+  background-size: 56px 56px;
 }

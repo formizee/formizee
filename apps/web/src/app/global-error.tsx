@@ -25,7 +25,7 @@ export default function GlobalError({
             src="/logo.svg"
             width={64}
           />
-          <h1 className="bg-gradient-to-b from-white to-neutral-400 bg-clip-text font-bold text-transparent text-xl">
+          <h1 className="bg-linear-to-b from-white to-neutral-400 bg-clip-text font-bold text-transparent text-xl">
             Something Went Wrong!
           </h1>
           <p className="max-w-96 text-balance text-center sm:text-wrap sm:text-start">

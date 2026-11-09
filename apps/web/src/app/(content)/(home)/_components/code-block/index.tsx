@@ -28,7 +28,7 @@ export const CodeBlock = () => {
   }
 
   return (
-    <article className="w-full max-w-[62rem] border dark:border-neutral-800 rounded-lg shadow-sm">
+    <article className="w-full max-w-[62rem] border dark:border-neutral-800 rounded-lg shadow-xs">
       <Topbar example={example} stack={stack} setStack={setStack} />
       <div className="flex flex-col sm:flex-row h-[24rem] p-2 sm:p-4 overflow-scroll overflow-light-style dark:overflow-dark-style">
         <Sidebar

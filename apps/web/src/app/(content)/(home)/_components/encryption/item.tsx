@@ -64,7 +64,7 @@ export default function Item(props: Props) {
   }, [animate, name, email, nameLength, emailLength]);
 
   return (
-    <div className="flex flex-row gap-2 border dark:border-neutral-800 rounded-md shadow-sm">
+    <div className="flex flex-row gap-2 border dark:border-neutral-800 rounded-md shadow-xs">
       <span className="flex w-48 h-12 flex-grow gap-2 items-center px-4 py-2 border-r dark:border-neutral-800 text-sm font-secondary">
         <UserIcon className="size-[0.8rem] font-mono text-neutral-400 dark:text-neutral-600" />
         <span className="overflow-hidden text-no-wrap">{name}</span>

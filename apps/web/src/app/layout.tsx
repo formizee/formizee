@@ -3,7 +3,6 @@ import {ThemeProvider} from '@/components/theme';
 import {Space_Grotesk} from 'next/font/google';
 import {Inter} from 'next/font/google';
 import type {Metadata} from 'next';
-import '@formizee/ui/globals.css';
 import {cn} from '@formizee/ui';
 import './globals.css';
 
@@ -22,7 +21,7 @@ export const metadata: Metadata = {
 
 const font = Inter({
   subsets: ['latin'],
-  variable: '--font-sans'
+  variable: '--font-inter'
 });
 
 const secondaryFont = Space_Grotesk({

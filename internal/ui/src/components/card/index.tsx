@@ -10,7 +10,7 @@ const cardVariants = cva('relative flex flex-col', {
       animated: 'z-20 rounded-xl bg-neutral-900',
       landing:
         'overflow-clip rounded-xl border-2 border-neutral-700 bg-neutral-900/60 shadow-md backdrop-blur-md',
-      auth: 'z-10 flex items-center justify-center rounded-xl bg-transparent shadow-lg backdrop-blur-sm'
+      auth: 'z-10 flex items-center justify-center rounded-xl bg-transparent shadow-lg backdrop-blur-xs'
     },
     size: {
       default: 'min-h-48 min-w-[200px] p-4',
