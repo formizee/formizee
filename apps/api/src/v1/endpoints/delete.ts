@@ -71,7 +71,8 @@ export const registerDeleteEndpoint = (api: typeof endpointsAPI) => {
     const {error} = await vault.endpoints.delete({endpointId: id});
     if (error) {
       logger.error(`vault.endpoints.delete(${id})`, {error});
-      throw new HTTPException(error.status, {
+      // biome-ignore lint/suspicious/noExplicitAny: Hono status code type
+      throw new HTTPException(error.status as any, {
         message: error.message
       });
     }

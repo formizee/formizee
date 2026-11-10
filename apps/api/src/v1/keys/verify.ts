@@ -50,7 +50,8 @@ export const registerVerifyKey = (api: typeof keysApi) => {
     });
 
     if (err || !val) {
-      throw new HTTPException(codeToStatus(err.code) as StatusCode, {
+      // biome-ignore lint/suspicious/noExplicitAny: Hono status code type
+      throw new HTTPException(codeToStatus(err.code) as any, {
         message: err.message
       });
     }

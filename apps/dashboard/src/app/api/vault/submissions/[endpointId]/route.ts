@@ -5,7 +5,8 @@ import {auth} from '@/lib/auth';
 
 export const GET = auth(async function GET(req, ctx) {
   const endpoint = await database.query.endpoint.findFirst({
-    where: (table, {eq}) => eq(table.id, String(ctx.params?.endpointId ?? ''))
+    where: (table, {eq}) => eq(table.id, String(// biome-ignore lint/suspicious/noExplicitAny: Next.js route params typing
+      (ctx.params as any)?.endpointId ?? ''))
   });
 
   if (!endpoint) {
@@ -37,7 +38,8 @@ export const GET = auth(async function GET(req, ctx) {
     method: 'POST',
     mode: 'no-cors',
     credentials: 'include',
-    body: JSON.stringify({endpointId: ctx.params?.endpointId}),
+    body: JSON.stringify({endpointId: // biome-ignore lint/suspicious/noExplicitAny: Next.js route params typing
+      (ctx.params as any)?.endpointId}),
     headers: {
       Authorization: env().VAULT_SECRET,
       'Content-Type': 'application/json'

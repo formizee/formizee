@@ -190,7 +190,8 @@ export const registerPostSubmission = (api: typeof submissionsApi) => {
           `https://formizee.com/f/error?message=${error.message}`
         );
       }
-      throw new HTTPException(error.status, {
+      // biome-ignore lint/suspicious/noExplicitAny: Hono status code type
+      throw new HTTPException(error.status as any, {
         message: error.message
       });
     }

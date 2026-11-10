@@ -25,7 +25,8 @@ export const authentication = (): MiddlewareHandler<HonoEnv> => {
     const {val, err} = await apiKeys.verifyKey(authorization);
 
     if (err || !val) {
-      throw new HTTPException(codeToStatus(err.code) as StatusCode, {
+      // biome-ignore lint/suspicious/noExplicitAny: Hono status code type
+      throw new HTTPException(codeToStatus(err.code) as any, {
         message: err.message
       });
     }

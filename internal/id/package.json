@@ -16,6 +16,6 @@
     "vitest": "1.5.0"
   },
   "dependencies": {
-    "base-x": "5.0.0"
+    "base-x": "5.0.1"
   }
 }

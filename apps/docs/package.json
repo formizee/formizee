@@ -8,9 +8,9 @@
     "dev": "mintlify dev --port 3002"
   },
   "devDependencies": {
-    "mintlify": "4.0.300"
+    "mintlify": "4.3.12"
   },
   "dependencies": {
-    "sharp": "0.33.5"
+    "sharp": "0.34.5"
   }
 }
