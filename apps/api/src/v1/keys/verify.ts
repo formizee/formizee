@@ -1,4 +1,4 @@
-import type {StatusCode} from 'hono/utils/http-status';
+import type {ContentfulStatusCode} from 'hono/utils/http-status';
 import {KeySchema, VerifyKeySchema} from './schema';
 import {openApiErrorResponses} from '@/lib/errors';
 import {HTTPException} from 'hono/http-exception';
@@ -50,8 +50,7 @@ export const registerVerifyKey = (api: typeof keysApi) => {
     });
 
     if (err || !val) {
-      // biome-ignore lint/suspicious/noExplicitAny: Hono status code type
-      throw new HTTPException(codeToStatus(err.code) as any, {
+      throw new HTTPException(codeToStatus(err.code) as ContentfulStatusCode, {
         message: err.message
       });
     }

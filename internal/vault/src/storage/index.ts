@@ -1,5 +1,5 @@
 import type {GetRequest, GetResponse, PutRequest, PutResponse} from './types';
-import type {StatusCode, VaultOptions} from '../types';
+import type {ContentfulStatusCode, VaultOptions} from '../types';
 import {FetchWrapper} from '../fetcher';
 
 export class Storage {
@@ -29,7 +29,7 @@ export class Storage {
         return Promise.resolve({
           data: null,
           error: {
-            status: response.status as StatusCode,
+            status: response.status as ContentfulStatusCode,
             message: body.message ?? 'Unexpected Error'
           }
         });
@@ -65,7 +65,7 @@ export class Storage {
         return Promise.resolve({
           data: null,
           error: {
-            status: response.status as StatusCode,
+            status: response.status as ContentfulStatusCode,
             message: body.message
           }
         });

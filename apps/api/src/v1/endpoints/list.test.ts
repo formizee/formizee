@@ -63,7 +63,8 @@ describe('List endpoints', () => {
     expect(res.body).toStrictEqual({
       code: 'BAD_REQUEST',
       docs: `${harness.docsUrl}/api-references/errors/code/BAD_REQUEST`,
-      message: "invalid_type in 'page': Expected number, received nan",
+      message:
+        "invalid_type in 'page': Invalid input: expected number, received NaN",
       requestId: res.headers['formizee-request-id']
     });
   });

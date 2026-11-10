@@ -1,4 +1,4 @@
-import type {StatusCode} from 'hono/utils/http-status';
+import type {ContentfulStatusCode} from 'hono/utils/http-status';
 import {HTTPException} from 'hono/http-exception';
 import {codeToStatus} from '@formizee/error';
 import type {MiddlewareHandler} from 'hono';
@@ -25,8 +25,7 @@ export const authentication = (): MiddlewareHandler<HonoEnv> => {
     const {val, err} = await apiKeys.verifyKey(authorization);
 
     if (err || !val) {
-      // biome-ignore lint/suspicious/noExplicitAny: Hono status code type
-      throw new HTTPException(codeToStatus(err.code) as any, {
+      throw new HTTPException(codeToStatus(err.code) as ContentfulStatusCode, {
         message: err.message
       });
     }

@@ -1,4 +1,4 @@
-import {EndpointSchema, ParamsSchema} from './schema';
+import {EndpointSchema, ParamsSchema, PutEndpointSchema} from './schema';
 import {openApiErrorResponses} from '@/lib/errors';
 import {HTTPException} from 'hono/http-exception';
 import type {endpoints as endpointsAPI} from '.';
@@ -15,7 +15,7 @@ export const putRoute = createRoute({
     body: {
       content: {
         'application/json': {
-          schema: EndpointSchema.omit({id: true, workspaceId: true}).partial()
+          schema: PutEndpointSchema
         }
       }
     }

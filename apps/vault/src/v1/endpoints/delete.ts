@@ -19,7 +19,7 @@ export const deleteRoute = createRoute({
       description: 'Delete a endpoint',
       content: {
         'application/json': {
-          schema: z.any({})
+          schema: z.any()
         }
       }
     },

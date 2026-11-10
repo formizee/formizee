@@ -72,6 +72,7 @@ export const auditLogSchemaV1 = z.object({
   time: z.number(),
   meta: z
     .record(
+      z.string(),
       z.union([z.string(), z.number(), z.boolean(), z.null(), z.undefined()])
     )
     .optional(),
@@ -81,6 +82,7 @@ export const auditLogSchemaV1 = z.object({
     name: z.string().optional(),
     meta: z
       .record(
+        z.string(),
         z.union([z.string(), z.number(), z.boolean(), z.null(), z.undefined()])
       )
       .optional()
@@ -92,6 +94,7 @@ export const auditLogSchemaV1 = z.object({
       name: z.string().optional(),
       meta: z
         .record(
+          z.string(),
           z.union([
             z.string(),
             z.number(),
