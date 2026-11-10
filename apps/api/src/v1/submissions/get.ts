@@ -35,7 +35,8 @@ export const registerGetSubmission = (api: typeof submissionsApi) => {
 
     if (error) {
       logger.error(`vault.submissions.get(${input.id})`, {error});
-      throw new HTTPException(error.status, {
+      // biome-ignore lint/suspicious/noExplicitAny: Hono status code type
+      throw new HTTPException(error.status as any, {
         message: error.message
       });
     }

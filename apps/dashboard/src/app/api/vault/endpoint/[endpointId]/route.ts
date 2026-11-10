@@ -5,7 +5,8 @@ import {auth} from '@/lib/auth';
 
 export const DELETE = auth(async function DELETE(req, ctx) {
   const endpoint = await database.query.endpoint.findFirst({
-    where: (table, {eq}) => eq(table.id, String(ctx.params?.endpointId ?? ''))
+    where: (table, {eq}) => eq(table.id, String(// biome-ignore lint/suspicious/noExplicitAny: Next.js route params typing
+      (ctx.params as any)?.endpointId ?? ''))
   });
 
   if (!endpoint) {

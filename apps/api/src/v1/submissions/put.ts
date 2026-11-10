@@ -67,7 +67,8 @@ export const registerPutSubmission = (api: typeof submissionsApi) => {
     const {data, error} = await vault.submissions.put({...params, ...input});
     if (error) {
       logger.error(`vault.submissions.put(${params.id})`, {error});
-      throw new HTTPException(error.status, {
+      // biome-ignore lint/suspicious/noExplicitAny: Hono status code type
+      throw new HTTPException(error.status as any, {
         message: error.message
       });
     }
